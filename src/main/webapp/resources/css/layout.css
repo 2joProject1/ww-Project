@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+/*용도 : 종로 c 교육용
+작성자 : 김미라
+작성일 : 2021-12-07
+저작권 : 수정 및 재배포 불가 / mit open license 규정에 따름
+
+강의안 보니까 css외부파일 사용하면 맨 위에 이렇게 달아줘야한다고합니다~~~
+*/
+
+
+
+/* 영역 표시용 선 - 나중에 필수 삭제 */
+	div{
+		/* border: 1px solid black; */
+		box-sizing: border-box;
+	}
+
+/* 레이아웃 관련  - 삭제하면 큰일납니다*/
+#header-layout{
+    width: 1500px;
+    height: 80px;
+    margin: auto;
+    margin-top: 20px;
+}
+
+#container {
+    width: 1500px;
+    height: 900px;
+    margin: auto;
+    display: flex;
+
+}
+#sidebar-layout{
+    width: 270px;
+    height: 100%;
+
+
+}
+#content-layout{
+    width: 1230px;
+    height: 100%;
+
+}
+
+
+/* ----------각자 만들어야 하는 부분----------- */
+
+/* sidebar-layout이 해당 부분 나눠놓은 레이아웃임 
+여기 안에 div 새로 만들어서 사이드바 색, 글씨크기 등 조절하기 위한 코드
+모든 사이드바에서 공통으로 사용할 거라면 sidebar-layout에 통합해도 괜찮음 */
+/* (카카오 오븐 참고)
+공지사항, 내일정 페이지처럼 사용할 ul 길이가 짧은 경우
+사이드바 길이도 짧게 만들 거라면 
+여기서 세부 조정하면 됨 */
+
+		/* 사이드바 */
+        #main-sidebar{
+            width: 270px;
+            height: 800px;
+            padding: 20px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+            float: left;
+            font-size: 20px;
+            background-color: #edf1f1;
+            
+        }
+        /* 사이드바 상세페이지이동 글씨 */
+        .side_subtitle{
+            color: rgb(114, 112, 112);
+            font-size: 16px;
+        }
+        /* a태그 밑줄, 파란글씨 효과 제거 - 다른 페이지에서 a태그에 밑줄, 파란글씨 적용하려면 수정 필요*/
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        a:hover{
+            text-decoration: none;
+            color: black;
+        }
+        
+        
+        
+        
