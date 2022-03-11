@@ -42,7 +42,7 @@
 		                <a href="signoffs.docu"><b>전자결재</b></a>
 		                <br>
 		                &nbsp;&nbsp;&nbsp;<i class="fi fi-rs-inbox side_subtitle"></i>&nbsp;
-		                <a href="" class="side_subtitle">기안문서함</a>
+		                <a href="docubox.draft" class="side_subtitle">기안문서함</a>
 		                <br><br>
 		                
 		                <i class="fi fi-rs-calendar"></i>&nbsp;
