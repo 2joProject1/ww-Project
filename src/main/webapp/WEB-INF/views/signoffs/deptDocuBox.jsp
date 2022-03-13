@@ -122,9 +122,7 @@ color:#fff;
 				<label class="box-radio-input">
 				<input type="radio" name="docubox" value="status"><span>결재상태</span>
 				</label>
-				
 				<input type="search" class="docubox-search" name="q">
-				
 			</div>
 			<div class="docubox-board-area">
 				<br>

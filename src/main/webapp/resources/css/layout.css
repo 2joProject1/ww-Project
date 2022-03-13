@@ -26,20 +26,17 @@
 
 #container {
     width: 1500px;
-    height: 900px;
     margin: auto;
     display: flex;
 
 }
 #sidebar-layout{
     width: 270px;
-    height: 100%;
 
 
 }
 #content-layout{
     width: 1230px;
-    height: 100%;
 
 }
 
