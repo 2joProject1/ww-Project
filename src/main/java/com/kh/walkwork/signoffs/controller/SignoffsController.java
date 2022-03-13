@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SignoffsController {
 	
 	@RequestMapping("signoffs.docu")
-	public String docuEnrollForm(HttpServletRequest req) {
-		String format = req.getParameter("format");
+	public String docuEnrollForm(HttpServletRequest request) {
+		String format = request.getParameter("format");
 		
 		if ("1".equals(format)) {
 			return "signoffs/documentsEnrollForm";
@@ -22,7 +22,24 @@ public class SignoffsController {
 		}
 	}
 	
+	@RequestMapping("docubox.draft")
+	public String draftDocuBox() {
+		return "signoffs/draftDocuBox";
+	}
 	
+	@RequestMapping("docubox.reseive")
+	public String reseiveDocuBox() {
+		return "signoffs/reseiveDocuBox";
+	}
 	
+	@RequestMapping("docubox.dept")
+	public String deptDocuBox() {
+		return "signoffs/deptDocuBox";
+	}
 	
+	@RequestMapping("docubox.reject")
+	public String rejectDocuBox() {
+		return "signoffs/rejectDocuBox";
+	}
+
 }

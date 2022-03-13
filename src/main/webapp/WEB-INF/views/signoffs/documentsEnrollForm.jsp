@@ -8,7 +8,6 @@
 
 <style>
 #content-layout {
-	height: 1000px;
 	border: 1px solid lightgray;
 	padding: 30px;
 	margin-left: 30px;
@@ -102,7 +101,11 @@
 }
 
 #fileList {
-	margin-left: 20px;
+	width: 1050px;
+	height: 150px;
+	vertical-align: top;
+	border: 1px solid #999;
+	margin-left: 50px;
 }
 
 #fileList>li {
@@ -138,7 +141,7 @@
 		</div>
 
 		<div id="content-layout">
-			<form action="" method="post">
+			<form class="enroll-form" action="" method="post">
 				<div id="docu-header-area">
 					<div id="docu-basic-area">
 						<br>
@@ -202,10 +205,9 @@
 					<br> <b>내용</b>&nbsp;
 					<textarea class="docu-content-textarea" name="" required></textarea>
 					<br>
-					<br> <b>첨부</b>&nbsp;
-					<i class="fi fi-rr-add document" onclick="attachFile()"></i>
 					<br>
-					<ul id="fileList"></ul>
+					<b>첨부</b>&nbsp;
+					<ul id="fileList" onclick="attachFile()"></ul>
 				</div>
 				<br>
 				<div id="button-area">

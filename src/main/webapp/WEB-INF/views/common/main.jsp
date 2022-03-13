@@ -18,7 +18,7 @@
 	        <div id="sidebar-layout">
 	        	<div id="main-sidebar">
 	        		<br>
-		            <ul id="sidebar-ul">
+		            <div id="sidebar-area">
 		                <i class="fi fi-sr-at"></i>&nbsp;
 		                <a href=""><b>Mail</b></a>
 		                <br>
@@ -46,7 +46,7 @@
 		                <br><br>
 		                
 		                <i class="fi fi-rs-calendar"></i>&nbsp;
-		                <a href=""><b>프로젝트</b></a>
+		                <a href="project.main"><b>프로젝트</b></a>
 		                <br><br>
 		                
 		                <i class="fi fi-rs-following"></i>
@@ -58,7 +58,7 @@
 		                
 		                <i class="fi fi-rr-megaphone"></i>&nbsp;
 		                <a href=""><b>공지사항</b></a><br><br>
-		            </ul>
+		            </div>
 	        	</div>
 	        </div>
 	
