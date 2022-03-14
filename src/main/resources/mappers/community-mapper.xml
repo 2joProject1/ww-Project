@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="communityMapper">
+
+	<resultMap id="CommunityResultSet" type="community">
+		<result column="BOARD_NO" property="boardNo" />
+		<result column="BOARD_WRITER" property="boardWriter" />
+		<result column="PROJECT_NO" property="projectNo" />
+		<result column="PROJECT_NO" property="boardType" />
+		<result column="BOARD_TITLE" property="boardTitle" />
+		<result column="BOARD_CONTENT" property="boardContent" />
+		<result column="ENROLL_DATE" property="enrollDate" />
+		<result column="COUNT" property="count" />
+		<result column="STATUS" property="status" />
+		<result column="TOP_FIX" property="topFix" />
+		<result column="NOTICE_RANGE" property="noticeRange" />
+		<result column="NOTICE_CATEGOTY" property="noticeCategory" />
+		<result column="NOTICE_PERIOD" property="noticePeriod" />
+		<result column="COMMUNITY_GOOD" property="communityGood" />
+		<result column="TASK_MODIFY_DATE" property="taskModifyDate" />
+		<result column="TASK_STATUS" property="taskStatus" />
+		<result column="TASK_HANDLER" property="taskHandler" />
+	</resultMap>
+
+	<insert id="insertCommunity" parameterType="community">
+		insert into board_all(
+							board_no
+							,board_writer
+							,board_type
+							,board_title
+							,board_content
+							,enroll_date
+							,count
+							,status
+							,community_good
+							)
+							values
+							(
+							seq_bno.nextval
+							,#{boardWriter}
+							,4
+							,#{boardTitle}
+							,#{boardContent}
+							,default
+							,default
+							,default
+							,default
+							)
+	</insert>
+	
+	<select id="selectListCount" resultType="_int">
+		select count(*)
+		  from board_all
+		 where status = 'Y'
+	</select>
+	
+	<select id="selectCommunity" resultMap="CommunityResultSet">
+		select 
+			   board_no
+			  ,board_writer
+			  ,board_type
+			  ,board_title
+			  ,board_content
+			  ,enroll_date
+			  ,count
+			  ,status
+			  ,community_good
+		from
+			board_all
+			
+	</select>
+	
+	
+	
+</mapper>
