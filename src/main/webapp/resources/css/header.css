@@ -59,8 +59,13 @@
             float: left;
             font-size: 20px;
             background-color: #edf1f1;
-            
         }
+
+ 	/* 사이드바 margin */
+        div#sidebar-area {
+ 	    margin-left: 40px;
+	}
+
         /* 사이드바 상세페이지이동 글씨 */
         .side_subtitle{
             color: rgb(114, 112, 112);
