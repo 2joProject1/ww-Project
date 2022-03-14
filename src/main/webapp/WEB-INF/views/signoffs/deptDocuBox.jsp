@@ -133,6 +133,7 @@ color:#fff;
 							<th>문서번호</th>
 							<th>결재양식</th>
 							<th>제목</th>
+							<th>기안자</th>
 							<th>첨부</th>
 							<th>결재상태</th>
 						</tr>
@@ -143,6 +144,7 @@ color:#fff;
 							<td>20220301-1-2100</td>
 							<td>품의</td>
 							<td>소모품 비용처리의 건</td>
+							<td>김사원</td>
 							<td><i class="fi fi-rr-document"></i></td>
 							<td>대기</td>
 						</tr>
@@ -151,6 +153,7 @@ color:#fff;
 							<td>20220301-1-1100</td>
 							<td>기안</td>
 							<td>2022 하계 워크샵</td>
+							<td>나사원</td>
 							<td></td>
 							<td>진행</td>
 						</tr>
@@ -159,6 +162,7 @@ color:#fff;
 							<td>20220301-1-1100</td>
 							<td>기안</td>
 							<td>어쩌구저쩌구 전략회의</td>
+							<td>당사원</td>
 							<td><i class="fi fi-rr-document"></i></td>
 							<td>완료</td>
 						</tr>

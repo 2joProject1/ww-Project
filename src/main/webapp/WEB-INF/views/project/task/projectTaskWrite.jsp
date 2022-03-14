@@ -6,13 +6,21 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+
+#content-layout {
+	border: 1px solid lightgray;
+	height: 60%;
+	padding: 10px;
+	margin-left: 30px;
+}
+
 .info-left, .info-right {
 	float: left;
 	display: inline-block;
 }
 
 .project-info {
-	width: calc(100% - 60px);
+	width: calc(100% - 30px);
 	display: inline-block;
 	min-height: 300px;
 	padding: 30px;
@@ -88,7 +96,8 @@ table.section-table {
 }
 
 .title-label {
-	margin-left: 200px;
+	margin-left: 150px;
+	font-size: 15pt;
 }
 
 .project-desc-list span.desc-text {
@@ -138,8 +147,36 @@ table.section-table {
 	text-align: center;
 }
 
+.btn-custom {
+	width: 130px;
+	height: 40px;
+	border-radius: 10px;
+	border: none;
+}
+
+#project-enroll-btn{
+	background-color: rgb(102, 164, 166);
+	margin-left: 20px;
+}
+
 .project-write-field {
-	width: calc(100% - 216px);
+	width: calc(100% - 240px);
+	height: 40px;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+.project-write-date{
+	width: 180px;
+	height: 40px;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+
+.project-write-field-content{
+	width: calc(100% - 240px);
+	height: 300px;
 }
 
 /* filter css*/
@@ -247,15 +284,15 @@ table.section-table {
 					<li><b>제목</b> <input type="text" class="project-write-field"></li>
 					<li><b>담당자</b> <span class="text">곽주현</span>
 						<button class="btn-select" type="button">+</button></li>
-					<li><b>요청기간</b> <input type="date">-<input type="date"></li>
-					<li><b>내용</b> <textarea class="project-write-field"></textarea></li>
+					<li><b>요청기간</b> <input type="date" class="project-write-date">-<input type="date" class="project-write-date"></li>
+					<li><b>내용</b> <textarea class="project-write-field-content"></textarea></li>
 					<li><b>파일첨부</b>
 						<button type="button">+</button> <span>asdasd.JPG</span></li>
 				</ul>
 
 				<div class="button-area">
-					<button type="button" class="btn btn-primary">등록</button>
-					<button type="button" class="btn btn-warning">취소</button>
+					<button type="button" class="btn-custom">취소</button>
+					<button type="button" class="btn-custom" id="project-enroll-btn">등록</button>
 				</div>
 			</div>
 		</div>

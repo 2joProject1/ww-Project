@@ -21,7 +21,7 @@ ul.project-list > li {
     width: 21%;
     height: 200px;
     line-height: 200px;
-    background: #CCC;
+    background: #edf1f1;
     margin: 2%;
     display: inline-block;
     float: left;
