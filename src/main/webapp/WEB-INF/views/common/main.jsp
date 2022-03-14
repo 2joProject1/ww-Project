@@ -57,7 +57,7 @@
 		                <br><br>
 		                
 		                <i class="fi fi-rr-megaphone"></i>&nbsp;
-		                <a href=""><b>공지사항</b></a><br><br>
+		                <a href="notice.no"><b>공지사항</b></a><br><br>
 		            </div>
 	        	</div>
 	        </div>
