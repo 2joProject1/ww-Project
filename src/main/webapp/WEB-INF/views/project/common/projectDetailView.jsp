@@ -6,13 +6,21 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
+
+#content-layout {
+	border: 1px solid lightgray;
+	height: 60%;
+	padding: 10px;
+	margin-left: 30px;
+}
+
 .info-left, .info-right {
 	float: left;
 	display: inline-block;
 }
 
 .project-info {
-	width: calc(100% - 60px);
+	width: calc(100% - 30px);
 	display: inline-block;
 	min-height: 300px;
 	padding: 30px;
@@ -23,7 +31,7 @@
 }
 
 .info-right {
-	width: 410px;
+	width: 380px;
 	height: 400px;
 	border: 1px solid #999;
 }
@@ -131,6 +139,8 @@ button.btn-write {
     padding: 7px 30px;
     border: 1px solid #AAA;
     border-radius: 10px;
+	width: 130px;
+	height: 40px;
 }
 
 button.btn-write:hover {
