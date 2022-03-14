@@ -277,8 +277,8 @@ button.btn-write:hover {
 					<tbody>
 						<tr>
 							<td>1</td>
-							<td>1</td>
-							<td>1</td>
+							<td>내상태</td>
+							<td>업무는이것</td>
 							<td>1</td>
 							<td>1</td>
 						</tr>
