@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.walkwork.common.model.vo.PageInfo;
+import com.kh.walkwork.common.template.Pagination;
 import com.kh.walkwork.community.model.service.CommunityService;
 import com.kh.walkwork.community.model.vo.Community;
-import com.kh.walkwork.community.model.vo.PageInfo;
-import com.kh.walkwork.community.page.Pagination;
 
 @Controller
 public class CommunityController {

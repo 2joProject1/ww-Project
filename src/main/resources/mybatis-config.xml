@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<properties>
+		<!-- 해당 속성이 true면, DB의 Under-score 형식을 Java의 camelCase 형식으로 자동으로 돌려준다. -->
+		<!-- mapper에서 resultMap 안써도 된다. -->
+		<!-- default: false -->
+		<property name="mapUnderscoreToCamelCase" value="true"/>
+	</properties>
+
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL" />
+	</settings>
+	
+	<typeAliases>
+		<typeAlias type="com.kh.walkwork.member.model.vo.Member" alias="member" />
+		<typeAlias type="com.kh.walkwork.community.model.vo.Community" alias="community" />
+		<typeAlias type="com.kh.walkwork.dayOff.model.vo.DayOff" alias="off" />
+	</typeAliases>
+	
+	
+	<!-- 원래 enviroment, dataSource 에 기술했던 DB연결정보 => 이번에는 ROOT-CONTEXT.XML에 기술할 것 
+		=>DB등록정보는 서버연동과 동시에 이루어져야되기 때문에, 서버켜짐과 동시에 바로 읽혀지는 파일인 ROOT-CONTEXT.XML 문서에 기술할 예정 
+		-->
+
+	<mappers>
+		<mapper resource="/mappers/member-mapper.xml" />
+		<mapper resource="/mappers/community-mapper.xml" />
+		<mapper resource="/mappers/off-mapper.xml" />
+	</mappers>
+		<!-- 유의사항 : 미리 등록해두려면 해당 mapper파일이 진짜 존재하고 있는 상태여야함(namespace까지) -->
+
+</configuration>

@@ -6,8 +6,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.walkwork.common.model.vo.PageInfo;
 import com.kh.walkwork.community.model.vo.Community;
-import com.kh.walkwork.community.model.vo.PageInfo;
 
 @Repository
 public class CommunityDao {
