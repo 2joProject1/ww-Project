@@ -4,10 +4,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<!-- css -->
-	<link rel="stylesheet" href="resources/css/header.css">
- 	<link rel="stylesheet" href="resources/css/layout.css">
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,26 +20,79 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
-    
+ 	<link rel="stylesheet" href="resources/css/header.css">
     <title>Document</title>
 
-
+	<style>
+    .pop{
+      background-color: rgba(203, 212, 212, 0.918);
+      width: 350px;
+      height: 600px;
+      position: relative;
+      right: 230px;
+      display: none;
+    }
+	</style>
 </head>
 <body>
-        <div id="header">
-            <div id="title"> 
-            	WALK-WORK
-            </div>
-            <div id="search-area">
-              <i class="fi fi-rr-search" style="margin-right: 5px;"></i>
-              <input type="text">
-            </div>
-            <div id="banner-area">
-              <i class="fi fi-rr-comment">&nbsp;</i>
-              <i class="fi fi-rs-bell">&nbsp;</i>
-              <i class="fi fi-rr-user">&nbsp;</i>
-            </div>
-		</div>
+
+<div id="header">
+  <div id="title"> <!--  style="margin-bottom: -15px;" 강사님이 고쳐주신 코드. flex넣으니까 쳐지는거 해결되어서 삭제했는데 문제생기면 다시 추가 -->
+    WALK-WORK
+  </div>
+  <div id="search-area">
+    <i class="fi fi-rr-search" style="margin-right: 5px;"></i>
+    <input type="text">
+  </div>
+  <div id="banner-area">
+    <i class="fi fi-rr-comment popup" data-bs-toggle="modal" data-bs-target="#exampleModal" style="margin-right: 15px;"></i>
+    <i class="fi fi-rs-bell popup">&nbsp;</i>
+    
+    <i class="fi fi-rr-user">&nbsp;</i>
+    <div class="pop" style="font-size: 15px;">
+        <div>채팅</div>
+        <hr>
+        <div>
+          <div><input type="text"></div>
+          <div>gdgd</div>
+        </div>
+    </div>
+    <div class="pop">
+        
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function(){
+    $(".popup").click(function(){
+      console.log('ㅎㅇㅎㅇ');
+      $(".pop").show();
+    })
+  })
+
+</script>
+
+		
+		
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
