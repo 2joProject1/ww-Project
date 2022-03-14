@@ -7,8 +7,6 @@ import lombok.Data;
 
 @Data
 public class Community {
-
-	
 	private int boardNo;
 	private String boardWriter;
 	private int projectNo;
@@ -26,6 +24,4 @@ public class Community {
 	private String taskModifyDate;
 	private int taskStatus;
 	private String taskHandler;
-	
-
 }

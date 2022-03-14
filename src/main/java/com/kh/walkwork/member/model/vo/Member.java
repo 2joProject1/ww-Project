@@ -28,5 +28,5 @@ public class Member {
 	private String tmpPwd;
 	private String enrollDate;
 	private String resignDate;
-	
+
 }

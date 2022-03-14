@@ -2,8 +2,10 @@ package com.kh.walkwork.community.model.service;
 
 import java.util.ArrayList;
 
+
+import com.kh.walkwork.common.model.vo.PageInfo;
 import com.kh.walkwork.community.model.vo.Community;
-import com.kh.walkwork.community.model.vo.PageInfo;
+
 
 public interface CommunityService {
 
@@ -14,7 +16,7 @@ public interface CommunityService {
 	public int selectListCount();
 	
 	// 커뮤니티 리스트 조회
+
 	ArrayList<Community> selectList(PageInfo pi);
-	
 	
 }
