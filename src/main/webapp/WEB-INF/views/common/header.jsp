@@ -35,13 +35,17 @@
       right: 230px;
       display: none;
     }
+    #title>a{
+    	text-decoration: none;
+    	color:black;
+    }
 	</style>
 </head>
 <body>
 
 <div id="header">
   <div id="title"> <!--  style="margin-bottom: -15px;" 강사님이 고쳐주신 코드. flex넣으니까 쳐지는거 해결되어서 삭제했는데 문제생기면 다시 추가 -->
-    WALK-WORK
+    <a href="main">WALK-WORK</a>
   </div>
   <div id="search-area">
     <i class="fi fi-rr-search" style="margin-right: 5px;"></i>
