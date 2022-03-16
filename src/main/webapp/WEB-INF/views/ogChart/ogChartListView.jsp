@@ -7,8 +7,11 @@
 <meta charset="UTF-8">
 
 
-<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+<link rel="stylesheet" href="resources/css/layout.css">
+<link rel="stylesheet" href="resources/css/header.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
+<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
@@ -42,37 +45,52 @@ th,td {
 
 
 
-.wrap {
-    width: 940px;
+#content-layout {
+
+    width: 1000px;
     margin: 0px auto;
     padding: 20px;
-    
+    box-sizing: border-box;
+    position: relative;
+    padding : 40px 0 40px 40px;
+    height: 950px;
+
 }
 
 #content_side {
    
     float: left;
     border: 1px solid #ddd;
-    width: 260px;
+    width: 400px;
     padding: 20px;
+    position: absolute;
+    box-sizing: border-box;
+    top: 190px;
+    width: 200px;
+    height: 569px;
+    	
 }
 
 #content_chart {
     
     float: right;
     border: 1px solid #ddd;
-    width: 620px;
+    width: 760px;
     padding: 20px;
+    box-sizing: border-box;
+    position: absolute;
+    left: 260px;
+    padding: 15px 15px 0 15px;
+    height: 570px;
+    margin-top: 44px;
     
 }
 
 .search {
-    
-    border: 1px solid #ddd;
+  
     width: 260px;
     padding: 20px;
 
-   
 }
 
 ul {
@@ -159,123 +177,140 @@ ul {
 </style>
 </head>
 <body>
+	<div id="header-layout">
+    	<jsp:include page="../common/header.jsp" />
 
-<div class="wrap">
-    <br><br>
-        <div class="chartTitle">조직도</div>
-        <br><br>
+    </div>
+	    <div id="container">
+	        <div id="sidebar-layout">
+	        	<div id="main-sidebar">
+	        	<br>
+
+	        	</div>
+	        </div>
+	
+	        <div id="content-layout">
+				
+			    <br><br>
+			        <div class="chartTitle">조직도</div>
+			        <br><br>
             
-                <div id="content_side">
-
-                    <input type="text" name="keyword" id="keyword">
-                    <br><br>
-                    <div>
-                        <ul>
-                            <li>부서
-                                <br><br>
-                                <ul>
-                                    <li>개발팀</li>
-                                    <br>
-                                    <li>기획팀</li>
-                                    <br>
-                                    <li>마케팅팀</li>
-                                    <br>
-                                    <li>영업팀</li>
-                                    <br>
-                                    <li>미배치</li>
-                                </ul>
-                            </li>    
-                        </ul>
-                    </div>
+               		 <div id="content_side">
+               		 	<form action="search.me" method="get">
+							<div class="search">
+		                    	<input type="text" name="keyword" id="keyword" autocomplete="off"><i class="fi fi-rr-Search"></i>
+		                    </div>
+	                    </form>
+	                    <br><br><br><br>
+	                    <div>
+	                        <ul>
+	                            <li>부서
+	                                <br><br>
+	                                <ul>
+	                                    <li>개발팀</li>
+	                                    <br>
+	                                    <li>기획팀</li>
+	                                    <br>
+	                                    <li>마케팅팀</li>
+	                                    <br>
+	                                    <li>영업팀</li>
+	                                    <br>
+	                                    <li>미배치</li>
+	                                </ul>
+	                            </li>    
+	                        </ul>
+	                    </div>
                     
                     <br><br><br><br><br><br><br><br><br>
-                    <div>
-                        <i class="fi fi-rr-Bulb">12</i>
-                        <i class="fi fi-rr-Trash">12</i>
-                    </div>
-                </div>
-                <div id="content_chart">
-                    <div style="font-size: 25px;">개발팀</div>
-                    <div align="right"><button class="btn btn-secondary">수정</button>&nbsp;&nbsp;<button class="btn btn-secondary">확인</button></div>
-                    <br><br>
-                    <table id="chartList">
-                        <thead>
-                            <tr>
-                                <th>사원번호</th>
-                                <th>이름</th>
-                                <th>직급</th>
-                                <th>이메일</th>
-                                <th>재직상태</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="checkbox">123</td>
-                                <td><button type="button" class="" data-toggle="modal" data-target="#myModal">
-                                   		 가나다
-                                  </button></td>
-                                <td>사원</td>
-                                <td>123@123.com</td>
-                                <td>Y</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox">123</td>
-                                <td>가나다</td>
-                                <td>사원</td>
-                                <td>123@123.com</td>
-                                <td>Y</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox">123</td>
-                                <td>가나다</td>
-                                <td>사원</td>
-                                <td>123@123.com</td>
-                                <td>Y</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox">123</td>
-                                <td>가나다</td>
-                                <td>사원</td>
-                                <td>123@123.com</td>
-                                <td>Y</td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox">123</td>
-                                <td>가나다</td>
-                                <td>사원</td>
-                                <td>123@123.com</td>
-                                <td>Y</td>
-                            </tr>
-                        </tbody>
-
-                    </table>
-                    <br>
-
-                    <div class="pagination">
-                        <a href="#">&laquo;</a>
-                        <a href="#">1</a>
-                        <a href="#" class="active">2</a>
-                        <a href="#">3</a>
-                        <a href="#">4</a>
-                        <a href="#">5</a>
-                        
-                        <a href="#">&raquo;</a>
-                    </div>
-
-                      <br><br>
-                      <div align="right">
-                          <select name="" id="">
-                                <option value="">개발팀</option>
-                                <option value="">기획팀</option>
-                                <option value="">마케팅팀</option>
-                                <option value="">영업팀</option>
-                                <option value="">미배치</option>
-                          </select>
-                          <button type="submit" class="btn btn-secondary">다른 부서로 이동</button>
-                      </div>
-                                
-                    
-                </div>
+	                    <div style="position:absolute;bottom:3%">
+	                    <i class="fi fi-rs-Plus">12</i>
+	                    <i class="fi fi-rs-Plus">12</i>
+	                        <button type="submit" class="btn btn-secondary">부서추가</button>&nbsp;&nbsp;
+	                        <button type="submit" class="btn btn-secondary">부서삭제</button>
+	                    </div>
+                	</div>
+	                <div id="content_chart">
+	                    <div style="font-size: 25px;">개발팀</div>
+	                    <div align="right"><button class="btn btn-secondary">수정</button>&nbsp;&nbsp;<button class="btn btn-secondary">확인</button></div>
+	                    <br><br>
+	                    <table id="chartList">
+	                        <thead>
+	                            <tr>
+	                                <th>사원번호</th>
+	                                <th>이름</th>
+	                                <th>직급</th>
+	                                <th>이메일</th>
+	                                <th>재직상태</th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                            <tr>
+	                                <td><input type="checkbox">123</td>
+	                                <td><button type="button" class="" data-toggle="modal" data-target="#myModal">
+	                                   		 가나다
+	                                  </button></td>
+	                                <td>사원</td>
+	                                <td>123@123.com</td>
+	                                <td>Y</td>
+	                            </tr>
+	                            <tr>
+	                                <td><input type="checkbox">123</td>
+	                                <td>가나다</td>
+	                                <td>사원</td>
+	                                <td>123@123.com</td>
+	                                <td>Y</td>
+	                            </tr>
+	                            <tr>
+	                                <td><input type="checkbox">123</td>
+	                                <td>가나다</td>
+	                                <td>사원</td>
+	                                <td>123@123.com</td>
+	                                <td>Y</td>
+	                            </tr>
+	                            <tr>
+	                                <td><input type="checkbox">123</td>
+	                                <td>가나다</td>
+	                                <td>사원</td>
+	                                <td>123@123.com</td>
+	                                <td>Y</td>
+	                            </tr>
+	                            <tr>
+	                                <td><input type="checkbox">123</td>
+	                                <td>가나다</td>
+	                                <td>사원</td>
+	                                <td>123@123.com</td>
+	                                <td>Y</td>
+	                            </tr>
+	                        </tbody>
+	
+	                    </table>
+	                    <br>
+	
+	                    <div class="pagination justify-content-center">
+	                        <a href="#">&laquo;</a>
+	                        <a href="#">1</a>
+	                        <a href="#" class="active">2</a>
+	                        <a href="#">3</a>
+	                        <a href="#">4</a>
+	                        <a href="#">5</a>
+	                        
+	                        <a href="#">&raquo;</a>
+	                    </div>
+	
+	                      <br>
+	                      <div align="right">
+	                          <select name="" id="">
+	                                <option value="">개발팀</option>
+	                                <option value="">기획팀</option>
+	                                <option value="">마케팅팀</option>
+	                                <option value="">영업팀</option>
+	                                <option value="">미배치</option>
+	                          </select>
+	                          <button type="submit" class="btn btn-secondary">다른 부서로 이동</button>
+	                      </div>
+	                                
+	                    
+	                </div>
 
                 
                   
@@ -292,20 +327,20 @@ ul {
                   
                         <!-- Modal body -->
                         <div class="modal-body">
-                            사번 : <br>
-                            이름 : <br>
-                            이메일 : <br>
-                            휴대폰번호 : <br>
-                            부서명 : <br>
-                            직급 : <br>
-                            내선번호 : <br>
+				                            사번 : <br>
+				                            이름 : <br>
+				                            이메일 : <br>
+				                            휴대폰번호 : <br>
+				                            부서명 : <br>
+				                            직급 : <br>
+				                            내선번호 : <br>
                             <hr>
-                            권한 <div class="toggle-switch">
-                                <input type="checkbox" id="chkTog">
-                                <label for="chkTog">
-                                  <span class="toggle-track"></span>
-                                </label>
-                              </div>
+                            	권한 <div class="toggle-switch">
+	                                <input type="checkbox" id="chkTog">
+	                                <label for="chkTog">
+	                                  <span class="toggle-track"></span>
+	                                </label>
+                              		</div>
 
                         </div>
                   
@@ -319,10 +354,11 @@ ul {
                     </div>
                   </div>
                 
-  </div>
-        
-    </div>
+  			
 
 
+	    	</div>
+	    </div>
+    
 </body>
 </html>

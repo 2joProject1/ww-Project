@@ -16,8 +16,8 @@
 <style>
 
 
-.wrap {
-    width: 940px;
+#content-layout {
+    width: 800px;
     margin: 0px auto;
     padding: 20px;
     
@@ -51,12 +51,25 @@
 </style>
 </head>
 <body>
+   <div id="header-layout">
+    	<jsp:include page="../common/header.jsp" />
+
+    </div>
     
-  <div class="wrap">
+    <div id="container">
+	        <div id="sidebar-layout">
+	        	<div id="main-sidebar">
+	        	<br>
+
+	        	</div>
+	        </div>
+	
+	        <div id="content-layout">
+  
 
     <div>
         <div align="right">
-            <button type="submit" class="btn btn-primary">메일쓰기</button>
+            <a href="email.form" class="btn btn-sm btn-primary">메일쓰기</a>
             <button type="delete" class="btn btn-danger">삭제하기</button>
             
         </div>
@@ -117,7 +130,7 @@
         </tbody>
       </table>
 
-      <div class="pagination">
+      <div class="pagination justify-content-center">
         <a href="#">&laquo;</a>
         <a href="#">1</a>
         <a href="#" class="active">2</a>
@@ -128,6 +141,7 @@
         <a href="#">&raquo;</a>
       </div>
     </div>
+  </div>
   </div>
 </body>
 </html>
