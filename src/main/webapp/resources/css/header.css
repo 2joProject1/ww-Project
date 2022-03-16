@@ -47,37 +47,37 @@
 	font-size: 40px;
 }
 
-/* -------사이드바-------- */
-/* 사이드바 */
-#main-sidebar {
-	width: 270px;
-	height: 800px;
-	padding: 20px;
-	margin-right: 20px;
-	margin-bottom: 20px;
-	float: left;
-	font-size: 20px;
-	background-color: #edf1f1;
-}
-/* 사이드바 상세페이지이동 글씨 */
-.side_subtitle {
-	color: rgb(114, 112, 112);
-	font-size: 160px;
-}
-/* a태그 밑줄, 파란글씨 효과 제거 - 다른 페이지에서 a태그에 밑줄, 파란글씨 적용하려면 수정 필요*/
-#main-sidebar a {
-	text-decoration: none;
-	color: black;
-}
+        /* 사이드바 */
+        #main-sidebar{
+            width: 270px;
+            height: 800px;
+            padding: 20px;
+            margin-right: 20px;
+            margin-bottom: 20px;
+            float: left;
+            font-size: 20px;
+            background-color: #edf1f1;
+        }
 
-#main-sidebar a:hover {
-	text-decoration: none;
-	color: black;
-}
+ 	/* 사이드바 margin */
+        div#sidebar-area {
+ 	    margin-left: 40px;
+	}
 
-div#sidebar-area {
-	margin-left: 40px;
-}
+        /* 사이드바 상세페이지이동 글씨 */
+        .side_subtitle{
+            color: rgb(114, 112, 112);
+            font-size: 160px;
+        }
+        /* a태그 밑줄, 파란글씨 효과 제거 - 다른 페이지에서 a태그에 밑줄, 파란글씨 적용하려면 수정 필요*/
+        #main-sidebar a{
+            text-decoration: none;
+            color: black;
+        }
+        #main-sidebar a:hover{
+            text-decoration: none;
+            color: black;
+        }
 
 /* -------메인페이지----------- */
 

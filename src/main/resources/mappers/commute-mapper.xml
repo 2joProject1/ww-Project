@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="commuteMapper">
+	<resultMap type="commute" id="commuteResultSet">
+		<result column="MEMBER_NO" property="memberNo" />
+		<result column="COMMUTE_START" property="commuteStart" />
+		<result column="COMMUTE_END" property="commuteEnd" />
+		<result column="COMMUTE_STATUS" property="commuteStatus" />
+		<result column="WORK_STATUS" property="workStatus" />
+		<result column="COMMUTE_DATE" property="commuteDate" />
+	</resultMap>
+
+</mapper>

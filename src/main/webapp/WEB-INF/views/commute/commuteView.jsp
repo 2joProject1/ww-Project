@@ -17,14 +17,14 @@
 	    <div id="container">
 	        <div id="sidebar-layout">
 	        	<div id="main-sidebar">
-	        		<br>
+	        		근태관리<br>
 		            <ul id="sidebar-ul">
 		                <i class="fi fi-sr-at"></i>&nbsp;
-		                <a href=""><b>Mail</b></a>
+		                <a href=""><b>출/퇴근 관리</b></a>
 		                <br>
 		                
 		                &nbsp;&nbsp;&nbsp;<i class="fi fi-rr-envelope side_subtitle"></i>&nbsp;
-		                <a href="" class="side_subtitle side_subtitle">메일</a>
+		                <a href="" class="side_subtitle side_subtitle">월 근무내역</a>
 		                <br>
 		                &nbsp;&nbsp;&nbsp;<i class="fi fi-br-check side_subtitle"></i>&nbsp;
 		                <a href="" class="side_subtitle">읽지않음</a>
