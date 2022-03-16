@@ -33,11 +33,26 @@
 .info-right {
 	width: 380px;
 	height: 400px;
-	border: 1px solid #999;
+	border: 1px solid #ECECEC;
 }
 
 h2.project-title {
 	display: inline-block;
+}
+
+.project-end-btn{
+	background-color: gray;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	width: 70px;
+	height: 30px;
+}
+
+.project-title-area>.project-end-btn{
+	float: right;
+	margin-right: 20px;
+	margin-top: 10px;
 }
 
 ul.project-desc-list {
@@ -95,8 +110,17 @@ table.section-table {
 	background: #EEE;
 }
 
-.title-label {
-	margin-left: 200px;
+.project-info {
+	width: calc(100% - 30px);
+	display: inline-block;
+	min-height: 300px;
+	padding: 30px;
+	border: 1px solid black;
+	margin-left: 15px;
+}
+
+.project-title{
+	background: linear-gradient(to top, rgb(185,207,199) 50%, transparent 40%);
 }
 
 .project-desc-list span {
@@ -151,31 +175,63 @@ button.btn-write:hover {
 .project-desc-list > li {
     margin: 5px 0;
 }
+
+.add-team{
+	border: 1px solid black;
+	width: 180px;
+	height: 150px;
+	border: none;
+}
+
+/* 프로젝트 사이드바 */
+
+.new-project{
+	background-color: rgb(102, 164, 166);
+	border: none;
+	border-radius: 50px;
+	width: 180px;
+	height: 80px;
+	margin-left: 25px;
+	color: white;
+	box-shadow: 1px 1px 1px 1px lightgray;
+}
+
+.sub-menu-title{
+	margin-left: 40px;
+	line-height: 40px;
+}
+.sub-menu{
+	margin-left: 60px;
+	line-height: 40px;
+}
+
+
+
 </style>
 </head>
 <body>
 	<div id="header-layout">
 		<jsp:include page="../../common/header.jsp" />
-
 	</div>
 	<div id="container">
 		<div id="sidebar-layout">
 			<div id="main-sidebar">
-				프로젝트<br>
+				<button type="button" class="new-project">새 프로젝트</button><br><br>
+				<div class="sub-menu-title">
+					<i class="fi fi-rr-menu-burger"></i>&nbsp;<b>프로젝트</b><br>
+				</div>
 				<div class="sub-menu">
-					&nbsp;
-					<a href="#" class="">전체</a>
+					<i class="fi fi-rr-apps"></i>&nbsp;<a href="#" class="">&nbsp;전체</a>
 					<br>
 				</div>
 				<div class="sub-menu">
-					&nbsp;
-					<a href="project.no-read" class="">읽지않음</a>
+					<i class="fi fi-rr-check"></i>&nbsp;<a href="project.no-read" class="">&nbsp;읽지않음</a>
 					<br>
 				</div>
 				<hr>
 				<div class="sub-menu">
 					&nbsp;
-					<a href="" class="">내 일정</a>
+					<a href="" class="">&nbsp;내 일정</a>
 					<br>
 				</div>
 			</div>
@@ -185,22 +241,31 @@ button.btn-write:hover {
 			<div class="project-info">
 				<div class="info-left">
 					<div class="project-title-area">
-						<h2 class="project-title">ㅁㄴㅇㅁㄴㅇㅁㄴㅇ</h2>
+						<h2 class="project-title">2022 공공 에너지 정보 개발</h2>&nbsp;&nbsp;&nbsp;
 						<span class="title-label"><i>진행중</i></span>
+						<button type="button" class="project-end-btn">완료</button>
 					</div>
 
 					<ul class="project-desc-list">
-						<li><b>프로젝트 기간</b> <span>asdasd</span></li>
+						<li><b>프로젝트 기간</b> <span></span></li>
 						<li><b>프로젝트 개요</b>
 							<div class="desc-wrapper">
-								<p>asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasd</p>
+								<p>여기는 공공에너지 정보에 대해서 각 에너지별로 소비량을 알려주는 프로그램을 만들까말까만들까말까 개발할까 말까 머 그런 어쩌구저쩌구</p>
 							</div></li>
-						<li><b>프로젝트 매니저(PM)</b> <span>asdasd</span></li>
-						<li><b>프로젝트 인원</b> <span><i class="fi fi-rr-edit" data-toggle="modal" data-target="#myModal"></i></span></li>
+						<li><b>프로젝트 매니저(PM)</b> <span>김팀장</span></li>
+						<li><b>프로젝트 인원</b> <span class="add-team" data-toggle="modal" data-target="#myModal"></span></li>
 					</ul>
 				</div>
 				<div class="info-right"></div>
 			</div>
+			<script>
+			
+			$('.add-team').on("click",function(){
+				$('#myModal').modal('show');
+			})
+			
+			
+			</script>
 
 			<hr>
 
@@ -256,9 +321,8 @@ button.btn-write:hover {
 					</select>
 					<select class="title-filter">
 						<option>요청</option>
-						<option>1</option>
-						<option>1</option>
-						<option>1</option>
+						<option>진행</option>
+						<option>완료</option>
 					</select>
 					
 					<button class="btn-write" type="button" onclick="window.location.href='project.taskWrite'">작성하기</button>
@@ -308,18 +372,24 @@ button.btn-write:hover {
 
 				<!-- Modal Header -->
 				<div class="modal-header">
-					<h4 class="modal-title">어이없어 ㅎ</h4>
+					<h4 class="modal-title">사원검색</h4>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 
 				<!-- Modal body -->
-				<div class="modal-body">Modal body..</div>
+				<div class="modal-body">
+					<input type="search" name="">
+					<
+					
+				
+				
+				
+				</div>
 
 				<!-- Modal footer -->
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				</div>
-
 			</div>
 		</div>
 	</div>
