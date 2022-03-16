@@ -3,7 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xmlns:websocket="http://www.springframework.org/schema/websocket"
+	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
+		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 	
@@ -22,6 +24,18 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="com.kh.walkwork" />
+	
+	<!-- 웹소켓 작업을 처리하는 서버 등록 -->
+	<beans:bean id="socketServer" class="com.kh.walkwork.chat.WebSocketServer" />
+	
+	<websocket:handlers>
+		<websocket:mapping handler="socketServer" path="sc"/>
+		<!-- 
+		<websocket:handshake-interceptors>
+			<beans:bean class="org.kdea.interceptor.HandshakeInterceptor"/>
+		</websocket:handshake-interceptors>
+		-->
+	</websocket:handlers>
 	
 	
 	
