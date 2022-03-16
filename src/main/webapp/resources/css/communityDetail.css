@@ -1,0 +1,62 @@
+@charset "UTF-8";
+
+.dt_name{
+	font-size: 16px;
+	font-weight : bold;
+}
+
+.dt_margin{
+	margin-top : 20px;
+}
+
+.dt_btns{
+	text-align: right;
+}
+
+.dt_thumbs{
+	color : red;
+}
+
+.dt_chat{
+	color : blue;
+}
+
+.dt_last{
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.fileImg{
+	height : auto;
+}
+
+.replyDiv1{
+	margin-top:15px;
+    border-bottom: 2px solid #EEEEEE;
+    padding-bottom: 10px;
+}
+.replyDiv2{
+	position: relative;
+	margin-top : 40px;
+}
+.replyInput{
+	 width: 100%;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+.sendImg {
+  position : absolute;
+  width: 22px;
+  top: 10px;
+  right: 12px;
+  margin: 0;
+}
+
+.reply_margin{
+	margin-top : 10px;
+}
+
+.replyInput:focus{
+	outline : none;
+}

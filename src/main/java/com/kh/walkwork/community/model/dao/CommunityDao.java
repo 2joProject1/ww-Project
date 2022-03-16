@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.walkwork.common.model.vo.PageInfo;
+import com.kh.walkwork.community.model.vo.Attachment;
 import com.kh.walkwork.community.model.vo.Community;
 
 @Repository
@@ -27,5 +28,28 @@ public class CommunityDao {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 
 		return (ArrayList) sqlSession.selectList("communityMapper.selectCommunity", null, rowBounds);
+	}
+	
+	public ArrayList<Community> selectTopCm (SqlSessionTemplate sqlSession){
+		
+		return (ArrayList) sqlSession.selectList("communityMapper.selectTopCm");
+	}
+	
+	public Community selectDetail(SqlSessionTemplate sqlSession, int pageNo) {
+		return sqlSession.selectOne("communityMapper.selectDetail", pageNo);
+	}
+	
+	
+	
+	public int insertAttachment(SqlSessionTemplate sqlSession, Attachment a) {
+		return sqlSession.insert("communityMapper.insertAttachment", a);
+	}
+	
+	public int lastBno(SqlSessionTemplate sqlSession) {
+		return sqlSession.selectOne("communityMapper.lastBno");
+	}
+	
+	public ArrayList<Attachment> selectAttachmentDetail(SqlSessionTemplate sqlSession, int pageNo){
+		return (ArrayList) sqlSession.selectList("communityMapper.selectAttachmentDetail", pageNo);
 	}
 }
