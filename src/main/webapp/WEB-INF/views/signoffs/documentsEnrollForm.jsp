@@ -106,6 +106,7 @@
 	vertical-align: top;
 	border: 1px solid #999;
 	margin-left: 50px;
+	clear: both;
 }
 
 #fileList>li {
