@@ -228,6 +228,25 @@
 		    <!-- 실행하는 spring의 버전과 맞춰줌 -->
 		    <version>${org.springframework-version}</version>
 		</dependency>
+    
+    <!-- 메일 -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		    <version>${org.springframework-version}</version>
+		</dependency>
+		
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>javax.mail-api</artifactId>
+		    <version>1.6.2</version>
+		</dependency>
+	
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>javax.mail</artifactId>
+		    <version>1.6.2</version>
+		</dependency>
 	</dependencies>
 			
 	
