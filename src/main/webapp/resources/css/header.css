@@ -1,54 +1,52 @@
 @charset "UTF-8";
 
 /* ------------헤더----------- */
-		#header{
-            width: 1500px;
-            height: 80px;
-            margin-bottom: 10px;
-            display: flex;
-        }
-        #title {
-            width: 270px;
-            height: 60px;
-            margin-bottom: 10px;
-            display: inline-block;
-            font-size: 40px;
-            text-align: center;
-        }
-        #search-area{
-            width: 1000px;
-            height: 60px;
-            margin-left: 15px;
-            margin-bottom: 10px;
-            font-size: 40px;
-            display: inline-block;
-            padding-left: 40px;
-           
-        }
+#header {
+	width: 1500px;
+	height: 80px;
+	margin-bottom: 10px;
+	display: flex;
+}
 
-        #search-area>input{
-            width: 640px;
-            height:40px;
-            padding-left: 100px;
-            margin-left: 5px;
-            margin-bottom: 10px;
-            font-size: 40px;
-            border: 1px solid #bcbcbc;
-            border-radius: 10px;
-        }
-        
-        #banner-area{
-            width: 230px;
-            height: 60px;
-            padding-left: 20px;
-            margin-bottom: 10px;
-            display: inline-block;
-            font-size: 40px;
-        }
-        
-        
-        
-/* -------사이드바-------- */
+#title {
+	width: 270px;
+	height: 60px;
+	margin-bottom: 10px;
+	display: inline-block;
+	font-size: 40px;
+	text-align: center;
+}
+
+#search-area {
+	width: 1000px;
+	height: 60px;
+	margin-left: 15px;
+	margin-bottom: 10px;
+	font-size: 40px;
+	display: inline-block;
+	padding-left: 40px;
+}
+
+#search-area>input {
+	width: 640px;
+	height: 40px;
+	padding-left: 100px;
+	margin-left: 5px;
+	margin-bottom: 10px;
+	font-size: 40px;
+	border: 1px solid #bcbcbc;
+	border-radius: 10px;
+}
+
+#banner-area {
+	width: 230px;
+	height: 60px;
+	padding-left: 20px;
+	margin-bottom: 10px;
+	display: inline-block;
+	font-size: 40px;
+}
+
         /* 사이드바 */
         #main-sidebar{
             width: 270px;
@@ -59,8 +57,13 @@
             float: left;
             font-size: 20px;
             background-color: #edf1f1;
-            
         }
+
+ 	/* 사이드바 margin */
+        div#sidebar-area {
+ 	    margin-left: 40px;
+	}
+
         /* 사이드바 상세페이지이동 글씨 */
         .side_subtitle{
             color: rgb(114, 112, 112);
@@ -75,90 +78,89 @@
             text-decoration: none;
             color: black;
         }
-        
-        
+
 /* -------메인페이지----------- */
 
-        /*  */
-         #myproject-area {
-            width: 700px;
-            height: 400px;
-            padding: 30px;
-            margin-bottom: 20px;
-            float: left;
-        }
-        #commute-area {
-            width: 400px;
-            height: 80px;
-            padding: 30px;
-            margin-bottom: 20px;
-            float: right;
-            background-color: #edf1f1;
-            margin-right: 30px;
-        }
-        #commute-area>button{
-            
-            margin-left: 60px;
-            background-color: rgb(102, 164, 166);
-            border: rgb(102, 164, 166);
-            color: white;
-            border-radius: 3px;
-            width: 80px;
-        }
-        #comming-sc-area{
-            width: 400px;
-            height: 230px;
-            padding: 30px;
-            margin-bottom: 20px;
-            float: right;
-            margin-right: 30px;
+/*  */
+#myproject-area {
+	width: 700px;
+	height: 400px;
+	padding: 30px;
+	margin-bottom: 20px;
+	float: left;
+}
 
+#commute-area {
+	width: 400px;
+	height: 80px;
+	padding: 30px;
+	margin-bottom: 20px;
+	float: right;
+	background-color: #edf1f1;
+	margin-right: 30px;
+}
 
-        }
-        #notice-area{
-            width: 700px;
-            height: 380px;
-            padding: 30px;
-            margin-bottom: 20px;
-            float: left;
+#commute-area>button {
+	margin-left: 60px;
+	background-color: rgb(102, 164, 166);
+	border: rgb(102, 164, 166);
+	color: white;
+	border-radius: 3px;
+	width: 80px;
+}
 
+#comming-sc-area {
+	width: 400px;
+	height: 230px;
+	padding: 30px;
+	margin-bottom: 20px;
+	float: right;
+	margin-right: 30px;
+}
 
-        }
-        #todolist-area {
-            width: 400px;
-            height: 380px;
-            padding: 30px;
-            margin-bottom: 20px;
-            float: right;
-            margin-right: 30px;
-            background-color: cornsilk;
-            box-shadow: 5px 10px 5px darkgray;
-        }
-        .title_text{
-            clear: both;
-        }
+#notice-area {
+	width: 700px;
+	height: 380px;
+	padding: 30px;
+	margin-bottom: 20px;
+	float: left;
+}
 
-        /* 메인페이지 본문 제목 글씨크기 */
-        .main_title_text{
-            font-size: 20px;
-            font-weight: bold;         
-        }
-        
-        .main_pj_div{
-            width: 150px;
-            height: 150px;
-            display: inline-block;
-            background-color:rgb(185, 207, 199);
-            border-radius: 50px;
-        }
-        #todolist-area ul{
-            list-style: none;
-            padding: 20px;
-        }
-                .side_subtitle{
-            color: rgb(114, 112, 112);
-            font-size: 16px;
-        }
-        
-        
-        
+#todolist-area {
+	width: 400px;
+	height: 380px;
+	padding: 30px;
+	margin-bottom: 20px;
+	float: right;
+	margin-right: 30px;
+	background-color: cornsilk;
+	box-shadow: 5px 10px 5px darkgray;
+}
+
+.title_text {
+	clear: both;
+}
+
+/* 메인페이지 본문 제목 글씨크기 */
+.main_title_text {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.main_pj_div {
+	width: 150px;
+	height: 150px;
+	display: inline-block;
+	background-color: rgb(185, 207, 199);
+	border-radius: 50px;
+}
+
+#todolist-area ul {
+	list-style: none;
+	padding: 20px;
+}
+
+.side_subtitle {
+	color: rgb(114, 112, 112);
+	font-size: 16px;
+}

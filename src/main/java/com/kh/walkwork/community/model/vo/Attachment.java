@@ -15,6 +15,4 @@ public class Attachment {
 	private String fileSize;
 	private Date fileUploadDaTE;
 	
-	
-	
 }
