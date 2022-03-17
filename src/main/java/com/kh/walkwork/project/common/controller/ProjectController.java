@@ -1,32 +1,35 @@
-package com.kh.walkwork.project;
+package com.kh.walkwork.project.common.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
-public class projectController {
+import com.kh.walkwork.project.common.model.service.ProjectService;
 
+@Controller
+public class ProjectController {
+	
+	@Autowired
+	private ProjectService projectService;
+	
 	@RequestMapping("project.main")
 	public String main() {
 		return "project/common/projectMain";
 	}
-	
+
 	@RequestMapping("project.no-read")
 	public String projectNoRead() {
 		return "project/common/projectMainNoRead";
 	}
-	
-			
+
 	@RequestMapping("project")
 	public String projectDetailView() {
 		return "project/common/projectDetailView";
 	}
-	
-			
+
 	@RequestMapping("project.taskWrite")
 	public String projectTaskWrite() {
 		return "project/task/projectTaskWrite";
 	}
-			
-			
+
 }

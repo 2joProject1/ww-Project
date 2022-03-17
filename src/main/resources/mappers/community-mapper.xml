@@ -22,6 +22,24 @@
 		<result column="TASK_STATUS" property="taskStatus" />
 		<result column="TASK_HANDLER" property="taskHandler" />
 	</resultMap>
+	
+	<resultMap id="AttachmentResultSet" type="attachment">
+		<result column="File_Name" property="fileName" />
+		<result column="Board_No" property="boardNo" />
+		<result column="Member_No" property="memberNo" />
+		<result column="File_Origin_Name" property="fileOriginName" />
+		<result column="File_Path" property="filePath" />
+		<result column="File_Size" property="fileSize" />
+		<result column="File_Upload_Date" property="fileUploadDaTE" />
+	</resultMap>
+	
+	<resultMap id="ReplyResultSet" type="reply">
+		<result column="Reply_no" property="replyNo" />
+		<result column="Board_No" property="boardNo" />
+		<result column="Member_No" property="memberNo" />
+		<result column="Reply_Content" property="replyContent" />
+		<result column="enroll_Date" property="enrollDate" />
+	</resultMap>
 
 	<insert id="insertCommunity" parameterType="community">
 		insert into board_all(
@@ -68,8 +86,176 @@
 			  ,community_good
 		from
 			board_all
-			
+		where
+			board_type = '4' and status = 'Y'
+		order by
+		 board_no desc	
+		
 	</select>
+	
+	<select id="selectTopCm" resultMap="CommunityResultSet">
+		select 
+			   board_no
+			  ,board_writer
+			  ,board_type
+			  ,board_title
+			  ,board_content
+			  ,enroll_date
+			  ,count
+			  ,status
+			  ,community_good
+		from(
+            select 
+                board_no
+			  ,board_writer
+			  ,board_type
+			  ,board_title
+			  ,board_content
+			  ,enroll_date
+			  ,count
+			  ,status
+			  ,community_good
+            from
+			board_all
+			where
+			board_type = '4' and status = 'Y'
+			order by community_good desc)
+		<![CDATA[
+			where rownum <= 5
+		]]>
+        
+		
+	</select>
+	
+	<select id="selectDetail" resultMap="CommunityResultSet">
+		select 
+			   board_no
+			  ,board_writer
+			  ,board_type
+			  ,board_title
+			  ,board_content
+			  ,enroll_date
+			  ,count
+			  ,status
+			  ,community_good
+		from
+			board_all
+		where
+			board_type = '4'
+			and 
+			board_no = #{pageNo}
+	</select>
+	
+	<!-- 글 수정 -->
+	<update id="updateCommunity" parameterType="community">
+		update board_all set 
+			board_title = #{boardTitle},
+			board_content = #{boardContent}
+		where board_no = #{boardNo}
+	</update>
+	<!-- 글 삭제 -->
+	<update id="deleteCommunity" parameterType="_int">
+		update board_all set status='N' where board_no = #{pageNo}
+	</update>
+	
+	<insert id="insertAttachment" parameterType="attachment">
+		insert into attachment (
+					    file_name
+					   ,board_no
+					   ,member_no
+					   ,file_origin_name
+					   ,file_path
+					   ,file_size
+					   ,file_upload_date
+					   )
+					   values
+					   (
+						#{fileName}
+						,#{boardNo}
+						,#{memberNo}
+						,#{fileOriginName}
+						,#{filePath}
+						,#{fileSize}
+						,default
+						)
+	</insert>
+	
+	<select id="lastBno" resultType="_int">
+		select board_no from board_all 
+		<![CDATA[
+			where rownum <= 1 order by board_no desc 
+		]]>
+		
+	</select>
+	
+	<select id="selectAttachmentDetail" resultMap="AttachmentResultSet">
+		select file_name, board_no, member_no, file_origin_name, 
+			file_path, file_size, file_upload_date
+			
+			from attachment
+			
+			where board_no = #{pageNo}
+	</select>
+	
+	<select id="selectAttachmentTop" resultMap="AttachmentResultSet">
+		select file_name, board_no, member_no, file_origin_name, 
+			file_path, file_size, file_upload_date
+			
+			from attachment
+			
+			where board_no = #{boardNo}
+	</select>
+	
+	<select id="selectViewAtt" resultMap="AttachmentResultSet">
+		  select file_name, board_no, member_no, file_origin_name, 
+			file_path, file_size, file_upload_date
+			
+			from (
+                select file_name, board_no, member_no, file_origin_name, 
+                    file_path, file_size, file_upload_date, ROW_NUMBER() OVER(PARTITION BY board_no order by file_name) rn
+                from attachment
+            )
+            where board_no in (
+        select 
+         board_no
+		from(
+            select 
+                board_no
+            from
+			board_all
+			where
+			board_type = '4'
+			order by community_good desc)
+			<![CDATA[
+			 where rownum <= 5
+		]]>
+        
+        ) and rn = 1
+	</select>
+	
+	
+	
+	<!-- 댓글 -->
+	<insert id="insertReply" parameterType="reply">
+		insert into reply (
+			reply_no,
+			board_no,
+			member_no,
+			reply_content,
+			enroll_date
+		) values (
+			seq_rno.nextval,
+			#{boardNo},
+			#{memberNo},
+			#{replyContent},
+			default
+		)
+	</insert>
+	
+	<select id="selectReply" parameterType="_int" resultMap="ReplyResultSet">
+		select * from Reply where board_no = #{pageNo}
+	</select>
+	
 	
 	
 	

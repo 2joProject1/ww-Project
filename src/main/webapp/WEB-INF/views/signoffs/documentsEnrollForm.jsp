@@ -105,7 +105,8 @@
 	height: 150px;
 	vertical-align: top;
 	border: 1px solid #999;
-	margin-left: 50px;
+	clear: both;
+	display: inline-block;
 }
 
 #fileList>li {
@@ -141,7 +142,7 @@
 		</div>
 
 		<div id="content-layout">
-			<form class="enroll-form" action="" method="post">
+			<form id="enrollForm" class="enroll-form" action="docubox.insert" enctype="multipart/form-data" method="post">
 				<div id="docu-header-area">
 					<div id="docu-basic-area">
 						<br>
@@ -151,7 +152,7 @@
 						<table class="docu-format-base">
 							<tr>
 								<th>&nbsp;형식</th>
-								<td><select id="docu-format" onchange="changeFormat(this)">
+								<td><select id="docu-format" name="docuFormat" onchange="changeFormat(this)">
 										<option value="1">기안문서</option>
 										<option value="2">품의서</option>
 								</select>&nbsp;&nbsp;</td>
@@ -201,9 +202,9 @@
 				<br> <br>
 				<hr>
 				<div id="docu-content">
-					<br> <b>제목</b>&nbsp;&nbsp;<input type="text" name="" value="" id="docuTitle"><br>
+					<br> <b>제목</b>&nbsp;&nbsp;<input type="text" name="docuTitle" value="" id="docuTitle"><br>
 					<br> <b>내용</b>&nbsp;
-					<textarea class="docu-content-textarea" name="" required></textarea>
+					<textarea class="docu-content-textarea" name="docuContent" required></textarea>
 					<br>
 					<br>
 					<b>첨부</b>&nbsp;
@@ -219,6 +220,10 @@
 	</div>
 	<script>
 		function attachFile() {
+			if($('#fileList').children().length === 3) {
+				alert("첨부파일은 3개까지 가능합니다.");
+				return;
+			}
 			var createFile = document.createElement("input");
 			createFile.type = "file";
 			createFile.style.display = "none";
@@ -228,7 +233,7 @@
 				$('#fileList').append(html);
 			};
 
-			document.body.appendChild(createFile);
+			document.enrollForm.appendChild(createFile);
 			createFile.click();
 		}
 

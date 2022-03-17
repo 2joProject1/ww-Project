@@ -24,7 +24,7 @@
 		                <br>
 		                
 		                &nbsp;&nbsp;&nbsp;<i class="fi fi-rr-envelope side_subtitle"></i>&nbsp;
-		                <a href="" class="side_subtitle side_subtitle">메일</a>
+		                <a href="email.form" class="side_subtitle side_subtitle">메일</a>
 		                <br>
 		                &nbsp;&nbsp;&nbsp;<i class="fi fi-br-check side_subtitle"></i>&nbsp;
 		                <a href="" class="side_subtitle">읽지않음</a>
@@ -35,7 +35,7 @@
 		                <br><br>
 		                
 		                <i class="fi fi-rs-chart-tree"></i>&nbsp;
-		                <a href=""><b>조직도</b></a>
+		                <a href="chart.li"><b>조직도</b></a>
 		                <br><br>
 		                
 		                <i class="fi fi-rr-edit"></i>&nbsp;
