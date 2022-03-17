@@ -136,6 +136,7 @@ table.section-table {
 
 .task-search-area {
 	display: inline-block;
+	width: calc(100% - 216px);
 }
 
 .project-desc-list>li {
@@ -328,10 +329,9 @@ table.section-table {
 							<label class="box-radio-input"> 
 								<input type="radio" name="status" value="status" onclick="return(false);"><span>완료</span>
 							</label>
-						</div>
-					</li>
+						</div></li>
 					<hr>
-					<li><b>제목</b><input type="text" class="project-write-field" placeholder="제목을 입력하세요"></li>
+					<li><b>제목</b> <input type="text" class="project-write-field" placeholder="제목을 입력하세요"></li>
 					<hr>
 					<li><b>담당자</b><span class="add-team-member">담당자추가</span>
 					<hr>

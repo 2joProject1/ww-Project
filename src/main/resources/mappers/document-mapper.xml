@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="documentMapper">
+
+	<!-- 문서 기안하기 -->
+	<insert id="insertDocument" parameterType="document">
+		INSERT INTO
+			DOCUMENT
+				(
+				DOCU_NO
+				,DRAFTER
+				,DOCU_FORMAT
+				,DOCU_TITLE
+				,DOCU_CONTENT
+				,DOCU_RETENTION_PERIOD
+				,APPROVAL_DECISION
+				,DOCU_WRITE_DATE
+				)
+			VALUES
+				(
+				#{docuNo}
+				,#{drafter}
+				,#{docuFormat}
+				,#{docuTitle}
+				,#{docuContent}
+				,#{docuRetentionPeriod}
+				,#{approvalDecision}
+				,#{docuWriteDate}
+				)	
+	</insert>
+	
+	<!-- 현재 일자 기준 DOCU_NO 추출 -->
+	<select id="getLastDocuNo" resultType="String">
+		SELECT DOCU_NO FROM DOCUMENT WHERE TO_CHAR(DOCU_WRITE_DATE, 'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
+	</select>
+</mapper>

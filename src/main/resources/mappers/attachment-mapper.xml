@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="attachmentMapper">
+
+	<!-- 첨부파일 insert -->
+	<insert id="insertFile" parameterType="com.kh.walkwork.common.model.vo.Attachment">
+		INSERT INTO
+			ATTACHMENT
+				(
+				FILE_NAME,
+				BOARD_NO,
+				MEMBER_NO,
+				DOCU_NO,
+				FILE_ORIGIN_NAME,
+				FILE_PATH,
+				FILE_SIZE,
+				FILE_UPLOAD_DATE
+				)
+			VALUES
+				(
+				#{fileName},
+				#{boardNo},
+				#{memberNo},
+				#{docuNo},
+				#{fileOriginName},
+				#{filePath},
+				#{fileSize},
+				#{fileUpoadDate}
+				)	
+	</insert>
+</mapper>

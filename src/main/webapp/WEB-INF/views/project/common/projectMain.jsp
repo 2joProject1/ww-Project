@@ -106,11 +106,12 @@ ul.project-list > li:hover {
 	margin-left: 43px;
 }
 
-div#addMember {
+div#addMemberArea {
     border: 1px solid lightgray;
     width: 700px;
     margin-left: 14px;
     border-radius: 10px;
+    overflow: auto;
 }
 
 .newProject-member{
@@ -179,6 +180,7 @@ input[type="search"] {
 	height: 100px;
 	border: 1px solid lightgray;
 	margin-left: 10px;
+	overflow: auto;
 }
 
 #searchMember > div > div > div.modal-body > div.search-area > table > tbody > tr:hover {
@@ -187,7 +189,9 @@ input[type="search"] {
 	background-color: #edf1f1;
 	border-radius: 10px;
 }
-
+#searchMember > div > div > div.modal-body > div.search-area > table > tbody > tr> td{
+	margin-left: 5px;
+}
 .btn-searchMember {
     width: 112px;
     height: 37px;
@@ -310,10 +314,10 @@ input[type="search"] {
           		<th colspan="2">프로젝트 인원</th>
           	</tr>
           	<tr>
-          		<th colspan="2">&nbsp;&nbsp;총 6명
+          		<th colspan="2">&nbsp;&nbsp;<span>총 6명</span><button type="button" id="projectMemberBtn">설정</button>
           	</tr>
           	<tr>
-          		<th colspan="2"><div class="newProject-member" id="addMember"></div></th>
+          		<th colspan="2"><div class="newProject-member" id="addMemberArea"></div></th>
           	</tr>
           	<tr>
           		<th colspan="2">프로젝트 개요</th>
@@ -331,15 +335,42 @@ input[type="search"] {
       </div>
     </div>
   </div>
+  <script>
   
-  <div class="modal fade" id="searchMember">
+  $(document).ready(function () {
+	  $('#projectMemberBtn').on("click",function(){
+			$('#searchMember').modal('show');
+	  })
+	 
+	  
+	  $('#searchMember').on('click', '[data-member]', function () {
+		  var memberName = $(this).children().eq(1).text().trim();
+		  var teamName = $(this).children().eq(2).text().trim();
+		  $('#searchMemberResult').append('<li>'+teamName+' '+memberName+'</li>');
+	  })
+	  
+	  $('#closeBtn').on('click', function () {
+		  $(this).parents('.modal').modal('hide');
+	  })
+  });
+  
+  function addMemberModal() {
+	  var html = $('#searchMemberResult').html();
+	  $('#addMemberArea').html(html);
+	  $('#searchMemberResult').empty();
+	  $('#searchMember').hide();
+  }
+  
+  </script>
+  
+  <div class="modal" id="searchMember">
 		<div class="modal-dialog">
 			<div class="modal-content">
 
 				<!-- Modal Header -->
 				<div class="modal-header">
 					<h4 class="modal-title">사원검색</h4>
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<button id="closeBtn" type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 
 				<!-- Modal body -->
@@ -348,29 +379,26 @@ input[type="search"] {
 					<br>
 					<div class="search-area">
 						<table class="search-member">
-							<tr>
-								<td>프사</td>
+							<tr data-member="1">
+								<td><i class="xi-profile xi-3x"></i></td>
 								<td>김대리</td>
-								<td margin="10px">개발팀/대리</td>
+								<td style="margin:'10px'">개발팀/대리</td>
 							</tr>
-							<tr>
-								<td>프사</td>
+							<tr data-member="2">
+								<td><i class="xi-profile xi-3x"></i></td>
 								<td>김대리</td>
 								<td>개발팀/대리</td>
 							</tr>
-							<tr>
-								<td>프사</td>
+							<tr data-member="3">
+								<td><i class="xi-profile xi-3x"></i></td>
 								<td>김대리</td>
 								<td>개발팀/대리</td>
 							</tr>
 						</table>
 					</div>
-					<div id="searchMemberResult">
-						
-					
-					</div>
+					<ul id="searchMemberResult"></ul>
 				</div>
-				<button type="button" class="btn-searchMember" onclick="addMemberModal">추가</button>
+				<button type="button" class="btn-searchMember" onclick="addMemberModal()">추가</button>
 			</div>
 		</div>
 	</div>
