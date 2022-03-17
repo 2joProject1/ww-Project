@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.walkwork.member.model.service.MemberService;
 import com.kh.walkwork.member.model.vo.Cert;
@@ -35,29 +36,29 @@ public class MemberController {
 	
 // 회원가입창으로 이동	
 	@RequestMapping("enroll.me")
-	public String selectNoticeList(){
-		
+	public String selectNoticeList(HttpSession session){
+		session.removeAttribute("alertMsg");
 		return "member/enrollForm";
 	}
-
+	
 	
 	
 //	회원가입
 	@RequestMapping("insert.me")
 	public String insertMember(Member m, Model model, HttpSession session) {
-		System.out.println(m);
+//		System.out.println(m);
 
 		String str = m.getAddress();
 		String[] strArr = str.split(",", 3);
 		
 		String address = strArr[0]+strArr[1]+strArr[2];
-		System.out.println(address);
+//		System.out.println(address);
 		
 		//암호화 작업(암호문을 만들어내는 과정) 
 		String encPwd = bcryptPasswordEncoder.encode(m.getMemberPwd());
 //		System.out.println("암호문 : " + encPwd);
 		
-		System.out.println(encPwd);
+//		System.out.println(encPwd);
 		m.setMemberPwd(encPwd);
 		
 		int result = memberService.insertMember(m);
@@ -68,7 +69,7 @@ public class MemberController {
 			return "redirect:/";
 			
 		} else { //실패=> 에러문구를 담아서 에러페이지로 포워딩
-			model.addAttribute("errorMsg", "회원가입 실패");
+			model.addAttribute("alertMsg", "회원가입 실패");
 			// /WEB-INF/views		common/errorPage			.jsp
 			return "index";
 		}
@@ -89,7 +90,7 @@ public class MemberController {
 		helper.setText("인증번호 : " + secret);
 		
 		sender.send(message);
-		System.out.println("인증번호전송성공");
+//		System.out.println("인증번호전송성공");
 		return secret;
 	}
 	
@@ -97,14 +98,14 @@ public class MemberController {
 	@ResponseBody
 	@RequestMapping(value="emailVali.chk", produces="application/json; charset=utf-8")
 	public int valiCheck(String emailVali, HttpServletRequest request) {
-		System.out.println("인증번호일치확인하러옴?");
-		
-		System.out.println(request.getRemoteAddr());
-		System.out.println(emailVali);
+//		System.out.println("인증번호일치확인하러옴?");
+//		
+//		System.out.println(request.getRemoteAddr());
+//		System.out.println(emailVali);
 
 		
 		int result = memberService.valiCheck(Cert.builder().ipInfo(request.getRemoteAddr()).veriCode(emailVali).build());
-		System.out.println(result);
+//		System.out.println(result);
 		return result; 
 	}
 	
@@ -112,15 +113,15 @@ public class MemberController {
 	@ResponseBody
 	@RequestMapping(value="emailDupl.chk", produces="application/json; charset=utf-8")
 	public int emailDuplicationCheck(String emailDupl) {
-		System.out.println("이메일중복체크하러넘어옴?");
-		System.out.println(emailDupl);
+//		System.out.println("이메일중복체크하러넘어옴?");
+//		System.out.println(emailDupl);
 		
 		int result = memberService.emailDuplicationCheck(emailDupl);
 		
 		if(result > 0) {
-			System.out.println("중복아이디있음");
+			System.out.println("중복아이디있음 여기 왜 만들다 말았음??;;");
 		} else {
-			System.out.println("이메일중복체크실패or중복없음");
+			System.out.println("이메일중복체크실패or중복없음 왜 만들다 말았음?;;");
 		}
 		
 		
@@ -131,19 +132,49 @@ public class MemberController {
 	@ResponseBody
 	@RequestMapping(value="idDupl.chk", produces="application/json; charset=utf-8")
 	public int idDuplicationCheck(String id) {
-		System.out.println("아이디중복체크하러넘어옴?");
-		System.out.println(id);
+//		System.out.println("아이디중복체크하러넘어옴?");
+//		System.out.println(id);
 		
 		int result = memberService.idDuplicationCheck(id);
 		
 		if(result > 0) {
-			System.out.println("아이디중복체크성공");
+			System.out.println("아이디중복체크성공 이거 왜 안함");
 		} else {
-			System.out.println("아이디중복체크실패or중복없음");
+			System.out.println("아이디중복체크실패or중복없음 이거 왜 안함");
 		}
 		
 		
 		return result; //수정하라고
 	}
 	
+	
+	
+//---------------------------로그인-----------------------------------
+	
+	@RequestMapping("login.me")
+	public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
+		
+		Member loginUser = memberService.loginMember(m);
+		
+		if(loginUser != null && bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
+																//입력받은			//암호화된
+			//로그인 성공
+			session.setAttribute("loginUser", loginUser);
+			mv.addObject("alertMsg", "로그인성공");
+			mv.setViewName("common/main");
+		} else {
+			
+			//로그인 실패
+
+			session.setAttribute("errorMsg", "로그인실패");
+			mv.addObject("errorMsg", "로그인실패").setViewName("redirect:/");
+		}
+		
+		return mv;
+	}
+	
+	
+//	---------------------------------------------
+
+
 }

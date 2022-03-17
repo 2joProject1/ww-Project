@@ -26,10 +26,6 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.insertMember(sqlSession, m);
 	}
 
-	@Override
-	public Member loginMember(Member m) {
-		return null;
-	}
 
 //	랜덤값 생성
 	public String generateVeriCode() {
@@ -70,6 +66,18 @@ public class MemberServiceImpl implements MemberService{
 		
 		return memberDao.idDuplicationCheck(sqlSession, id);
 	}
+	
+	
+	//---------------------로그인---------------------------
+	
+	@Override
+	public Member loginMember(Member m) {
+		return memberDao.loginMember(sqlSession, m);
+	}
+
+
+	
+	
 
 
 

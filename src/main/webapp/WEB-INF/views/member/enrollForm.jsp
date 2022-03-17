@@ -95,6 +95,14 @@
     
 </head>
 <body>
+<!-- 회원가입관련 알림창 출력 -->
+ 	<c:if test="${ not empty alertMsg }">
+		<script>
+			alert("${ alertMsg }");
+		</script>
+		<c:remove var="alertMsg" scope="session" />
+	</c:if> 
+	
     <div id="enroll_wrap">
         <div id="enroll_green_bg">
             <div id="enroll_title">
@@ -178,7 +186,7 @@
                         <tr id="email_vali">
                             <td>이메일인증번호</td>
                             <td class="enroll_td3">
-                            	<input type="text" name="email_vali_input" id="email_vali_input" reqyured><button type="button" id="email_vali_btn" >확인</button>
+                            	<input type="text" name="email_vali_input" id="email_vali_input" required>
                             </td>
                         </tr>
                        	<tr>
@@ -430,9 +438,30 @@ $(function(){
 	
 	//이메일 인증번호 일치여부 확인
 	
-	
+	/*
 	//클릭말고!!!!blur로 바구자~~~~
 	$('#email_vali_btn').click(function(){
+		var $emailVali = $('#email_vali_input').val();
+		$.ajax({
+			url : "emailVali.chk",
+			data : {emailVali : $emailVali},
+			type : "post",
+			success : function(result){
+				console.log(result);
+				if(result>0){ //result 1이상 == 일치결과있음
+					console.log(result)
+					$('#email_vali_chk').text("굿").css("color","gray");
+					
+				} else{
+					$('#email_vali_chk').text($emailVali + "은(는) 잘못된 인증번호입니다. 다시 입력하세요.").css("color","red");
+					$('#email_vali_input').val('');				
+				}
+			}
+		})
+		
+	})
+	*/
+	$('#email_vali_input').blur(function(){
 		var $emailVali = $('#email_vali_input').val();
 		$.ajax({
 			url : "emailVali.chk",
@@ -468,6 +497,7 @@ $(function(){
 	하고싶은것
 	2. 비밀번호 눈 아이콘 클릭하면 *** -> 12345보이게(input type="여기 속성 바꾸면 될것같은데") 
  -->
+<!-- --------------------- -->
 
 
 </body>
