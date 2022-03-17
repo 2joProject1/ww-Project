@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class CommuteController {
 	
-	@RequestMapping()
-	public void commuteMain() {
-		
+	@RequestMapping("main.cm")
+	public String commuteMain() {
+		return "commute/commuteView";
 	}
 
 }
