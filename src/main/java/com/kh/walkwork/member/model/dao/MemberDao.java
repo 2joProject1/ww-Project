@@ -35,4 +35,9 @@ public class MemberDao {
 	public int idDuplicationCheck(SqlSessionTemplate sqlSession, String id) {
 		return sqlSession.selectOne("memberMapper.idDuplicationCheck", id);
 	}
+
+	public Member loginMember(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.selectOne("memberMapper.loginMember", m);
+	}
+
 }

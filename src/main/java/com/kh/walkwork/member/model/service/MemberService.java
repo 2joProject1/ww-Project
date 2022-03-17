@@ -7,8 +7,6 @@ public interface MemberService {
 
 	//회원가입
 	int insertMember(Member m);
-		
-	Member loginMember(Member m);
 	
 	String sendMail(String ip);
 	
@@ -17,5 +15,11 @@ public interface MemberService {
 	int emailDuplicationCheck(String emailDupl);
 	
 	int idDuplicationCheck(String id);
+	
+	
+	//로그인
+	Member loginMember(Member m);
+	
+	
 	
 }

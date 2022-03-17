@@ -181,6 +181,19 @@
 
 </head>
 <body>
+
+	<!-- 로그인관련 alert창 출력 -->
+<%--  	<c:if test="${ not empty alertMsg }">
+		<script>
+			alert("${ alertMsg }");
+		</script>
+		<c:remove var="alertMsg" scope="session" />
+	</c:if>  --%>
+	
+<script>
+
+</script>
+
     <div id="container">
         <div id="logo_layout">
             WALK-WORK<br>
@@ -189,19 +202,23 @@
 
         <div id="login_layout">
             <div id="login_form">
-                <form action="먼데.html" method="post">
+                <form action="login.me" method="post">
                     <div id="login_top">
                         <a>ID/PW 로그인</a>
                     </div>
-                    <input type="text" class="login_input" placeholder="아이디(사번)를 입력하세요"><br>
-                    <input type="password" class="login_input" placeholder="비밀번호를 입력하세요"><br>
+                    <input type="text" class="login_input" name="memberNo" id="memberNo" placeholder="아이디(사번)를 입력하세요"><br>
+                    <input type="password" class="login_input" name="memberPwd" id="memberPwd" placeholder="비밀번호를 입력하세요"><br>
                     <div class="login_text">
                         <!-- if문사용하기 -->
+                        
+	                    <c:if test="${not empty errorMsg}">
+	    					<font color="red">
+	       					 <p>로그인에 실패했습니다.<br/>
+	           			 	${errorMsg}</p>
+	   					 </font>
+						</c:if>
                         원하는 서비스를 이용하시려면 로그인이 필요합니다.
-
-
                         <br> 
-
                         로그인 실패 1회. 5회 실패 시 임시비밀번호 발급 창으로 이동합니다.
                     </div>
                     <div id="login_button">

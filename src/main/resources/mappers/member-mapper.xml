@@ -7,6 +7,28 @@
 		<result column="VERI_CODE" property="veriCode" />
 		<result column="CERT_TIME" property="certTime" />
 	</resultMap>
+	
+	<resultMap id="memberResultSet" type="member">
+		<result column="MEMBER_NO" property="memberNo" />
+		<result column="DEPT_NO" property="deptNo" />
+		<result column="RANK_NO" property="rankNo" />
+		<result column="MEMBER_NAME" property="memberName" />
+		<result column="MEMBER_PWD" property="memberPwd" />
+		<result column="BIRTH" property="birth" />
+		<result column="ADDRESS" property="address" />
+		<result column="EMAIL" property="email" />
+		<result column="PHONE" property="phone" />
+		<result column="TELEPHONE" property="telephone" />
+		<result column="STATUS" property="status" />
+		<result column="FILE" property="file" />
+		<result column="FILEPATH" property="filePath" />
+		<result column="LOGIN_FAIL" property="loginFail" />
+		<result column="TMP_PWD" property="tmpPwd" />
+		<result column="ENROLL_DATE" property="enrollDate" />
+		<result column="RESIGN_DATE" property="resignDate" />
+	
+	
+	</resultMap>
 
 
 	<insert id="insertMember" parameterType="member">
@@ -61,4 +83,19 @@
 		where 
 			member_no=#{id}
 	</select>
+	
+	
+	<!-- 로그인 -->
+	
+	<select id="loginMember" resultMap="memberResultSet" parameterType="member">
+		SELECT *
+		  FROM
+				MEMBER		
+		  WHERE 
+				MEMBER_NO = #{memberNo}
+			AND 
+				STATUS = 'Y'
+	</select>
+	
+
 </mapper>
