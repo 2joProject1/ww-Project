@@ -19,6 +19,8 @@
 		<typeAlias type="com.kh.walkwork.community.model.vo.Reply" alias="reply" />
 		<typeAlias type="com.kh.walkwork.dayOff.model.vo.DayOff" alias="off" />
 		<typeAlias type="com.kh.walkwork.member.model.vo.Cert" alias="cert" /><!-- 인증 -->
+		<typeAlias type="com.kh.walkwork.signoffs.model.vo.Signoffs" alias="signoffs" />
+		<typeAlias type="com.kh.walkwork.signoffs.model.vo.Document" alias="document" />
 	</typeAliases>
 	
 	
@@ -30,6 +32,9 @@
 		<mapper resource="/mappers/member-mapper.xml" />
 		<mapper resource="/mappers/community-mapper.xml" />
 		<mapper resource="/mappers/off-mapper.xml" />
+		<mapper resource="/mappers/attachment-mapper.xml" />
+		<mapper resource="/mappers/document-mapper.xml" />
+		<mapper resource="/mappers/signoffs-mapper.xml" />
 	</mappers>
 		<!-- 유의사항 : 미리 등록해두려면 해당 mapper파일이 진짜 존재하고 있는 상태여야함(namespace까지) -->
 

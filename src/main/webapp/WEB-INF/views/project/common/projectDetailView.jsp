@@ -258,14 +258,6 @@ button.btn-write:hover {
 				</div>
 				<div class="info-right"></div>
 			</div>
-			<script>
-			
-			$('.add-team').on("click",function(){
-				$('#myModal').modal('show');
-			})
-			
-			
-			</script>
 
 			<hr>
 

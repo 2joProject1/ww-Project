@@ -115,33 +115,33 @@ a.page-link {
 			<div class="docubox-title">기안문서함</div>
 			<hr>
 			<div class="docubox-search-area mt-3">
-				<label class="box-radio-input" data-toggle="collapse" data-target="#fDay" aria-expanded="false">
+				<label class="box-radio-input" data-index="0" data-toggle="collapse" data-target="#fDay" aria-expanded="false">
 					<input type="radio" name="docubox" value="day">
 					<span>기안일자</span>
 				</label>
-				<label class="box-radio-input" data-toggle="collapse" data-target="#fDocu">
+				<label class="box-radio-input" data-index="1" data-toggle="collapse" data-target="#fDocu">
 					<input type="radio" name="docubox" value="format">
 					<span>결재양식</span>
 				</label>
-				<label class="box-radio-input" data-toggle="collapse" data-target="#fStatus">
+				<label class="box-radio-input" data-index="2" data-toggle="collapse" data-target="#fStatus">
 					<input type="radio" name="docubox" value="status">
 					<span>결재상태</span>
 				</label>
 			<input type="search" class="docubox-search" name="q">
 			</div>
 
-			<div class="box-radio-input-hidden" id="fDay">
+			<div class="box-radio-input-hidden collapse" id="fDay">
 				<input type="date" name="dayFilterStart">
 				-
 				<input type="date" name="dayFilterEnd">
 			</div>
-			<div class="box-radio-input-hidden" id="fDocu">
+			<div class="box-radio-input-hidden collapse" id="fDocu">
 				<input type="radio" name="formatFilter" value="1">
 				기안문서
 				<input type="radio" name="formatFilter" value="2">
 				품의서
 			</div>
-			<div class="box-radio-input-hidden" id="fStatus">
+			<div class="box-radio-input-hidden collapse" id="fStatus">
 				<input type="radio" name="statusFilter" value="1">
 				대기
 				<input type="radio" name="statusFilter" value="2">
@@ -149,17 +149,7 @@ a.page-link {
 				<input type="radio" name="statusFilter" value="3">
 				완료
 			</div>
-
-
-		
-
 		<script>
-		
-			$(".box-radio-input").on("click", function() {
-				$(this).next(".box-radio-input-hidden").stop().slideToggle(300);
-				$(this).toggleClass('on').siblings().removeClass('on');
-				$(this).next(".box-radio-input").siblings(".box-radio-input-hidden").slideUp(300); // 1개씩 펼치기
-			});
 		</script>
 
 		<div class="docubox-board-area">
@@ -237,5 +227,14 @@ a.page-link {
 		</div>
 	</div>
 	</div>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('[data-toggle="collapse"]').on('click', function () {
+				console.log($(this));
+				var dataIndex = $(this).attr('data-index');
+				$('.box-radio-input-hidden').removeClass('show');
+			});
+		});
+	</script>
 </body>
 </html>
