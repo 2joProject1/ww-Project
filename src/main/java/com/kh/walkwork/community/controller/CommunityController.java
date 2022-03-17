@@ -33,6 +33,7 @@ import com.kh.walkwork.common.template.Pagination;
 import com.kh.walkwork.community.model.service.CommunityService;
 import com.kh.walkwork.community.model.vo.Attachment;
 import com.kh.walkwork.community.model.vo.Community;
+import com.kh.walkwork.community.model.vo.Reply;
 
 @Controller
 public class CommunityController {
@@ -47,7 +48,60 @@ public class CommunityController {
 	
 	
 	
+	@RequestMapping("modifyPage.co")
+	public ModelAndView modifyPage(@RequestParam(value = "pageNo") int pageNo,ModelAndView mv) {
+		
+		Community detail = communityService.selectDetail(pageNo);
+		ArrayList<Attachment> attachment = communityService.selectAttachmentDetail(pageNo);
+		
+		mv.addObject("detail", detail).addObject("attachment", attachment).setViewName("community/communityModify");
+		
+		return mv;
+	}
 	
+	@RequestMapping("modify.co")
+	public String modifyCommunity(Attachment a, Community c, Model model) {
+		String[] nameArr = a.getFileName().split(",");
+//		String[] memberArr = a.getMemberNo().split(",");
+		String[] originArr = a.getFileOriginName().split(",");
+		String[] pathArr = a.getFilePath().split(",");
+		String[] sizeArr = a.getFileSize().split(",");
+
+		
+		int num = communityService.updateCommunity(c); 
+		System.out.println(num);
+//		int lastBno = communityService.lastBno();
+//		a.setBoardNo(lastBno);
+//		System.out.println(lastBno);
+//		  
+//		// 사진의 정보를 db에 넣어줌 :-)
+//		if(a.getFileName().length() != 0) {
+//			for(int i=0; i< originArr.length; i++) {
+//				Attachment attachment = new Attachment();
+//				attachment.setFileName(nameArr[i].trim());
+//				attachment.setBoardNo(lastBno);
+//				attachment.setMemberNo("임시");
+//				attachment.setFileOriginName(originArr[i].trim());
+//				attachment.setFilePath(pathArr[i].trim());
+//				attachment.setFileSize(sizeArr[i].trim());
+//				int num2 = communityService.insertAttachment(attachment);
+//				
+//			}
+//		}
+//		 
+
+		return "redirect:list.co";
+	}
+	
+	// 글 삭제
+	@RequestMapping("delete.co")
+	public String deleteCommunity(@RequestParam(value = "pageNo") int pageNo, Model model) {
+		// 권한 내용
+		
+		int num = communityService.deleteCommunity(pageNo); 
+
+		return "redirect:list.co";
+	}
 
 	// 글 가져오기
 	@RequestMapping("list.co")
@@ -61,7 +115,9 @@ public class CommunityController {
 		
 		ArrayList<Community> top = communityService.selectTopCm();
 		
-		mv.addObject("pi", pi).addObject("list", list).addObject("top", top).setViewName("community/communityView");
+		ArrayList<Attachment> topImages = communityService.selectViewAtt();
+		
+		mv.addObject("pi", pi).addObject("list", list).addObject("top", top).addObject("topImages",topImages).setViewName("community/communityView");
 		
 		return mv;
 	}
@@ -73,9 +129,9 @@ public class CommunityController {
 			
 			Community detail = communityService.selectDetail(pageNo);
 			ArrayList<Attachment> attachment = communityService.selectAttachmentDetail(pageNo);
-			System.out.println("a size >> "+attachment.size());
+			ArrayList<Reply> replys = communityService.selectReply(pageNo);
 			
-			mv.addObject("detail", detail).addObject("attachment", attachment).setViewName("community/communityDetail");
+			mv.addObject("detail", detail).addObject("replys",replys).addObject("attachment", attachment).setViewName("community/communityDetail");
 			
 			return mv;
 		}
@@ -186,5 +242,17 @@ public class CommunityController {
 	        
 	        return fileName;
 	    }
+		
+		@RequestMapping("insertReply.co")
+		public String insertReply(Reply r, Model model,@RequestParam(value = "boardNo") int bno) {
+			String result = "redirect:detail.co?pageNo=" + bno;
+			r.setBoardNo(bno);
+			r.setMemberNo("1");
+			int num = communityService.insertReply(r);
+			
+			
+			return result;
+		}
+		
 	
 }
