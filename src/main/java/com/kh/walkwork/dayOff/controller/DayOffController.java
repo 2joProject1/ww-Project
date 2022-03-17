@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.kh.walkwork.common.model.vo.PageInfo;
@@ -20,10 +21,11 @@ public class DayOffController {
 	@Autowired
 	private DayOffServiceImpl dayOffService;
 	
-	
-	@RequestMapping(value = "insert.of")
+	@RequestMapping(value = "insert.of", method=RequestMethod.POST)
 	public ModelAndView insertOff(DayOff off, ModelAndView mv, HttpSession session) {
-		
+	System.out.println(off);	
+	
+	
 		int result = dayOffService.insertOff(off);
 		
 		if(result > 0) { //성공
@@ -45,9 +47,11 @@ public class DayOffController {
 	public ModelAndView insertOff(ModelAndView mv, HttpSession session) {
 		
 		// String offWriter = (Member)session.getAttribute("loginUser").getMemberNo();
-		String offWriter = "10000";
+		String offWriter = "12345";
 		int listCount = dayOffService.selectCountOff(offWriter);
+		//System.out.println(listCount);
 		PageInfo pi = Pagination.getPageInfo(listCount, 1, 5, 5); 
+		//System.out.println(pi);
 		ArrayList<DayOff> list = dayOffService.selectListOff(offWriter, pi);
 		mv.addObject("list", list);
 		mv.addObject("pi", pi);
