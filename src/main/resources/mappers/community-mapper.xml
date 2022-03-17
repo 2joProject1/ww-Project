@@ -87,7 +87,7 @@
 		from
 			board_all
 		where
-			board_type = '4'
+			board_type = '4' and status = 'Y'
 		order by
 		 board_no desc	
 		
@@ -104,14 +104,26 @@
 			  ,count
 			  ,status
 			  ,community_good
-		from
+		from(
+            select 
+                board_no
+			  ,board_writer
+			  ,board_type
+			  ,board_title
+			  ,board_content
+			  ,enroll_date
+			  ,count
+			  ,status
+			  ,community_good
+            from
 			board_all
-		<![CDATA[
 			where
-			board_type = '4'
-			and
-			rownum <= 5
+			board_type = '4' and status = 'Y'
+			order by community_good desc)
+		<![CDATA[
+			where rownum <= 5
 		]]>
+        
 		
 	</select>
 	
@@ -133,6 +145,18 @@
 			and 
 			board_no = #{pageNo}
 	</select>
+	
+	<!-- 글 수정 -->
+	<update id="updateCommunity" parameterType="community">
+		update board_all set 
+			board_title = #{boardTitle},
+			board_content = #{boardContent}
+		where board_no = #{boardNo}
+	</update>
+	<!-- 글 삭제 -->
+	<update id="deleteCommunity" parameterType="_int">
+		update board_all set status='N' where board_no = #{pageNo}
+	</update>
 	
 	<insert id="insertAttachment" parameterType="attachment">
 		insert into attachment (
@@ -182,20 +206,56 @@
 			where board_no = #{boardNo}
 	</select>
 	
+	<select id="selectViewAtt" resultMap="AttachmentResultSet">
+		  select file_name, board_no, member_no, file_origin_name, 
+			file_path, file_size, file_upload_date
+			
+			from (
+                select file_name, board_no, member_no, file_origin_name, 
+                    file_path, file_size, file_upload_date, ROW_NUMBER() OVER(PARTITION BY board_no order by file_name) rn
+                from attachment
+            )
+            where board_no in (
+        select 
+         board_no
+		from(
+            select 
+                board_no
+            from
+			board_all
+			where
+			board_type = '4'
+			order by community_good desc)
+			<![CDATA[
+			 where rownum <= 5
+		]]>
+        
+        ) and rn = 1
+	</select>
+	
+	
+	
 	<!-- 댓글 -->
-<!-- 	<insert id="insertReply" parameterType="reply">
+	<insert id="insertReply" parameterType="reply">
 		insert into reply (
 			reply_no,
 			board_no,
 			member_no,
 			reply_content,
-			enroll_date,
+			enroll_date
 		) values (
-			#{replyNo},
-			#{bo
+			seq_rno.nextval,
+			#{boardNo},
+			#{memberNo},
+			#{replyContent},
+			default
 		)
 	</insert>
-	 -->
+	
+	<select id="selectReply" parameterType="_int" resultMap="ReplyResultSet">
+		select * from Reply where board_no = #{pageNo}
+	</select>
+	
 	
 	
 	

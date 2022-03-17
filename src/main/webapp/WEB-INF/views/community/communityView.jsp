@@ -60,10 +60,10 @@
 
 
 				<div class="row top5Row" >
-					<c:forEach var="top" items="${top }" >
+					<c:forEach var="top" items="${top }" varStatus="status">
 						<div class="col topCol">
 							<div style="text-align : center;" onclick="location.href='detail.co?pageNo=${top.boardNo}'">
-								<img alt="top5" src="resources/images/onerror.png" width="150px;" >
+								<img alt="top5" src="/filepath/${topImages[status.index].fileName }" width="150px;" >
 								<p>${top.boardTitle}</p>
 							</div>
 						</div>
