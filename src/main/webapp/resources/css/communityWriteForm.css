@@ -1,0 +1,47 @@
+@charset "UTF-8";
+
+.community_write_title{
+	border: none;
+    width: 100%;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.community_write_title:focus {
+	outline: none;
+}
+
+.community_write_content{
+	border: none;
+    width: 100%;
+    height:300px;
+    font-size: 12px;
+    resize : none;
+}
+
+.community_write_content:focus {
+	outline: none;
+}
+
+#CommunityInsertForm{
+	margin : 20px 0 0 20px;
+}
+
+
+.file_pic_information:focus{
+	outline : none;
+}
+.cm_file{
+	display: none;
+}
+.wt_x:hover{
+	cursor: pointer;
+}
+
+.cm_images{
+	width : 100%;
+	height : 100%;
+}
+
+
+

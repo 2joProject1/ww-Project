@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="signoffsMapper">
+
+	<!-- 결재할 데이터를 만들 때 -->
+	<insert id="insertOff" parameterType="signoffs">
+		INSERT INTO
+			SIGNOFFS
+				(
+				APPROVAL_NO
+				,APPROVALER
+				,DOCU_NO
+				,DOCU_DATE
+				,APPROVAL_DATE
+				,APPROVAL_REJECT_DATE
+				,APPROVAL_STATUS
+				,APPROVAL_DECISION
+				,APPROVAL_RANK
+				,APPROVAL_REJECT
+				)
+			VALUES
+				(
+				SEQ_SNO.NEXTVAL
+				,#{approvaler}
+				,#{docuNo}
+				,#{docuDate}
+				,#{approvalDate}
+				,#{approvalRejectDate}
+				,#{approvalStatus}
+				,#{approvalDecision}
+				,#{approvalRank}
+				,#{approvalReject}
+				)	
+	</insert>
+</mapper>

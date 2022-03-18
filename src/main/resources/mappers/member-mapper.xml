@@ -1,6 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-
 <mapper namespace="memberMapper">
+
+	<resultMap id="certResultSet" type="cert">
+		<result column="IP_INFO" property="ipInfo" />
+		<result column="VERI_CODE" property="veriCode" />
+		<result column="CERT_TIME" property="certTime" />
+	</resultMap>
+	
+	<resultMap id="memberResultSet" type="member">
+		<result column="MEMBER_NO" property="memberNo" />
+		<result column="DEPT_NO" property="deptNo" />
+		<result column="RANK_NO" property="rankNo" />
+		<result column="MEMBER_NAME" property="memberName" />
+		<result column="MEMBER_PWD" property="memberPwd" />
+		<result column="BIRTH" property="birth" />
+		<result column="ADDRESS" property="address" />
+		<result column="EMAIL" property="email" />
+		<result column="PHONE" property="phone" />
+		<result column="TELEPHONE" property="telephone" />
+		<result column="STATUS" property="status" />
+		<result column="FILE" property="file" />
+		<result column="FILEPATH" property="filePath" />
+		<result column="LOGIN_FAIL" property="loginFail" />
+		<result column="TMP_PWD" property="tmpPwd" />
+		<result column="ENROLL_DATE" property="enrollDate" />
+		<result column="RESIGN_DATE" property="resignDate" />
+	
+	
+	</resultMap>
+
+
+	<insert id="insertMember" parameterType="member">
+	INSERT INTO MEMBER(
+		MEMBER_NO,
+		DEPT_NO,
+		RANK_NO,
+		MEMBER_NAME,
+		MEMBER_PWD,
+		BIRTH,
+		ADDRESS,
+		EMAIL,
+		PHONE,
+		STATUS,
+		LOGIN_FAIL,
+		ENROLL_DATE
+	)
+	VALUES(
+		#{memberNo}, DEFAULT, DEFAULT, #{memberName}, #{memberPwd},
+		#{birth}, #{address}, #{email},
+		#{phone}, DEFAULT, DEFAULT, SYSDATE)
+	
+	</insert>
+	
+	<insert id="regist" parameterType="cert">
+		INSERT INTO CERT(IP_INFO, VERI_CODE, CERT_TIME) VALUES(#{ipInfo}, #{veriCode}, sysdate)
+	</insert>
+	
+	<select id="emailValidate"  resultType="_int" parameterType="cert">
+		SELECT count(*) FROM CERT
+		WHERE 
+			IP_INFO = #{ipInfo}
+			and VERI_CODE = #{veriCode}
+			and CERT_TIME between sysdate - 3/24/60 and sysdate
+			<!-- and sysdate / 24 / 60 - when / 24 / 60 <= 3 -->
+			<!-- 현재시각 - 생성시간 <= 3분 -->
+	</select>
+	
+	<delete id="emailValidateRemove" parameterType="cert">
+		DELETE CERT WHERE IP_INFO = #{ipInfo} and VERI_CODE = #{veriCode}
+	</delete>
+	
+	<select id="emailDuplicationCheck" resultType="_int" parameterType="string">
+		select count(*) as email 
+		from member 
+		where 
+			email=#{emailDupl}
+	</select>
+	<select id="idDuplicationCheck" resultType="_int" parameterType="string">
+		select count(*) as id
+		from member 
+		where 
+			member_no=#{id}
+	</select>
+	
+	
+	<!-- 로그인 -->
+	
+	<select id="loginMember" resultMap="memberResultSet" parameterType="member">
+		SELECT *
+		  FROM
+				MEMBER		
+		  WHERE 
+				MEMBER_NO = #{memberNo}
+			AND 
+				STATUS = 'Y'
+	</select>
+	
 
 </mapper>

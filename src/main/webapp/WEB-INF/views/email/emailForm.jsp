@@ -23,7 +23,9 @@ input[type=text], select, textarea {
   resize: vertical;
 }
 
-
+input[type=text], textarea {
+	
+}
 
 input[type=submit] {
   background-color: #04AA6D;
@@ -49,31 +51,48 @@ input[type=submit]:hover {
 </head>
 <body>
 
+<div id="header-layout">
+    	<jsp:include page="../common/header.jsp" />
+
+    </div>
+    
+    <div id="container">
+	     <div id="sidebar-layout">
+	        <div id="main-sidebar">
+	        <br>
+
+	        </div>
+	      </div>
+	
+	      <div id="content-layout">
   
-  <div class="container">
-  <h3>메일</h3>
-  <form action="/action_page.php">
-    <label for="fname">제목</label>
-    <input type="text" id="fname" name="firstname" placeholder="제목..">
-
-    <label for="lname">주소&nbsp;&nbsp;&nbsp;<button>주소록</button></label>
-    <input type="text" id="lname" name="lastname" placeholder="메일주소..">
-
-    <input type="text" placeholder="파일첨부">
-    <div class="upload-btn_wrap">
-        <button type="button" title="파일찾기">
-         <span>파일찾기</span>  
-        </button>
-       
-      </div>
-      <br>
-
-    <label for="subject">내용</label>
-    <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
-
-    <input type="submit" value="보내기">
-  </form>
+		    <div class="container">
+			  <h3>메일</h3>
+			   <br> <br>
+			  <form action="send"  method="post">
+			    <label for="fname">제목</label>&nbsp;&nbsp;
+			    <input type="text" id="subject" name="subject" placeholder="제목..">
+			
+				<br>
+			    <label for="lname">주소&nbsp;&nbsp;</label><button>주소록</button>
+			    <input type="text" id="receiver" name="receiver" placeholder="메일주소..">&nbsp;
+			    
+			
+				<br>
+			    	파일&nbsp;&nbsp;<button>파일찾기</button><input type="text" placeholder="파일첨부">&nbsp;
+			    
+					
+			       
+			      
+			      <br>
+			
+			    <label for="subject">내용</label>
+			    <textarea id="content" name="content" placeholder="Write something.." style="height:200px"></textarea>
+			 	<br>
+			    <input type="submit" value="보내기">
+			   
+			  </form>
+			</div>
 </div>
-
 </body>
 </html>
