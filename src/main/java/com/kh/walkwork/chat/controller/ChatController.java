@@ -25,6 +25,7 @@ public class ChatController {
 	@SuppressWarnings("null")
 	@RequestMapping(value="chatRoomDetail", method=RequestMethod.GET)
 	public String chatRoomDetail() {
+		System.out.println("gd");
 		return "common/chatRoomDetail";
 	}
 
