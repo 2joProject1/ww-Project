@@ -1,4 +1,4 @@
-package com.kh.walkwork.project;
+package com.kh.walkwork.project.common;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;

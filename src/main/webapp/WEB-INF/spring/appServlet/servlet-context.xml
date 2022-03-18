@@ -26,7 +26,7 @@
 	<context:component-scan base-package="com.kh.walkwork" />
 	
 	<!-- 웹소켓 작업을 처리하는 서버 등록 -->
-	<beans:bean id="socketServer" class="com.kh.walkwork.chat.WebSocketServer" />
+	<beans:bean id="socketServer" class="com.kh.walkwork.chat.controller.EcoHandler" />
 	
 	<websocket:handlers>
 		<websocket:mapping handler="socketServer" path="sc"/>
