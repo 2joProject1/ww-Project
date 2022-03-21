@@ -23,13 +23,10 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
     <!-- 아이콘관련 -->
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-bold-straight/css/uicons-bold-straight.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    
+    <!-- ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <title>Document</title>
 
 	<style>
@@ -79,7 +76,7 @@
       /* background-color: #2f3b42; */
     }
     
-    .card_container {
+    .prof-info-wrap {
       background-color: rgb(245, 245, 245);
       border-radius: 5px;
       box-shadow: 0px 10px 20px -10px rgba(0,0,0,0.75);
@@ -92,11 +89,11 @@
       height: 350px;
       z-index: 3;
     }
-    .card_container h4 {
+    .prof-info-wrap h4 {
       margin: 10px 0;
     }
 
-    .card_container h6 {
+    .prof-info-wrap h6 {
       margin: 5px 0;
       text-transform: uppercase;
     }
@@ -118,11 +115,16 @@
       left: 0;
       background-color: rgba(0,0,0,0.4);
     }
-    div.card_container:target + .dim {
+    div.prof-info-wrap:target + .dim {
     position: fixed;
     z-index: 2;
     transition: all 0.5s;
-}
+    }
+    .search-icon{
+      position: absolute;
+      left: 635px;
+    }
+	
 	</style>
 </head>
 <body>
@@ -131,18 +133,22 @@
   <div id="title"> <!--  style="margin-bottom: -15px;" 강사님이 고쳐주신 코드. flex넣으니까 쳐지는거 해결되어서 삭제했는데 문제생기면 다시 추가 -->
     <a href="main">WALK-WORK</a>
   </div>
-  <div id="search-area">
-    <i class="fi fi-rr-search" style="margin-right: 5px;"></i>
+  <div id="search-area" style="position: relative;">
     <input type="text">
+    <span class="search-icon">
+    	<label>
+	    	<i class="xi-search"></i>
+    	</label>
+    </span>
   </div>
   <!-- 모달 나오는 버튼
     data-bs-toggle="modal" data-bs-target="#exampleModal" 
    -->
   <div id="banner-area">
-    <i class="fi fi-rr-comment popup" style="margin-right: 15px;"></i>
-    <i class="fi fi-rs-bell popup">&nbsp;</i>
+    <i class="xi-message-o popup" style="margin-right: 15px;"></i>
+    <i class="xi-bell-o">&nbsp;</i>
     
-    <i class="fi fi-rr-user">&nbsp;</i>
+    <i class="xi-profile">&nbsp;</i>
     <div class="pop" style="font-size: 15px;">
         <div>
           <button class="chat-button" id="chat_btn">채팅</button><button class="chat-button" id="addr_btn">연락처</button>
@@ -165,7 +171,8 @@
               </li>
             </ul>
             <!-- 연락처 리스트 -->
-            <ul class="list-group addr_ul">
+            <div class="list-group addr_ul">
+            	<!-- 
               <li class="list-group-item justify-content-between align-items-center addr_li">
                 <i class="xi-profile xi-3x"></i>
                 <div  style="margin-left: 6px;">
@@ -173,49 +180,108 @@
                   <div>010-1234-5678</div>
                 </div>
               </li>
-            </ul>
+            -->
+          </div>
           </div>
       </div>
     </div>
   </div>
 </div>
 <!-- 연락처 레이어팝업 -->
-<div class="card_container" id="card_container" style="display: none;">
+<div class="prof-info-wrap" id="prof-info-wrap" style="display: none;">
   <div style="float: right;"><i class="xi-close-thin xi-x addr_x"></i></div><br>
-  <img src="" alt="" width="300" height="150">
-  <h4>고려진</h4>
-  <h6>어쩌궁 저쩌궁 ㅈㅈㄱㅈ더개졷ㄹ냉ㄹ</h6>
-  <h6>어쩌궁 저쩌궁 ㅈㅈㄱㅈ더개졷ㄹ냉ㄹ</h6>
-  <button class="primary" onclick="showPopup();">채팅하기</button>
+  <div class="prof-img">
+    이미지
+    <img src="" alt="" width="300" height="150">
+  </div>
+  <div class="prof-info">
+    <div class="prof-top">
+      <span class="prof-name">고려진</span>
+    </div>
+    <div class="prof-bottom">
+      <p class="prof-content">
+        <i></i>
+        <span class="prof-email">이메일</span>
+      </p>
+      <p class="prof-content">
+        <i></i>
+        <span class="prof-dept">부서</span>
+      </p>
+      <p class="prof-content">
+        <i></i>
+        <span class="prof-rank">직급</span>
+      </p>
+      <button class="primary" onclick="showPopup();">채팅하기</button>
+    </div>
+  </div>
 </div>
 
 <div class="dim" style="display: none;"></div>
 
 <script>
-  $(function(){
-    $(".popup").click(function(){
-      $(".pop").toggle();
-      $(".addr_ul").hide();
-    })
+  $(".popup").click(function(){
+    $(".pop").toggle();
+    $(".chat_ul").show();
+    $(".addr_ul").hide();
   })
   $("#chat_btn").click(function(){
     $(".chat_ul").show();
     $(".addr_ul").hide();
   });
   
-  $("#addr_btn").click(function(){
+  // 연락처 부분 모달
+  $("#addr_btn").on('click', function(){
     $(".addr_ul").show();
     $(".chat_ul").hide();
     
+    $.ajax({
+      url: "addrList",
+      success: function(object){
+        console.log(object);
+        $(".addr_ul").html("");
+        var html = "<ul class='list-group addr_ul'>";
+        	for(var i in object){
+            if('${loginUser.memberName}' != object[i].memberName){
+              html += "<li class='list-group-item justify-content-between align-items-center addr_li'>";
+              /* input hidden 으로 정보 가져오깅 */
+              html += "<input type='hidden' class='memberNo' value='"+ object[i].memberNo + "'>";
+              html += "<input type='hidden' class='memberName' value='"+ object[i].memberName + "'>";
+              html += "<input type='hidden' class='rankNo' value='"+ object[i].rankNo + "'>";
+              html += "<input type='hidden' class='email' value='"+ object[i].email + "'>";
+              html += "<input type='hidden' class='phone' value='"+ object[i].phone + "'>";
+              html += "<input type='hidden' class='filepath' value='"+ object[i].filepath + "'>";
+              /* 프로필 이미지 없을 때 있을 때 if 달아주깅 */
+              html += "<i class='xi-profile xi-3x'></i>";
+              html += "<div  style='margin-left: 6px;'>";
+                html += "<div>" + object[i].memberName + "</div>";
+                html += "<div>" + object[i].phone +"</div>";
+                html += "</div>";
+                html += "</li>";
+                console.log(i);
+              console.log(html);
+
+            }
+        	}
+        	html += "</ul>";
+        	$(".addr_ul").append(html);
+      	},
+      	error: function(){
+      		console.log("연락처 ajax 통신 실패");
+      	}
+    })
   })
   
-  $(".addr_li").click(function(){
-    $(".card_container").show();
+  $(document).on('click', '.addr_li', function(){
+    console.log("왜안찍혔ㅃ");
+    console.log(this);
+
+    $(".prof-info-wrap").show();
     $(".dim").show();
   })
 
+
   $(".addr_x").click(function(){
-    $(".card_container").hide();
+    $(".prof-info-wrap").hide();
     $(".dim").hide();
   })
 

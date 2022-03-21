@@ -1,5 +1,7 @@
 package com.kh.walkwork.member.model.dao;
 
+import java.util.ArrayList;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -38,6 +40,12 @@ public class MemberDao {
 
 	public Member loginMember(SqlSessionTemplate sqlSession, Member m) {
 		return sqlSession.selectOne("memberMapper.loginMember", m);
+	}
+
+	
+	//----------------헤더----------------
+	public ArrayList<Member> selectAddrList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("memberMapper.selectAddrList");
 	}
 
 }

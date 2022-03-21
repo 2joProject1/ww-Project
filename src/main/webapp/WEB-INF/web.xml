@@ -37,20 +37,6 @@
 	
 
 	<!-- 필터 등록 // * 스프링 시큐리티 필터 앞에 위치해야 함. 시큐리티는 맨 뒤-->
-	<filter>
-		<filter-name>encodingFilter</filter-name>
-		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-		<!-- 옵션 1 : 인코딩 방식을 UTF-8로 설정 -->
-		<init-param>
-			<param-name>encoding</param-name>
-			<param-value>UTF-8</param-value>
-		</init-param>
-		<!-- 옵션 2 : 혹여나 충돌 시 강제 인코딩도 UTF-8로 설정 -->
-		<init-param>
-			<param-name>forceEncoding</param-name>
-			<param-value>true</param-value>
-		</init-param>
-	</filter>
 	
 	<filter>
 	 	<filter-name>encodingFilter</filter-name>
