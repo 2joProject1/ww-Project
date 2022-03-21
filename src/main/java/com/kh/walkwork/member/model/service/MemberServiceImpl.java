@@ -76,8 +76,11 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.loginMember(sqlSession, m);
 	}
 
-
-	
+	//윤희
+	@Override
+	public Member selectMemberInformation(Member m) {
+		return memberDao.selectMemberInformation(sqlSession, m);
+	}
 	
 
 	//------------헤더--------------

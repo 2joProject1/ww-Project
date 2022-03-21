@@ -48,6 +48,7 @@
 		                
 		                <i class="xi-comment"></i>
 		                <a href=""><b>커뮤니티</b></a>
+
 		                <br>
 		                <a href="" class="side_subtitle">내 게시글</a>
 		                <br><br>

@@ -30,7 +30,7 @@
 		<result column="File_Origin_Name" property="fileOriginName" />
 		<result column="File_Path" property="filePath" />
 		<result column="File_Size" property="fileSize" />
-		<result column="File_Upload_Date" property="fileUploadDaTE" />
+		<result column="File_Upload_Date" property="fileUploadDate" />
 	</resultMap>
 	
 	<resultMap id="ReplyResultSet" type="reply">
@@ -67,13 +67,17 @@
 							)
 	</insert>
 	
-	<select id="selectListCount" resultType="_int">
+	
+	<select id="selectListCount" resultType="_int" parameterType="string">
 		select count(*)
 		  from board_all
 		 where status = 'Y'
+		 		and board_title like '%'||#{search}||'%'
 	</select>
 	
-	<select id="selectCommunity" resultMap="CommunityResultSet">
+
+	<!-- 게시글 목록 조회 -->
+	<select id="selectCommunity" resultMap="CommunityResultSet" parameterType="string">
 		select 
 			   board_no
 			  ,board_writer
@@ -84,10 +88,16 @@
 			  ,count
 			  ,status
 			  ,community_good
+			  ,(select count(*) from reply where reply.board_no = board_all.board_no) replyCnt
+			  ,(select attachment.FILE_NAME from attachment 
+			  <![CDATA[
+				where attachment.board_no = board_all.board_no and ROWNUM <= 1
+			   ]]>
+			  ) fileName
 		from
 			board_all
 		where
-			board_type = '4' and status = 'Y'
+			board_type = '4' and status = 'Y' and board_title like '%'||#{search}||'%'
 		order by
 		 board_no desc	
 		
@@ -104,6 +114,11 @@
 			  ,count
 			  ,status
 			  ,community_good
+			  ,(select attachment.FILE_NAME from attachment 
+			  <![CDATA[
+				where attachment.board_no = B.board_no and ROWNUM <= 1
+			   ]]>
+			  ) fileName
 		from(
             select 
                 board_no
@@ -119,7 +134,7 @@
 			board_all
 			where
 			board_type = '4' and status = 'Y'
-			order by community_good desc)
+			order by community_good desc) B
 		<![CDATA[
 			where rownum <= 5
 		]]>
@@ -138,6 +153,7 @@
 			  ,count
 			  ,status
 			  ,community_good
+			  ,(select count(*) from reply where reply.board_no = board_all.board_no) replyCnt
 		from
 			board_all
 		where
@@ -157,7 +173,7 @@
 	<update id="deleteCommunity" parameterType="_int">
 		update board_all set status='N' where board_no = #{pageNo}
 	</update>
-	
+
 	<insert id="insertAttachment" parameterType="attachment">
 		insert into attachment (
 					    file_name
@@ -179,6 +195,13 @@
 						,default
 						)
 	</insert>
+	
+	<delete id="deleteAttachment">
+		delete from attachment where file_name in
+		<foreach collection="array" item="no" separator="," open="(" close=")">
+			#{no}
+		</foreach>
+	</delete>
 	
 	<select id="lastBno" resultType="_int">
 		select board_no from board_all 
@@ -206,16 +229,17 @@
 			where board_no = #{boardNo}
 	</select>
 	
+	<!-- 상단 top5 첨부파일 조회 -->	
 	<select id="selectViewAtt" resultMap="AttachmentResultSet">
-		  select file_name, board_no, member_no, file_origin_name, 
-			file_path, file_size, file_upload_date
-			
-			from (
-                select file_name, board_no, member_no, file_origin_name, 
-                    file_path, file_size, file_upload_date, ROW_NUMBER() OVER(PARTITION BY board_no order by file_name) rn
-                from attachment
-            )
-            where board_no in (
+	  select file_name, board_no, member_no, file_origin_name, 
+		file_path, file_size, file_upload_date
+		
+		from (
+               select file_name, board_no, member_no, file_origin_name, 
+                   file_path, file_size, file_upload_date, ROW_NUMBER() OVER(PARTITION BY board_no order by file_name) rn
+               from attachment
+           )
+           where board_no in (
         select 
          board_no
 		from(
@@ -233,6 +257,21 @@
         ) and rn = 1
 	</select>
 	
+	<!-- 게시물 첨부파일 -->
+	<select id="selectboardAtt" resultMap="AttachmentResultSet">
+		select file_name, board_no, member_no, file_origin_name, 
+			file_path, file_size, file_upload_date
+					from (
+						 select file_name, board_no, member_no, file_origin_name, 
+                   file_path, file_size, file_upload_date, ROW_NUMBER() OVER(PARTITION BY board_no order by file_name) rn
+               from attachment
+			)where board_no in 
+       		<foreach collection="listNo" item="no" separator="," open="(" close=")">
+       			#{no}
+       		</foreach>	
+      
+       and rn = 1 order by board_no desc
+	</select>
 	
 	
 	<!-- 댓글 -->
@@ -252,11 +291,29 @@
 		)
 	</insert>
 	
+	
 	<select id="selectReply" parameterType="_int" resultMap="ReplyResultSet">
 		select * from Reply where board_no = #{pageNo}
+		order by enroll_date
 	</select>
 	
+	<delete id="deleteReply" parameterType="reply">
+		delete from reply where reply_no = #{replyNo}
+	</delete>
+		
+	<!-- 추천 -->
+	<update id="thumbsPlus" parameterType="community">
+		update board_all set community_good = #{communityGood} where  board_no = #{boardNo}
+	</update>
+	<update id="thumbsMinus" parameterType="community">
+		update board_all set community_good = #{communityGood} where  board_no = #{boardNo}
+	</update>
 	
+	<!-- <insert id="">
 	
+	</insert>
+	<delete id="">
+	
+	</delete> -->
 	
 </mapper>

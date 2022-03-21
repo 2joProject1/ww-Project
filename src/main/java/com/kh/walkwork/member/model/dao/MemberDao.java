@@ -42,10 +42,13 @@ public class MemberDao {
 		return sqlSession.selectOne("memberMapper.loginMember", m);
 	}
 
-	
 	//----------------헤더----------------
 	public ArrayList<Member> selectAddrList(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectAddrList");
 	}
 
+	// 윤희
+	public Member selectMemberInformation(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.selectOne("memberMapper.selectMemberInformation", m);
+	}
 }
