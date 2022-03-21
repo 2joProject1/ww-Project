@@ -197,6 +197,7 @@ public class MemberController {
 		return mv;
 
 	// 로그아웃
+	}
 	@RequestMapping("logout.me")
 	public String logoutMember(HttpSession session) {
 		
