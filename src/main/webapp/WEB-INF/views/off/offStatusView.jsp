@@ -5,7 +5,34 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<!-- 아이콘 부트스트랩 -->
+	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-bold-straight/css/uicons-bold-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css'>
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 <title>휴가현황</title>
+<style type="text/css">
+.cal_top{
+    text-align: center;
+    font-size: 30px;
+}
+.cal{
+    text-align: center;    
+}
+table.calendar{
+    border: 1px solid black;
+    display: inline-table;
+    text-align: left;
+}
+table.calendar td{
+    vertical-align: top;
+    border: 1px solid skyblue;
+    width: 100px;
+}
+</style>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
  	<link rel="stylesheet" href="resources/css/layout.css">
  	<link rel="stylesheet" href="resources/css/off.css">
@@ -19,46 +46,29 @@
 	        <div id="sidebar-layout">
 	        	<div id="main-sidebar">
 	        		<br>
-		            <ul id="sidebar-ul">
-		                <i class="fi fi-sr-at"></i>&nbsp;
-		                <a href=""><b>Mail</b></a>
-		                <br>
-		                
-		                &nbsp;&nbsp;&nbsp;<i class="fi fi-rr-envelope side_subtitle"></i>&nbsp;
-		                <a href="" class="side_subtitle side_subtitle">메일</a>
-		                <br>
-		                &nbsp;&nbsp;&nbsp;<i class="fi fi-br-check side_subtitle"></i>&nbsp;
-		                <a href="" class="side_subtitle">읽지않음</a>
-		                <br><br>
-		
+		           <ul id="sidebar-ul">
 		                <i class="fi fi-rr-time-check"></i>&nbsp;
-		                <a href=""><b>근태관리</b></a>
+		                <a href="main.cm"><b>근태관리</b></a>
 		                <br><br>
 		                
 		                <i class="fi fi-rs-chart-tree"></i>&nbsp;
-		                <a href=""><b>조직도</b></a>
-		                <br><br>
-		                
-		                <i class="fi fi-rr-edit"></i>&nbsp;
-		                <a href=""><b>전자결재</b></a>
+		                <a href="list.of"><b>휴가관리</b></a>
 		                <br>
-		                &nbsp;&nbsp;&nbsp;<i class="fi fi-rs-inbox side_subtitle"></i>&nbsp;
-		                <a href="" class="side_subtitle">기안문서함</a>
-		                <br><br>
-		                
-		                <i class="fi fi-rs-calendar"></i>&nbsp;
-		                <a href=""><b>프로젝트</b></a>
-		                <br><br>
-		                
-		                <i class="fi fi-rs-following"></i>
-		                <a href=""><b>커뮤니티</b></a>
-		                <br>
-		                &nbsp;&nbsp;&nbsp;<i class="fi fi-rr-heart side_subtitle"></i>&nbsp;
-		                <a href="" class="side_subtitle">내 게시글</a>
-		                <br><br>
-		                
-		                <i class="fi fi-rr-megaphone"></i>&nbsp;
-		                <a href=""><b>공지사항</b></a><br><br>
+		                <div class="sub-menu">
+							&nbsp;
+							<a href="list.of" class="">휴가신청</a>
+							<br>
+						</div>
+		                <div class="sub-menu">
+							&nbsp;
+							<a href="status.of" class="">휴가현황</a>
+							<br>
+						</div>
+		                <div class="sub-menu">
+							&nbsp;
+							<a href="approval.of" class="">휴가신청승인</a>
+							<br>
+						</div>
 		            </ul>
 	        	</div>
 	        </div>
@@ -103,10 +113,25 @@
     
     //Calendar 그리기
     function drawCalendar(){
+    	firstDay = new Date(year,month-1,1);
+        lastDay = new Date(year,month,0);
+        
+        const firstDate = new Date(year, month, 1);
+        const lastDate = new Date(year, month+1, 0);
+        const firstDayOfWeek = firstDate.getDay() === 0 ? 7 : firstDate.getDay();
+        const lastDayOfweek = lastDate.getDay();
+     	
+        // 인풋한 달의 마지막 일
+        const lastDay1 = lastDate.getDate();
+        
+        // 첫 날의 요일이 금, 토, 일요일 이라면 true
+        const firstWeekCheck = firstDayOfWeek === 5 || firstDayOfWeek === 6 || firstDayOfWeek === 7;
+        // 해당 달이 총 몇주까지 있는지
+        const lastWeekNo = Math.ceil((firstDayOfWeek - 1 + lastDay1) / 7);
         var setTableHTML = "";
         setTableHTML+='<table class="calendar">';
         setTableHTML+='<tr><th>SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th></tr>';
-        for(var i=0;i<6;i++){
+        for(var i=0;i<lastWeekNo;i++){
             setTableHTML+='<tr height="100">';
             for(var j=0;j<7;j++){
                 setTableHTML+='<td style="text-overflow:ellipsis;overflow:hidden;white-space:nowrap">';
@@ -131,6 +156,8 @@
         if(month < 10){month = "0"+month;}
         firstDay = new Date(year,month-1,1);
         lastDay = new Date(year,month,0);
+        
+        
     }
     
     //calendar 날짜표시
@@ -175,6 +202,9 @@
     
     //정보갱신
     function getNewInfo(){
+    	drawCalendar();
+    	$tdDay = $("td div.cal-day")
+        $tdSche = $("td div.cal-schedule")
         for(var i=0;i<42;i++){
             $tdDay.eq(i).text("");
             $tdSche.eq(i).text("");

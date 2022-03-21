@@ -31,7 +31,7 @@
 		                <br><br>
 		
 		                <i class="fi fi-rr-time-check"></i>&nbsp;
-		                <a href=""><b>근태관리</b></a>
+		                <a href="main.cm"><b>근태관리</b></a>
 		                <br><br>
 		                
 		                <i class="fi fi-rs-chart-tree"></i>&nbsp;
@@ -78,8 +78,8 @@
             <div id="commute-area">
               <!-- <span class="main_title_text">출퇴근</span> -->
               
-              <button>출근</button>
-              <button>퇴근</button>
+              <button id="commute-on">출근</button>
+              <button id="commute-off">퇴근</button>
             </div>
 
             <div id="comming-sc-area">
@@ -151,5 +151,19 @@
             </div>
 	        </div>
 	    </div>
+	    
+	    <script>
+	    	$(function(){
+	    		$("#commute-on").click(function(){
+	    			location.href = "on.cm";
+	    		})
+	    		$("#commute-off").click(function(){
+	    			location.href = "off.cm";
+	    		})
+	    		
+	    	})
+	    
+	    	
+	    </script>
 </body>
 </html>
