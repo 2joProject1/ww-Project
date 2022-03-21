@@ -166,7 +166,7 @@
                             <td>주소</td>
                             <td class="enroll_td2" id="address_input">
 								<input type="text" id="sample6_postcode" placeholder="우편번호" style="width:200px">
-								<input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" style="width:100px"><br>
+								<input type="button" onclick="execDaumPostcode()" value="우편번호 찾기" style="width:100px"><br>
 								<input type="text" id="sample6_address" placeholder="주소" name="address"><br>
 								<input type="text" id="sample6_detailAddress" placeholder="상세주소"  name="address">
 								<input type="text" id="sample6_extraAddress" placeholder="참고항목"  name="address">
@@ -213,7 +213,7 @@
                     </table>
                     <div id="enroll_form_btn">
                         <button>확인</button>
-                        <button>취소</button>
+                        <button type="reset"><a href="javascript:history.back();">취소</a></button>
                     </div>
                 </div>
                 </form>
@@ -224,7 +224,7 @@
     </div>
     
 <script>
-    function sample6_execDaumPostcode() {
+    function execDaumPostcode() {
         new daum.Postcode({
             oncomplete: function(data) {
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
@@ -294,7 +294,7 @@ $(function(){
 			$('#id_chk').text("잘못 입력하셨습니다. 사번(숫자 5자리)을 입력하세요").css("color","red");
 			$('#id').val('');
 			return false;
-		}
+		} 
 		else if(regExp.test($id)){
 //			$('#id_chk').text("굿").css("color","gray"); 이거필요한가
  			$.ajax({
@@ -494,6 +494,7 @@ $(function(){
 	
 	1. 핸드폰인증 어떻게 할건지(중복체크만할건지)
 	2. td 첫번째꺼 선택해서 어케 설정하는지 찾고 글씨크기조절등등하기(css)
+	3. 취소버튼 누르면 뒤로 돌아가기
 	하고싶은것
 	2. 비밀번호 눈 아이콘 클릭하면 *** -> 12345보이게(input type="여기 속성 바꾸면 될것같은데") 
  -->

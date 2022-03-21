@@ -26,6 +26,7 @@
 			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported><!-- 웹소켓을 위한 비동기 지원 설정 -->
 	</servlet>
 		
 	<servlet-mapping>
@@ -34,6 +35,8 @@
 	</servlet-mapping>
 	
 	
+
+	<!-- 필터 등록 // * 스프링 시큐리티 필터 앞에 위치해야 함. 시큐리티는 맨 뒤-->
 	<filter>
 	 	<filter-name>encodingFilter</filter-name>
 	 	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -53,6 +56,7 @@
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
+
 		<!-- 모든 url패턴 -->
 	</filter-mapping>
 

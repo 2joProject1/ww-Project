@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.walkwork.common.model.vo.PageInfo;
 import com.kh.walkwork.community.model.dao.CommunityDao;
-import com.kh.walkwork.community.model.vo.Attachment;
+import com.kh.walkwork.common.model.vo.Attachment;
 import com.kh.walkwork.community.model.vo.Community;
 import com.kh.walkwork.community.model.vo.Reply;
 
@@ -39,13 +39,13 @@ public class CommunityServiceImpl implements CommunityService {
 	
 	
 	@Override
-	public int selectListCount() {
-		return communityDao.selectListCount(sqlSession);
+	public int selectListCount(String search) {
+		return communityDao.selectListCount(sqlSession, search);
 	}
 	
 	@Override
-	public ArrayList<Community> selectList(PageInfo pi) {
-		return communityDao.selectList(sqlSession, pi);
+	public ArrayList<Community> selectList(PageInfo pi, String search) {
+		return communityDao.selectList(sqlSession, pi, search);
 	}
 	
 	
@@ -60,6 +60,11 @@ public class CommunityServiceImpl implements CommunityService {
 	}
 	
 	@Override
+	public ArrayList<Attachment> selectboardAtt(int[] listNo) {
+		return communityDao.selectboardAtt(sqlSession, listNo);
+	}
+	
+	@Override
 	public Community selectDetail(int pageNo) {
 		return communityDao.selectDetail(sqlSession, pageNo);
 	}
@@ -69,6 +74,15 @@ public class CommunityServiceImpl implements CommunityService {
 		return communityDao.insertAttachment(sqlSession, a);
 	}
 	
+	@Override
+	public int deleteAttachment(String[] c) {
+		return communityDao.deleteAttachment(sqlSession, c);
+	}
+	
+	@Override
+	public int replyCnt(int bno) {
+		return communityDao.replyCnt(sqlSession, bno);
+	}
 	
 	@Override
 	public int lastBno() {
@@ -88,5 +102,20 @@ public class CommunityServiceImpl implements CommunityService {
 	@Override
 	public ArrayList<Reply> selectReply(int bno) {
 		return communityDao.selectReply(sqlSession, bno);
+	}
+	
+	@Override
+	public int deleteReply(Reply r) {
+		return communityDao.deleteReply(sqlSession, r);
+	}
+	
+	@Override
+	public int thumbsPlus(Community c) {
+		return communityDao.thumbsPlus(sqlSession, c);
+	}
+	
+	@Override
+	public int thumbsMinus(Community c) {
+		return communityDao.thumbsMinus(sqlSession, c);
 	}
 }

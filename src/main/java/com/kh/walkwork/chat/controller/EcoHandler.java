@@ -1,4 +1,4 @@
-package com.kh.walkwork.chat;
+package com.kh.walkwork.chat.controller;
 
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -8,7 +8,9 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
-public class WebSocketServer extends TextWebSocketHandler{
+import lombok.extern.log4j.Log4j;
+
+public class EcoHandler extends TextWebSocketHandler{
 	
 	private Set<WebSocketSession> users = new CopyOnWriteArraySet<WebSocketSession>();
 	
