@@ -31,6 +31,93 @@
 	
 	<!-- 현재 일자 기준 DOCU_NO 추출 -->
 	<select id="getLastDocuNo" resultType="String">
-		SELECT DOCU_NO FROM DOCUMENT WHERE TO_CHAR(DOCU_WRITE_DATE, 'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
+		<![CDATA[
+		SELECT DOCU_NO FROM 
+			 (SELECT 
+			 	DOCU_NO FROM DOCUMENT 
+			 	WHERE TO_CHAR(DOCU_WRITE_DATE, 'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD') 
+			 	ORDER BY DOCU_WRITE_DATE DESC
+			 ) A
+		WHERE ROWNUM < 2
+		]]>
 	</select>
+	
+	<!-- 문서 리스트 -->
+	<select id="getDocumentList" parameterType="document" resultType="document">
+		SELECT DOCU_NO
+				,DRAFTER
+				,DOCU_FORMAT
+				,DOCU_TITLE
+				,DOCU_CONTENT
+				,DOCU_RETENTION_PERIOD
+				,APPROVAL_DECISION
+				,DOCU_WRITE_DATE
+				
+			FROM DOCUMENT
+		WHERE
+			1=1
+			<if test="drafter != null and !drafter.equals('')">
+				AND DRAFTER = #{drafter}
+			</if>
+	</select>
+	
+	<!-- 문서 리스트 -->
+	<select id="getDocumentOne" parameterType="document" resultType="document">
+		SELECT DOCU_NO
+				,DRAFTER
+				,DOCU_FORMAT
+				,DOCU_TITLE
+				,DOCU_CONTENT
+				,DOCU_RETENTION_PERIOD
+				,APPROVAL_DECISION
+				,DOCU_WRITE_DATE
+				
+			FROM DOCUMENT
+		WHERE
+			DOCU_NO = #{docuNo}
+	</select>
+	
+	<!-- 문서 페이징 처리를 위한 갯수 -->
+	<select id="selectDocumentCount" resultType="int" parameterType="document">
+		SELECT COUNT(DOCU_NO)
+			FROM DOCUMENT
+		WHERE
+			1=1
+			<if test="drafter != null and !drafter.equals('')">
+				AND DRAFTER = #{drafter}
+			</if>
+	</select>
+	
+	<!-- 문서 수정 -->
+	<update id="updateDocument" parameterType="document">
+		UPDATE DOCUMENT
+			SET
+			<if test="drafter != null">
+			DRAFTER = #{drafter}
+			</if>
+			<if test="docuFormat != null">
+			,DOCU_FORMAT = #{docuFormat}
+			</if>
+			<if test="docuTitle != null">
+			,DOCU_TITLE = #{docuTitle}
+			</if>
+			<if test="docuContent != null">
+			,DOCU_CONTENT = #{docuContent}
+			</if>
+			<if test="docuRetentionPeriod != null">
+			,DOCU_RETENTION_PERIOD = #{docuRetentionPeriod}
+			</if>
+			<if test="approvalDecision != null">
+			,APPROVAL_DECISION = #{approvalDecision}
+			</if>
+		WHERE
+			DOCU_NO = #{docuNo}
+	</update>
+	
+	<!-- 문서 삭제 -->
+	<delete id="deleteDocument" parameterType="document">
+		DELETE FROM DOCUMENT
+		WHERE
+			DOCU_NO = #{docuNo}
+	</delete>
 </mapper>

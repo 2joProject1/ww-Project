@@ -34,7 +34,7 @@
 	padding-left: 25px;
 }
 
-#docu-format {
+#docuFormat {
 	width: 160px;
 }
 
@@ -112,6 +112,70 @@
 #fileList>li {
 	list-style: none;
 }
+
+button.x-btn {
+    line-height: 20px;
+    vertical-align: middle;
+    margin-left: 10px;
+    background: #EEEE;
+    transition: 0.05s;
+}
+
+button.x-btn:hover {
+    background: #CCC;
+}
+
+
+/* 사원검색 */
+input[type="search"] {
+	width: 409px;
+	height: 58px;
+	border-radius: 15px;
+	margin-top: -18px;
+	margin-bottom: 33px;
+	margin-left: 10px;
+}
+
+.search-member {
+	width: 409px;
+	height: 70px;
+	text-align: center;
+	margin-left: 10px;
+	font-size: 13pt;
+	line-height: 50px;
+	border-radius: 10px;
+}
+
+#searchMemberResult {
+	width: 409px;
+	height: 100px;
+	border: 1px solid lightgray;
+	margin-left: 10px;
+	overflow: auto;
+}
+
+#searchMember>div>div>div.modal-body>div.search-area>table>tbody>tr:hover
+	{
+	cursor: pointer;
+	padding: 10px;
+	background-color: #edf1f1;
+	border-radius: 10px;
+}
+
+#searchMember>div>div>div.modal-body>div.search-area>table>tbody>tr>td {
+	margin-left: 5px;
+}
+
+.btn-searchMember {
+	width: 112px;
+	height: 37px;
+	background-color: rgb(102, 164, 164);
+	color: white;
+	border: 1px lightgray;
+	border-radius: 10px;
+	margin-left: 37%;
+	margin-bottom: 16px;
+}
 </style>
 
 </head>
@@ -143,6 +207,9 @@
 
 		<div id="content-layout">
 			<form id="enrollForm" class="enroll-form" action="docubox.insert" enctype="multipart/form-data" method="post">
+				<input type="hidden" name="signoffs" data-signoffs-index="1">
+				<input type="hidden" name="signoffs" data-signoffs-index="2">
+			
 				<div id="docu-header-area">
 					<div id="docu-basic-area">
 						<br>
@@ -152,7 +219,7 @@
 						<table class="docu-format-base">
 							<tr>
 								<th>&nbsp;형식</th>
-								<td><select id="docu-format" name="docuFormat" onchange="changeFormat(this)">
+								<td><select id="docuFormat" name="docuFormat" onchange="changeFormat(this)">
 										<option value="1">기안문서</option>
 										<option value="2">품의서</option>
 								</select>&nbsp;&nbsp;</td>
@@ -186,8 +253,8 @@
 							</tr>
 							<tr>
 								<td>대표자</td>
-								<td>서명</td>
-								<td>서명</td>
+								<td style="cursor: pointer; border: 1px solid black;" onclick="selectMemberModal(1)" data-index="1">서명</td>
+								<td style="cursor: pointer; border: 1px solid black;" onclick="selectMemberModal(2)" data-index="2">서명</td>
 								<td>서명</td>
 							</tr>
 							<tr>
@@ -207,39 +274,19 @@
 					<textarea class="docu-content-textarea" name="docuContent" required></textarea>
 					<br>
 					<br>
-					<b>첨부</b>&nbsp;
-					<ul id="fileList" onclick="attachFile()"></ul>
+					<b style="cursor: pointer;" onclick="attachFile()">첨부</b>&nbsp;
+					<ul id="fileList"></ul>
 				</div>
 				<br>
 				<div id="button-area">
 					<button class="btn-custom" type="reset" style="margin-right: 30px;">취소</button>
-					<button class="btn-custom" type="submit" id="draftDocu">기안</button>
+					<button class="btn-custom" type="button" onclick="submitDocument()" id="draftDocu">기안</button>
 				</div>
 			</form>
 		</div>
 	</div>
-	<script>
-		function attachFile() {
-			if($('#fileList').children().length === 3) {
-				alert("첨부파일은 3개까지 가능합니다.");
-				return;
-			}
-			var createFile = document.createElement("input");
-			createFile.type = "file";
-			createFile.style.display = "none";
-
-			createFile.onchange = function() {
-				var html = '<li>' + this.files[0].name + '</li>'
-				$('#fileList').append(html);
-			};
-
-			document.enrollForm.appendChild(createFile);
-			createFile.click();
-		}
-
-		function changeFormat(target) {
-			window.location.href = 'signoffs.docu?format=' + target.value;
-		}
-	</script>
+	
+	<jsp:include page="/WEB-INF/views/signoffs/enrollMemberModal.jsp" />
+	<jsp:include page="/WEB-INF/views/signoffs/enrollFormJs.jsp" />
 </body>
 </html>

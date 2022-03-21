@@ -50,7 +50,7 @@
 		                <a href="project.main"><b>프로젝트</b></a>
 		                <br><br>
 		                
-		                <i class="xi-comment"></i>
+		                <i class="fi fi-rs-following"></i>
 		                <a href="list.co"><b>커뮤니티</b></a>
 
 		                <br>
