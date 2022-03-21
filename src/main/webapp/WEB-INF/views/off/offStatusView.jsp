@@ -123,8 +123,7 @@ table.calendar td{
         console.log('firstDayOfWeek ::: ' + firstDayOfWeek)
         console.log('lastDayOfweek ::: ' + lastDayOfweek)
         
-        
-     	
+      
         // 인풋한 달의 마지막 일
         const lastDay1 = lastDate.getDate();
         console.log('lastDay1 ::: ' + lastDay1)
