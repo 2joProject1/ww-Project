@@ -97,5 +97,16 @@
 				STATUS = 'Y'
 	</select>
 	
+	
+	<!-- 윤희 -->
+	<!-- 멤버 정보 -->
+	<select id="selectMemberInformation" resultMap="memberResultSet">
+		select *
+		
+		from member
+		
+		where member_no = 1
+	</select>
+	
 
 </mapper>

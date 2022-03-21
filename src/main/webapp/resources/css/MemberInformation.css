@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+.info_sub{
+	margin-bottom : 20px;
+	
+}
+.info_sub b{
+	font-size: 20px;
+}
+
+.info_input{
+	margin-bottom : 20px;
+	font-size : 20px;
+}
+
+
+.info_half{
+	border-bottom : 2px solid #BEBEBE;
+	margin-bottom : 30px;
+}
+
+.memberImg{
+	width: 250px;
+    height: 250px;
+    border: 1px solid;
+    border-radius: 50%;
+}
+
+.memberImg img{
+	width : 100%;
+	height: 100%;
+}
+.cameraIcon{
+	width: 37px;
+    position: absolute;
+    left: 215px;
+    bottom: 190px;
+}
+.info_num{
+	border: none;
+	width: 100%;
+}
+
+
