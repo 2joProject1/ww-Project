@@ -9,11 +9,12 @@ public class Task {
 	private String taskDept;
 	private String taskWriter;
 	private String taskHandler;
-	private int count;
+	private String projectNo;
 	private int replyCount;
 	private String taskTitle;
 	private String taskContent;
 	private String enrollDate;
+	private String endDate;
 	private String modifyDate;
 	private int taskStatus;
 }

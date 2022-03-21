@@ -2,6 +2,7 @@ package com.kh.walkwork.member.model.service;
 
 import java.text.DecimalFormat;
 import java.text.Format;
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -75,10 +76,17 @@ public class MemberServiceImpl implements MemberService{
 		return memberDao.loginMember(sqlSession, m);
 	}
 
-
+	//윤희
+	@Override
+	public Member selectMemberInformation(Member m) {
+		return memberDao.selectMemberInformation(sqlSession, m);
+	}
 	
-	
 
-
+	//------------헤더--------------
+	@Override
+	public ArrayList<Member> selectAddrList() {
+		return memberDao.selectAddrList(sqlSession);
+	}
 
 }

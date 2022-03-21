@@ -12,6 +12,7 @@ public class Member {
 
 	private String memberNo;
 	private String deptNo;
+	private String deptName;
 	private String rankNo;
 	private String memberName;
 	private String memberPwd;

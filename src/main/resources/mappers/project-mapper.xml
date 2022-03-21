@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="projectMapper">
+
+<insert id="insertProject" parameterType="project">
+		INSERT INTO PROJECT(
+				 PROJECT_NO
+				,PROJECT_WRITER
+				,PROJECT_TITLE
+				,PROJECT_SUMMARY
+				,PROJECT_STARTDATE
+				,PROJECT_ENDDATE
+				,PROJECT_STATUS
+				,PROJECT_PERCENT
+				)
+			VALUES
+				(SEQ_PNO.NEXTVAL
+				,#{projectWriter}
+				,#{projectTitle}
+				,#{projectSummary}
+				,#{projectStartDate}
+				,#{projectEndDate}
+				,DEFAULT
+				,DEFAULT
+				)	
+</insert>
+
+
+<select id="selectMember" parameterType="Member" resultMap="memberMapper.memberResultSet">
+	SELECT *
+	FROM MEMBER M
+	JOIN DEPT D ON (D.DEPT_NO = M.DEPT_NO)
+	WHERE 
+	      MEMBER_NAME LIKE '%'||#{memberName}||'%' OR 
+	      DEPT_NAME LIKE '%'||#{deptName}||'%' 
+</select>
+
+</mapper>

@@ -78,7 +78,6 @@ a.page-link {
 	background: #23a3a7;
 	color: #fff;
 }
-
 </style>
 </head>
 <body>
@@ -166,34 +165,45 @@ a.page-link {
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>2022-03-08</td>
-						<td>20220301-1-2100</td>
-						<td>품의</td>
-						<td>소모품 비용처리의 건</td>
-						<td>
-							<i class="fi fi-rr-document"></i>
-						</td>
-						<td>대기</td>
-					</tr>
-					<tr>
-						<td>2022-03-07</td>
-						<td>20220301-1-1100</td>
-						<td>기안</td>
-						<td>2022 하계 워크샵</td>
-						<td></td>
-						<td>진행</td>
-					</tr>
-					<tr>
-						<td>2022-03-06</td>
-						<td>20220301-1-1100</td>
-						<td>기안</td>
-						<td>어쩌구저쩌구 전략회의</td>
-						<td>
-							<i class="fi fi-rr-document"></i>
-						</td>
-						<td>완료</td>
-					</tr>
+					<c:forEach var="item" items="${documentList}">
+						<tr style="cursor: pointer;" onclick="goDocument('${item.docuNo}')">
+							<td>2022-03-08</td>
+							<td>${item.docuNo}</td>
+							<td>
+								<c:choose>
+									<c:when test="${item.docuFormat == 1}">
+										기안
+									</c:when>
+									<c:when test="${item.docuFormat == 2}">
+										품의
+									</c:when>
+									<c:otherwise>
+										미선택
+									</c:otherwise>
+								</c:choose>
+							</td>
+							<td>${item.docuTitle}</td>
+							<td>
+								<i class="fi fi-rr-document"></i>
+							</td>
+							<td>
+								<c:choose>
+									<c:when test="${item.approvalDecision == 0}">
+										대기
+									</c:when>
+									<c:when test="${item.approvalDecision == 1}">
+										진행
+									</c:when>
+									<c:when test="${item.approvalDecision == 2}">
+										완료
+									</c:when>
+									<c:otherwise>
+										몰라
+									</c:otherwise>
+								</c:choose>
+							</td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 			<div class="pagination-area">
@@ -226,15 +236,6 @@ a.page-link {
 			</div>
 		</div>
 	</div>
-	</div>
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$('[data-toggle="collapse"]').on('click', function () {
-				console.log($(this));
-				var dataIndex = $(this).attr('data-index');
-				$('.box-radio-input-hidden').removeClass('show');
-			});
-		});
-	</script>
+	<jsp:include page="/WEB-INF/views/signoffs/docuBoxJs.jsp" />
 </body>
 </html>

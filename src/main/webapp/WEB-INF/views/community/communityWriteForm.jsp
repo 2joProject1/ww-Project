@@ -129,7 +129,6 @@
 		function cm_submitFiles(){
 			var result = false;
 			var form = new FormData();
-			var arr = new Array();
 			for(var i=0; i<$('#cm_file')[0].files.length; i++){
 				form.append("file1", $('#cm_file')[0].files[i]);
 			}
@@ -165,15 +164,12 @@
 						}
 						
 					}
-					
-					console.log("성공",data);
-					
+									
 					if($('#fileName').val() != null){
 						result= cm_write_success();
 					}
 				},
 				error : function(jqXHR,txt){
-					console.log("실패",jqXHR, txt);
 					result= cm_write_success();
 
 				}
@@ -201,8 +197,6 @@
 						$('#cm_img3').attr("src", e.target.result);
 						$('#cm_img3').css('display', '');
 					}
-					
-				
 				}
 				reader.readAsDataURL(f);
 			})

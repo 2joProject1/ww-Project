@@ -7,6 +7,7 @@ public class Project {
 	private int projectNo;
 	private String projectWriter;
 	private String projectTitle;
+	private String projectMember;
 	private String projectSummary;
 	private String projectStartDate;
 	private String projectEndDate;
