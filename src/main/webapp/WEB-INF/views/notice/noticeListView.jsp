@@ -27,13 +27,14 @@
 		                <div class="p-2">공지사항</div>
 						
 		                <div class="p-2 ml-auto">
-		                    <a href="insert.no"><button>글작성</button></a>
+		                    <a href="enrollForm.no"><button>글작성</button></a>
 		                   
 		                </div>
 		            </div>
 		        </div>
 		        <div id="notice_content">
-		            <table border="1">
+		            <table id="noticeList" border="1">
+		             
 		            	<thead>
 			                <tr>
 			                    <th><input type="checkbox" id="all" class="batch"></th>
@@ -48,29 +49,75 @@
 		                </thead>
 		                <tbody>
 		                	
-		                	<!--조회된 리스트 출력하기 -->
-		<!--                 	
-		                		<tr>
-		                			<td colspan="6">등록된 공지사항이 없습니다</td>
-		                		</tr>
-		                         -->
-		                		<tr>
-		                		
-		                            <td>1</td>
-		                            <td>전직원</td>
-		                            <td>소식</td>
-		                            <td><a href="detail.no">회사가망함</a></td>
-		                            <td>2022-02-02</td>
-		                            <td>김회장</td>
-		                            <td>1</td>
-		                        
-		                        </tr>
+		                	
+		                	
+							<c:forEach var="n" items="${ list }">
+			                    <tr>
+			                    	<td class="mno">${ n.boardWriter }</td>
+			                        <td class="bno">${ n.boardNo }</td>
+			                        <td>${ n.noticeRange }</td>
+			                        <td>${ n.noticeCategory }</td>
+			                        <td>${ n.boardTitle }</td>
+			                        <td>${ n.enrollDate }</td>
+			                        <td class="writer">${ n.memberName }</td>
+			                        <td>${ n.count }</td>
+			                        <td>
+										여기는 파일
+			                        </td>
+			                        
+			                    </tr>
+		                    </c:forEach>
 		                </tbody>
 		
 		              
 		               
 		            </table>
 		        </div>
+		        
+	<script>
+     	$(function(){
+     		$("#noticeList>tbody>tr").click(function(){
+     			location.href = 'detail.no?bno=' + $(this).children(".bno").text()+'&mno='+$(this).children(".mno").text();
+     			console.log($(this).children(".bno").text())
+     			console.log($(this).children(".writer").text())
+     			console.log($(this).children(".mno").text())
+     		})
+     	})
+            
+            
+	</script>
+		        
+		        
+		        
+		        
+		        <div id="pagingArea">
+	                <ul class="pagination">
+						<c:choose>
+							<c:when test="${ pi.currentPage eq 1}">
+		                    	<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li><!-- 1번 페이지일 경우 디스에이블넣어줘야 -->
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link" href="notice.no?cpage=${ pi.currentPage -1 }">Previous</a></li>
+							</c:otherwise>
+						</c:choose>
+	
+	
+						<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+	                    	<li class="page-item"><a class="page-link" href="notice.no?cpage=${ p }">${ p }</a></li>
+						</c:forEach>
+	
+						<c:choose>
+							<c:when test="${ pi.currentPage eq pi.maxPage }">
+	                    		<li class="page-item disabled"><a class="page-link" href="#">Next</a></li><!-- 마지막페이지일경우 디스에이블넣어줘야 -->
+	                    	</c:when>
+	                    	<c:otherwise>
+	                    		<li class="page-item"><a class="page-link" href="notice.no?cpage=${ pi.currentPage +1 }">Next</a></li><!-- 마지막페이지일경우 디스에이블넣어줘야 -->                    	
+	                    	</c:otherwise>
+	                    </c:choose>
+	                </ul>
+            	</div>
+				
+				
 				
 	        </div> <!-- content-layout끝 -->
 	    </div>

@@ -154,34 +154,29 @@ input:checked + .slider:before {
                             <tr>
                                 <td style="width: 100px;">공지대상</td>
                                 <td>
-
+									${ n.noticeRange }
                                 </td>
                                 <td style="width: 60px;">분류</td>
                                 <td>                        
-
+									${ n.noticeCategory }
                                 </td>
                             </tr>
                             <tr>
                                 <td>제목</td>
-                                <td colspan="3"></td>
+                                <td colspan="3"> ${ n.boardTitle }</td>
+                            </tr>
+                            <tr>
+                                <td>작성자</td>
+                                <td  colspan="3">${ n.memberName }</td>
                             </tr>
                             <tr>
                                 <td>기간</td>
-                                <td colspan="3"></td>
-                            </tr>
-                            <tr>
-                                <td>상단공지</td>
-                                <td  colspan="3">
-                                    <label class="switch">
-                                        <input type="checkbox">
-                                        <span class="slider round"></span>
-                                    </label>
-                                </td>
+                                <td colspan="3"> ${ n.noticePeriod }</td>
                             </tr>
                             <tr>
                                 <td>내용</td>
                                 <td colspan="3">
-                                    <textarea name="" id="" cols="100" rows="10"></textarea>
+                                    <textarea name="" id="" cols="100" rows="10">${ n.boardContent }</textarea>
                                 </td>
                             </tr>
                             <tr>
@@ -189,6 +184,8 @@ input:checked + .slider:before {
                                 <td  colspan="3"></td>
                             </tr>
                         </table>
+                        
+                        <!-- 로그인세션 작성자랑 이거 작성자랑 일치하는지 -->
                         <div class="notice_submit_btn">
                             <button>수정</button>
                             <button>삭제</button>

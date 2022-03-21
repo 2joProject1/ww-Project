@@ -97,6 +97,18 @@
 				STATUS = 'Y'
 	</select>
 	
+	<select id="searchId" resultMap="memberResultSet" parameterType="member">
+		SELECT MEMBER_NO
+		  FROM
+				MEMBER		
+		  WHERE 
+				MEMBER_NAME = #{memberName}
+			AND 
+				EMAIL = #{email}
+	</select>
+	
+
+	
 
 	<select id="selectAddrList" resultMap="memberResultSet">
 		select

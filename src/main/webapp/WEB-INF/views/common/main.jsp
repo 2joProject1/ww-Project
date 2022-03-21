@@ -8,6 +8,9 @@
 <title>Insert title here</title>
  	<link rel="stylesheet" href="resources/css/layout.css">
  	<link rel="stylesheet" href="resources/css/header.css">
+ 	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+ 	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
+ 	<link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css'>
 </head>
 <body>
         <div id="header-layout">
@@ -135,17 +138,16 @@
             <div id="todolist-area">
                 <span class="main_title_text">TODOLIST</span>
                 <ul>
-                  <li><input type="checkbox" name="" id=""> Lorem</li>
-                  <li><input type="checkbox" name="" id=""> Lorem</li>
-                  <li><input type="checkbox" name="" id=""> Lorem</li>
-                  <li><input type="checkbox" name="" id=""> Lorem</li>
-                  <li><input type="checkbox" name="" id=""> Lorem</li>
-                  <li><input type="checkbox" name="" id=""> Lorem</li>
-                  <li><input type="checkbox" name="" id=""> Lorem</li>
-                  <li><input type="checkbox" name="" id=""> Lorem</li>
-                  <li><input type="checkbox" name="" id=""> Lorem</li>
-                  <li><input type="checkbox" name="" id=""> Lorem</li>
-
+                  <li><input type="checkbox" name="" id=""> ${loginUser.memberName}</li>
+                  <li><input type="checkbox" name="" id=""> <i class="fi fi-ss-Circle-small"></i></li>
+                  <li><input type="checkbox" name="" id=""> <i class="fi fi-ss-Circle-small"></i></li>
+                  <li><input type="checkbox" name="" id=""> <i class="fi fi-ss-Circle-small"></i></li>
+                  <li><input type="checkbox" name="" id=""> <i class="fi fi-rr-Angle-small-down"></i></li>
+                  <li><input type="checkbox" name="" id=""> <i class="fi fi-rr-Cross-circle"></i></li>
+                  <li><input type="checkbox" name="" id=""> <i class="fi fi-rr-Arrow-small-right"></i></li>
+                  <li><input type="checkbox" name="" id=""> <i class="fi fi-br-Angle-right"></i></li>
+                  <li><input type="checkbox" name="" id=""><i class="fi fi-rs-inbox side_subtitle"></i></li>
+                  <li><input type="checkbox" name="" id=""> <i class="fi fi-rr-folder"></i></li>
                 </ul>
             </div>
 	        </div>
