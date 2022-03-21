@@ -22,4 +22,9 @@ public class AttachmentService {
 	public List<Attachment> selectAttachmentList(Attachment a) {
 		return attachmentDao.selectAttachmentList(a);
 	}
+	
+	public int insertNoticeAttachment(Attachment a) {
+		return attachmentDao.insertNoticeAttachment(sqlSession, a);
+	}
+	
 }

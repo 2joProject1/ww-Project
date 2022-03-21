@@ -61,6 +61,16 @@ public class DayOffController {
 	
 	}
 	
+	@RequestMapping("status.of")
+	public String offStatus() {
+		return "off/offStatusView";
+	}
+	
+	@RequestMapping("approval.of")
+	public String offApproval() {
+		return "off/offApprovalView";
+	}
+	
 	
 	
 	

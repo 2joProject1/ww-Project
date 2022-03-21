@@ -1,5 +1,7 @@
 package com.kh.walkwork.member.model.vo;
 
+import java.sql.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +26,7 @@ public class Member {
 	private String filePath;
 	private String loginFail;
 	private String tmpPwd;
-	private String enrollDate;
+	private Date enrollDate;
 	private String resignDate;
 
 }

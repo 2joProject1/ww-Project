@@ -3,7 +3,7 @@ package com.kh.walkwork.community.model.service;
 import java.util.ArrayList;
 
 import com.kh.walkwork.common.model.vo.PageInfo;
-import com.kh.walkwork.community.model.vo.Attachment;
+import com.kh.walkwork.common.model.vo.Attachment;
 import com.kh.walkwork.community.model.vo.Community;
 import com.kh.walkwork.community.model.vo.Reply;
 
@@ -19,20 +19,22 @@ public interface CommunityService {
 	public int deleteCommunity(int bno);
 	
 	// 총 게시물 수
-	public int selectListCount();
+	public int selectListCount(String search);
 	
 	// 커뮤니티 리스트 조회
-	public ArrayList<Community> selectList(PageInfo pi);
+	public ArrayList<Community> selectList(PageInfo pi, String search);
 	
 	public ArrayList<Community> selectTopCm();
 	public ArrayList<Attachment> selectViewAtt();
-	
+	public ArrayList<Attachment> selectboardAtt(int[] listNo);
+	public int replyCnt(int bno);
 	// 커뮤니티 상세조회
 	public Community selectDetail(int pageNo);
 	
 	
 	// 커뮤니티 파일 삽입
 	public int insertAttachment(Attachment a);
+	public int deleteAttachment(String[] c);
 	
 	public int lastBno();
 	
@@ -43,4 +45,11 @@ public interface CommunityService {
 	public int insertReply(Reply r);
 	
 	public ArrayList<Reply> selectReply(int bno);
+	
+	// 댓글 삭제
+	public int deleteReply(Reply r);
+	
+	public int thumbsPlus(Community c);
+	public int thumbsMinus(Community c);
+	
 }

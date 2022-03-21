@@ -60,3 +60,10 @@
 .replyInput:focus{
 	outline : none;
 }
+
+.replyDeleteBtn{
+	border : none;
+	background-color: white;
+}
+
+

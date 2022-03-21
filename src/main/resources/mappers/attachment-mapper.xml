@@ -28,18 +28,19 @@
 				#{fileUploadDate}
 				)	
 	</insert>
-	
+	 
+  //주현 : 첨부파일 리스트 불러오기
 	<select id="selectAttachmentList" parameterType="com.kh.walkwork.common.model.vo.Attachment"
 		resultType="com.kh.walkwork.common.model.vo.Attachment">
 		SELECT FILE_NAME,
 				BOARD_NO,
 				MEMBER_NO,
 				DOCU_NO,
-				FILE_ORIGIN_NAME,
+        FILE_ORIGIN_NAME,
 				FILE_PATH,
 				FILE_SIZE,
 				FILE_UPLOAD_DATE
-		FROM ATTACHMENT
+    FROM ATTACHMENT
 		WHERE 1=1
 		<if test="boardNo != null">
 			AND BOARD_NO = #{boardNo}
@@ -51,4 +52,30 @@
 			AND DOCU_NO = #{docuNo}
 		</if>
 	</select>
+
+	<!-- 첨부파일 insert -->
+	<insert id="insertNoticeFile" parameterType="attachment">
+		INSERT INTO
+			ATTACHMENT
+				(
+				FILE_NAME,
+				BOARD_NO,
+				MEMBER_NO,
+				FILE_ORIGIN_NAME,
+				FILE_PATH,
+				FILE_SIZE,
+				FILE_UPLOAD_DATE
+				)
+			VALUES
+				(
+				#{fileName},
+				#{boardNo},
+				#{memberNo},
+				#{fileOriginName},
+				#{filePath},
+				#{fileSize},
+				sysdate
+				)	
+	</insert>
+
 </mapper>

@@ -182,13 +182,12 @@
 </head>
 <body>
 
-	<!-- 로그인관련 alert창 출력 -->
-<%--  	<c:if test="${ not empty alertMsg }">
+	<c:if test="${ not empty alertMsg }">
 		<script>
 			alert("${ alertMsg }");
 		</script>
 		<c:remove var="alertMsg" scope="session" />
-	</c:if>  --%>
+	</c:if>
 	
 <script>
 
@@ -226,8 +225,9 @@
                     </div>
                 </form>
                     <div id="login_option">
-                        <button type="button" class="btn" data-toggle="modal" data-target="#login_searchId">아이디찾기</button> | 
-                        <button type="button" class="btn" data-toggle="modal" data-target="#login_searchPwd">임시비밀번호발급</button> |
+                        <button type="button" id="searchId" class="btn" data-toggle="modal" data-target="#login_searchId">아이디찾기</button> | 
+                        
+                        <button type="button" id="searchPwd" class="btn" data-toggle="modal" data-target="#login_searchPwd">임시비밀번호발급</button> |
                         <a href="enroll.me"><button class="btn">회원가입</button></a>
                     </div>
                     <div class="login_text">
@@ -254,41 +254,39 @@
                     </div>
                 </div>
               <!-- Modal body -->
-            <form action="먼데.html" method="post">
+            <form action="searchId.me" method="post">
                 <div class="modal-body">
                     <div id="login_modal_content">
                         <div style="padding-left: 15px; line-height: 50px;">본인인증</div>
                         <hr style="margin: 0px;">
                         <table id="login_searchId_information">
-                            <tr>
-                                <td class="login_td1">직급</td>
-                                <td class="login_td2"><input type="text"><br></td>
-                            </tr>
+
                             <tr>
                                 <td class="login_td1">이름</td>
-                                <td class="login_td2"><input type="text"><br></td>
+                                <td class="login_td2"><input type="text" id="name" name="memberName" required><br></td>
+                            </tr>
+
+                            <tr>
+                                <td class="login_td1">이메일</td>
+                                <td class="login_td2"><input type="text" id="email" name="email" style="width: 200px;" required><button type="button" id="email_btn">인증</button><br></td>
                             </tr>
                             <tr>
-                                <td class="login_td1">입사년도</td>
-                                <td class="login_td2"><input type="text"><br></td>
-                            </tr>
-                            <tr>
-                                <td class="login_td1">핸드폰번호</td>
-                                <td class="login_td2"><input type="text" style="width: 200px;"><button>인증</button><br></td>
+                                <td style="height: 5px;"></td>
+                                <td id="email_result" style="height: 5px;"></td>
                             </tr>
                             <tr>
                                 <td class="login_td1">인증번호</td>
-                                <td class="login_td2"><input type="text" style="width: 200px;"><button>확인</button><br></td>
+                                <td class="login_td2"><input type="text" id="email_chk" name="email_chk" style="width: 200px;" required><button type="button" id="email_chk_btn">확인</button><br></td>
                                 </td>
                             </tr>
                             <tr>
                                 <td style="height: 5px;"></td>
-                                <td style="height: 5px;"><span style="color: rgb(78, 137, 140);">인증번호가 일치하지 않습니다.</span><br>&nbsp;</td>
+                                <td id="vali_result" style="height: 5px;"></td>
                             </tr>
                         </table>
                         <div class="modal-footer">
                             <!-- alert창으로 알려줘야겠음..ㅠㅠ... -->
-                            <button type="submit">등록</button>
+                            <button type="submit" id="searchId_btn" disabled="disabled">등록</button>
                             <button type="button" data-dismiss="modal">취소</button>
                         </div>
                     </div><!-- 로그인모달content -->
@@ -330,7 +328,7 @@
                                     <td class="login_td2"><input type="text"><br></td>
                                 </tr>
                                 <tr>
-                                    <td class="login_td1">핸드폰번호</td>
+                                    <td class="login_td1">이메일</td>
                                     <td class="login_td2"><input type="text" style="width: 200px;"><button>인증</button><br></td>
                                 </tr>
                                 <tr>
@@ -340,7 +338,7 @@
                                 </tr>
                                 <tr>
                                     <td style="height: 5px;"></td>
-                                    <td style="height: 5px;"><span style="color: rgb(78, 137, 140);">인증번호가 일치하지 않습니다.</span><br>&nbsp;</td>
+                                    <td style="height: 5px;"><br>&nbsp;</td>
                                 </tr>
                             </table>
                         </div>
@@ -354,5 +352,81 @@
             </div> <!-- 모달content -->
         </div><!-- dialog -->
     </div><!-- 비번찾기모달끝 -->
+    
+    <script>
+    
+    
+    window.onload = $(function(){
+    	$('#email_vali').hide();
+    	
+    })
+    
+    
+    $(function(){
+    	
+	    $('#searchId').click(function(){
+	    	$('#vali_result').text("");
+	    	$("#searchId_btn").attr("disabled",true);
+	    	$('#email').text('');
+	    })
+	    	
+	    $('#email_btn').click(function(){
+	    		
+	    		var $email = $('#email').val();
+		    	var $name = $('#name').val();
+				var $emailVali = $('#email_chk').val();
+
+	    		$.ajax({
+	    			url : "email.chk",
+	    			data : {email : $email},
+	    			type : "post",					
+	    			complete : function(){
+						console.log("성공이든 실패든간에 실행");
+						$('#email_result').text("이메일 전송이 완료되었습니다.").css("color","gray");
+					}
+	    			
+	    		})
+	    		
+	    	})
+	    })
+	    
+	    $('#email_chk').blur(function(){
+			var $emailVali = $('#email_chk').val();
+	    	var $name = $('#name').val();
+			var $email = $('#email').val();
+			
+	
+			$.ajax({
+				url : "emailVali.chk",
+				data : {emailVali : $emailVali},
+				type : "post",
+				success : function(result){
+					console.log(result);
+					if(result>0){ //result 1이상 == 일치결과있음
+						console.log(result)
+						$('#vali_result').text("굿").css("color","gray");
+						
+					} else{
+						$('#vali_result').text($emailVali + "은(는) 잘못된 인증번호입니다. 다시 입력하세요.").css("color","red");
+						$('#email_chk').val('');				
+					}
+				},
+				complete : function(){
+					if($name!=null&&$email!=null&&$emailVali!=null)
+						$("#searchId_btn").attr("disabled",false);
+				}
+			})
+		
+	})
+
+    	
+    	
+    
+    </script>
+    
+    
+    
+    
+    
 </body>
 </html>

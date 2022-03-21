@@ -25,5 +25,7 @@ public class Community {
 	private String taskModifyDate;
 	private int taskStatus;
 	private String taskHandler;
+	private int replyCnt;
+	private String fileName;
 	
 }
