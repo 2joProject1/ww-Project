@@ -19,45 +19,44 @@
 	        	<div id="main-sidebar">
 	        		<br>
 		            <div id="sidebar-area">
-		                <i class="fi fi-sr-at"></i>&nbsp;
+		                <i class="xi-at"></i>&nbsp;
 		                <a href=""><b>Mail</b></a>
 		                <br>
 		                
-		                &nbsp;&nbsp;&nbsp;<i class="fi fi-rr-envelope side_subtitle"></i>&nbsp;
 		                <a href="email.form" class="side_subtitle side_subtitle">메일</a>
 		                <br>
-		                &nbsp;&nbsp;&nbsp;<i class="fi fi-br-check side_subtitle"></i>&nbsp;
 		                <a href="" class="side_subtitle">읽지않음</a>
 		                <br><br>
 		
-		                <i class="fi fi-rr-time-check"></i>&nbsp;
+		                <i class="xi-time-o"></i>&nbsp;
 		                <a href=""><b>근태관리</b></a>
 		                <br><br>
 		                
-		                <i class="fi fi-rs-chart-tree"></i>&nbsp;
+		                <i class="xi-sitemap-o"></i>&nbsp;
 		                <a href="chart.li"><b>조직도</b></a>
 		                <br><br>
 		                
-		                <i class="fi fi-rr-edit"></i>&nbsp;
+		                <i class="xi-document"></i>&nbsp;
 		                <a href="signoffs.docu"><b>전자결재</b></a>
 		                <br>
-		                &nbsp;&nbsp;&nbsp;<i class="fi fi-rs-inbox side_subtitle"></i>&nbsp;
 		                <a href="docubox.draft" class="side_subtitle">기안문서함</a>
 		                <br><br>
 		                
-		                <i class="fi fi-rs-calendar"></i>&nbsp;
+		                <i class="xi-presentation"></i>&nbsp;
 		                <a href="project.main"><b>프로젝트</b></a>
 		                <br><br>
 		                
-		                <i class="fi fi-rs-following"></i>
-		                <a href="list.co"><b>커뮤니티</b></a>
+		                <i class="xi-comment"></i>
+		                <a href=""><b>커뮤니티</b></a>
+
 		                <br>
-		                &nbsp;&nbsp;&nbsp;<i class="fi fi-rr-heart side_subtitle"></i>&nbsp;
 		                <a href="" class="side_subtitle">내 게시글</a>
 		                <br><br>
 		                
-		                <i class="fi fi-rr-megaphone"></i>&nbsp;
+		                <i class="xi-lightbulb-o"></i>&nbsp;
 		                <a href="notice.no"><b>공지사항</b></a><br><br>
+		                
+		                <a href="logout.me">로그아웃</a>
 		            </div>
 	        	</div>
 	        </div>

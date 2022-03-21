@@ -152,7 +152,7 @@ public class MemberController {
 			// 로그인 성공
 			session.setAttribute("loginUser", loginUser);
 			mv.addObject("alertMsg", "로그인성공");
-			mv.setViewName("common/main");
+			mv.setViewName("redirect:/");
 		} else {
 
 			// 로그인 실패
@@ -165,6 +165,14 @@ public class MemberController {
 	}
 
 //	---------------------------------------------
+	
+	// 로그아웃
+	@RequestMapping("logout.me")
+	public String logoutMember(HttpSession session) {
+		
+		session.invalidate();
+		return "redirect:/";
+	}
 
 //-----------윤희-----------------//
 
