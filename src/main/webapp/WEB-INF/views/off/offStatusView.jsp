@@ -120,14 +120,24 @@ table.calendar td{
         const lastDate = new Date(year, month+1, 0);
         const firstDayOfWeek = firstDate.getDay() === 0 ? 7 : firstDate.getDay();
         const lastDayOfweek = lastDate.getDay();
-     	
+        console.log('firstDayOfWeek ::: ' + firstDayOfWeek)
+        console.log('lastDayOfweek ::: ' + lastDayOfweek)
+        
+      
         // 인풋한 달의 마지막 일
         const lastDay1 = lastDate.getDate();
+        console.log('lastDay1 ::: ' + lastDay1)
         
         // 첫 날의 요일이 금, 토, 일요일 이라면 true
         const firstWeekCheck = firstDayOfWeek === 5 || firstDayOfWeek === 6 || firstDayOfWeek === 7;
+        console.log('firstWeekCheck ::: ' + firstWeekCheck)
+        // 마지막 날의 요일이 월, 화, 수라면 true
+        const lastWeekCheck = lastDayOfweek === 1 || lastDayOfweek === 2 || lastDayOfweek === 3;
+        console.log('lastWeekCheck ::: ' + lastWeekCheck)
         // 해당 달이 총 몇주까지 있는지
         const lastWeekNo = Math.ceil((firstDayOfWeek - 1 + lastDay1) / 7);
+        console.log('Math.ceil((firstDayOfWeek - 1 + lastDay1) / 7) ::: lastWeekNo -> ' + lastWeekNo)
+        console.log('');
         var setTableHTML = "";
         setTableHTML+='<table class="calendar">';
         setTableHTML+='<tr><th>SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th></tr>';
