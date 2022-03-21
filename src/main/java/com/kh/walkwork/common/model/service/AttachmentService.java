@@ -1,5 +1,7 @@
 package com.kh.walkwork.common.model.service;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,12 +13,13 @@ import com.kh.walkwork.common.model.vo.Attachment;
 public class AttachmentService {
 
 	@Autowired
-	private SqlSessionTemplate sqlSession;
-
-	@Autowired
 	private AttachmentDao attachmentDao;
 
 	public int insertAttachment(Attachment a) {
-		return attachmentDao.insertAttachment(sqlSession, a);
+		return attachmentDao.insertAttachment(a);
+	}
+
+	public List<Attachment> selectAttachmentList(Attachment a) {
+		return attachmentDao.selectAttachmentList(a);
 	}
 }

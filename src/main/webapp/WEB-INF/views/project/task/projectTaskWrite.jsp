@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+<%
+	
+%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +30,6 @@
 	padding: 30px;
 	border: 1px solid black;
 	margin-left: 15px;
-	
 }
 
 .info-left {
@@ -42,13 +46,14 @@ h2.project-title {
 	display: inline-block;
 }
 
-.project-title{
-	background: linear-gradient(to top, rgb(185,207,199) 50%, transparent 40%);
+.project-title {
+	background: linear-gradient(to top, rgb(185, 207, 199) 50%, transparent
+		40%);
 }
 
 ul.project-desc-list {
 	list-style: none;
-	line-height: 50px;
+	line-height: 30px;
 	margin-top: 20px;
 	font-size: 20px;
 }
@@ -154,7 +159,7 @@ table.section-table {
 	border: none;
 }
 
-.project-title-area>.project-end-btn{
+.project-title-area>.project-end-btn {
 	float: right;
 	margin-right: 20px;
 	margin-top: 10px;
@@ -166,9 +171,16 @@ table.section-table {
 }
 
 .project-write-field {
-	width: calc(100% - 240px);
+	width: 300px;
 	height: 40px;
-	border: none;	
+	border: 1px solid lightgray;
+	border-radius: 10px;
+}
+
+.project-write-field-title {
+	width: 520px;
+	height: 40px;
+	border: none;
 }
 
 .project-write-field:focus {
@@ -176,9 +188,10 @@ table.section-table {
 }
 
 .project-write-date {
-	width: 180px;
+	width: 300px;
 	height: 40px;
-	border: none;
+	border: 1px solid lightgray;
+	border-radius: 10px;
 }
 
 .project-write-date:focus {
@@ -229,18 +242,18 @@ table.section-table {
 }
 
 /*파일첨부*/
-
-#fileList{
-	width: 800px;
+#fileList {
+	width: 300px;
 	height: 100px;
 	vertical-align: top;
-	border: 1px solid #999;
+	border: 1px solid lightgray;
+	border-radius: 10px;
 	clear: both;
 	display: inline-block;
+	list-style: none;
 }
 /* 프로젝트 사이드바 */
-
-.new-project{
+.new-project {
 	background-color: rgb(102, 164, 166);
 	border: none;
 	border-radius: 50px;
@@ -251,11 +264,12 @@ table.section-table {
 	box-shadow: 1px 1px 1px 1px lightgray;
 }
 
-.sub-menu-title{
+.sub-menu-title {
 	margin-left: 40px;
 	line-height: 40px;
 }
-.sub-menu{
+
+.sub-menu {
 	margin-left: 60px;
 	line-height: 40px;
 }
@@ -269,16 +283,20 @@ table.section-table {
 	<div id="container">
 		<div id="sidebar-layout">
 			<div id="main-sidebar">
-				<button type="button" class="new-project">새 프로젝트</button><br><br>
+				<button type="button" class="new-project">새 프로젝트</button>
+				<br>
+				<br>
 				<div class="sub-menu-title">
 					<i class="fi fi-rr-menu-burger"></i>&nbsp;<b>프로젝트</b><br>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-apps"></i>&nbsp;<a href="#" class="">&nbsp;전체</a>
+					<i class="fi fi-rr-apps"></i>&nbsp;
+					<a href="#" class="">&nbsp;전체</a>
 					<br>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-check"></i>&nbsp;<a href="project.no-read" class="">&nbsp;읽지않음</a>
+					<i class="fi fi-rr-check"></i>&nbsp;
+					<a href="project.no-read" class="">&nbsp;읽지않음</a>
 					<br>
 				</div>
 				<hr>
@@ -294,8 +312,11 @@ table.section-table {
 			<div class="project-info">
 				<div class="info-left">
 					<div class="project-title-area">
-						<h2 class="project-title">2022 공공방역정보 개발</h2>&nbsp;&nbsp;&nbsp;
-						<span class="title-label"><i>진행중</i></span>
+						<h2 class="project-title">2022 공공방역정보 개발</h2>
+						&nbsp;&nbsp;&nbsp;
+						<span class="title-label">
+							<i>진행중</i>
+						</span>
 					</div>
 
 					<ul class="project-desc-list">
@@ -313,42 +334,49 @@ table.section-table {
 			<hr>
 			<div class="project-task">
 				<div class="section-title-wrapper">
-					<h3 class="section-title">업무작성</h3>
+					<h3 class="section-title">업무작성하기</h3>
 				</div>
-				<form action="" method="post">
-				<ul class="project-desc-list">
-					<li><b>진행상태</b>
-						<div class="task-search-area">
-							<label class="box-radio-input"> 
-								<input type="radio" name="status" value="day" checked><span>요청</span>
-							</label> 
-							<label class="box-radio-input">
-								<input type="radio" name="status" value="format" onclick="return(false);"><span>진행</span>
-							</label> 
-							<label class="box-radio-input"> 
-								<input type="radio" name="status" value="status" onclick="return(false);"><span>완료</span>
-							</label>
-						</div>
-					</li>
-					<hr>
-					<li><b>제목</b><input type="text" class="project-write-field" placeholder="제목을 입력하세요"></li>
-					<hr>
-					<li><b>담당자</b><span class="add-team-member">담당자추가</span>
-					<hr>
-					<li><b>요청일자</b> <input type="date" class="project-write-date"></li>
-					<hr>
-					<li><b>요청기한</b> <input type="date" class="project-write-date"></li>
-					<hr>
-					<li><b>파일첨부</b> <ul id="fileList" onclick="attachFile()"></ul>
-					</li>
-					<hr>
-					<li><textarea class="project-write-field-content" placeholder="내용을 입력하세요" required></textarea></li>
-				<hr>
-				</ul>
-				<div class="button-area">
-					<button type="reset" class="btn-custom">취소</button>
-					<button type="submit" class="btn-custom" id="project-enroll-btn">등록</button>
-				</div>
+				<form action="insert.task" method="post">
+					<input type="hidden" name="projectNo" value="${ projectNo }">
+					<input type="hidden" name="taskWriter" value="${ loginUser.memberName }">
+					<ul class="project-desc-list">
+						<li><input type="text" name="taskTitle" class="project-write-field-title"></li>
+						<hr>
+						<li><b>진행상태</b>
+							<div class="task-search-area">
+								<label class="box-radio-input">
+									<input type="radio" name="taskStatus" value="1" checked>
+									<span>요청</span>
+								</label>
+								<label class="box-radio-input">
+									<input type="radio" name="taskStatus" onclick="return(false);">
+									<span>진행</span>
+								</label>
+								<label class="box-radio-input">
+									<input type="radio" name="taskStatus" onclick="return(false);">
+									<span>완료</span>
+								</label>
+							</div></li>
+						<hr>
+						<li><b>담당자</b>
+						<input type="text" name="taskHandler" class="project-write-field">${ t.taskHandler }</li>
+						<hr>
+						<li><b>요청일자</b>
+						<input type="date" name="enrollDate" class="project-write-date"></li>
+						<hr>
+						<li><b>마감기한</b>
+						<input type="date" name="endDate" class="project-write-date"></li>
+						<hr>
+						<li><b>파일첨부</b>
+						<ul id="fileList" onclick="attachFile()"></ul></li>
+						<hr>
+						<li><textarea class="project-write-field-content" placeholder="내용을 입력하세요" required></textarea></li>
+						<hr>
+					</ul>
+					<div class="button-area">
+						<button type="reset" class="btn-custom">취소</button>
+						<button type="submit" class="btn-custom" id="project-enroll-btn">등록</button>
+					</div>
 				</form>
 			</div>
 		</div>
@@ -369,9 +397,6 @@ table.section-table {
 			createFile.click();
 		}
 
-		function changeFormat(target) {
-			window.location.href = 'signoffs.docu?format=' + target.value;
-		}
 	</script>
 
 </body>

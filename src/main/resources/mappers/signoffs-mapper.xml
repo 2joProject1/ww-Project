@@ -3,7 +3,7 @@
 <mapper namespace="signoffsMapper">
 
 	<!-- 결재할 데이터를 만들 때 -->
-	<insert id="insertOff" parameterType="signoffs">
+	<insert id="insertSignOffs" parameterType="signoffs">
 		INSERT INTO
 			SIGNOFFS
 				(
@@ -32,4 +32,68 @@
 				,#{approvalReject}
 				)	
 	</insert>
+	
+	<!-- 결재 정보 수정 -->
+	<update id="updateSignoffs" parameterType="signoffs">
+		UPDATE
+			SIGNOFFS
+				SET
+				 APPROVALER = #{approvaler}
+				,DOCU_NO = #{docuNo}
+				,DOCU_DATE = #{docuDate}
+				,APPROVAL_DATE = #{approvalDate}
+				,APPROVAL_REJECT_DATE = #{approvalRejectDate}
+				,APPROVAL_STATUS = #{approvalStatus}
+				,APPROVAL_DECISION = #{approvalDecision}
+				,APPROVAL_RANK = #{approvalRank}
+				,APPROVAL_REJECT = #{approvalReject}
+		WHERE
+			APPROVAL_NO = #{approvalNo}
+	</update>
+	
+	<!-- 결재 삭제 -->
+	<delete id="deleteSignoffs" parameterType="signoffs">
+		DELETE FROM
+			SIGNOFFS
+		WHERE
+			APPROVAL_NO = #{approvalNo}
+	</delete>
+	
+	<!-- 특정 결재번호로 조회 (단건) -->
+	<select id="selectSignoffsOne" parameterType="signoffs" resultType="signoffs">
+		SELECT 
+				APPROVAL_NO
+				,APPROVALER
+				,DOCU_NO
+				,DOCU_DATE
+				,APPROVAL_DATE
+				,APPROVAL_REJECT_DATE
+				,APPROVAL_STATUS
+				,APPROVAL_DECISION
+				,APPROVAL_RANK
+				,APPROVAL_REJECT
+		FROM
+			SIGNOFFS
+		WHERE 1=1
+			AND APPROVAL_NO = #{approvalNo}
+	</select>
+	
+	<!-- 문서의 결재 조회 (다건) -->
+	<select id="selectSignoffsList" parameterType="signoffs" resultType="signoffs">
+		SELECT 
+				APPROVAL_NO
+				,APPROVALER
+				,DOCU_NO
+				,DOCU_DATE
+				,APPROVAL_DATE
+				,APPROVAL_REJECT_DATE
+				,APPROVAL_STATUS
+				,APPROVAL_DECISION
+				,APPROVAL_RANK
+				,APPROVAL_REJECT
+		FROM
+			SIGNOFFS
+		WHERE 1=1
+			AND DOCU_NO = #{docuNo}
+	</select>
 </mapper>
