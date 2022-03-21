@@ -19,6 +19,8 @@ public interface MemberService {
 	
 	//로그인
 	Member loginMember(Member m);
+
+	Member searchId(Member m);
 	
 	
 	

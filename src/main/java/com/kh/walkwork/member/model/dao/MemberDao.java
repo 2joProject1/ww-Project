@@ -40,4 +40,8 @@ public class MemberDao {
 		return sqlSession.selectOne("memberMapper.loginMember", m);
 	}
 
+	public Member searchId(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.selectOne("memberMapper.searchId", m);
+	}
+
 }

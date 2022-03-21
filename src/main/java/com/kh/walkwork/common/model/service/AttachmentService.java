@@ -19,4 +19,9 @@ public class AttachmentService {
 	public int insertAttachment(Attachment a) {
 		return attachmentDao.insertAttachment(sqlSession, a);
 	}
+	
+	public int insertNoticeAttachment(Attachment a) {
+		return attachmentDao.insertNoticeAttachment(sqlSession, a);
+	}
+	
 }

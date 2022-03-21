@@ -28,4 +28,31 @@
 				#{fileUpoadDate}
 				)	
 	</insert>
+
+	<!-- 첨부파일 insert -->
+	<insert id="insertNoticeFile" parameterType="attachment">
+		INSERT INTO
+			ATTACHMENT
+				(
+				FILE_NAME,
+				BOARD_NO,
+				MEMBER_NO,
+				FILE_ORIGIN_NAME,
+				FILE_PATH,
+				FILE_SIZE,
+				FILE_UPLOAD_DATE
+				)
+			VALUES
+				(
+				#{fileName},
+				#{boardNo},
+				#{memberNo},
+				#{fileOriginName},
+				#{filePath},
+				#{fileSize},
+				sysdate
+				)	
+	</insert>
+
+	
 </mapper>

@@ -47,7 +47,9 @@ public class MemberController {
 	@RequestMapping("insert.me")
 	public String insertMember(Member m, Model model, HttpSession session) {
 //		System.out.println(m);
+		System.out.println("넘어옴?");
 
+		//주소 합치기
 		String str = m.getAddress();
 		String[] strArr = str.split(",", 3);
 		
@@ -62,6 +64,7 @@ public class MemberController {
 		m.setMemberPwd(encPwd);
 		
 		int result = memberService.insertMember(m);
+		System.out.println("완료" + m);
 		
 		if(result > 0) { //성공=>메인페이지url 재요청
 			
@@ -156,25 +159,57 @@ public class MemberController {
 		
 		Member loginUser = memberService.loginMember(m);
 		
+		
+		
+		System.out.println(loginUser);
 		if(loginUser != null && bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
 																//입력받은			//암호화된
 			//로그인 성공
 			session.setAttribute("loginUser", loginUser);
 			mv.addObject("alertMsg", "로그인성공");
 			mv.setViewName("common/main");
-		} else {
+			return mv;
+		} else{
 			
 			//로그인 실패
-
-			session.setAttribute("errorMsg", "로그인실패");
+			session.setAttribute("errorMsg", "아이디와 비밀번호를 확인하세요");
 			mv.addObject("errorMsg", "로그인실패").setViewName("redirect:/");
+			
+			return mv;
 		}
 		
-		return mv;
 	}
 	
 	
 //	---------------------------------------------
+	
+	@ResponseBody
+	@RequestMapping("searchId.me")
+	public ModelAndView searchId(Member m, ModelAndView mv, HttpSession session) {
+				
+		Member b = memberService.searchId(m);
+		
+		String id = b.getMemberNo();
+		session.setAttribute("alertMsg", m.getMemberName()+"님의 아이디는"+id+"입니다.");
+		
+		mv.addObject("id", "id").setViewName("redirect:/");
+		return mv;
+	}
+	
+	@ResponseBody
+	@RequestMapping("searchPwd.me")
+	public ModelAndView searchPwd(Member m, ModelAndView mv, HttpSession session) {
+		
+		System.out.println(m);
+		
+		Member b = memberService.searchId(m);
+		
+		String id = b.getMemberNo();
+		session.setAttribute("alertMsg", m.getMemberName()+"님의 아이디는"+id+"입니다.");
+		
+		mv.addObject("id", "id").setViewName("redirect:/");
+		return mv;
+	}
 
 
 }
