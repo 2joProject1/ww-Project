@@ -164,3 +164,16 @@
 	color: rgb(114, 112, 112);
 	font-size: 16px;
 }
+
+
+
+/*----------모달사원정보윤희----------*/
+.memModal_end{
+	text-align: center;
+}
+.memModal_end:hover {
+	cursor: pointer;
+}
+.memberModalFont{
+	font-size: 30px;
+}

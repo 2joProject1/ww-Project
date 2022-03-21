@@ -20,6 +20,7 @@ public interface MemberService {
 	//로그인
 	Member loginMember(Member m);
 	
-	
+	// ---윤희
+	public Member selectMemberInformation(Member m);
 	
 }
