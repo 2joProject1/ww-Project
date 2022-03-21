@@ -31,8 +31,9 @@
 		                <a href="" class="side_subtitle">읽지않음</a>
 		                <br><br>
 		
-		                <i class="xi-time-o"></i>&nbsp;
-		                <a href=""><b>근태관리</b></a>
+		                <i class="fi fi-rr-time-check"></i>&nbsp;
+		                <a href="main.cm"><b>근태관리</b></a>
+
 		                <br><br>
 		                
 		                <i class="xi-sitemap-o"></i>&nbsp;
@@ -50,10 +51,10 @@
 		                <br><br>
 		                
 		                <i class="xi-comment"></i>
-		                <a href=""><b>커뮤니티</b></a>
+		                <a href="list.co"><b>커뮤니티</b></a>
 
 		                <br>
-		                <a href="" class="side_subtitle">내 게시글</a>
+		                <a href="mylist.co" class="side_subtitle">내 게시글</a>
 		                <br><br>
 		                
 		                <i class="xi-lightbulb-o"></i>&nbsp;
@@ -80,8 +81,8 @@
             <div id="commute-area">
               <!-- <span class="main_title_text">출퇴근</span> -->
               
-              <button>출근</button>
-              <button>퇴근</button>
+              <button id="commute-on">출근</button>
+              <button id="commute-off">퇴근</button>
             </div>
 
             <div id="comming-sc-area">
@@ -152,5 +153,19 @@
             </div>
 	        </div>
 	    </div>
+	    
+	    <script>
+	    	$(function(){
+	    		$("#commute-on").click(function(){
+	    			location.href = "on.cm";
+	    		})
+	    		$("#commute-off").click(function(){
+	    			location.href = "off.cm";
+	    		})
+	    		
+	    	})
+	    
+	    	
+	    </script>
 </body>
 </html>
