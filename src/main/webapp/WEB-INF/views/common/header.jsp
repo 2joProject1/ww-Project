@@ -173,10 +173,96 @@ div.card_container:target+.dim {
 		<!-- 모달 나오는 버튼
     data-bs-toggle="modal" data-bs-target="#exampleModal" 
    -->
+
 		<div id="banner-area">
 			<i class="fi fi-rr-comment popup" style="margin-right: 15px;"></i> <i
-				class="fi fi-rs-bell popup">&nbsp;</i> <i class="fi fi-rr-user"
+				class="fi fi-rs-bell popup">&nbsp;</i> 
+    <i class="fi fi-rr-user"
 				data-bs-toggle="modal" data-bs-target="#memberModal" >&nbsp;</i>
+
+    <i class="fi fi-rr-user">&nbsp;</i>
+    <div class="pop" style="font-size: 15px;">
+        <div>
+          <button class="chat-button" id="chat_btn">채팅</button><button class="chat-button" id="addr_btn">연락처</button>
+          <div style="display: inline; float: right; margin: 10px 15px 0 0;"><i class="xi-plus-circle-o xi-2x"></i></div>
+        </div>
+        <hr style="height: 2px; margin-bottom: 5px;">
+        <div>
+          <input class="form-control me-2 chat_search" type="search" placeholder="채팅방 또는 이름 검색" aria-label="Search" style="margin-bottom: 5px;">
+
+          <div class="scroll_div" style="overflow-y: auto; height: 485px;">
+            <!-- 채팅창 리스트 -->
+            <ul class="list-group chat_ul">
+              <li class="list-group-item justify-content-between align-items-center chat_li">
+                <i class="xi-group xi-3x"></i>
+                <div style="margin-left: 6px;">
+                  <div>채팅방이름</div>
+                  <div>안녕하세영</div>
+                </div>
+                <span class="badge bg-primary rounded-pill" style="float: right; margin-top: 15px;">14</span>
+              </li>
+            </ul>
+            <!-- 연락처 리스트 -->
+            <ul class="list-group addr_ul">
+              <li class="list-group-item justify-content-between align-items-center addr_li">
+                <i class="xi-profile xi-3x"></i>
+                <div  style="margin-left: 6px;">
+                  <div>곽주현</div>
+                  <div>010-1234-5678</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 연락처 레이어팝업 -->
+<div class="card_container" id="card_container" style="display: none;">
+  <div style="float: right;"><i class="xi-close-thin xi-x addr_x"></i></div><br>
+  <img src="" alt="" width="300" height="150">
+  <h4>고려진</h4>
+  <h6>어쩌궁 저쩌궁 ㅈㅈㄱㅈ더개졷ㄹ냉ㄹ</h6>
+  <h6>어쩌궁 저쩌궁 ㅈㅈㄱㅈ더개졷ㄹ냉ㄹ</h6>
+  <button class="primary" onclick="showPopup();">채팅하기</button>
+</div>
+
+<div class="dim" style="display: none;"></div>
+
+<script>
+  $(function(){
+    $(".popup").click(function(){
+      $(".pop").toggle();
+      $(".addr_ul").hide();
+    })
+  })
+  $("#chat_btn").click(function(){
+    $(".chat_ul").show();
+    $(".addr_ul").hide();
+  });
+  
+  $("#addr_btn").click(function(){
+    $(".addr_ul").show();
+    $(".chat_ul").hide();
+    
+  })
+  
+  $(".addr_li").click(function(){
+    $(".card_container").show();
+    $(".dim").show();
+  })
+
+  $(".addr_x").click(function(){
+    $(".card_container").hide();
+    $(".dim").hide();
+  })
+
+  /* 채팅창 팝업 */
+  function showPopup(){
+    window.open("/ww/chat/chatRoomDetail", "chatting_room", "width=400, height=600, left=100, top=50");
+  }
+
+</script>
 
 			<!-- 윤희 계정정보 Modal -->
 			<div class="modal" id="memberModal" tabindex="-1" 
@@ -305,12 +391,11 @@ div.card_container:target+.dim {
 					"width=400, height=600, left=100, top=50");
 		}
 		
+
 		 $('#memberModal').on('shown.bs.modal', function () {
 		      $(".modal-backdrop").css('background', 'none');
 	    })
 	</script>
-
-
 
 	<!-- Modal -->
 	<!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -330,6 +415,7 @@ div.card_container:target+.dim {
     </div>
   </div>
 </div> -->
+
 
 </body>
 </html>
