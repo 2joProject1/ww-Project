@@ -122,6 +122,8 @@ table.calendar td{
         const lastDayOfweek = lastDate.getDay();
         console.log('firstDayOfWeek ::: ' + firstDayOfWeek)
         console.log('lastDayOfweek ::: ' + lastDayOfweek)
+        
+        
      	
         // 인풋한 달의 마지막 일
         const lastDay1 = lastDate.getDate();
