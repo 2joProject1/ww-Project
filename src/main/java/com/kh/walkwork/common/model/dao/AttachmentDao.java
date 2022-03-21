@@ -11,18 +11,18 @@ import com.kh.walkwork.common.model.vo.Attachment;
 @Repository
 public class AttachmentDao {
 
-
 	@Autowired
 	private SqlSessionTemplate sqlSession;
   
   //주현: 첨부파일 삽입
 	public int insertAttachment(Attachment a) {
 		return sqlSession.insert("attachmentMapper.insertAttachment", a);
-
+	}
+	
 	public int insertAttachment(SqlSessionTemplate sqlSession, Attachment a) {
 		return sqlSession.insert("attachmentMapper.insertFile", a);
 	}
-  
+	
 	public int insertNoticeAttachment(SqlSessionTemplate sqlSession, Attachment a) {
 		return sqlSession.insert("attachmentMapper.insertNoticeFile", a);
 	}
