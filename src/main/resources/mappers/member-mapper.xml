@@ -127,6 +127,7 @@
 		        rank using (rank_no)
 		 where
 		        status = 'Y'
+	</select>
 
 	
 	<!-- 윤희 -->
