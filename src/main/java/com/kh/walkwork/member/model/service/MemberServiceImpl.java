@@ -81,12 +81,6 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public Member searchId(Member m) {
-		return null;
-	}
-	//------------헤더--------------
-
-	@Override
-	public Member searchId(Member m) {
 		return memberDao.searchId(sqlSession, m);
 	}
 
@@ -104,7 +98,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member selectMemberInformation(Member m) {
 		return memberDao.selectMemberInformation(sqlSession, m);
-	
+	}
 
 	
 	
