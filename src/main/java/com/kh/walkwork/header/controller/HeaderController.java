@@ -23,7 +23,7 @@ public class HeaderController {
 		
 		ArrayList<Member> addrList = memberService.selectAddrList();
 		
-		System.out.println("연락처 리스트 : " + addrList);
+//		System.out.println("연락처 리스트 : " + addrList);
 		
 		return addrList;
 	}

@@ -195,6 +195,7 @@ public class MemberController {
 		
 		mv.addObject("id", "id").setViewName("redirect:/");
 		return mv;
+	}
 
 	// 로그아웃
 	@RequestMapping("logout.me")

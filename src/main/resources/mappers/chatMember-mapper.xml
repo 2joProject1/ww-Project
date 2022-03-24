@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="chatMemberMapper">
+	
+	<!-- 채팅방 멤버 insert -->
+	<insert id="insertChatMember" parameterType="hashmap">
+		insert into chat_member (member_no, chat_no, create_chat, start_date)
+				values (#{memberNo}, #{chatNo}, #{createChat}, SYSDATE)
+	</insert>
+	
+	<!-- 채팅방 번호 조회 -->
+	<select id="searchChatNo" parameterType="hashmap">
+		select distinct cm.chat_no as chat_no
+		from chat_member cm
+		inner join chat_member cm2 on cm.chat_no=cm2.chat_no
+		where cm.member_no = #{memberNo}
+		and cm2.member_no= #{chatMemberNo}
+		group by cm.chat_no, cm2.chat_no
+	</select>
+</mapper>
