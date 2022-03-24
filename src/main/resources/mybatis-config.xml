@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
 <configuration>
-	<properties>
+	<settings>
 		<!-- 해당 속성이 true면, DB의 Under-score 형식을 Java의 camelCase 형식으로 자동으로 돌려준다. -->
 		<!-- mapper에서 resultMap 안써도 된다. -->
 		<!-- default: false -->
-		<property name="mapUnderscoreToCamelCase" value="true"/>
-	</properties>
-
-	<settings>
+   		<setting name="mapUnderscoreToCamelCase" value="true"/>
 		<setting name="jdbcTypeForNull" value="NULL" />
 	</settings>
 	
@@ -16,13 +13,17 @@
 		<typeAlias type="com.kh.walkwork.member.model.vo.Member" alias="member" />
 		<typeAlias type="com.kh.walkwork.community.model.vo.Community" alias="community" />
 		<typeAlias type="com.kh.walkwork.common.model.vo.Attachment" alias="attachment" />
+		<typeAlias type="com.kh.walkwork.common.model.vo.PageInfo" alias="pageInfo" />
 		<typeAlias type="com.kh.walkwork.community.model.vo.Reply" alias="reply" />
 		<typeAlias type="com.kh.walkwork.dayOff.model.vo.DayOff" alias="off" />
 		<typeAlias type="com.kh.walkwork.member.model.vo.Cert" alias="cert" /><!-- 인증 -->
 		<typeAlias type="com.kh.walkwork.signoffs.model.vo.Signoffs" alias="signoffs" />
 		<typeAlias type="com.kh.walkwork.signoffs.model.vo.Document" alias="document" />
+		<typeAlias type="com.kh.walkwork.project.common.model.vo.Project" alias="project" />
+		<typeAlias type="com.kh.walkwork.project.task.model.vo.Task" alias="task" />
 		<typeAlias type="com.kh.walkwork.notice.model.vo.Notice" alias="notice" />
 		<typeAlias type="com.kh.walkwork.community.model.vo.BoardGood" alias="boardgood"/>
+		<typeAlias type="com.kh.walkwork.commute.model.vo.Commute" alias="commute" />
 	</typeAliases>
 	
 	<!-- 원래 enviroment, dataSource 에 기술했던 DB연결정보 => 이번에는 ROOT-CONTEXT.XML에 기술할 것 
@@ -36,7 +37,10 @@
 		<mapper resource="/mappers/attachment-mapper.xml" />
 		<mapper resource="/mappers/document-mapper.xml" />
 		<mapper resource="/mappers/signoffs-mapper.xml" />
+		<mapper resource="/mappers/project-mapper.xml" />
+		<mapper resource="/mappers/task-mapper.xml" />
 		<mapper resource="/mappers/notice-mapper.xml" />
+		<mapper resource="/mappers/commute-mapper.xml" />
 	</mappers>
 		<!-- 유의사항 : 미리 등록해두려면 해당 mapper파일이 진짜 존재하고 있는 상태여야함(namespace까지) -->
 

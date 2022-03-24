@@ -11,6 +11,7 @@
 	<resultMap id="memberResultSet" type="member">
 		<result column="MEMBER_NO" property="memberNo" />
 		<result column="DEPT_NO" property="deptNo" />
+		<result column="DEPT_NAME" property="deptName" />
 		<result column="RANK_NO" property="rankNo" />
 		<result column="MEMBER_NAME" property="memberName" />
 		<result column="MEMBER_PWD" property="memberPwd" />
@@ -137,6 +138,7 @@
 		status = 'Y'
 
 	</select>
+
 	<!-- 윤희 -->
 
 	<!-- 멤버 정보 -->

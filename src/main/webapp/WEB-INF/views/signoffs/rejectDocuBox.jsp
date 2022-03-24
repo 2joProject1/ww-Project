@@ -193,5 +193,6 @@ color:#fff;
 			</div>
 		</div>
 	</div>
+	<jsp:include page="/WEB-INF/views/signoffs/docuBoxJs.jsp" />
 </body>
 </html>

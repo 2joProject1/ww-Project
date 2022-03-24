@@ -94,168 +94,129 @@ table.calendar td{
  
 <script type="text/javascript">
     
-    var today = null;
-    var year = null;
-    var month = null;
-    var firstDay = null;
-    var lastDay = null;
-    var $tdDay = null;
-    var $tdSche = null;
-    var jsonData = null;
-    $(document).ready(function() {
-        drawCalendar();
-        initDate();
-        drawDays();
-        drawSche();
-        $("#movePrevMonth").on("click", function(){movePrevMonth();});
-        $("#moveNextMonth").on("click", function(){moveNextMonth();});
-    });
-    
-    //Calendar 그리기
-    function drawCalendar(){
-    	firstDay = new Date(year,month-1,1);
-        lastDay = new Date(year,month,0);
-        
-        const firstDate = new Date(year, month, 1);
-        const lastDate = new Date(year, month+1, 0);
-        const firstDayOfWeek = firstDate.getDay() === 0 ? 7 : firstDate.getDay();
-        const lastDayOfweek = lastDate.getDay();
-     	
-        // 인풋한 달의 마지막 일
-        const lastDay1 = lastDate.getDate();
-        
-        // 첫 날의 요일이 금, 토, 일요일 이라면 true
-        const firstWeekCheck = firstDayOfWeek === 5 || firstDayOfWeek === 6 || firstDayOfWeek === 7;
-        // 해당 달이 총 몇주까지 있는지
-        const lastWeekNo = Math.ceil((firstDayOfWeek - 1 + lastDay1) / 7);
-        var setTableHTML = "";
-        setTableHTML+='<table class="calendar">';
-        setTableHTML+='<tr><th>SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th></tr>';
-        for(var i=0;i<lastWeekNo;i++){
-            setTableHTML+='<tr height="100">';
-            for(var j=0;j<7;j++){
-                setTableHTML+='<td style="text-overflow:ellipsis;overflow:hidden;white-space:nowrap">';
-                setTableHTML+='    <div class="cal-day"></div>';
-                setTableHTML+='    <div class="cal-schedule"></div>';
-                setTableHTML+='</td>';
-            }
-            setTableHTML+='</tr>';
+var today = null;
+var year = null;
+var month = null;
+var firstDay = null;
+var lastDay = null;
+var $tdDay = null;
+var $tdSche = null;
+
+$(document).ready(function() {
+    drawCalendar();
+    initDate();
+    drawDays();
+    $("#movePrevMonth").on("click", function(){movePrevMonth();});
+    $("#moveNextMonth").on("click", function(){moveNextMonth();});
+});
+function getWeekCountOfMonth(year, month) {
+     
+    var nowDate = new Date(year, month-1, 1);
+ 
+    var lastDate =new Date(year, month, 0).getDate();
+    var monthSWeek = nowDate.getDay();
+ 
+    var weekSeq = parseInt((parseInt(lastDate) + monthSWeek - 1)/7) + 1;
+ 
+    return weekSeq;
+}
+//calendar 그리기
+function drawCalendar(){
+	if(year == null ){
+		year = new Date().getFullYear();
+	}
+	if(month == null){
+		month = new Date().getMonth()+1;
+	}
+	lastWeekNo = getWeekCountOfMonth(year, month)
+
+    var setTableHTML = "";
+    setTableHTML+='<table class="calendar">';
+    setTableHTML+='<tr><th>SUN</th><th>MON</th><th>TUE</th><th>WED</th><th>THU</th><th>FRI</th><th>SAT</th></tr>';
+    for(var i=0;i<lastWeekNo;i++){
+        setTableHTML+='<tr height="100">';
+        for(var j=0;j<7;j++){
+            setTableHTML+='<td style="text-overflow:ellipsis;overflow:hidden;white-space:nowrap">';
+            setTableHTML+='    <div class="cal-day"></div>';
+            setTableHTML+='    <div class="cal-schedule"></div>';
+            setTableHTML+='</td>';
         }
-        setTableHTML+='</table>';
-        $("#cal_tab").html(setTableHTML);
+        setTableHTML+='</tr>';
     }
-    
-    //날짜 초기화
-    function initDate(){
-        $tdDay = $("td div.cal-day")
-        $tdSche = $("td div.cal-schedule")
-        dayCount = 0;
-        today = new Date();
-        year = today.getFullYear();
-        month = today.getMonth()+1;
-        if(month < 10){month = "0"+month;}
-        firstDay = new Date(year,month-1,1);
-        lastDay = new Date(year,month,0);
-        
-        
+    setTableHTML+='</table>';
+    $("#cal_tab").html(setTableHTML);
+}
+
+//날짜 초기화
+function initDate(){
+    $tdDay = $("td div.cal-day")
+    $tdSche = $("td div.cal-schedule")
+    dayCount = 0;
+    today = new Date();
+    year = today.getFullYear();
+    month = today.getMonth()+1;
+    firstDay = new Date(year,month-1,1);
+    lastDay = new Date(year,month,0);
+}
+
+//calendar 날짜표시
+function drawDays(){
+	
+    $("#cal_top_year").text(year);
+    $("#cal_top_month").text(month);
+    for(var i=firstDay.getDay();i<firstDay.getDay()+lastDay.getDate();i++){
+        $tdDay.eq(i).text(++dayCount);
     }
-    
-    //calendar 날짜표시
-    function drawDays(){
-        $("#cal_top_year").text(year);
-        $("#cal_top_month").text(month);
-        for(var i=firstDay.getDay();i<firstDay.getDay()+lastDay.getDate();i++){
-            $tdDay.eq(i).text(++dayCount);
-        }
-        for(var i=0;i<42;i+=7){
-            $tdDay.eq(i).css("color","red");
-        }
-        for(var i=6;i<42;i+=7){
-            $tdDay.eq(i).css("color","blue");
-        }
+    for(var i=0;i<42;i+=7){
+        $tdDay.eq(i).css("color","red");
     }
-    
-    //calendar 월 이동
-    function movePrevMonth(){
-        month--;
-        if(month<=0){
-            month=12;
-            year--;
-        }
-        if(month<10){
-            month=String("0"+month);
-        }
-        getNewInfo();
-        }
-    
-    function moveNextMonth(){
-        month++;
-        if(month>12){
-            month=1;
-            year++;
-        }
-        if(month<10){
-            month=String("0"+month);
-        }
-        getNewInfo();
+    for(var i=6;i<42;i+=7){
+        $tdDay.eq(i).css("color","blue");
     }
-    
-    //정보갱신
-    function getNewInfo(){
-    	drawCalendar();
-    	$tdDay = $("td div.cal-day")
-        $tdSche = $("td div.cal-schedule")
-        for(var i=0;i<42;i++){
-            $tdDay.eq(i).text("");
-            $tdSche.eq(i).text("");
-        }
-        dayCount=0;
-        firstDay = new Date(year,month-1,1);
-        lastDay = new Date(year,month,0);
-        drawDays();
-        drawSche();
+}
+
+//calendar 월 이동
+function movePrevMonth(){
+    month--;
+    if(month<=0){
+        month=12;
+        year--;
     }
-    
-    //2019-08-27 추가본
-    
-    //데이터 등록
-    function setData(){
-        jsonData = 
-        {
-            "2019":{
-                "07":{
-                    "17":"제헌절"
-                }
-                ,"08":{
-                    "7":"칠석"
-                    ,"15":"광복절"
-                    ,"23":"처서"
-                }
-                ,"09":{
-                    "13":"추석"
-                    ,"23":"추분"
-                }
-            }
-        }
+    if(month<10){
+        month=String("0"+month);
     }
-    
-    //스케줄 그리기
-    function drawSche(){
-        setData();
-        var dateMatch = null;
-        for(var i=firstDay.getDay();i<firstDay.getDay()+lastDay.getDate();i++){
-            var txt = "";
-            txt =jsonData[year];
-            if(txt){
-                txt = jsonData[year][month];
-                if(txt){
-                    txt = jsonData[year][month][i];
-                    dateMatch = firstDay.getDay() + i -1; 
-                    $tdSche.eq(dateMatch).text(txt);
-                }
-            }
-        }
+    getNewInfo();
+ 	// ajax 하면되겠네?? 음.. 좋아
     }
+
+function moveNextMonth(){
+    month++;
+    if(month>12){
+        month=1;
+        year++;
+    }
+    if(month<10){
+        month=String("0"+month);
+    }
+    getNewInfo();
+    // ajax 하면되겠네?? 음.. 좋아
+   	// year + month memberNo?? 팀별? 개인? 전체?? 에 따라 다르게 파라미터값 정하기 
+   	// 리턴값 갖고와서 해당 틀...에?>??? ? ? ? ? ㅠㅠ?? 어렵군 
+}
+
+
+function getNewInfo(){
+	drawCalendar();
+	$tdDay = $("td div.cal-day");
+    $tdSche = $("td div.cal-schedule");
+    for(var i=0;i<42;i++){
+        $tdDay.eq(i).text("");
+    }
+    dayCount=0;
+    firstDay = new Date(year,month-1,1);
+    lastDay = new Date(year,month,0);
+    drawDays();
+}
  
 </script>
 </body>

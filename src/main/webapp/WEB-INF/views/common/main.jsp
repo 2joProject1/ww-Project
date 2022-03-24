@@ -37,7 +37,7 @@
 		                <br><br>
 		                
 		                <i class="xi-sitemap-o"></i>&nbsp;
-		                <a href="chart.li"><b>조직도</b></a>
+		                <a href="deptlist"><b>조직도</b></a>
 		                <br><br>
 		                
 		                <i class="xi-document"></i>&nbsp;
@@ -50,7 +50,7 @@
 		                <a href="project.main"><b>프로젝트</b></a>
 		                <br><br>
 		                
-		                <i class="xi-comment"></i>
+		                <i class="fi fi-rs-following"></i>
 		                <a href="list.co"><b>커뮤니티</b></a>
 
 		                <br>
