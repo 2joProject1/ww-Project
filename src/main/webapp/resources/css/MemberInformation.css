@@ -24,11 +24,13 @@
     height: 250px;
     border: 1px solid;
     border-radius: 50%;
+    text-align: center;
 }
 
 .memberImg img{
 	width : 100%;
 	height: 100%;
+	 border-radius: 50%;
 }
 .cameraIcon{
 	width: 37px;
@@ -40,5 +42,15 @@
 	border: none;
 	width: 100%;
 }
+#pwd_box{
+	margin-top:150px;
+	font-size: 28px;
+}
 
+.cm_file{
+	display: none;
+}
 
+.pwdBtn{
+	text-align: right;
+}

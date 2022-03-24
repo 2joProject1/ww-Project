@@ -133,25 +133,29 @@
 		</div>
 		<input type="hidden" name="communityGood" value="${detail.communityGood}" id="d_communityGood"/>
 		<input type="hidden" name="boardNo" value="${detail.boardNo}" id="d_boardNo"/>
+		<input type="hidden" id="loginUserInfo" value="${loginUser.memberNo}"/>
 		</div>
 	</div>
 	</div>
 		
 	<script type="text/javascript">
 		var isClick = false;
-		
+		// 추천 후 이모지 숨기기
 		$(document).ready(function(){
 			$('#thumb_after').css('display','none');
 		})
 	
+		// 이미지 클릭
 		function onclickImg(){
 			$('#communityInsertForm').submit();			
 		}
 		
+		// 공감 수 증가
 		function thumbClick(){
 			var boardNo = $('#d_boardNo').val();
 			var communityGood = $('#d_communityGood').val();
-			var param = {'boardNo' : boardNo, 'communityGood' : communityGood};
+			var nowMember = $('#loginUserInfo').val();
+			var param = {'boardNo' : boardNo, 'communityGood' : communityGood, 'boardWriter' : nowMember};
 			if(isClick == false){
 				$('#thumb_before').css('display','none');
 				$('#thumb_after').css('display','');
@@ -161,16 +165,24 @@
 						type : "POST",
 						data: param,
 						async : false,
+						dataType : 'text',
 						success:function(data){
-							alert('추천 완료!');
-							isClick = !isClick;
-							$('#showGood').text(Number(communityGood)+1);
+							if(data == 's'){
+								alert('추천 완료!');
+								isClick = !isClick;
+								$('#showGood').text(Number(communityGood)+1);
+							}else if(data =='f'){
+								alert('추천 오류!');
+							}else{
+								alert('이미 추천했습니다!');
+							}
+							
+							
 						},
 						error:function(err){
 							console.log(err)
 						}
 				 })
-				
 			}else{
 				$('#thumb_before').css('display','');
 				$('#thumb_after').css('display','none');

@@ -32,8 +32,10 @@ public interface MemberService {
 	
 	
 
-	// ---윤희
+	// --- 회원정보 조회 (윤희)
 	public Member selectMemberInformation(Member m);
+	public int updateMemberFile(Member m);
+	public int changePwd(Member m);
 
 	
 	//---------------------조직도 ---------------------------
@@ -43,5 +45,5 @@ public interface MemberService {
 	public List<Member> selectOgUser(int startPage, int limit, HashMap<String, String> paramMap);
 	public int updateDept(Member m); 
 	public List<Member> deleteOgUser(HashMap<String, String> paramMap1);
-	
+
 }

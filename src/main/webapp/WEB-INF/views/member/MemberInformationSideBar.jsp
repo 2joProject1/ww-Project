@@ -36,7 +36,7 @@
 					<br>
 
 					<i class="fi fi-rs-chart-tree"></i>&nbsp;
-					<a href=""><b>비밀번호 설정</b></a>
+					<a href="informationpwd.me"><b>비밀번호 설정</b></a>
 					<br>
 					<br>
 

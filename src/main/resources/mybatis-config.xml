@@ -22,9 +22,9 @@
 		<typeAlias type="com.kh.walkwork.project.common.model.vo.Project" alias="project" />
 		<typeAlias type="com.kh.walkwork.project.task.model.vo.Task" alias="task" />
 		<typeAlias type="com.kh.walkwork.notice.model.vo.Notice" alias="notice" />
+		<typeAlias type="com.kh.walkwork.community.model.vo.BoardGood" alias="boardgood"/>
 		<typeAlias type="com.kh.walkwork.commute.model.vo.Commute" alias="commute" />
 	</typeAliases>
-	
 	
 	<!-- 원래 enviroment, dataSource 에 기술했던 DB연결정보 => 이번에는 ROOT-CONTEXT.XML에 기술할 것 
 		=>DB등록정보는 서버연동과 동시에 이루어져야되기 때문에, 서버켜짐과 동시에 바로 읽혀지는 파일인 ROOT-CONTEXT.XML 문서에 기술할 예정 
