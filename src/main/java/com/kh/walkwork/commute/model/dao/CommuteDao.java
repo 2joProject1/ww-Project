@@ -44,4 +44,12 @@ public class CommuteDao {
 		return sqlSession.selectOne("commuteMapper.selectListCount", commute);
 	}
 
+	public ArrayList<Commute> selectMonthList(SqlSessionTemplate sqlSession, Commute commute) {
+		return (ArrayList)sqlSession.selectList("commuteMapper.selectMonthList", commute);
+	}
+
+	public int selectMonthCount(SqlSessionTemplate sqlSession, Commute commute) {
+		return sqlSession.selectOne("commuteMapper.selectMonthCount", commute);
+	}
+
 }
