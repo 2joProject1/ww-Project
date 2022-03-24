@@ -7,7 +7,7 @@
 		<result column="VERI_CODE" property="veriCode" />
 		<result column="CERT_TIME" property="certTime" />
 	</resultMap>
-	
+
 	<resultMap id="memberResultSet" type="member">
 		<result column="MEMBER_NO" property="memberNo" />
 		<result column="DEPT_NO" property="deptNo" />
@@ -26,13 +26,13 @@
 		<result column="TMP_PWD" property="tmpPwd" />
 		<result column="ENROLL_DATE" property="enrollDate" />
 		<result column="RESIGN_DATE" property="resignDate" />
-	
-	
+
+
 	</resultMap>
 
 
 	<insert id="insertMember" parameterType="member">
-	INSERT INTO MEMBER(
+		INSERT INTO MEMBER(
 		MEMBER_NO,
 		DEPT_NO,
 		RANK_NO,
@@ -45,99 +45,122 @@
 		STATUS,
 		LOGIN_FAIL,
 		ENROLL_DATE
-	)
-	VALUES(
+		)
+		VALUES(
 		#{memberNo}, DEFAULT, DEFAULT, #{memberName}, #{memberPwd},
-		#{birth}, #{address}, #{email},
+		#{birth},
+		#{address}, #{email},
 		#{phone}, DEFAULT, DEFAULT, SYSDATE)
-	
-	</insert>
-	
-	<insert id="regist" parameterType="cert">
-		INSERT INTO CERT(IP_INFO, VERI_CODE, CERT_TIME) VALUES(#{ipInfo}, #{veriCode}, sysdate)
-	</insert>
-	
-	<select id="emailValidate"  resultType="_int" parameterType="cert">
-		SELECT count(*) FROM CERT
-		WHERE 
-			IP_INFO = #{ipInfo}
-			and VERI_CODE = #{veriCode}
-			and CERT_TIME between sysdate - 3/24/60 and sysdate
-			<!-- and sysdate / 24 / 60 - when / 24 / 60 <= 3 -->
-			<!-- 현재시각 - 생성시간 <= 3분 -->
-	</select>
-	
-	<delete id="emailValidateRemove" parameterType="cert">
-		DELETE CERT WHERE IP_INFO = #{ipInfo} and VERI_CODE = #{veriCode}
-	</delete>
-	
-	<select id="emailDuplicationCheck" resultType="_int" parameterType="string">
-		select count(*) as email 
-		from member 
-		where 
-			email=#{emailDupl}
-	</select>
-	<select id="idDuplicationCheck" resultType="_int" parameterType="string">
-		select count(*) as id
-		from member 
-		where 
-			member_no=#{id}
-	</select>
-	
-	
-	<!-- 로그인 -->
-	
-	<select id="loginMember" resultMap="memberResultSet" parameterType="member">
-		SELECT *
-		  FROM
-				MEMBER		
-		  WHERE 
-				MEMBER_NO = #{memberNo}
-			AND 
-				STATUS = 'Y'
-	</select>
-	
-	<select id="searchId" resultMap="memberResultSet" parameterType="member">
-		SELECT MEMBER_NO
-		  FROM
-				MEMBER		
-		  WHERE 
-				MEMBER_NAME = #{memberName}
-			AND 
-				EMAIL = #{email}
-	</select>
-	
 
-	
+	</insert>
+
+	<insert id="regist" parameterType="cert">
+		INSERT INTO CERT(IP_INFO,
+		VERI_CODE, CERT_TIME) VALUES(#{ipInfo}, #{veriCode}, sysdate)
+	</insert>
+
+	<select id="emailValidate" resultType="_int"
+		parameterType="cert">
+		SELECT count(*) FROM CERT
+		WHERE
+		IP_INFO = #{ipInfo}
+		and VERI_CODE = #{veriCode}
+		and CERT_TIME between sysdate - 3/24/60 and sysdate
+		<!-- and sysdate / 24 / 60 - when / 24 / 60 <= 3 -->
+		<!-- 현재시각 - 생성시간 <= 3분 -->
+	</select>
+
+	<delete id="emailValidateRemove" parameterType="cert">
+		DELETE CERT WHERE
+		IP_INFO = #{ipInfo} and VERI_CODE = #{veriCode}
+	</delete>
+
+	<select id="emailDuplicationCheck" resultType="_int"
+		parameterType="string">
+		select count(*) as email
+		from member
+		where
+		email=#{emailDupl}
+	</select>
+	<select id="idDuplicationCheck" resultType="_int"
+		parameterType="string">
+		select count(*) as id
+		from member
+		where
+		member_no=#{id}
+	</select>
+
+
+	<!-- 로그인 -->
+
+	<select id="loginMember" resultMap="memberResultSet"
+		parameterType="member">
+		SELECT *
+		FROM
+		MEMBER
+		WHERE
+		MEMBER_NO = #{memberNo}
+		AND
+		STATUS = 'Y'
+	</select>
+
+	<select id="searchId" resultMap="memberResultSet"
+		parameterType="member">
+		SELECT MEMBER_NO
+		FROM
+		MEMBER
+		WHERE
+		MEMBER_NAME = #{memberName}
+		AND
+		EMAIL = #{email}
+	</select>
+
+
+
 
 	<select id="selectAddrList" resultMap="memberResultSet">
 		select
-		        member_no, 
-		        dept_name dept_no, 
-		        rank_name rank_no, 
-		        member_name, 
-		        email,
-		        phone,
-		        filepath
-		  from
-		        member
-		  join
-		        dept using (dept_no)
-		  join  
-		        rank using (rank_no)
-		 where
-		        status = 'Y'
+		member_no,
+		dept_name dept_no,
+		rank_name rank_no,
+		member_name,
+		email,
+		phone,
+		filepath
+		from
+		member
+		join
+		dept using (dept_no)
+		join
+		rank using (rank_no)
+		where
+		status = 'Y'
 
-	
-	<!-- 윤희 -->
-	<!-- 멤버 정보 -->
-	<select id="selectMemberInformation" resultMap="memberResultSet">
-		select *
-		
-		from member
-		
-		where member_no = 1
 	</select>
-	
+	<!-- 윤희 -->
+
+	<!-- 멤버 정보 -->
+	<select id="selectMemberInformation" resultMap="memberResultSet" parameterType="member">
+		select *
+		from
+		member
+		where
+		member_no = #{memberNo}
+		and
+		status = 'Y'
+	</select>
+
+	<update id="updateMemberFile" parameterType="member">
+		update member set
+		"FILE" = #{file}, "FILEPATH" = #{filePath} where member_no =
+		#{memberNo}
+
+	</update>
+
+	<update id="changePwd" parameterType="member">
+		update member set
+		MEMBER_PWD = #{memberPwd} where member_no = #{memberNo}
+	</update>
+
 
 </mapper>

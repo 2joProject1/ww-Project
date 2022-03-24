@@ -51,8 +51,20 @@ public class MemberDao {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectAddrList");
 	}
 
-	// 윤희
+	// ---- 윤희
+	//멤버 정보 조회
 	public Member selectMemberInformation(SqlSessionTemplate sqlSession, Member m) {
 		return sqlSession.selectOne("memberMapper.selectMemberInformation", m);
 	}
+	
+	//  멤버 정보 파일 업로드
+	public int updateMemberFile(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.update("memberMapper.updateMemberFile", m);
+	}
+	// 멤버 정보 비밀번호 변경
+	public int changePwd(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.update("memberMapper.changePwd", m);
+	}
+	
+	
 }

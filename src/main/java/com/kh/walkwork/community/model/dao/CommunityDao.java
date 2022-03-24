@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.walkwork.common.model.vo.PageInfo;
 import com.kh.walkwork.common.model.vo.Attachment;
+import com.kh.walkwork.community.model.vo.BoardGood;
 import com.kh.walkwork.community.model.vo.Community;
 import com.kh.walkwork.community.model.vo.Reply;
 
@@ -38,6 +39,17 @@ public class CommunityDao {
 		RowBounds rowBounds = new RowBounds(offset, limit);
 
 		return (ArrayList) sqlSession.selectList("communityMapper.selectCommunity", search, rowBounds);
+	}
+	
+	
+	public ArrayList<Community> selectMyCommunity(SqlSessionTemplate sqlSession, PageInfo pi, Community c) {
+
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+
+		RowBounds rowBounds = new RowBounds(offset, limit);
+
+		return (ArrayList) sqlSession.selectList("communityMapper.selectMyCommunity", c, rowBounds);
 	}
 	
 	public ArrayList<Community> selectTopCm (SqlSessionTemplate sqlSession){
@@ -99,6 +111,22 @@ public class CommunityDao {
 	public int thumbsMinus(SqlSessionTemplate sqlSession,Community c) {
 		
 		return sqlSession.update("communityMapper.thumbsMinus", c);
+	}
+	
+	
+	public int insertThumbsGood(SqlSessionTemplate sqlSession,BoardGood g) {
+			
+		return sqlSession.insert("communityMapper.insertThumbsGood", g);
+	}
+	
+	public int deleteThumbsGood(SqlSessionTemplate sqlSession,BoardGood g) {
+			
+		return sqlSession.delete("communityMapper.deleteThumbsGood", g);
+	}
+	
+	public int selectThumbsGood(SqlSessionTemplate sqlSession,BoardGood g) {
+		
+		return sqlSession.selectOne("communityMapper.selectThumbsGood", g);
 	}
 	
 	

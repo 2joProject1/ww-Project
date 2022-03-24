@@ -19,10 +19,8 @@
 <body>
 
 <div class="container" style="min-width : 1500px;">
-	<div class="row">
-		<div class="col-12">
-			<h3 onclick="location.href='main'">walk-work</h3>
-		</div>
+	<div id="header-layout">
+		<jsp:include page="../common/header.jsp" />
 	</div>
 	<jsp:include page="../member/MemberInformationSideBar.jsp" />
 	<div class="row">
@@ -36,9 +34,24 @@
 		<br><br><br><br><br><br><br>
 		<div class="col-5">
 			<div class="memberImg">
-				<img src="resources/images/person-fill.svg" alt="person">
+				<img id="mem_img" src="/filepath/${memberInfo.file }" onerror='this.src="resources/images/person-fill.svg"' alt="profileImg">
+
+				<div id="ImghiddenBtn">
+					<button onclick="mem_submitFiles()">이대로 저장</button>
+					<button onclick="undoBtn()">되돌리기</button>
+				</div>
+				
 			</div>
-			<img src="resources/images/camera-fill.svg" alt="camera" class="cameraIcon">
+			
+			<input type="file" id="mem_file" class="cm_file"
+							accept="image/gif, image/jpeg, image/jpg, image/png"/>
+			<label for="mem_file">
+				<img src="resources/images/camera-fill.svg" alt="camera" class="cameraIcon">
+			</label>
+			
+
+				
+
 		</div>
 		<div class="col-7">
 			<div class="row">
@@ -122,12 +135,15 @@
 			</div>
 			
 		</div>
-		
+		<input type="hidden" value="${memberInfo.memberNo }" id="memberNo">
+		<input type="hidden" value="${memberInfo.file }" id="imgSrc">
 	</div>
 </div>
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('#afterMdf').css('display', 'none');
+		$('#mem_file').on("change", mem_filefunc);
+		$('#ImghiddenBtn').css('display', 'none');
 	})
 	
 	$('#modifyBtn').click(function(){
@@ -138,6 +154,44 @@
 		$('#beforeMdf').css('display', '');
 		$('#afterMdf').css('display', 'none');
 	})
+	
+	// 미리보기
+	function mem_filefunc(e){
+		var reader = new FileReader();
+		reader.onload = function(e){
+				$('#mem_img').attr("src", e.target.result);
+		}
+		reader.readAsDataURL(e.target.files[0]);
+		
+		$('#ImghiddenBtn').css('display', '');
+	}
+	
+	// 파일 업로드
+	function mem_submitFiles(){
+		var form = new FormData();
+		form.append("file1", $('#mem_file')[0].files[0]);
+	 $.ajax({
+			url : "addProfileImg.me",
+			type : "POST",
+			processData : false,
+			contentType : false,
+			async : false,
+			enctype : 'multipart/form-data',
+			data : form,
+			success:function(data){
+				alert("프로필 변경 완료");
+			},
+			error : function(jqXHR,txt){
+				alert("프로필 변경 오류");
+			}
+		})
+	}
+	
+	// 되돌리기
+	function undoBtn(){
+		$('#mem_img').attr("src", "/filepath/"+$('#imgSrc').val());
+		$('#ImghiddenBtn').css('display', 'none');
+	}
 	
 </script>
 </body>

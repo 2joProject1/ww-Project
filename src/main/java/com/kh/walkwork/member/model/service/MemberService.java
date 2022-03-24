@@ -30,8 +30,8 @@ public interface MemberService {
 	
 	
 
-	// ---윤희
+	// --- 회원정보 조회 (윤희)
 	public Member selectMemberInformation(Member m);
-
-	
+	public int updateMemberFile(Member m);
+	public int changePwd(Member m);
 }

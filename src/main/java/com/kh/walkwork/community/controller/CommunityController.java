@@ -32,8 +32,10 @@ import com.kh.walkwork.common.model.vo.Attachment;
 import com.kh.walkwork.common.model.vo.PageInfo;
 import com.kh.walkwork.common.template.Pagination;
 import com.kh.walkwork.community.model.service.CommunityService;
+import com.kh.walkwork.community.model.vo.BoardGood;
 import com.kh.walkwork.community.model.vo.Community;
 import com.kh.walkwork.community.model.vo.Reply;
+import com.kh.walkwork.member.model.vo.Member;
 
 @Controller
 public class CommunityController {
@@ -125,6 +127,29 @@ public class CommunityController {
 		
 	}
 	
+	// 내 게시글 조회
+	@RequestMapping("mylist.co")
+	public ModelAndView selectMyList(HttpSession session, @RequestParam(value = "cpage", defaultValue="1") int currentPage, ModelAndView mv, @RequestParam(value = "search", required = false, defaultValue = "") String search) {
+		
+		int listCount = communityService.selectListCount(search); // 내 게시글 전체 수로 변경
+		
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 6);
+		
+		Member m = new Member();
+		Member userInfo = (Member)session.getAttribute("loginUser");
+		String memberNo = userInfo.getMemberNo();
+		
+		Community community = new Community();
+		community.setBoardTitle(search);
+		community.setBoardWriter(memberNo);
+		ArrayList<Community> list = communityService.selectMyCommunity(pi, community);
+		
+		
+		mv.addObject("search", search).addObject("pi", pi).addObject("list", list).setViewName("community/communityMyWrting");
+
+		return mv;
+		
+	}
 	
 	// 상세조회  
 	@RequestMapping("detail.co")
@@ -142,15 +167,19 @@ public class CommunityController {
 
 	// 글 작성하기
 	@RequestMapping("insert.co")
-	public String insertCommunity(Attachment a, Community c, Model model) {
+	public String insertCommunity(HttpSession session, Attachment a, Community c, Model model) {
 		String[] nameArr = a.getFileName().split(",");
 //			String[] memberArr = a.getMemberNo().split(",");
 		String[] originArr = a.getFileOriginName().split(",");
 		String[] pathArr = a.getFilePath().split(",");
 		String[] sizeArr = a.getFileSize().split(",");
+		
+		Member m = new Member();
+		Member userInfo = (Member)session.getAttribute("loginUser");
+		String memberNo = userInfo.getMemberNo();
 
 		
-		c.setBoardWriter("익명");  //임시 작성자 데이터 ! 나중에
+		c.setBoardWriter(memberNo);  //임시 작성자 데이터 ! 나중에
 //			삭제 후 실 member 데이터 사용 
 		
 		int num = communityService.insertCommunity(c); 
@@ -228,6 +257,8 @@ public class CommunityController {
 		return result;
 		
 	}
+	
+	// 파일 삭제
 	@ResponseBody
 	@RequestMapping("delete.ac")
 	public String deleteAttachment(HttpServletRequest req, HttpSession session, Attachment a, Model model)  {
@@ -243,6 +274,7 @@ public class CommunityController {
 		return result;
 	}
 	
+	// 파일 수정
 	@ResponseBody
 	@RequestMapping("modify.ac")
 	public List<Attachment> modifyAttachment(HttpServletRequest req, HttpSession session,@RequestPart(value="file1", required=false) List<MultipartFile> multi,@RequestParam(value = "bno") int bno, Model model)  {
@@ -288,6 +320,7 @@ public class CommunityController {
 		return result;
 	}
 	
+	// 파일 이름 설정 
 	private String genSaveFileName(String extName) {
         String fileName = "";
         
@@ -304,6 +337,7 @@ public class CommunityController {
         return fileName;
     }
 	
+	// 댓글 입력
 	@RequestMapping("insertReply.co")
 	public String insertReply(Reply r, Model model) {
 		String result = "redirect:detail.co?pageNo=" + r.getBoardNo();
@@ -315,6 +349,7 @@ public class CommunityController {
 		return result;
 	}
 	
+	// 댓글 삭제
 	@RequestMapping("deleteReply.co")
 	public String deleteReply(Reply r, Model model ) {
 		String result = "redirect:detail.co?pageNo=" + r.getBoardNo();
@@ -324,26 +359,46 @@ public class CommunityController {
 		return result;
 	}
 	
+	// 추천 증가 
 	@ResponseBody
 	@RequestMapping("thumbsPlus.co")
 	public String thumbsPlus(Model model, Community c ) {
 		String result = "";
-		System.out.println("no >> "+c.getBoardNo());
-		c.setCommunityGood(c.getCommunityGood()+1);
-		int num = communityService.thumbsPlus(c);
-		System.out.println("num >>" + num);
-		if(num == 1) {
-			result = "s";
-		}else {
-			result = "f";
+		// select시 값이 존재하면 insert하지 않음
+		BoardGood bg = new BoardGood();
+		bg.setBoardNo(c.getBoardNo());
+		bg.setMemberNo(c.getBoardWriter());
+		
+		int good = communityService.selectThumbsGood(bg);
+		if(good == 0) { // 사용자가 이 게시물에 공감한적이 없음
+			
+			c.setCommunityGood(c.getCommunityGood()+1);
+			int num = communityService.thumbsPlus(c);
+			communityService.insertThumbsGood(bg);
+			if(num == 1) { // 추가 성공
+				result = "s";
+			}else { // 추가 중 의문의 사고
+				result = "f";
+			}
+			
+		}else { // 사용자가 이 게시물에 공감한적이 있음
+			result = "d";
 		}
+		
 		
 		return result;
 	}
+	
+	// 추천 취소
 	@ResponseBody
 	@RequestMapping("thumbsMinus.co")
 	public String thumbsMinus(Model model, Community c ) {
 		String result = "";
+		// delete
+		BoardGood bg = new BoardGood();
+		bg.setBoardNo(c.getBoardNo());
+		bg.setMemberNo(c.getBoardWriter());
+		communityService.deleteThumbsGood(bg);
 		c.setCommunityGood(c.getCommunityGood());
 		int num = communityService.thumbsMinus(c);
 		if(num == 1) {
@@ -354,5 +409,6 @@ public class CommunityController {
 		
 		return result;
 	}
+	
 	
 }

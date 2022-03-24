@@ -1,5 +1,9 @@
 package com.kh.walkwork.member.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
@@ -12,9 +16,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.walkwork.community.model.service.CommunityService;
 import com.kh.walkwork.member.model.service.MemberService;
 import com.kh.walkwork.member.model.vo.Cert;
 import com.kh.walkwork.member.model.vo.Member;
@@ -27,6 +34,9 @@ public class MemberController {
 
 	@Autowired
 	private MemberService memberService;
+
+	@Autowired
+	private CommunityService communityService;
 
 	@Autowired
 	private JavaMailSender sender; // 이메일전송
@@ -44,7 +54,7 @@ public class MemberController {
 //		System.out.println(m);
 		System.out.println("넘어옴?");
 
-		//주소 합치기
+		// 주소 합치기
 		String str = m.getAddress();
 		String[] strArr = str.split(",", 3);
 
@@ -144,6 +154,9 @@ public class MemberController {
 
 //---------------------------로그인-----------------------------------
 
+	
+
+
 	@RequestMapping("login.me")
 	public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
 
@@ -158,7 +171,7 @@ public class MemberController {
 			return mv;
 		} else{
 			
-			//로그인 실패
+		//로그인 실패
 			session.setAttribute("errorMsg", "아이디와 비밀번호를 확인하세요");
 
 			mv.addObject("errorMsg", "로그인실패").setViewName("redirect:/");
@@ -167,66 +180,156 @@ public class MemberController {
 		}
 	}
 
-//	---------------------------------------------
-	
+//---------------------------------------------
+
 	@ResponseBody
 	@RequestMapping("searchId.me")
 	public ModelAndView searchId(Member m, ModelAndView mv, HttpSession session) {
-				
+
 		Member b = memberService.searchId(m);
-		
+
 		String id = b.getMemberNo();
-		session.setAttribute("alertMsg", m.getMemberName()+"님의 아이디는"+id+"입니다.");
-		
+		session.setAttribute("alertMsg", m.getMemberName() + "님의 아이디는" + id + "입니다.");
+
 		mv.addObject("id", "id").setViewName("redirect:/");
 		return mv;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping("searchPwd.me")
 	public ModelAndView searchPwd(Member m, ModelAndView mv, HttpSession session) {
-		
+
 		System.out.println(m);
-		
+
 		Member b = memberService.searchId(m);
-		
+
 		String id = b.getMemberNo();
-		session.setAttribute("alertMsg", m.getMemberName()+"님의 아이디는"+id+"입니다.");
-		
+		session.setAttribute("alertMsg", m.getMemberName() + "님의 아이디는" + id + "입니다.");
+
 		mv.addObject("id", "id").setViewName("redirect:/");
 		return mv;
+	}
 
 	// 로그아웃
 	@RequestMapping("logout.me")
 	public String logoutMember(HttpSession session) {
-		
+
 		session.invalidate();
 		return "redirect:/";
 	}
-    
 
 //-----------윤희-----------------//
 
 	// 회원정보
-	
+
 	@RequestMapping("information.me")
 	public ModelAndView selectMemberInformation(Member m, HttpSession session, ModelAndView mv) {
-		
-		Member memberInfo = memberService.selectMemberInformation(m);
-		
+		Member userInfo = (Member) session.getAttribute("loginUser");
+		System.out.println(userInfo.getMemberNo());
+		Member memberInfo = memberService.selectMemberInformation(userInfo);
+		System.out.println(memberInfo.getMemberName());
 		mv.addObject("memberInfo", memberInfo).setViewName("member/MemberInformation");
 		return mv;
 	}
-	
-	// 수정 정보 
+
+	// 수정 정보
 	@RequestMapping("informationMdf.me")
 	public ModelAndView modifyMemberInformation(Member m, HttpSession session, ModelAndView mv) {
-		
+
 		Member memberInfo = memberService.selectMemberInformation(m);
-		
+
 		mv.addObject("memberInfo", memberInfo).setViewName("member/MemberInformationModify");
 		return mv;
 	}
-	
-	
+
+	// 비밀번호 설정 페이지
+	@RequestMapping("informationpwd.me")
+	public String modifypwdPage(HttpSession session) {
+
+		return "member/MemberInformationPwd";
+	}
+
+	// 비밀번호 수정 작업
+	@RequestMapping("modifyPwd.me")
+	public String modifyPwd(HttpSession session, Member m, ModelAndView mv) {
+		String result = "";
+		Member userInfo = (Member) session.getAttribute("loginUser");
+		Member loginUser = memberService.loginMember(userInfo); // 흠
+
+		String encodePassword = bcryptPasswordEncoder.encode(loginUser.getMemberPwd());
+
+		if (loginUser != null && bcryptPasswordEncoder.matches(m.getMemberPwd(), encodePassword)) {
+			// modify
+			Member nMember = new Member();
+			nMember.setMemberNo(loginUser.getMemberNo());
+			nMember.setMemberPwd(m.getTmpPwd());
+			memberService.changePwd(nMember);
+
+			result = "redirect:information.me";
+			System.out.println("성공");
+		} else {
+			// 비밀번호 불일치
+			result = "redirect:informationpwd.me";
+			System.out.println("실패");
+		}
+
+		return result;
+	}
+
+	// 프로필 사진 업로드
+	@ResponseBody
+	@RequestMapping("addProfileImg.me")
+	public String addProfileImg(HttpSession session,
+			@RequestPart(value = "file1", required = false) MultipartFile file) {
+		String result = "";
+		String path = "C:\\walkworkFiles";
+
+		String uploadpath = path;
+		String originFileName = file.getOriginalFilename();
+		String extName = originFileName.substring(originFileName.lastIndexOf("."), originFileName.length());
+		// long size = file.getSize();
+		String saveFileName = genSaveFileName(extName);
+		File dir = new File(path);
+		if (!dir.exists()) {
+			dir.mkdir();
+		}
+		File Nfile = new File(uploadpath, saveFileName);
+
+		try {
+			file.transferTo(Nfile);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		Member m = new Member();
+		Member userInfo = (Member) session.getAttribute("loginUser");
+		String memberNo = userInfo.getMemberNo();
+		m.setMemberNo(memberNo);
+		m.setFile(saveFileName);
+		m.setFilePath(uploadpath);
+		memberService.updateMemberFile(m);
+		
+
+		return result;
+	}
+
+	// 파일 이름 설정
+	private String genSaveFileName(String extName) {
+		String fileName = "";
+
+		Calendar calendar = Calendar.getInstance();
+		fileName += calendar.get(Calendar.YEAR);
+		fileName += calendar.get(Calendar.MONTH);
+		fileName += calendar.get(Calendar.DATE);
+		fileName += calendar.get(Calendar.HOUR);
+		fileName += calendar.get(Calendar.MINUTE);
+		fileName += calendar.get(Calendar.SECOND);
+		fileName += calendar.get(Calendar.MILLISECOND);
+		fileName += extName;
+
+		return fileName;
+	}
+
 }
