@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.walkwork.member.model.vo.Dept;
 import com.kh.walkwork.member.model.vo.Member;
 import com.kh.walkwork.project.common.model.dao.ProjectDao;
 import com.kh.walkwork.project.common.model.vo.Project;
@@ -33,6 +34,22 @@ public class ProjectService {
 			m.setDeptName(dept);
 			
 			lst = projectDao.selectMember(sqlSession, m);
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return lst;
+	}
+
+	public List<Dept> searchDept(String dept) {
+		List<Dept> lst = new ArrayList<Dept>();
+		
+		try {
+			Dept m = new Dept();
+			m.setDeptName(dept);
+			
+			lst = projectDao.selectDept(sqlSession, m);
 		
 		}catch(Exception e) {
 			e.printStackTrace();

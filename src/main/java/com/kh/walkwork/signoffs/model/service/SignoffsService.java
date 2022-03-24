@@ -2,13 +2,13 @@ package com.kh.walkwork.signoffs.model.service;
 
 import java.util.List;
 
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kh.walkwork.community.model.dao.CommunityDao;
+import com.kh.walkwork.member.model.vo.Dept;
 import com.kh.walkwork.signoffs.model.dao.SignoffsDao;
 import com.kh.walkwork.signoffs.model.vo.Signoffs;
+import com.kh.walkwork.signoffs.model.vo.SignoffsDept;
 
 @Service
 public class SignoffsService {
@@ -26,6 +26,10 @@ public class SignoffsService {
 	public int insertSignoffs(Signoffs vo) {
 		return signoffsDao.insertSignoffs(vo);
 	}
+
+	public int insertSignoffsDept(SignoffsDept vo) {
+		return signoffsDao.insertSignoffsDept(vo);
+	}
 	
 	public int updateSignoffs(Signoffs vo) {
 		return signoffsDao.updateSignoffs(vo);
@@ -33,6 +37,18 @@ public class SignoffsService {
 	
 	public int deleteSignoffs(Signoffs vo) {
 		return signoffsDao.deleteSignoffs(vo);
+	}
+
+	public Dept getSignoffsDept(String docuNo) {
+		return signoffsDao.getSignoffsDept(docuNo);
+	}
+
+	public Dept getDept(String deptNo) {
+		return signoffsDao.getDept(deptNo);
+	}
+
+	public String getLatestApprovalNo(Signoffs s) {
+		return signoffsDao.getLatestApprovalNo(s);
 	}
 	
 }

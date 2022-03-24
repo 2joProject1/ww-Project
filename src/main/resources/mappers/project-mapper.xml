@@ -35,4 +35,11 @@
 	      DEPT_NAME LIKE '%'||#{deptName}||'%' 
 </select>
 
+<select id="selectDept" parameterType="dept" resultType="dept">
+	SELECT *
+	FROM DEPT M
+	WHERE 
+	      DEPT_NAME LIKE '%'||#{deptName}||'%' 
+</select>
+
 </mapper>

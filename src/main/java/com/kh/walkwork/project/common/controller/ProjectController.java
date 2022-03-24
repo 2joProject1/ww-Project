@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.walkwork.member.model.vo.Dept;
 import com.kh.walkwork.member.model.vo.Member;
 import com.kh.walkwork.project.common.model.service.ProjectService;
 import com.kh.walkwork.project.common.model.vo.Project;
@@ -71,6 +72,17 @@ public class ProjectController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Member> searched = projectService.searchMember(name, dept);
 		map.put("members",searched);
+	
+		return map;
+	}
+	
+	//프로젝트 생성 - 사원검색
+	@ResponseBody
+	@RequestMapping("docubox.searchDept")
+	public Map<String, Object> searchDept(String name, String dept) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Dept> searched = projectService.searchDept(dept);
+		map.put("depts",searched);
 	
 		return map;
 	}
