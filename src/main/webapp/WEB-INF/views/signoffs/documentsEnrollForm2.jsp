@@ -97,6 +97,7 @@
 	vertical-align: top;
 	border: 1px solid #999;
 	margin-left: 50px;
+	overflow: auto;
 }
 
 #fileList>li {
@@ -217,11 +218,11 @@ input[type="search"] {
 								<th></th>
 								<td></td>
 								<th>&nbsp;수신부서</th>
-								<td>&nbsp;재무기획팀</td>
+								<td style="cursor: pointer; border: 1px solid black; text-align: center" onclick="selectDeptModal()">선택</td>
 							</tr>
 							<tr>
 								<th>&nbsp;품의일자</th>
-								<td>&nbsp;2022-03-01</td>
+								<td>&nbsp;${now}</td>
 								<th>&nbsp;소속</th>
 								<td>&nbsp;개발팀</td>
 							</tr>

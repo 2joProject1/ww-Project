@@ -3,7 +3,7 @@
 <mapper namespace="attachmentMapper">
 
 	<!-- 첨부파일 insert -->
-	<insert id="insertAttachment" parameterType="com.kh.walkwork.common.model.vo.Attachment">
+	<insert id="insertAttachment" parameterType="Attachment">
 		INSERT INTO
 			ATTACHMENT
 				(

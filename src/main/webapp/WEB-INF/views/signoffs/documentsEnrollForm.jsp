@@ -107,6 +107,7 @@
 	border: 1px solid #999;
 	clear: both;
 	display: inline-block;
+	overflow: auto;
 }
 
 #fileList>li {
@@ -146,7 +147,7 @@ input[type="search"] {
 	border-radius: 10px;
 }
 
-#searchMemberResult {
+#searchMemberResult, #searchDeptResult {
 	width: 409px;
 	height: 100px;
 	border: 1px solid lightgray;
@@ -154,7 +155,8 @@ input[type="search"] {
 	overflow: auto;
 }
 
-#searchMember>div>div>div.modal-body>div.search-area>table>tbody>tr:hover
+#searchMember>div>div>div.modal-body>div.search-area>table>tbody>tr:hover,
+#searchDept>div>div>div.modal-body>div.search-area>table>tbody>tr:hover
 	{
 	cursor: pointer;
 	padding: 10px;
@@ -162,7 +164,8 @@ input[type="search"] {
 	border-radius: 10px;
 }
 
-#searchMember>div>div>div.modal-body>div.search-area>table>tbody>tr>td {
+#searchMember>div>div>div.modal-body>div.search-area>table>tbody>tr>td,
+#searchDept>div>div>div.modal-body>div.search-area>table>tbody>tr>td {
 	margin-left: 5px;
 }
 
@@ -209,6 +212,7 @@ input[type="search"] {
 			<form id="enrollForm" class="enroll-form" action="docubox.insert" enctype="multipart/form-data" method="post">
 				<input type="hidden" name="signoffs" data-signoffs-index="1">
 				<input type="hidden" name="signoffs" data-signoffs-index="2">
+				<input type="hidden" name="signoffsDeptNo" id="signoffsDeptNo" value="0" >
 			
 				<div id="docu-header-area">
 					<div id="docu-basic-area">
@@ -230,11 +234,15 @@ input[type="search"] {
 								<th></th>
 								<td></td>
 								<th>&nbsp;수신부서</th>
-								<td>&nbsp;재무기획팀</td>
+								<td id="signoffsDept" 
+									style="cursor: pointer; border: 1px solid black; 
+										text-align: center" onclick="selectDeptModal()">
+									선택
+								</td>
 							</tr>
 							<tr>
 								<th>&nbsp;기안일자</th>
-								<td>&nbsp;2022-03-01</td>
+								<td>&nbsp;${now}</td>
 								<th>&nbsp;소속</th>
 								<td>&nbsp;개발팀</td>
 							</tr>
@@ -286,6 +294,7 @@ input[type="search"] {
 		</div>
 	</div>
 	
+	<jsp:include page="/WEB-INF/views/signoffs/enrollDeptModal.jsp" />
 	<jsp:include page="/WEB-INF/views/signoffs/enrollMemberModal.jsp" />
 	<jsp:include page="/WEB-INF/views/signoffs/enrollFormJs.jsp" />
 </body>

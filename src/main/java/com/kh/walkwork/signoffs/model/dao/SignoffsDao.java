@@ -6,7 +6,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.kh.walkwork.member.model.vo.Dept;
 import com.kh.walkwork.signoffs.model.vo.Signoffs;
+import com.kh.walkwork.signoffs.model.vo.SignoffsDept;
 
 @Repository
 public class SignoffsDao {
@@ -32,5 +34,21 @@ public class SignoffsDao {
 
 	public int insertSignoffs(Signoffs vo) {
 		return sqlSession.insert("signoffsMapper.insertSignoffs", vo);
+	}
+
+	public Dept getSignoffsDept(String docuNo) {
+		return sqlSession.selectOne("signoffsMapper.getSignoffsDept", docuNo);
+	}
+
+	public int insertSignoffsDept(SignoffsDept vo) {
+		return sqlSession.insert("signoffsMapper.insertSignoffsDept", vo);
+	}
+
+	public Dept getDept(String deptNo) {
+		return sqlSession.selectOne("signoffsMapper.getDept", deptNo);
+	}
+
+	public String getLatestApprovalNo(Signoffs s) {
+		return sqlSession.selectOne("signoffsMapper.getLatestApprovalNo", s);
 	}
 }

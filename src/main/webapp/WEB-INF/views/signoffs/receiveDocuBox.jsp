@@ -112,7 +112,7 @@ a.page-link {
 			</div>
 		</div>
 		<div id="content-layout">
-			<div class="docubox-title">기안문서함</div>
+			<div class="docubox-title">수신문서함</div>
 			<hr>
 			<div class="docubox-search-area mt-3">
 				<label class="box-radio-input" data-index="0" data-toggle="collapse" data-target="#fDay" aria-expanded="false">
