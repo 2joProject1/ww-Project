@@ -134,7 +134,7 @@
 	    <div id="container">
 	        <div id="sidebar-layout">
 	        	<div id="main-sidebar">
-	        	사이드바에 들어갈 내용을 작성하세요
+   	<jsp:include page="noticeSidebar.jsp" />
 	        	</div>
 	        </div>
 	
@@ -186,14 +186,14 @@
                             </tr>
                             <tr>
                                 <td>기간</td>
-                                <td  colspan="3"><input type="text" name="noticePeriod"></td>
+                                <td colspan="3"><input type="text" name="noticePeriod"></td>
                             </tr>
                             <tr>
                                 <td>상단공지</td>
-                                <td  colspan="3">
+                                <td colspan="3">
                                     <label class="switch">
-                                        <input type="checkbox" name="topFix" value="N">
-                                       
+                                        <input type="checkbox" name="topFix" value="Y">
+                                      
                                         <span class="slider round"></span>
                                     </label>
                                 </td>
@@ -207,6 +207,9 @@
                             <tr>
                                 <td>파일첨부</td>
 	                                <td colspan="3"> <!-- 파일아이콘 나중에 맞추기 -->
+		                                <input type="file" multiple="multiple"
+										    id="upfile" class="form-control-file border"
+										    name="upfile" onChange="onFileUpload(event)">
 		                                <label for="upfile" id="uplabel"><i class="xi-file-add-o"></i> </label>
 		                                <span id="spanFile" name="spanFile" value="ㅋㅋ"></span>
 		                               <!--  <input type="text" id="spanFile" name="spanFile" value="ㅋㅋ"> -->
@@ -225,9 +228,9 @@
             </div>
 	        </div>
 	    </div>
-	    <input type="file" multiple="multiple"
+<!-- 	    <input type="file" multiple="multiple"
 	    id="upfile" class="form-control-file border"
-	    name="upfile" onChange="onFileUpload(event)">
+	    name="upfile" onChange="onFileUpload(event)"> -->
 		                                
 <script>
 
@@ -237,23 +240,7 @@ window.onload = $(function(){
 })
 
 function onFileUpload(event){
-	    event.preventDefault();
-	    
-	    let file = event.target.files[0];
-	    let file1 = event.target.files[1];
-	    let file2 = event.target.files[2];
-	    let file3 = event.target.files[3];
-	    
-	    let file4 =  event.target.files.length;
-/* 	    console.log(file4+"45");
-	    console.log(file);
-	    
-	    console.log(document.getElementById('upfile').files[0].name);
-	    console.log(document.getElementById('upfile').files[1].name);
-	    console.log(document.getElementById('upfile').files[2].name);  */
-	    
-	    console.log("길이"+event.target.files.length);
-	    
+	    event.preventDefault();	    
 	    $("upfile").text("event.target.files[0]");
 	    
 	    var a = "";

@@ -24,7 +24,22 @@ public interface MemberService {
 
 	Member searchId(Member m);
 	
-
+	int loginFail(Member loginUser);
+	
+	String sendPwd(Member m);
+	
+	int deleteTmpPwd(Member loginUser);
+	
+	int loginFailReset(Member loginUser);
+	
+	int loginFailCount(Member loginUser);
+	
+	int changePwd(Member m);
+	
+	Member searchMember(Member m);
+//-------------------------------------------------------
+	
+	
 	// 헤더
 	ArrayList<Member> selectAddrList();
 	
@@ -32,6 +47,12 @@ public interface MemberService {
 
 	// ---윤희
 	public Member selectMemberInformation(Member m);
+
+
+
+
+
+
 
 	
 }

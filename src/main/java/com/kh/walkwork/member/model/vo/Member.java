@@ -24,9 +24,9 @@ public class Member {
 	private String status;
 	private String file;
 	private String filePath;
-	private String loginFail;
+	private int loginFail;
 	private String tmpPwd;
-	private Date enrollDate;
+	private Date EnrollDate;
 	private String resignDate;
 
 }
