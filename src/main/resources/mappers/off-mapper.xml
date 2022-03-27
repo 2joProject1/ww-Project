@@ -39,14 +39,14 @@
 				)	
 	</insert>
 	
-	<select id="selectCountOff"  resultType="_int" parameterType="_int" >
+	<select id="selectCountOff"  resultType="_int" parameterType="String" >
 		SELECT COUNT(*)
 		FROM DAYOFF
 		WHERE OFF_WRITER = #{offWriter}
 	</select>
 	
 	
-	<select id="selectListOff" resultMap="offResultSet" parameterType="_int">
+	<select id="selectListOff" resultMap="offResultSet" parameterType="String">
 		SELECT 
 			OFF_NO
 			, T.DEPT_NO OFF_DEPT
@@ -54,7 +54,7 @@
 			, TO_CHAR(OFF_START, 'YYYY-MM-DD') OFF_START
 			, TO_CHAR(OFF_END, 'YYYY-MM-DD') OFF_END
 			, OFF_REASON
-			, TO_CHAR(REQUEST_DATE 'YYYY-MM-DD') AS REQUEST_DATE
+			, TO_CHAR(REQUEST_DATE, 'YYYY-MM-DD') AS REQUEST_DATE
 			, D.STATUS
 			, OFF_DAYS
 			, M.MEMBER_NAME MEMBER_NAME
@@ -67,17 +67,29 @@
 	
 	</select>
 	
-	
 	<select id="searchListOff">
-	SELECT OFF_NO, T.DEPT_NO OFF_DEPT, M.MEMBER_NO OFF_WRITER, 
-	OFF_START, OFF_END, OFF_REASON, REQUEST_DATE, D.STATUS, OFF_DAYS,
-	M.MEMBER_NAME MEMBER_NAME, T.DEPT_NAME DEPT_NAME
+	SELECT 
+			OFF_NO, 
+			T.DEPT_NO OFF_DEPT, 
+			M.MEMBER_NO OFF_WRITER, 
+			OFF_START, 
+			OFF_END, 
+			OFF_REASON, 
+			REQUEST_DATE, 
+			D.STATUS, 
+			OFF_DAYS,
+			M.MEMBER_NAME MEMBER_NAME, 
+			T.DEPT_NAME DEPT_NAME
 	FROM DAYOFF D
 	JOIN DEPT T ON ( D.OFF_DEPT = T.DEPT_NO)
 	JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
 	WHERE REQUEST_DATE BETWEEN #{offStart} AND #{offEnd}
 	AND OFF_WRITER = #{offWriter}
 	ORDER BY D.OFF_NO DESC
+	</select>
+	
+	<select id="approvalOff">
+	
 	
 	</select>
 

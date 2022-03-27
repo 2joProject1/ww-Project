@@ -66,10 +66,17 @@ public class DayOffController {
 		return "off/offStatusView";
 	}
 	
-	@RequestMapping("approval.of")
-	public String offApproval() {
-		return "off/offApprovalView";
-	}
+//	@RequestMapping(value = "approval.of")
+//	public String offApproval(ModelAndView mv, HttpSession session) {
+//		// String offWriter = (Member)session.getAttribute("loginUser").getMemberNo();
+//		String offWriter = "12345";
+//		
+//		if(offWriter != )
+//		
+//		
+//		mv.setViewName("off/offApprovalView");
+//		return mv;
+//	}
 	
 	
 	

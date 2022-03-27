@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -98,7 +99,7 @@ a.page-link {
 				</div>
 				<div class="sub-menu">
 					<i class="fi fi-rr-folder"></i>&nbsp;
-					<a href="docubox.reseive">수신문서함</a>
+					<a href="docubox.receive">수신문서함</a>
 				</div>
 				<div class="sub-menu">
 					<i class="fi fi-rr-folder"></i>&nbsp;
@@ -148,91 +149,90 @@ a.page-link {
 				<input type="radio" name="statusFilter" value="3">
 				완료
 			</div>
-		<script>
-		</script>
 
-		<div class="docubox-board-area">
-			<br>
-			<table class="table table-hover">
-				<thead>
-					<tr>
-						<th>기안일자</th>
-						<th>문서번호</th>
-						<th>결재양식</th>
-						<th>제목</th>
-						<th>첨부</th>
-						<th>결재상태</th>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="item" items="${documentList}">
-						<tr style="cursor: pointer;" onclick="goDocument('${item.docuNo}')">
-							<td>2022-03-08</td>
-							<td>${item.docuNo}</td>
-							<td>
-								<c:choose>
-									<c:when test="${item.docuFormat == 1}">
-										기안
-									</c:when>
-									<c:when test="${item.docuFormat == 2}">
-										품의
-									</c:when>
-									<c:otherwise>
-										미선택
-									</c:otherwise>
-								</c:choose>
-							</td>
-							<td>${item.docuTitle}</td>
-							<td>
-								<i class="fi fi-rr-document"></i>
-							</td>
-							<td>
-								<c:choose>
-									<c:when test="${item.approvalDecision == 0}">
-										대기
-									</c:when>
-									<c:when test="${item.approvalDecision == 1}">
-										진행
-									</c:when>
-									<c:when test="${item.approvalDecision == 2}">
-										완료
-									</c:when>
-									<c:otherwise>
-										몰라
-									</c:otherwise>
-								</c:choose>
-							</td>
+			<div class="docubox-board-area">
+				<br>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>기안일자</th>
+							<th>문서번호</th>
+							<th>결재양식</th>
+							<th>제목</th>
+							<th>첨부</th>
+							<th>결재상태</th>
 						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			<div class="pagination-area">
-				<ul class="pagination pagination-sm">
-					<c:choose>
-						<c:when test="${ pi.currentPage eq 1 }">
-							<li class="page-item disabled"><a class="page-link" href="#"><</a></li>
-							<!-- 1번페이지일 경우 비활성화되어있어야함 -->
-						</c:when>
-						<c:otherwise>
-							<li class="page-item"><a class="page-link" href="docubox.draft?cpage=${ pi.currentPage - 1 }"><</a></li>
-						</c:otherwise>
-					</c:choose>
-
-					<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-						<li class="page-item"><a class="page-link" href="docubox.draft?cpage=${ p }">${ p }</a></li>
-						<!-- requestParam으로 받는 cpage 로 쿼리스트링 키를 넘겨줘야함 (currentPage 가 아님) -->
-					</c:forEach>
-
-					<c:choose>
-						<c:when test="${ pi.currentPage eq pi.maxPage }">
-							<li class="page-item disabled"><a class="page-link" href="#">></a></li>
-							<!-- 마지막페이지일경우  -->
-						</c:when>
-						<c:otherwise>
-							<li class="page-item"><a class="page-link" href="docubox.draft?cpage=${ pi.currentPage + 1 }">></a></li>
-						</c:otherwise>
-					</c:choose>
-				</ul>
+					</thead>
+					<tbody>
+						<c:forEach var="item" items="${documentList}">
+							<tr style="cursor: pointer;" onclick="goDocument('${item.docuNo}')">
+								<td><fmt:formatDate value="${item.docuWriteDate}" pattern="yyyy-MM-dd"/></td>
+								<td>${item.docuNo}</td>
+								<td>
+									<c:choose>
+										<c:when test="${item.docuFormat == 1}">
+											기안
+										</c:when>
+										<c:when test="${item.docuFormat == 2}">
+											품의
+										</c:when>
+										<c:otherwise>
+											미선택
+										</c:otherwise>
+									</c:choose>
+								</td>
+								<td>${item.docuTitle}</td>
+								<td>
+									<i class="fi fi-rr-document"></i>
+								</td>
+								<td>
+									<c:choose>
+										<c:when test="${item.approvalDecision == 0}">
+											대기
+										</c:when>
+										<c:when test="${item.approvalDecision == 1}">
+											진행
+										</c:when>
+										<c:when test="${item.approvalDecision == 2}">
+											완료
+										</c:when>
+										<c:otherwise>
+											몰라
+										</c:otherwise>
+									</c:choose>
+								</td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+				<div class="pagination-area">
+					<ul class="pagination pagination-sm">
+						<c:choose>
+							<c:when test="${ pi.currentPage eq 1 }">
+								<li class="page-item disabled"><a class="page-link" href="#"><</a></li>
+								<!-- 1번페이지일 경우 비활성화되어있어야함 -->
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link" href="docubox.draft?cpage=${ pi.currentPage - 1 }"><</a></li>
+							</c:otherwise>
+						</c:choose>
+	
+						<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+							<li class="page-item"><a class="page-link" href="docubox.draft?cpage=${ p }">${ p }</a></li>
+							<!-- requestParam으로 받는 cpage 로 쿼리스트링 키를 넘겨줘야함 (currentPage 가 아님) -->
+						</c:forEach>
+	
+						<c:choose>
+							<c:when test="${ pi.currentPage eq pi.maxPage }">
+								<li class="page-item disabled"><a class="page-link" href="#">></a></li>
+								<!-- 마지막페이지일경우  -->
+							</c:when>
+							<c:otherwise>
+								<li class="page-item"><a class="page-link" href="docubox.draft?cpage=${ pi.currentPage + 1 }">></a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>

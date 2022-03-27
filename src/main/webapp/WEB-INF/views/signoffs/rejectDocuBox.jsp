@@ -97,7 +97,7 @@ color:#fff;
 					<i class="fi fi-rr-folder"></i>&nbsp;<a href="docubox.draft">기안문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="docubox.reseive">수신문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;<a href="docubox.receive">수신문서함</a>
 				</div>
 				<div class="sub-menu">
 					<i class="fi fi-rr-folder"></i>&nbsp;<a href="docubox.dept">부서문서함</a>
@@ -193,5 +193,6 @@ color:#fff;
 			</div>
 		</div>
 	</div>
+	<jsp:include page="/WEB-INF/views/signoffs/docuBoxJs.jsp" />
 </body>
 </html>

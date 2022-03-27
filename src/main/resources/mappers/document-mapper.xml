@@ -31,6 +31,123 @@
 	
 	<!-- 현재 일자 기준 DOCU_NO 추출 -->
 	<select id="getLastDocuNo" resultType="String">
-		SELECT DOCU_NO FROM DOCUMENT WHERE TO_CHAR(DOCU_WRITE_DATE, 'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD')
+		<![CDATA[
+		SELECT DOCU_NO FROM 
+			 (SELECT 
+			 	DOCU_NO FROM DOCUMENT 
+			 	WHERE TO_CHAR(DOCU_WRITE_DATE, 'YYYYMMDD') = TO_CHAR(SYSDATE,'YYYYMMDD') 
+			 	ORDER BY DOCU_WRITE_DATE DESC
+			 ) A
+		WHERE ROWNUM < 2
+		]]>
 	</select>
+	
+	<!-- 문서 리스트 -->
+	<select id="getDocumentList" parameterType="document" resultType="document">
+		SELECT A.DOCU_NO
+				,A.DRAFTER
+				,A.DOCU_FORMAT
+				,A.DOCU_TITLE
+				,A.DOCU_CONTENT
+				,A.DOCU_RETENTION_PERIOD
+				,A.APPROVAL_DECISION
+				,A.DOCU_WRITE_DATE
+				
+			FROM DOCUMENT A
+			LEFT OUTER JOIN SIGNOFFS_DEPT B ON A.DOCU_NO = B.DOCU_NO
+		WHERE
+			1=1
+			<if test="drafter != null and !drafter.equals('')">
+				AND A.DRAFTER = #{drafter}
+			</if>
+			<if test="selectType == 1">
+				AND A.DOCU_NO IN 
+					(select DOCU_NO from signoffs C 
+					WHERE APPROVER = #{approver} 
+						AND APPROVAL_STATUS = 0 
+						AND APPROVAL_RANK = (
+						SELECT MAX(APPROVAL_RANK) FROM signoffs B 
+						WHERE C.DOCU_NO = B.DOCU_NO
+	                        AND C.APPROVER = B.APPROVER
+	                        AND B.APPROVAL_STATUS = C.APPROVAL_STATUS
+						)
+					)
+			</if>
+			<if test="signoffsDeptNo != null and !signoffsDeptNo.equals('')">
+				AND B.DEPT_NO = #{signoffsDeptNo}
+			</if>
+	</select>
+	
+	<!-- 문서 상세보기(문서하나 가져오기) -->
+	<select id="getDocumentOne" parameterType="document" resultType="document">
+		SELECT DOCU_NO
+				,DRAFTER
+				,DOCU_FORMAT
+				,DOCU_TITLE
+				,DOCU_CONTENT
+				,DOCU_RETENTION_PERIOD
+				,APPROVAL_DECISION
+				,DOCU_WRITE_DATE
+				
+			FROM DOCUMENT
+		WHERE 1=1
+			<if test="docuNo != null and !docuNo.equals('')">
+			AND DOCU_NO = #{docuNo}
+			</if>
+			<if test="approvalNo != null and !approvalNo.equals('')">
+			AND DOCU_NO = #{approvalNo}
+			</if>
+			
+	</select>
+	
+	<!-- 문서 페이징 처리를 위한 갯수 -->
+	<select id="selectDocumentCount" resultType="int" parameterType="document">
+		SELECT COUNT(A.DOCU_NO)
+			FROM DOCUMENT A
+			LEFT OUTER JOIN SIGNOFFS_DEPT B ON A.DOCU_NO = B.DOCU_NO
+		WHERE
+			1=1
+			<if test="drafter != null and !drafter.equals('')">
+				AND A.DRAFTER = #{drafter}
+			</if>
+			<if test="selectType == 1">
+				AND A.DOCU_NO IN (select DOCU_NO from signoffs A WHERE APPROVAL_STATUS = 0 AND APPROVAL_RANK = (SELECT MIN(APPROVAL_RANK) FROM signoffs B WHERE A.DOCU_NO = B.DOCU_NO))
+			</if>
+			<if test="signoffsDeptNo != null and !signoffsDeptNo.equals('')">
+				AND B.DEPT_NO = #{signoffsDeptNo}
+			</if>
+	</select>
+	
+	<!-- 문서 수정 -->
+	<update id="updateDocument" parameterType="document">
+		UPDATE DOCUMENT
+			SET
+			<if test="drafter != null">
+			DRAFTER = #{drafter}
+			</if>
+			<if test="docuFormat != null">
+			,DOCU_FORMAT = #{docuFormat}
+			</if>
+			<if test="docuTitle != null">
+			,DOCU_TITLE = #{docuTitle}
+			</if>
+			<if test="docuContent != null">
+			,DOCU_CONTENT = #{docuContent}
+			</if>
+			<if test="docuRetentionPeriod != null">
+			,DOCU_RETENTION_PERIOD = #{docuRetentionPeriod}
+			</if>
+			<if test="approvalDecision != null">
+			,APPROVAL_DECISION = #{approvalDecision}
+			</if>
+		WHERE
+			DOCU_NO = #{docuNo}
+	</update>
+	
+	<!-- 문서 삭제 -->
+	<delete id="deleteDocument" parameterType="document">
+		DELETE FROM DOCUMENT
+		WHERE
+			DOCU_NO = #{docuNo}
+	</delete>
 </mapper>

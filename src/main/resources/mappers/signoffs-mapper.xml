@@ -3,33 +3,139 @@
 <mapper namespace="signoffsMapper">
 
 	<!-- 결재할 데이터를 만들 때 -->
-	<insert id="insertOff" parameterType="signoffs">
+	<insert id="insertSignoffs" parameterType="signoffs">
 		INSERT INTO
 			SIGNOFFS
 				(
 				APPROVAL_NO
-				,APPROVALER
+				,APPROVER
 				,DOCU_NO
 				,DOCU_DATE
 				,APPROVAL_DATE
 				,APPROVAL_REJECT_DATE
 				,APPROVAL_STATUS
-				,APPROVAL_DECISION
 				,APPROVAL_RANK
 				,APPROVAL_REJECT
 				)
 			VALUES
 				(
 				SEQ_SNO.NEXTVAL
-				,#{approvaler}
+				,#{approver}
 				,#{docuNo}
 				,#{docuDate}
 				,#{approvalDate}
 				,#{approvalRejectDate}
 				,#{approvalStatus}
-				,#{approvalDecision}
 				,#{approvalRank}
 				,#{approvalReject}
 				)	
 	</insert>
+
+	<!-- 결재할 데이터를 만들 때 -->
+	<insert id="insertSignoffsDept" parameterType="signoffsDept">
+		INSERT INTO
+			SIGNOFFS_DEPT
+				(
+				DEPT_NO
+				,DOCU_NO
+				,DOCU_DATE
+				)
+			VALUES
+				(
+				#{deptNo}
+				,#{docuNo}
+				,#{docuDate}
+				)	
+	</insert>
+	
+	<select id="getSignoffsDept" parameterType="string" resultType="dept">
+		SELECT
+		    A.DEPT_NO,
+		    B.DEPT_NAME    
+		FROM SIGNOFFS_DEPT A LEFT OUTER JOIN DEPT B ON A.DEPT_NO = B.DEPT_NO
+		WHERE
+			A.DOCU_NO = #{docuNo}
+	</select>
+	
+	<select id="getDept" parameterType="string" resultType="dept">
+		SELECT
+		    DEPT_NO,
+		    DEPT_NAME    
+		FROM DEPT
+		WHERE
+			DEPT_NO = #{deptNo}
+	</select>
+	
+	<!-- 결재 정보 수정 -->
+	<update id="updateSignoffs" parameterType="signoffs">
+		UPDATE
+			SIGNOFFS
+				SET
+				APPROVAL_NO = #{approvalNo}
+				<if test="approvalDate != null and !approvalDate.equals('')">
+				,APPROVAL_DATE = #{approvalDate}
+				</if>
+				<if test="approvalStatus != null and !approvalStatus.equals('')">
+				,APPROVAL_STATUS = #{approvalStatus}
+				</if>
+				<if test="approvalReject != null and !approvalReject.equals('')">
+					,APPROVAL_REJECT = #{approvalReject}
+				</if>
+				<if test="approvalRejectDate != null and !approvalRejectDate.equals('')">
+				,APPROVAL_REJECT_DATE = #{approvalRejectDate}
+				</if>
+		WHERE
+			APPROVAL_NO = #{approvalNo}
+	</update>
+	
+	<!-- 결재 삭제 -->
+	<delete id="deleteSignoffs" parameterType="signoffs">
+		DELETE FROM
+			SIGNOFFS
+		WHERE
+			APPROVAL_NO = #{approvalNo}
+	</delete>
+	
+	<!-- 특정 결재번호로 조회 (단건) -->
+	<select id="selectSignoffsOne" parameterType="signoffs" resultType="signoffs">
+		SELECT 
+				APPROVAL_NO
+				,APPROVER
+				,DOCU_NO
+				,DOCU_DATE
+				,APPROVAL_DATE
+				,APPROVAL_REJECT_DATE
+				,APPROVAL_STATUS
+				,APPROVAL_RANK
+				,APPROVAL_REJECT
+		FROM
+			SIGNOFFS
+		WHERE 1=1
+			AND APPROVAL_NO = #{approvalNo}
+	</select>
+	
+	<!-- 문서의 결재 조회 (다건) -->
+	<select id="selectSignoffsList" parameterType="signoffs" resultType="signoffs">
+		SELECT 
+				A.APPROVAL_NO
+				,A.APPROVER
+				,A.DOCU_NO
+				,A.DOCU_DATE
+				,A.APPROVAL_DATE
+				,A.APPROVAL_REJECT_DATE
+				,A.APPROVAL_STATUS
+				,A.APPROVAL_RANK
+				,A.APPROVAL_REJECT
+				,B.MEMBER_NAME
+		FROM
+			SIGNOFFS A
+			LEFT OUTER JOIN MEMBER B ON A.APPROVER = B.MEMBER_NO
+		WHERE A.DOCU_NO = #{docuNo}
+		ORDER BY A.APPROVAL_RANK ASC
+	</select>
+	
+	<select id="getLatestApprovalNo" parameterType="signoffs" resultType="String">
+		SELECT MIN(APPROVAL_RANK) FROM SIGNOFFS
+		WHERE DOCU_NO = #{docuNo}
+	</select>
 </mapper>

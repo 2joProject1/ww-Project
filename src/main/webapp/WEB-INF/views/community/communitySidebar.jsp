@@ -60,7 +60,7 @@
 		                <a href="list.co"><b>커뮤니티</b></a>
 		                <br>
 		                &nbsp;&nbsp;&nbsp;<i class="fi fi-rr-heart side_subtitle"></i>&nbsp;
-		                <a href="" class="side_subtitle">내 게시글</a>
+		                <a href="mylist.co" class="side_subtitle">내 게시글</a>
 		                <br><br>
 		                
 		                <i class="fi fi-rr-megaphone"></i>&nbsp;

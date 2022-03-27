@@ -34,7 +34,7 @@
 	padding-left: 25px;
 }
 
-#docu-format {
+#docuFormat {
 	width: 160px;
 }
 
@@ -97,10 +97,75 @@
 	vertical-align: top;
 	border: 1px solid #999;
 	margin-left: 50px;
+	overflow: auto;
 }
 
 #fileList>li {
 	list-style: none;
+}
+
+button.x-btn {
+    line-height: 20px;
+    vertical-align: middle;
+    margin-left: 10px;
+    background: #EEEE;
+    transition: 0.05s;
+}
+
+button.x-btn:hover {
+    background: #CCC;
+}
+
+
+/* 사원검색 */
+input[type="search"] {
+	width: 409px;
+	height: 58px;
+	border-radius: 15px;
+	margin-top: -18px;
+	margin-bottom: 33px;
+	margin-left: 10px;
+}
+
+.search-member {
+	width: 409px;
+	height: 70px;
+	text-align: center;
+	margin-left: 10px;
+	font-size: 13pt;
+	line-height: 50px;
+	border-radius: 10px;
+}
+
+#searchMemberResult {
+	width: 409px;
+	height: 100px;
+	border: 1px solid lightgray;
+	margin-left: 10px;
+	overflow: auto;
+}
+
+#searchMember>div>div>div.modal-body>div.search-area>table>tbody>tr:hover
+	{
+	cursor: pointer;
+	padding: 10px;
+	background-color: #edf1f1;
+	border-radius: 10px;
+}
+
+#searchMember>div>div>div.modal-body>div.search-area>table>tbody>tr>td {
+	margin-left: 5px;
+}
+
+.btn-searchMember {
+	width: 112px;
+	height: 37px;
+	background-color: rgb(102, 164, 164);
+	color: white;
+	border: 1px lightgray;
+	border-radius: 10px;
+	margin-left: 37%;
+	margin-bottom: 16px;
 }
 </style>
 
@@ -142,7 +207,7 @@
 						<table class="docu-format-base">
 							<tr>
 								<th>&nbsp;형식</th>
-								<td><select id="docu-format" name="docuFormat" onchange="changeFormat(this)">
+								<td><select id="docuFormat" name="docuFormat" onchange="changeFormat(this)">
 										<option value="1">기안문서</option>
 										<option value="2" selected>품의서</option>
 								</select>&nbsp;&nbsp;</td>
@@ -153,11 +218,11 @@
 								<th></th>
 								<td></td>
 								<th>&nbsp;수신부서</th>
-								<td>&nbsp;재무기획팀</td>
+								<td style="cursor: pointer; border: 1px solid black; text-align: center" onclick="selectDeptModal()">선택</td>
 							</tr>
 							<tr>
 								<th>&nbsp;품의일자</th>
-								<td>&nbsp;2022-03-01</td>
+								<td>&nbsp;${now}</td>
 								<th>&nbsp;소속</th>
 								<td>&nbsp;개발팀</td>
 							</tr>
@@ -175,7 +240,7 @@
 							</tr>
 							<tr>
 								<td>대표자</td>
-								<td>서명</td>
+								<td style="cursor: pointer; border: 1px solid black;" onclick="selectMemberModal(1)" data-index="1">서명</td>
 								<td>서명</td>
 							</tr>
 							<tr>
@@ -199,29 +264,13 @@
 				<br>
 				<div id="button-area">
 					<button class="btn-custom" type="reset" style="margin-right: 30px;">취소</button>
-					<button class="btn-custom" type="submit" id="draftDocu">품의</button>
+					<button class="btn-custom" type="button" onclick="submitDocument()" id="draftDocu">품의</button>
 				</div>
 			</form>
 		</div>
 	</div>
-	<script>
-		function attachFile() {
-			var createFile = document.createElement("input");
-			createFile.type = "file";
-			createFile.style.display = "none";
-
-			createFile.onchange = function() {
-				var html = '<li>' + this.files[0].name + '</li>'
-				$('#fileList').append(html);
-			};
-
-			document.enrollForm.appendChild(createFile);
-			createFile.click();
-		}
-
-		function changeFormat(target) {
-			window.location.href = 'signoffs.docu?format=' + target.value;
-		}
-	</script>
+	
+	<jsp:include page="/WEB-INF/views/signoffs/enrollMemberModal.jsp" />
+	<jsp:include page="/WEB-INF/views/signoffs/enrollFormJs.jsp" />
 </body>
 </html>

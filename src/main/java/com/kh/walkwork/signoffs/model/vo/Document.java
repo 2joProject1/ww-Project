@@ -18,4 +18,9 @@ public class Document {
 	
 	
 	private String signoffs; // 결재 요청자 명단 (콤마 구분해서 들어옴)
+	private String signoffsDeptNo;
+	
+	private int selectType; // select유형 (receive: 수신문서함)
+	private String approver;
+	private int approvalNo;
 }

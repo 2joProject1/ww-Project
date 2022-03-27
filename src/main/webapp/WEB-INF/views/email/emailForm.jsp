@@ -6,12 +6,8 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-
-
-
 body {font-family: Arial, Helvetica, sans-serif;}
 * {box-sizing: border-box;}
-
 input[type=text], select, textarea {
   width: 100%;
   padding: 12px;
@@ -22,8 +18,6 @@ input[type=text], select, textarea {
   margin-bottom: 16px;
   resize: vertical;
 }
-
-
 input[type=submit] {
   background-color: #04AA6D;
   color: white;
@@ -32,11 +26,9 @@ input[type=submit] {
   border-radius: 4px;
   cursor: pointer;
 }
-
 input[type=submit]:hover {
   background-color: #45a049;
 }
-
 .container {
   border-radius: 5px;
   background-color: #f2f2f2;
@@ -44,7 +36,6 @@ input[type=submit]:hover {
   width: 940px;
   margin: 0px auto;
 }
-
 #title{
 	
 }

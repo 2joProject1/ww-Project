@@ -19,10 +19,9 @@
 <title>Insert title here</title>
 
 
+
 <style>
-.wrap>div {
-            width: 100%;
-}
+
 
 table {
   border-collapse: collapse;
@@ -75,11 +74,11 @@ th,td {
     
     float: right;
     border: 1px solid #ddd;
-    width: 760px;
+    width: 850px;
     padding: 20px;
     box-sizing: border-box;
     position: absolute;
-    left: 260px;
+    left: 160px;
     padding: 15px 15px 0 15px;
     height: 570px;
     margin-top: 44px;
@@ -88,8 +87,8 @@ th,td {
 
 .search {
   
-    width: 260px;
-    padding: 20px;
+ 
+    
 
 }
 
@@ -174,7 +173,121 @@ ul {
   content:'ON';
   left: 5px;
 }
+.goDept{
+    	display : none;
+    	width : 25px;
+    	height : 25px;
+    	box-sizing: border-box;
+    	background-color : #e7e7e7; 
+    	border: none;
+    }
+    .pickDept{
+    	display : none;
+    	margin-right : 10px;
+   		width : 30px;
+   		height : 23px;
+   		vertical-align : middle;
+   		margin-right : 10px;
+   		padding :0;
+   		font-size : 11px;
+   		background-color : #5A3673;
+   		color : white;
+   		border : none;
+   		border-radius:3px;
+    	
+    }
+    .move_wrap{
+        width: 710px;
+        height: 50px;
+        line-height: 52px;
+    }
+        .deptSelect{		
+    	width : 100px;
+    	height : 30px;   
+    	border : 1px solid #a2a2a2; 
+    	border-radius : 3px;
+    	 box-sizing: border-box; 	
+    	 margin-right : 5px;
+    }
 </style>
+
+<script>
+    	//부서 추가 알림
+	    var result1='${message}';
+		console.log(result1);
+		if(result1 == "success") {
+	        alert("부서가 추가되었습니다.");
+	    }
+		
+		//부서 삭제 알림
+		var result2='${message2}';
+		console.log(result2);
+		if(result2 == "success") {
+	        alert("부서가 삭제되었습니다.");
+	    } else if(result2 == "failed"){
+	    	alert("사원이 존재하는 부서는 삭제하실 수 없습니다.");
+	    }
+		
+        // html dom 이 다 로딩된 후 실행된다.
+        $(document).ready(function() {
+        	/*
+	        $('.sidenav li.menu>a').on('click', function(){
+			$(this).removeAttr('href');
+			var element = $(this).parent('li');
+			if (element.hasClass('open')) {
+				element.removeClass('open');
+				element.find('li').removeClass('open');
+	            element.find('ul').slideUp();
+			}
+			else {
+				element.addClass('open');
+				element.children('ul').slideDown();
+				element.siblings('li').children('ul').slideUp();
+				element.siblings('li').removeClass('open');
+				element.siblings('li').find('li').removeClass('open');
+	            element.siblings('li').find('ul').slideUp();
+			}
+		 });
+        	*/
+	    	//부서 검색
+	        $("#keyword").keyup(function() {
+                var k = $(this).val();
+                $(".parent_a").hide();
+                var temp = $(".parent_a:contains('" + k + "')");
+                $(temp).show();
+            })
+            /* //부서 리스트
+       		$(".dname${e.count}").click(function() {
+				var frm = document.listDept_frm;
+				frm.action = "${pageContext.request.contextPath}deptlist"
+				frm.method = "post"
+				frm.submit();
+			}); */
+	        
+            //부서 추가        
+            $("#addBtn").click(function() {
+                $("#adddeptName").css("display", "block");
+                $(".goDept").css("display", "block");   
+            })
+            $("#adddeptName").keydown(function(key) {
+				if (key.keyCode == 13) {
+					var frm = document.dept_add_frm;
+					frm.action = "${pageContext.request.contextPath}/ogChart/addDept"
+					frm.method = "get"
+					frm.submit();
+				}
+			});
+            
+            //부서 삭제
+            $("#deleteBtn").click(function() {
+            	$(".pickDept").css("display", "inline-block");
+				/* var frm = document.dept_frm;
+				frm.action = "${pageContext.request.contextPath}/ogChart/deptdel"
+				frm.method = "get"
+				frm.submit(); */
+			});
+        });
+    </script>
 </head>
 <body>
 	<div id="header-layout">
@@ -185,6 +298,50 @@ ul {
 	        <div id="sidebar-layout">
 	        	<div id="main-sidebar">
 	        	<br>
+               		 
+               		 	<form action="deptlist" method="get">
+							<div class="search">
+		                    	<input type="text" name="keyword" id="keyword" autocomplete="off"><i class="fi fi-rr-Search"></i>
+		                    </div>
+	                    </form>
+	                    <br><br>
+	                    <div>부서
+	                        <ul>
+	                        <br>
+		                        <c:forEach var="dp" items="${selectDept}" varStatus="e">
+			                        <li class="parent_a">
+				                        <form name="listDept_frm" id="listDept_frm_${dp.deptNo}" action="${pageContext.request.contextPath}/ogChart/deptdel" method="post">
+			                				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+											<input type ="hidden" value="${dp.deptName}" name="deptName" class="deptName">
+					                        <input type ="hidden" value="${dp.deptNo}" name="deptNo" class="deptNo">
+				                        </form>
+				                    <button type ="button"name="pickDept" onclick="goList('${dp.deptNo}');" 
+				                        class="pickDept pickDept${e.count}" id="dept${e.count}">삭제</button>
+			                        <a href="${pageContext.request.contextPath}/ogChart/deptlist?deptName=${dp.deptName}">
+			                        ${dp.deptName}
+			                        <input type ="hidden" value="${dp.deptNo}" name="deptNo" class="deptNo">
+			                        </a>
+			                        </li>
+		                    
+		                        </c:forEach>
+	                             <script>
+			                        function goList(deptNo){
+			                        	var frmId = "#listDept_frm_"+deptNo;
+			                        	console.log("frmId:" + frmId);
+			                        	$(frmId).submit();
+			                        }
+		                        </script>   
+	                        </ul>
+	                    
+                    
+                    
+	                    <div style="position:absolute;bottom:5%">
+	                        <sec:authorize access="hasRole('ROLE_ADMIN')">
+			                    <button id="addBtn"><img src="${pageContext.request.contextPath}/resources/images/add.png" style="width: 19px; height: 20px;"></button>
+			                    <button id="deleteBtn"><img src="${pageContext.request.contextPath}/resources/images/trash (1).png" style="width: 19px; height: 20px;"></button>
+			                </sec:authorize>
+	                    </div>
+                	</div>
 
 	        	</div>
 	        </div>
@@ -195,45 +352,102 @@ ul {
 			        <div class="chartTitle">조직도</div>
 			        <br><br>
             
-               		 <div id="content_side">
-               		 	<form action="search.me" method="get">
-							<div class="search">
-		                    	<input type="text" name="keyword" id="keyword" autocomplete="off"><i class="fi fi-rr-Search"></i>
-		                    </div>
-	                    </form>
-	                    <br><br><br><br>
-	                    <div>
-	                        <ul>
-	                            <li>부서
-	                                <br><br>
-	                                <ul>
-	                                    <li>개발팀</li>
-	                                    <br>
-	                                    <li>기획팀</li>
-	                                    <br>
-	                                    <li>마케팅팀</li>
-	                                    <br>
-	                                    <li>영업팀</li>
-	                                    <br>
-	                                    <li>미배치</li>
-	                                </ul>
-	                            </li>    
-	                        </ul>
-	                    </div>
-                    
-                    <br><br><br><br><br><br><br><br><br>
-	                    <div style="position:absolute;bottom:3%">
-	                    <i class="fi fi-rs-Plus">12</i>
-	                    <i class="fi fi-rs-Plus">12</i>
-	                        <button type="submit" class="btn btn-secondary">부서추가</button>&nbsp;&nbsp;
-	                        <button type="submit" class="btn btn-secondary">부서삭제</button>
-	                    </div>
-                	</div>
 	                <div id="content_chart">
-	                    <div style="font-size: 25px;">개발팀</div>
+	                    <div style="font-size: 25px;">${dname}</div>
+	                    <span id="detpcount">총&nbsp;<span>${memberlistCount}</span>명</span>
 	                    <div align="right"><button class="btn btn-secondary">수정</button>&nbsp;&nbsp;<button class="btn btn-secondary">확인</button></div>
 	                    <br><br>
-	                    <table id="chartList">
+	                    
+	                    <form class="change_frm" name="change_frm">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    <div>
+                        <table>
+                            <tr>
+                            	<th style="width : 50px;">
+                            	<sec:authorize access="hasRole('ROLE_ADMIN')">
+                                	선택
+                                </sec:authorize>
+                                </th>
+                                <th style="width : 100px;">사원번호</th>
+                                <th>이름</th>
+                                <th>직급</th>
+                                <th>이메일</th>
+                                <th>재직상태</th>
+                            </tr>
+                            
+
+                        <c:if test="${not empty list}">
+						<c:forEach var="og" items="${list}" varStatus="status">
+						
+                            <tr><td style="width : 50px;">
+                            <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                <input type="checkbox" name="chk" value="${og.memberNo}" class="chkbox">
+                            </sec:authorize>
+                            </td>
+                                <td style="width : 100px;">${og.memberNo}</td>
+                                <td>${og.memberName}</td>
+                                <td>${og.rankName}</td>
+                                <td>${og.email}</td>
+                                <td>${og.status}</td>
+                            </tr>
+                        
+                        </c:forEach>
+                       	</c:if>
+                       	
+                       	<tr>
+						<td colspan="5">
+						<c:if test="${currentPage <= 1}">
+						&lt; &nbsp;
+						</c:if>
+						 	<c:if test="${currentPage > 1}">
+								<c:url var="oglistprev" value="deptlist">
+									<c:param name="page" value="${currentPage-1}" />
+								</c:url>
+								<a href="${dflistprev}">&lt; &nbsp;</a>
+							</c:if> 
+							<!-- 끝 페이지 번호 처리 -->
+							 <c:set var="endPage" value="${maxPage}" /> 
+							 <c:forEach
+								var="p" begin="${startPage+1}" end="${endPage}">
+								<!-- eq : == / ne : != -->
+								<c:if test="${p eq currentPage}">
+									<font color ="#da0f8e"><b>${p} &nbsp;</b></font>
+								</c:if>
+								<c:if test="${p ne currentPage}">
+									<c:url var="oglistchk" value="deptlist">
+										<c:param name="page" value="${p}" />
+									</c:url>
+									<a href="${dflistchk}">${p}&nbsp;</a>
+								</c:if>
+							</c:forEach> 
+							<c:if test="${currentPage >= maxPage}"> &gt;
+							</c:if>
+							<c:if test="${currentPage < maxPage}">
+								<c:url var="oglistnext" value="deptlist">
+									<c:param name="page" value="${currentPage+1}" />
+								</c:url>
+								<a href="${dflistnext}">&gt;</a>
+							</c:if>
+							</td>
+					</tr>
+                       	</table> 
+                      </div>
+                      
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                    <div class="move_wrap">
+                        <select name="deptSelect" class="deptSelect">  
+	                        <c:forEach var="dp" items="${selectDept}" varStatus="e">
+								    <option value="${dp.deptNo}">${dp.deptName}</option>  
+							</c:forEach>
+						</select>  
+                        
+                        <button id="moveBtn" onclick="changeDept();">다른 조직으로 이동</button>
+                    </div> 
+                    </sec:authorize>
+                      
+                      </form>
+	                    <!--  
+	                    <table id="chartList" style=font-size:14px;>
 	                        <thead>
 	                            <tr>
 	                                <th>사원번호</th>
@@ -244,48 +458,22 @@ ul {
 	                            </tr>
 	                        </thead>
 	                        <tbody>
+	                        	<c:forEach var="list" items="${ list }">
 	                            <tr>
-	                                <td><input type="checkbox">123</td>
-	                                <td><button type="button" class="" data-toggle="modal" data-target="#myModal">
-	                                   		 가나다
-	                                  </button></td>
-	                                <td>사원</td>
-	                                <td>123@123.com</td>
-	                                <td>Y</td>
+	                                <td><input type="checkbox">${ list.memberNo }</td>
+	                                <td>${ list.memberName }</td>
+	                                <td>${ list.rankNo }</td>
+	                                <td>${ list.email }</td>
+	                                <td>${ list.status }</td>
 	                            </tr>
-	                            <tr>
-	                                <td><input type="checkbox">123</td>
-	                                <td>가나다</td>
-	                                <td>사원</td>
-	                                <td>123@123.com</td>
-	                                <td>Y</td>
-	                            </tr>
-	                            <tr>
-	                                <td><input type="checkbox">123</td>
-	                                <td>가나다</td>
-	                                <td>사원</td>
-	                                <td>123@123.com</td>
-	                                <td>Y</td>
-	                            </tr>
-	                            <tr>
-	                                <td><input type="checkbox">123</td>
-	                                <td>가나다</td>
-	                                <td>사원</td>
-	                                <td>123@123.com</td>
-	                                <td>Y</td>
-	                            </tr>
-	                            <tr>
-	                                <td><input type="checkbox">123</td>
-	                                <td>가나다</td>
-	                                <td>사원</td>
-	                                <td>123@123.com</td>
-	                                <td>Y</td>
-	                            </tr>
+	                            </c:forEach>
 	                        </tbody>
 	
 	                    </table>
+	                    -->
 	                    <br>
 	
+	<!--  
 	                    <div class="pagination justify-content-center">
 	                        <a href="#">&laquo;</a>
 	                        <a href="#">1</a>
@@ -297,7 +485,11 @@ ul {
 	                        <a href="#">&raquo;</a>
 	                    </div>
 	
+	
+
+						
 	                      <br>
+	                      /*
 	                      <div align="right">
 	                          <select name="" id="">
 	                                <option value="">개발팀</option>
@@ -311,7 +503,7 @@ ul {
 	                                
 	                    
 	                </div>
-
+-->
                 
                   
                   <!-- The Modal -->
@@ -359,6 +551,31 @@ ul {
 
 	    	</div>
 	    </div>
+	    
+	    <script>
+/*	    
+function checkOneS(a){
+    console.log("###checkOneS");
+    console.log("###this: " +  a);
+    var obj1 = document.getElementsByClassName('deptNamechk');
+    console.log("###obj1.length: " +  obj1.length);
+    for (var i = 0; i < obj1.length; i++) {
+       console.log("###obj1[i]: " +  obj1[i]);
+       if (obj1[i] != a) {
+          obj1[i].checked = false;
+       }
+    }
+ }
+ */
+ 
+ function changeDept(){
+	 var frm = document.change_frm;
+		frm.action = "${pageContext.request.contextPath}/ogChart/organuserupdate"
+		frm.method = "post"
+		frm.submit();
+ }
+ 
+</script>
     
 </body>
 </html>

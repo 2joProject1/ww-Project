@@ -9,13 +9,7 @@ import com.kh.walkwork.ogChart.model.service.OgChartService;
 @Controller
 public class OgChartController {
 
-	@RequestMapping("chart.li")
-	public String ogChartListView() {
-		return "ogChart/ogChartListView";
-	}
-	
-	@Autowired
-	private OgChartService ogChartService;
+
 	
 	
 }
