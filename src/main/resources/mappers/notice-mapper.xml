@@ -10,7 +10,7 @@
 		<result column="BOARD_TYPE" property="boardType" />
 		<result column="BOARD_TITLE" property="boardTitle" />
 		<result column="BOARD_CONTENT" property="boardContent" />
-		<result column="ENROLL_DATE" property="EnrollDate" />
+		<result column="ENROLL_DATE" property="enrollDate" />
 		<result column="COUNT" property="count" />
 		<result column="STATUS" property="status" />
 		<result column="TOP_FIX" property="topFix" />
@@ -18,11 +18,15 @@
 		<result column="NOTICE_CATEGOTY" property="noticeCategory" />
 		<result column="NOTICE_PERIOD" property="noticePeriod" />
 		<result column="MEMBER_NAME" property="memberName" />
+	</resultMap>
+	<resultMap id="attachmentResultSet" type="attachment">
 		<result column="FILE_NAME" property="fileName" />
 		<result column="FILE_ORIGIN_NAME" property="fileOriginName" />
 		<result column="FILE_PATH" property="filePath" />
 		<result column="FILE_SIZE" property="fileSize" />
 		<result column="FILE_UPLOAD_DATE" property="fileUploadDate" />
+		<result column="FileCount" property="fileCount" />
+	
 	</resultMap>
 
 	<select id="selectNoticeListCount" resultType="_int">
@@ -30,6 +34,7 @@
 			from board_all
 		  where status = 'Y'
 	</select>
+
 
 	<select id="selectNoticeList" resultMap="noticeResultSet">
 		select 
@@ -52,6 +57,35 @@
 		order by board_no desc
 	</select>
 	
+	<select id="selectTopList" resultMap="noticeResultSet">
+          
+          <![CDATA[
+          select a.*
+          from(
+                select 
+                    BOARD_NO,
+                    b.BOARD_WRITER,
+                    BOARD_TYPE,
+                    BOARD_TITLE,
+                    BOARD_CONTENT,
+                    b.ENROLL_DATE,
+                    COUNT,
+                    b.STATUS,
+                    TOP_FIX,
+                    NOTICE_RANGE,
+                    NOTICE_CATEGOTY,
+                    NOTICE_PERIOD,
+                    m.member_name
+                from board_all b
+                join member m on(b.board_Writer = m.member_no)
+                where b.status = 'Y'
+                and top_fix = 'Y'
+                
+                order by board_no desc) a
+        where rownum <= 3]]>
+        
+	</select>
+	
 	<update id="increaseCount" >
 	
 			update board_all
@@ -61,7 +95,8 @@
 	</update>
 	
 	<select id="selectNotice" resultMap="noticeResultSet" parameterType="notice">
-		select 
+
+        select 
 			b.BOARD_NO,
 			b.BOARD_WRITER,
 			BOARD_TYPE,
@@ -74,21 +109,27 @@
 			NOTICE_RANGE,
 			NOTICE_CATEGOTY,
 			NOTICE_PERIOD,
-            m.member_name,
+            m.member_name
+		from board_all b
+        join member m on(b.board_Writer = m.member_no)
+        and b.status = 'Y'
+        and b.board_no = #{boardNo}
+        and b.board_Writer = #{boardWriter}
+	</select>
+	
+	<select id="selectFile" parameterType="notice" resultMap="attachmentResultSet">
+        select 
             file_name,
             FILE_ORIGIN_NAME,
             file_path,
             file_size,
-            a.file_upload_date
-		from board_all b
-        join member m on(b.board_Writer = m.member_no)
-        join attachment a on(b.board_Writer = a.member_no)
-		where b.status = 'Y'
-        and b.board_no = #{boardNo}
-        and a.board_no = #{boardNo}
-        and b.board_Writer = #{boardWriter}
+            file_upload_date
+		from attachment
+        where board_no = #{boardNo}
+        and member_no = #{boardWriter}
 	
 	</select>
+	
 	
 	<insert id="insertNotice" parameterType="notice">
 	
@@ -116,7 +157,7 @@
 			sysdate, 
 			default, 
 			default,
-			default,
+			#{topFix},
 			#{noticeRange},
 			#{noticeCategory},
 			#{noticePeriod}
@@ -130,13 +171,90 @@
 			board_writer = 	#{boardWriter}
 			and board_type = 1
 			and board_title = #{boardTitle}
-			and board_content = #{boardContent}
 			and notice_range = #{noticeRange}
 			and NOTICE_CATEGOTY = #{noticeCategory}
-			and notice_period = #{noticePeriod}
 			and enroll_date = sysdate
 			<!-- 이게 왜 되지...? sysdate 구체적으로 시간 지정해야 할 것 같으ㅡㄴ뎅.. -->
 	</select>
 	
+	<delete id="deleteNotice" parameterType="notice">
+		delete 
+	        from board_all 
+	        where board_writer = #{boardWriter}
+	        and board_no = #{boardNo}
+	
+	</delete>
+	
+	<update id="updateNotice" parameterType="notice">
+		update board_all 
+        set
+			board_title = #{boardTitle},
+			board_content = #{boardContent},
+			top_fix = #{topFix},
+			notice_range = #{noticeRange},
+			NOTICE_CATEGOTY = #{noticeCategory},
+			notice_period = #{noticePeriod}
+        where board_no = #{boardNo}
+        and board_writer = #{boardWriter}
+	
+	</update>
+	
+	
+	<select id="selectRangeListCount" parameterType="string" resultType="_int">
+		select count(*)
+			from board_all
+		  where status = 'Y'
+		  and notice_range = #{noticeRange}
+	</select>
+	
+	<select id="rangeNotice" parameterType="string" resultMap="noticeResultSet">
+		select 
+			BOARD_NO,
+			b.BOARD_WRITER,
+			BOARD_TYPE,
+			BOARD_TITLE,
+			BOARD_CONTENT,
+			b.ENROLL_DATE,
+			COUNT,
+			b.STATUS,
+			TOP_FIX,
+			NOTICE_CATEGOTY,
+			NOTICE_PERIOD,
+            m.member_name
+		from board_all b
+        join member m on(b.board_Writer = m.member_no)
+		where b.status = 'Y'
+		and notice_range = #{noticeRange}
+		order by board_no desc
+	
+	
+	</select>
+
+	<select id="selectMainList" resultMap="noticeResultSet" parameterType="notice">
+
+          <![CDATA[
+          select a.*
+          from(
+                select 
+                    BOARD_NO,
+                    b.BOARD_WRITER,
+                    BOARD_TYPE,
+                    BOARD_TITLE,
+                    BOARD_CONTENT,
+                    b.ENROLL_DATE,
+                    COUNT,
+                    b.STATUS,
+                    TOP_FIX,
+                    NOTICE_RANGE,
+                    NOTICE_CATEGOTY,
+                    NOTICE_PERIOD,
+                    m.member_name
+                from board_all b
+                join member m on(b.board_Writer = m.member_no)
+                where b.status = 'Y'
+                order by board_no desc) a
+        where rownum <= 5]]>
+        
+	</select>
 
 </mapper>

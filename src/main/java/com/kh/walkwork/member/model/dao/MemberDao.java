@@ -50,7 +50,37 @@ public class MemberDao {
 	public Member searchId(SqlSessionTemplate sqlSession, Member m) {
 		return sqlSession.selectOne("memberMapper.searchId", m);
 	}
+	
+	public int loginFail(SqlSessionTemplate sqlSession, Member loginUser) {
+		String memberNo = loginUser.getMemberNo();
+		return sqlSession.update("memberMapper.loginFail", memberNo);
+	}
 
+	public int loginFailReset(SqlSessionTemplate sqlSession, Member loginUser) {
+		return sqlSession.update("memberMapper.loginFailReset", loginUser);
+	}
+	
+	public int loginFailCount(SqlSessionTemplate sqlSession, Member loginUser) {
+		return sqlSession.selectOne("memberMapper.loginFailCount", loginUser);
+	}
+	
+	public int sendPwd(Member m, SqlSessionTemplate sqlSession) {
+		return sqlSession.update("memberMapper.sendPwd", m);
+	}
+	
+	public int deleteTmpPwd(SqlSessionTemplate sqlSession, Member loginUser) {
+		return sqlSession.update("memberMapper.deleteTmpPwd", loginUser);
+	}
+	
+	public int changePwd(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.update("memberMapper.changePwd", m);
+	}
+	
+	
+	public Member searchMember(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.selectOne("memberMapper.selectMember", m);
+	}
+	
 	//----------------헤더----------------
 	public ArrayList<Member> selectAddrList(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("memberMapper.selectAddrList");
@@ -61,7 +91,6 @@ public class MemberDao {
 	public Member selectMemberInformation(SqlSessionTemplate sqlSession, Member m) {
 		return sqlSession.selectOne("memberMapper.selectMemberInformation", m);
 	}
-	
 
 	//  멤버 정보 파일 업로드
 	public int updateMemberFile(SqlSessionTemplate sqlSession, Member m) {
@@ -106,5 +135,4 @@ public class MemberDao {
 					System.out.println("다오까지 옴");
 					return sqlSession.selectList("Member.deleteOrgani", paramMap1);
 				}
-
 }

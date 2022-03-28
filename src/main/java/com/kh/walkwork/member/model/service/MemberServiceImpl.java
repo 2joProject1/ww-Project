@@ -72,7 +72,22 @@ public class MemberServiceImpl implements MemberService {
 	public Member loginMember(Member m) {
 		return memberDao.loginMember(sqlSession, m);
 	}
-
+	
+	@Override
+	public int loginFail(Member loginUser) {
+		return memberDao.loginFail(sqlSession, loginUser);
+	}
+	
+	@Override
+	public int loginFailReset(Member loginUser) {
+		return memberDao.loginFailReset(sqlSession, loginUser);
+	}
+	
+	@Override
+	public int loginFailCount(Member loginUser) {
+		return memberDao.loginFailCount(sqlSession, loginUser);
+	}
+	
 	// ------------헤더--------------
 	@Override
 	public ArrayList<Member> selectAddrList() {
@@ -82,6 +97,21 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public Member searchId(Member m) {
 		return memberDao.searchId(sqlSession, m);
+	}
+	
+	@Override
+	public String sendPwd(Member m) {
+		String Random = (int)(Math.random()*100000000)+""; // 하단 추가설명 1번
+		m.setTmpPwd(Random);
+		memberDao.sendPwd(m, sqlSession);
+		
+		return Random;
+	}
+	
+	@Override
+	public int deleteTmpPwd(Member loginUser) {
+		
+		return memberDao.deleteTmpPwd(sqlSession, loginUser);
 	}
 
 	@Override
@@ -93,8 +123,14 @@ public class MemberServiceImpl implements MemberService {
 	public int changePwd(Member m) {
 		return memberDao.changePwd(sqlSession, m);
 	}
+	
+	@Override
+	public Member searchMember(Member m) {
+		return memberDao.searchMember(sqlSession, m);
+	}	
 
 	// 윤희- 회원조회
+
 	@Override
 	public Member selectMemberInformation(Member m) {
 		return memberDao.selectMemberInformation(sqlSession, m);
@@ -124,5 +160,15 @@ public class MemberServiceImpl implements MemberService {
 		return deleteList;
 		
 	}
+
+
+
+
+
+
+
+
+
+
 
 }

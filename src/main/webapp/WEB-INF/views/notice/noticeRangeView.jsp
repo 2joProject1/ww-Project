@@ -34,36 +34,20 @@
 		<table id="noticeList" border="1">
            
 			<thead>
-				<tr style="text-align:center;">
-					<th></th>
+				<tr>
+					<th><input type="checkbox" id="all" class="batch"></th>
+					<th>글번호</th>
 					<th>대상</th>
 					<th>카테고리</th>
-					<th>제목</th>
+					<th style="width: 600px;">제목</th>
 					<th>작성일</th> 
 					<th>작성자</th>
 					<th>조회수</th>
 				</tr>
 			</thead>
 			<tbody>     	
-				<c:forEach var="n" items="${ topList }">
-					<tr> 
-						<td><i class="xi-check"></i></i></td>
-						<td class="mno">${ n.boardWriter }</td>
-						<td class="bno">${ n.boardNo }</td>
-						<td>${ n.noticeRange }</td>
-						<td>${ n.noticeCategory }</td>
-						<td>${ n.boardTitle }</td>
-						<td>${ n.enrollDate }</td>
-						<td class="writer">${ n.memberName }</td>
-						<td>${ n.count }</td>
-<!-- 						<td>
-						파일자리?
-						</td>     -->          
-					</tr>
-				</c:forEach>
 				<c:forEach var="n" items="${ list }">
 					<tr>
-						<td></td>
 						<td class="mno">${ n.boardWriter }</td>
 						<td class="bno">${ n.boardNo }</td>
 						<td>${ n.noticeRange }</td>
@@ -72,9 +56,9 @@
 						<td>${ n.enrollDate }</td>
 						<td class="writer">${ n.memberName }</td>
 						<td>${ n.count }</td>
-<!-- 						<td>
+						<td>
 						파일자리?
-						</td>    -->           
+						</td>              
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -82,11 +66,6 @@
 	</div>
 	        
 <script>
-window.onload = $(function(){
-	$('.bno').hide();
-	$('.mno').hide();
-	
-})
 	$(function(){
 		$("#noticeList>tbody>tr").click(function(){
 			location.href = 'detail.no?bno=' + $(this).children(".bno").text()+'&mno='+$(this).children(".mno").text();
@@ -109,13 +88,13 @@ window.onload = $(function(){
 					<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li><!-- 1번 페이지일 경우 디스에이블넣어줘야 -->
 				</c:when>
 				<c:otherwise>
-					<li class="page-item"><a class="page-link" href="notice.no?cpage=${ pi.currentPage -1 }">Previous</a></li>
+					<li class="page-item"><a class="page-link" href="range.no?cpage=${ pi.currentPage -1 }&noticeRange=${noticeRange}">Previous</a></li>
 				</c:otherwise>
 			</c:choose>
 			
 			
 			<c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-				<li class="page-item"><a class="page-link" href="notice.no?cpage=${ p }">${ p }</a></li>
+				<li class="page-item"><a class="page-link" href="range.no?cpage=${ p }&noticeRange=${ noticeRange }">${ p }</a></li>
 			</c:forEach>
 			
 			<c:choose>
@@ -123,7 +102,7 @@ window.onload = $(function(){
 					<li class="page-item disabled"><a class="page-link" href="#">Next</a></li><!-- 마지막페이지일경우 디스에이블넣어줘야 -->
 				</c:when>
 				<c:otherwise>
-					<li class="page-item"><a class="page-link" href="notice.no?cpage=${ pi.currentPage +1 }">Next</a></li><!-- 마지막페이지일경우 디스에이블넣어줘야 -->                    	
+					<li class="page-item"><a class="page-link" href="range.no?cpage=${ pi.currentPage +1 }&noticeRange=${ noticeRange }">Next</a></li><!-- 마지막페이지일경우 디스에이블넣어줘야 -->                    	
 				</c:otherwise>
 			</c:choose>
 		</ul>
