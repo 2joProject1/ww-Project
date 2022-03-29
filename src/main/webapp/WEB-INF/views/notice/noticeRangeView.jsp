@@ -24,7 +24,7 @@
 <div id="content-layout">
 	<div id="notice_title">
 		<div class="d-flex">
-			<div class="p-2">공지사항</div>
+			<div class="p-2">${ list[0].noticeRange } 공지사항</div>
 			<div class="p-2 ml-auto">
 				<a href="enrollForm.no"><button>글작성</button></a>
 			</div>
@@ -34,12 +34,10 @@
 		<table id="noticeList" border="1">
            
 			<thead>
-				<tr>
-					<th><input type="checkbox" id="all" class="batch"></th>
-					<th>글번호</th>
-					<th>대상</th>
+				<tr style="text-align:center;">
+					<th></th>
 					<th>카테고리</th>
-					<th style="width: 600px;">제목</th>
+					<th>제목</th>
 					<th>작성일</th> 
 					<th>작성자</th>
 					<th>조회수</th>
@@ -48,17 +46,17 @@
 			<tbody>     	
 				<c:forEach var="n" items="${ list }">
 					<tr>
+						<td></td>
 						<td class="mno">${ n.boardWriter }</td>
 						<td class="bno">${ n.boardNo }</td>
-						<td>${ n.noticeRange }</td>
 						<td>${ n.noticeCategory }</td>
 						<td>${ n.boardTitle }</td>
 						<td>${ n.enrollDate }</td>
 						<td class="writer">${ n.memberName }</td>
 						<td>${ n.count }</td>
-						<td>
+<!-- 						<td>
 						파일자리?
-						</td>              
+						</td>    -->           
 					</tr>
 				</c:forEach>
 			</tbody>
@@ -66,6 +64,11 @@
 	</div>
 	        
 <script>
+window.onload = $(function(){
+	$('.bno').hide();
+	$('.mno').hide();
+	
+})
 	$(function(){
 		$("#noticeList>tbody>tr").click(function(){
 			location.href = 'detail.no?bno=' + $(this).children(".bno").text()+'&mno='+$(this).children(".mno").text();

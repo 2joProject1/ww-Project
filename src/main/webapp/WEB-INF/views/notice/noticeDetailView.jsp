@@ -9,8 +9,8 @@
  	<link rel="stylesheet" href="resources/css/layout.css">
  	<link rel="stylesheet" href="resources/css/header.css">
 <style>
-        /*  여기부터복붙 */
-        .switch {
+/*  여기부터복붙 */
+.switch {
   position: relative;
   display: inline-block;
   width: 60px;
@@ -83,7 +83,7 @@ input:checked + .slider:before {
 .notice_title{
   font-weight: bold;
   font-size: 30px;
-  margin-bottom: 30px;
+/*   margin-bottom: 30px; */
   
 }
 .notice_content{
@@ -92,6 +92,7 @@ input:checked + .slider:before {
   font-size: 20px;
   color: grey;
   border: 1px solid grey;
+  width:1500[x]
   /* background-color:rgb(185, 207, 199) */
 }
 .notice_content input{
@@ -137,8 +138,11 @@ input:checked + .slider:before {
 }
 .td2{
 	font-size:19px;
-	font-weight:lighter;
-	
+	font-weight:lighter;	
+}
+#back_btn a{
+	text-decoration:none;
+	color:black;
 }
 
 </style>
@@ -160,7 +164,6 @@ input:checked + .slider:before {
                <div class="d-flex">
                    <div class="p-2">
                        	공지사항
-                       <hr>
                    </div>
                </div>
            </div>
@@ -168,7 +171,11 @@ input:checked + .slider:before {
            
            <div class="notice_content">
                <form action="updateForm.no" method="post">
+               		<input type="hidden" id="boardWriter" name="boardWriter" value="${ rn.boardWriter }">
                    <table>
+                   <tr>
+                   &nbsp;
+                   </tr>
                    <tr>
                        <td style="width: 100px;">공지대상</td>
                        <td class="td2">${ rn.noticeRange }</td>
@@ -190,9 +197,7 @@ input:checked + .slider:before {
                    <tr>
                        <td>내용</td>
                        <td colspan="3" class="td2">
-                           <textarea name="boardContent" id="" cols="100" rows="10" readonly>
-                           		${ rn.boardContent }
-                           </textarea>
+                       		<textarea name="boardContent" id="" cols="100" rows="10" readonly>${ rn.boardContent }</textarea>
                        </td>
                    </tr>
                    <tr>
@@ -214,13 +219,15 @@ input:checked + .slider:before {
                </table>
                
                <!-- 로그인세션 작성자랑 이거 작성자랑 일치하는지 -->
-				<c:if test="${ loginUser.memberNo == rn.boardWriter }">         
-
-
-			               
+				<c:if test="${ loginUser.memberNo == rn.boardWriter }">            
                    <div class="notice_submit_btn">
                        <button type="button" id="update_btn">수정</button>
                        <button type="button" id="delete_btn">삭제</button>
+                   </div>
+				</c:if>
+				<c:if test="${ loginUser.memberNo != rn.boardWriter }">            
+                   <div class="notice_submit_btn">
+                       <button type="button"><a href="javascript:history.back();" class="atag">돌아가기</a></button>
                    </div>
 				</c:if>
                </form>
@@ -233,7 +240,7 @@ input:checked + .slider:before {
 $(function(){
 	$("#delete_btn").click(function(){
 		if(confirm("정말 삭제하시겠습니까?")){
-			window.location = 'delete.no?bno='+${rn.boardNo}+'&mno='+${rn.boardWriter};	
+			window.location = 'delete.no?bno='+${rn.boardNo}+'&&mno='+$('#boardWriter').val();	
 
 		}
 	})
@@ -247,7 +254,7 @@ $(function(){
 	
 	$("#update_btn").click(function(){
 		if(confirm("수정하시겠습니까?")){
-			window.location = 'updateForm.no?bno='+${rn.boardNo}+'&mno='+${rn.boardWriter};			
+			window.location = 'updateForm.no?bno='+${rn.boardNo}+'&&mno='+$('#boardWriter').val();			
 		}
 	})
 	

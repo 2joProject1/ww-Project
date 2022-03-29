@@ -80,12 +80,25 @@ public class NoticeServiceImpl implements NoticeService{
 		return noticeDao.selectTopList(sqlSession);
 	}
 
+	@Override
+	public int selectAttachCount(int bno) {
+		return noticeDao.selectAttachCount(sqlSession, bno);
+	}
+	
+	@Override
+	public int deleteFile(int fileLength, int boardNo) {
+		return noticeDao.deleteFile(sqlSession, fileLength, boardNo);
+	}
 	
 	//메인
 	@Override
 	public ArrayList<Notice> selectNoticeList() {
 		return noticeDao.selectNoticeList(sqlSession);
 	}
+
+
+
+
 
 
 

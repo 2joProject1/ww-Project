@@ -72,8 +72,8 @@ public class MemberDao {
 		return sqlSession.update("memberMapper.deleteTmpPwd", loginUser);
 	}
 	
-	public int changePwd(SqlSessionTemplate sqlSession, Member m) {
-		return sqlSession.update("memberMapper.changePwd", m);
+	public int changePwdLogin(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.update("memberMapper.changePwdLogin", m);
 	}
 	
 	

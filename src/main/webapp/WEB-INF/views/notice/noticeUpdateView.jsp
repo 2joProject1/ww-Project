@@ -145,11 +145,9 @@ input:checked + .slider {
                    </div>
                </div>
            </div>
-           
-           
            <script>
 		       	$(function(){
-		    		$("#noticeRange option[value=${b.noticeRange }]").attr("selected", true);
+		    		$('#noticeRange option[value=${b.noticeRange }]').attr("selected", true);
 		    		$("#noticeCategory option[value=${b.noticeCategory }]").attr("selected", true);
 		    		
 		    		var topFix = "${b.topFix}";
@@ -214,7 +212,7 @@ input:checked + .slider {
                        <tr>
                            <td>내용</td>
                            <td colspan="3">
-                               <textarea name="boardContent" id="" cols="100" rows="10">${b.boardContent }</textarea>
+                               <textarea name="boardContent" id="" cols="100" rows="10">${b.boardContent}</textarea>
                            </td>
                        </tr>
 						<tr>
@@ -224,7 +222,9 @@ input:checked + .slider {
 								id="reupfile" class="form-control-file border"
 								name="reupfile" onChange="onFileUpload(event)">
 								<label for="reupfile" id="reuplabel"><i class="xi-file-add-o"></i> </label>
-								<span id="spanFile" name="spanFile" value="ㅋㅋ"></span>
+								<span id="spanFile0" name="spanFile"></span>
+								<span id="spanFile1" name="spanFile"></span>
+								<span id="spanFile2" name="spanFile"></span>
 								
 								<c:if test="${ not empty a }">         
 		                                         
@@ -258,24 +258,52 @@ window.onload = $(function(){
 })
 
 function onFileUpload(event){
-	    event.preventDefault();   
+	    event.preventDefault();	    
 	    $("reupfile").text("event.target.files[0]");
 	    
 	    var a = "";
-	    
-	    for(var i = 0; i < event.target.files.length; i++){
-	    	a += "파일"+(i+1)+" "+document.getElementById('reupfile').files[i].name+" ";
-	    }
+ 	    var h1 = "<button type='button' id='x-btn' class='btn' onclick='btndelete(0)'>X</button>";
+ 	    var h2 = "<button type='button' id='x-btn' class='btn' onclick='btndelete(1)'>X</button>";
+ 	    var h3 = "<button type='button' id='x-btn' class='btn' onclick='btndelete(2)'>X</button>";
+
+/* 	    for(var i = 0; i < event.target.files.length; i++){
+	    	console.log(i+"ㅋㅋ");
+	    } */
+/* 	    for(var i = 0; i < event.target.files.length; i++){
+	    	a += "파일"+(i+1)+" "+document.getElementById('upfile').files[i].name+" "+ h;
+	    } */
 	    
 	    if(event.target.files.length>3){
 	    	alert("파일은 3개 이하만 업로드가 가능합니다.");
 	    	$("#btn").attr("disabled", true);
 	    } else{
 	    	$("#btn").attr("disabled", false);
-	    
-	    	$("#spanFile").val(a);
-	    	$("#spanFile").text(a);
+	    	$("#spanFile0").html("파일"+document.getElementById('reupfile').files[0].name+h1);
+	    	$("#spanFile1").html("파일"+document.getElementById('reupfile').files[1].name+h2);
+	    	$("#spanFile2").html("파일"+document.getElementById('reupfile').files[2].name+h3);
+	    	
+	    	
 	    }     
+}
+
+
+function btndelete(fileNum){	//fileNum은 li 의 index 값
+	console.log(fileNum);
+    const dataTransfer = new DataTransfer();
+    
+    let files = $('#reupfile')[0].files;	//사용자가 입력한 파일을 변수에 할당
+    
+    let fileArray = Array.from(files);	//변수에 할당된 파일을 배열로 변환(FileList -> Array)
+    
+    fileArray.splice(fileNum, 1);	//해당하는 index의 파일을 배열에서 제거
+    
+    fileArray.forEach(file => { dataTransfer.items.add(file); });
+    //남은 배열을 dataTransfer로 처리(Array -> FileList)
+    
+    $('#reupfile')[0].files = dataTransfer.files;	//제거 처리된 FileList를 돌려줌
+/*     $fileNum = "#spanFile"+fileNum; */
+	$("#spanFile"+fileNum).text('');
+
 }
 </script>
 </body>

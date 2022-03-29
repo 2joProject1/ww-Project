@@ -1,7 +1,9 @@
 package com.kh.walkwork.notice.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -79,12 +81,26 @@ public class NoticeDao {
 		return (ArrayList)sqlSession.selectList("noticeMapper.selectTopList");
 	}
 
+	public int selectAttachCount(SqlSessionTemplate sqlSession, int bno) {
+		return sqlSession.selectOne("noticeMapper.selectAttachCount", bno);
+	}
 	
+
+	public int deleteFile(SqlSessionTemplate sqlSession, int fileLength, int boardNo) {
+		
+		Map<String,Object>map = new HashMap<String,Object>();
+		map.put("fileLength", fileLength);
+		map.put("boardNo", boardNo);	
+		int result = sqlSession.delete("noticeMapper.deleteFile", map);
+		return result;
+	}
+
+
+
 	//메인
 	public ArrayList<Notice> selectNoticeList(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("noticeMapper.selectMainList");
 	}
-
 
 
  

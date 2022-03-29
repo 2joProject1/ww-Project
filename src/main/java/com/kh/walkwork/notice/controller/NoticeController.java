@@ -29,16 +29,13 @@ public class NoticeController {
 	@Autowired
 	private AttachmentService attachmentService;
 
-
- 
-
-
+	//공지조회로 이동
 	@RequestMapping("notice.no")
 	public ModelAndView selectNoticeList(@RequestParam(value = "cpage", defaultValue = "1") int currentPage,
 			ModelAndView mv) {
 		
 		int listCount = noticeService.selectNoticeListCount();
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 15);
 		ArrayList<Notice> list = noticeService.selectNoticeList(pi);
 		mv.addObject("pi", pi).addObject("list", list);
 		
@@ -52,6 +49,7 @@ public class NoticeController {
 	}
 	
 	
+	//공지상세조회
 	@RequestMapping("detail.no")
 	public ModelAndView selectNotice(ModelAndView mv, int bno, String mno, Notice n){
 		
@@ -78,6 +76,7 @@ public class NoticeController {
 	}
 	
 	
+	//공지작성폼으로 이동
 	@RequestMapping("enrollForm.no")
 	public String noticeEnrollForm(){
 		
@@ -85,6 +84,7 @@ public class NoticeController {
 	}
 	
 
+	//공지 작성
 	@RequestMapping("insert.no")
 	public String insertNotice(Notice n, MultipartFile[] upfile, HttpSession session) throws IOException {
 
@@ -121,43 +121,37 @@ public class NoticeController {
 		
 	}
 	
-	
+	//공지 업데이트창으로 이동
 	@RequestMapping("updateForm.no")
 	public ModelAndView updateForm(int bno, String mno, Notice n, ModelAndView mv) {
-		
+		System.out.println(bno);
+		System.out.println(mno);
 		n.setBoardNo(bno);
 		n.setBoardWriter(mno);
 		Notice b = noticeService.selectNotice(n);
 		ArrayList<Attachment> a = noticeService.selectFile(b);
 		
+				
 		mv.addObject("b", b).addObject("a", a).setViewName("notice/noticeUpdateView");
 		
 
 		return mv;
 	}
 	
+	//공지업뎃
 	@RequestMapping("update.no")
 	public String updateNotice(Notice n, Attachment a, MultipartFile[] reupfile, HttpSession session){
 		int result = noticeService.updateNotice(n);
 		
+		System.out.println(reupfile.length);
+		int fileLength = reupfile.length;
+		int boardNo = n.getBoardNo();
+		if(reupfile.length>0) { //업로드된 갯수만큼 파일 삭제
+			int result1 = noticeService.selectAttachCount(n.getBoardNo());
+			int deleteResult = noticeService.deleteFile(fileLength, boardNo);
+		}
 		
-		//기존파일어케지움?ㅠㅠ뉴뉴뉴뉴뉴
-//		if(reupfile!=null) {
-//			for(int i = 0; i < reupfile.length; i++) {
-//				System.out.println("리업길이"+reupfile.length);
-//				System.out.println("이프문돌릴건데기존첨부있?"+!reupfile[i].getOriginalFilename().equals(""));
-//				if(!reupfile[i].getOriginalFilename().equals("")) {
-//					 기존에 첨부파일이 있었을 경우 => 기존의 첨부파일을 지우기
-//					System.out.println("이프 기존첨"+a.getFileOriginName() != null);
-//					if(a.getFileOriginName() != null) {
-//						기존파일.delete(); 
-//						어플리케이션객체생성?가져오기?
-//						new File(session.getServletContext().getRealPath(a.getFileName())).delete();
-						
-//					}
-//				}
-//			}
-//		}
+		
 		if(reupfile!=null) {
 			
 			for(int i = 0; i<reupfile.length; i++) {
@@ -165,7 +159,7 @@ public class NoticeController {
 					MultipartFile file = reupfile[i];
 
 					String originName = reupfile[i].getOriginalFilename();
-					String changeName = saveFile(file, session);	// 얘가 이해가 안됨??
+					String changeName = saveFile(file, session);
 					
 					long fileSize = file.getSize();
 					
@@ -180,58 +174,36 @@ public class NoticeController {
 					int success = attachmentService.insertNoticeAttachment(a);
 				}
 			}
-
 		}
-		
-		
 		return "redirect:notice.no";
 	}
 	
 	
+	//게시글완전삭제
 	@RequestMapping("delete.no")
 	public String deleteNotice(int bno, String mno, Notice n) {
 		n.setBoardWriter(mno);
 		n.setBoardNo(bno);
 		
 		int result = noticeService.deleteNotice(n);
-		
+
 		return "redirect:notice.no";
 	}
 	
-	
+	//부서별 공지 조회
 	@RequestMapping("range.no")
 	public ModelAndView rangeNotice(@RequestParam(value = "cpage", defaultValue = "1")int currentPage, ModelAndView mv, String noticeRange) {
 		int listCount = noticeService.selectRangeListCount(noticeRange);
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		ArrayList<Notice> list = noticeService.rangeNotice(noticeRange, pi);
+		System.out.println(list);
 		mv.addObject("pi", pi).addObject("list", list).addObject("noticeRange", noticeRange);
 		mv.setViewName("notice/noticeRangeView");
 		return mv;
 	}
 	
-	
-//	
-//	@RequestMapping("range.no")
-//	public ModelAndView rangeNotice(@RequestParam(value = "cpage", defaultValue = "1") String noticeRange, ModelAndView mv, int currentPage) {
-//		System.out.println("범위"+noticeRange);
-////		currentPage = 1;
-//		System.out.println("레인지"+currentPage);
-//		int listCount = noticeService.selectRangeListCount(noticeRange);
-//		System.out.println("레인지리스트카운트후"+currentPage+"리스트카운트"+listCount);
-//		
-//		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-//		
-//		System.out.println("파이후"+listCount+"커런트"+currentPage);
-//		ArrayList<Notice> list = noticeService.rangeNotice(noticeRange, pi);
-////		ArrayList<Notice> list = noticeService.selectNoticeList(pi);
-//		mv.addObject("pi", pi).addObject("list", list);
-//		mv.setViewName("notice/noticeRangeView");
-//		
-//		//????????귀신이곡ㄹ할노릇?????;;;머여
-//		return mv;
-//	}
-	
 
+	//파일관련
 	public String saveFile(MultipartFile upfile, HttpSession session) { 
 
 		String originName = upfile.getOriginalFilename();
@@ -245,8 +217,6 @@ public class NoticeController {
 
 		try {
 			upfile.transferTo(new File(savePath + changeName));
-			
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

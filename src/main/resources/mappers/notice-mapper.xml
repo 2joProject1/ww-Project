@@ -33,11 +33,12 @@
 		select count(*)
 			from board_all
 		  where status = 'Y'
+          and board_type=1
 	</select>
 
 
 	<select id="selectNoticeList" resultMap="noticeResultSet">
-		select 
+          		select 
 			BOARD_NO,
 			b.BOARD_WRITER,
 			BOARD_TYPE,
@@ -54,13 +55,14 @@
 		from board_all b
         join member m on(b.board_Writer = m.member_no)
 		where b.status = 'Y'
+        and board_type=1
 		order by board_no desc
 	</select>
 	
 	<select id="selectTopList" resultMap="noticeResultSet">
           
-          <![CDATA[
-          select a.*
+        <![CDATA[
+		select a.*
           from(
                 select 
                     BOARD_NO,
@@ -80,9 +82,12 @@
                 join member m on(b.board_Writer = m.member_no)
                 where b.status = 'Y'
                 and top_fix = 'Y'
+                and board_type=1
                 
                 order by board_no desc) a
-        where rownum <= 3]]>
+		where rownum <= 3
+        
+        ]]>
         
 	</select>
 	
@@ -174,7 +179,6 @@
 			and notice_range = #{noticeRange}
 			and NOTICE_CATEGOTY = #{noticeCategory}
 			and enroll_date = sysdate
-			<!-- 이게 왜 되지...? sysdate 구체적으로 시간 지정해야 할 것 같으ㅡㄴ뎅.. -->
 	</select>
 	
 	<delete id="deleteNotice" parameterType="notice">
@@ -218,6 +222,7 @@
 			COUNT,
 			b.STATUS,
 			TOP_FIX,
+			NOTICE_RANGE,
 			NOTICE_CATEGOTY,
 			NOTICE_PERIOD,
             m.member_name
@@ -256,5 +261,19 @@
         where rownum <= 5]]>
         
 	</select>
-
+	
+		
+	<select id="selectAttachCount" parameterType="int" resultType="_int">
+		select count(*) from attachment where board_no = #{bno}
+	</select>
+	<delete id="deleteFile" parameterType="Map">
+	
+		<![CDATA[
+			DELETE FROM attachment
+			WHERE board_no= #{boardNo}
+			AND ROWNUM <= #{fileLength}
+		
+		]]>
+	
+	</delete>
 </mapper>

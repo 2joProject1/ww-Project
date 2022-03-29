@@ -24,6 +24,10 @@ public interface NoticeService {
 
 	ArrayList<Notice> 		rangeNotice(String noticeRange, PageInfo pi);
 
+	int 					selectAttachCount(int bno);
+	int deleteFile(int fileLength, int boardNo);
+	
 	// 메인
 	ArrayList<Notice> 		selectNoticeList();
+	
 }
