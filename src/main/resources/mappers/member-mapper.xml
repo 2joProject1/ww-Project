@@ -193,7 +193,26 @@
 
 	<!-- 멤버 정보 -->
 	<select id="selectMemberInformation" resultMap="memberResultSet" parameterType="member">
-		select *
+		select 
+			MEMBER_NO,
+			(select Dept_Name from dept where dept_no = (select dept_no from "MEMBER" where member_no = #{memberNo}) 
+			) DEPT_NO,
+			(select RANK_NAME from rank where rank_no = (select rank_no from "MEMBER" where member_no = #{memberNo})
+            ) RANK_NO,
+			MEMBER_NAME,
+			MEMBER_PWD,
+			BIRTH,
+			ADDRESS,
+			EMAIL,
+			PHONE,
+			TELEPHONE,
+			STATUS,
+			"FILE",
+			FILEPATH,
+			LOGIN_FAIL,
+			TMP_PWD,
+			ENROLL_DATE,
+			RESIGN_DATE
 		from
 		member
 		where
