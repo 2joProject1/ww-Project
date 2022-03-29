@@ -180,7 +180,7 @@ ul.project-list > li:hover {
 			<h2 class="project-title">내 프로젝트</h2>
 			<ul class="project-list">
 				<li>
-					<a href="project?pno=1"></a>
+					<a href="project?projectNo=1"></a>
 				</li>
 				<li>
 					<a href="#"></a>

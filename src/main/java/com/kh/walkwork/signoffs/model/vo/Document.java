@@ -8,11 +8,11 @@ import lombok.Data;
 public class Document {
 	private String docuNo; // 문서번호
 	private String drafter; // 세션에서 추출 (기안자 사원번호)
-	private int docuFormat; // 화면 넘어오는 문서유형
+	private String docuFormat; // 화면 넘어오는 문서유형
 	private String docuTitle;
 	private String docuContent;
 	private String docuRetentionPeriod;
-	private int approvalDecision;
+	private String approvalDecision;
 	private Date docuWriteDate;
 	
 	
@@ -23,4 +23,7 @@ public class Document {
 	private int selectType; // select유형 (receive: 수신문서함)
 	private String approver;
 	private int approvalNo;
+	
+	private String docuWriteStartDate;
+	private String docuWriteEndDate;
 }

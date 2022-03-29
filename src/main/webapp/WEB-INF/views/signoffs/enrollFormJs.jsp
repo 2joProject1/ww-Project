@@ -4,7 +4,6 @@
 <script>
 var index = 0;
 var searchedMembers = []; //검색 전 빈 배열
-var addedMembers = []; //검색 결과 배열
 var memberTargetSignoffsIndex = -1; //false값
 
 searchMember('', '', onMemberDataUpdated); //이름, 부서,
@@ -54,6 +53,7 @@ function attachFile() {
 	index++; //data-file-index 값 하나씩 올리기
 }
 
+//문서형식 변경
 function changeFormat(target) {
 	window.location.href = 'signoffs.docu?format=' + target.value;
 }
@@ -66,7 +66,7 @@ function selectDeptModal() {
 //사원검색 모달 열기 + 클릭한 사원 인덱스 가져오기
 function selectMemberModal(index) {
 	$('#searchMember').modal('show');
-	memberTargetSignoffsIndex = index;
+	memberTargetSignoffsIndex = index; //해당사원 인덱스
 }
 
 //수신부서 검색
@@ -83,6 +83,15 @@ function onClickSearchedDept() {
 function onClickSearchedMember() {
 	var memberNo = $(this).attr('data-member');
 	var memberName = $(this).children().eq(1).text().trim(); 
+
+	var list = $('[data-signoffs-index]');
+	for (var i=0; i<list.length; i++) {
+		if (list.eq(i).val() == memberNo) {
+			alert("중복된 사용자를 추가할 수 없습니다.");
+			return;
+		}
+	}
+
 	$('[data-index="'+memberTargetSignoffsIndex+'"]').text(memberName);
 	$('#searchMemberResult').empty();
 	$('#searchMember').modal('hide');
@@ -133,12 +142,14 @@ function onMemberDataUpdated(members) {
 	var memberTable = document.getElementById('tbMembers');
 	memberTable.innerHTML = ''; //memberTable 비우고
 	//반복문으로 결과값 출력
+	console.log(members);
 	for (var i = 0; i < members.length; i++) {
+		if ($('#loginMemberNo').val() != members[i].memberNo) //본인은 선택할 수 없도록
 		memberTable.innerHTML += '<tr data-member="'+members[i].memberNo+'">'
 				+ '<td><i class="xi-profile xi-3x"></i></td>' + '<td>'
 				+ members[i].memberName + '</td>'
 				+ '<td style="margin:10px">' + members[i].deptName
-				+ '/' + members[i].rankNo + '</td>' + '</tr>'
+				+ '/' + members[i].rankName + '</td>' + '</tr>'
 	}
 }
 
@@ -191,7 +202,8 @@ function submitDocument() {
 			return;
 		}
 	}
-
+	
+	//전송
 	$('#enrollForm').submit(); 
 }
 </script>

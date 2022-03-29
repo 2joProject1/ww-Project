@@ -41,10 +41,9 @@
 		                <br><br>
 		                
 		                <i class="xi-document"></i>&nbsp;
-		                <a href="signoffs.docu"><b>전자결재</b></a>
-		                <br>
-		                <a href="docubox.draft" class="side_subtitle">기안문서함</a>
+		                <a href="docubox.draft"><b>전자결재</b></a>
 		                <br><br>
+		                
 		                
 		                <i class="xi-presentation"></i>&nbsp;
 		                <a href="project.main"><b>프로젝트</b></a>

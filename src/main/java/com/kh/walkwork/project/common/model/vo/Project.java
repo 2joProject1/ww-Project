@@ -7,10 +7,13 @@ public class Project {
 	private int projectNo;
 	private String projectWriter;
 	private String projectTitle;
-	private String projectMember;
+	private String projectMemberNo;
 	private String projectSummary;
 	private String projectStartDate;
 	private String projectEndDate;
-	private String projectStatus;
+	private String projectStatus; // 0:완료, 1:진행
 	private String projectPercent;
+	
+	private String projectMemberStr;
+	private int projectMemberCount;
 }

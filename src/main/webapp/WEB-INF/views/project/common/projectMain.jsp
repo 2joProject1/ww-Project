@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>프로젝트 메인</title>
 
 <style>
 h2.project-title {
@@ -207,6 +207,7 @@ input[type="search"] {
 </style>
 </head>
 <body>
+
 	<div id="header-layout">
 		<jsp:include page="../../common/header.jsp" />
 
@@ -214,12 +215,13 @@ input[type="search"] {
 	<div id="container">
 		<div id="sidebar-layout">
 			<div id="main-sidebar">
-				<!-- 관리자로 들어가면 "새 프로젝트" 버튼 보이기  -->
-				<%-- <c:if test="loginUser.rank >= 5"> --%>
-				<button type="button" class="new-project" data-toggle="modal" data-target="#newProject">새 프로젝트</button>
-				<br>
-				<br>
-				<%-- </c:if> --%>
+				<!-- 부장급으로 들어가면 "새 프로젝트" 버튼 보이기  -->
+				<c:if test="${ loginUser.rankNo ge  5 }">
+					<button type="button" class="new-project" data-toggle="modal" data-target="#newProject">새 프로젝트</button>
+					<br>
+					<br>
+				</c:if>
+				
 				<div class="sub-menu-title">
 					<i class="fi fi-rr-menu-burger"></i>&nbsp;<b>프로젝트</b><br>
 				</div>
@@ -241,15 +243,20 @@ input[type="search"] {
 
 		<div id="content-layout">
 			<h2 class="project-title">내 프로젝트</h2>
+			<input type="hidden" name="projectMemberNo" value="${ loginUser.memberNo }">			
 			<ul class="project-list">
-				<li><a href="project?pno=1"></a></li>
-				<li><a href="#"></a></li>
-				<li><a href="#"></a></li>
-				<li><a href="#"></a></li>
+				<c:forEach var="p" items="${ list }">
+					<li>
+						<a href="project?projectNo=${p.projectNo }"> 
+							<span style="font-size: 13pt">${ p.projectTitle }</span>
+							<span>${ p.projectMemberStr }</span>
+						</a>
+					</li>
+				</c:forEach>
 			</ul>
 
 			<hr>
-			<h2 class="project-title">개발팀</h2>
+			<h2 class="project-title">${ loginUser.deptName }</h2>
 			<ul class="project-list">
 				<li><a href="#"></a></li>
 				<li><a href="#"></a></li>
@@ -278,25 +285,24 @@ input[type="search"] {
 
 				<!-- Modal body -->
 				<div class="modal-body">
-					<form action="insert.pro" method="post">
-						<input type="hidden" name="pno">
+					<form id="insertProjectForm" action="insert.pro" method="post">
 						<table class="newProject-table">
 							<tr>
 								<th>프로젝트명</th>
 								<td>
-									<input type="text" name="projectTitle" class="newProject-input">
+									<input type="text" name="projectTitle" class="newProject-input" required>
 								</td>
 							</tr>
 							<tr>
 								<th>프로젝트 시작일자</th>
 								<td>
-									<input type="date" name="projectStartDate" class="newProject-date">
+									<input type="date" name="projectStartDate" class="newProject-date" required>
 								</td>
 							</tr>
 							<tr>
 								<th>프로젝트 마감일자</th>
 								<td>
-									<input type="date" name="projectEndDate" class="newProject-date">
+									<input type="date" name="projectEndDate" class="newProject-date" required>
 								</td>
 							</tr>
 							<tr>
@@ -309,7 +315,7 @@ input[type="search"] {
 								<th colspan="2">프로젝트 인원</th>
 							</tr>
 							<tr>
-								<th colspan="2">&nbsp;&nbsp;<span>총 6명</span>
+								<th colspan="2">&nbsp;&nbsp;<span>총 <span id="projectMemberCount"></span>명</span>
 									<button type="button" id="projectMemberBtn">아이콘</button>
 							</tr>
 							<tr>
@@ -336,13 +342,9 @@ input[type="search"] {
 	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 
 	<script>
+		var projectAddedMembers = [];
 		searchedMembers = []; //검색 전 빈 배열
-		addedMembers = []; //검색 결과 배열
-		var arr = [];
-		
-
 		searchMember('', '', onMemberDataUpdated); //이름, 부서,
-
 		
 		$(document).ready(function() {
 			$('#projectMemberBtn').on("click", function() {
@@ -361,14 +363,21 @@ input[type="search"] {
 			$('#addMemberArea').html(html);
 			$('#searchMemberResult').empty();
 			$('#searchMember').hide();
+			
+			for (var i=0; i<projectAddedMembers.length; i++) {
+				var html = '<input type="hidden" name="projectMemberNo" value="' + projectAddedMembers[i] + '" >';
+				$('#insertProjectForm').append(html);
+			}
+			$('#projectMemberCount').text(projectAddedMembers.length);
 		}
 
 		function onClickSearchedMember() {
+			var memberNo = $(this).attr('data-member');
 			var memberName = $(this).children().eq(1).text().trim();
 			var teamName = $(this).children().eq(2).text().trim();
 			$('#searchMemberResult').append(
 					'<li>' + teamName + ' ' + memberName + '</li>');
-			var index = $('[data-member]').index(this);
+			projectAddedMembers.push(memberNo);
 		}
 
 		//사원 검색 - 
@@ -397,15 +406,13 @@ input[type="search"] {
 			memberTable.innerHTML = ''; //memberTable 비우고
 			//반복문으로 결과값 출력
 			for (var i = 0; i < members.length; i++) {
-				memberTable.innerHTML += '<tr data-member="${ memberNo }">'
+				memberTable.innerHTML += '<tr data-member="' + members[i].memberNo + '">'
 						+ '<td><i class="xi-profile xi-3x"></i></td>' + '<td>'
 						+ members[i].memberName + '</td>'
 						+ '<td style="margin:10px">' + members[i].deptName
-						+ '/' + members[i].rankNo + '</td>' + '</tr>'
+						+ '/' + members[i].rankName + '</td>' + '</tr>'
 			}
 		}
-		
-		
 	</script>
 
 	<div class="modal" id="searchMember">
@@ -421,7 +428,7 @@ input[type="search"] {
 				<!-- Modal body -->
 				<div class="modal-body">
 					<i class="fi fi-rr-search"></i>&nbsp;
-					<input id="ipSearchMemberText" type="search" name="" placeholder="    사원 또는 부서를 입력해주세요" onkeyup="onSearchKeyUp()">
+					<input id="ipSearchMemberText" type="search" placeholder="    사원 또는 부서를 입력해주세요" onkeyup="onSearchKeyUp()">
 					<br>
 					<div class="search-area">
 						<table id="tbMembers" class="search-member">
