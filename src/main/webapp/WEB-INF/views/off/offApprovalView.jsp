@@ -13,13 +13,19 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    
+     <!-- 폰트 -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 <title>휴가신청 승인</title>
 <style>
 #result {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
-  width: 90%;
-  margin-left:3%
+  width: 80%;
+  margin-left:8%;
+  font-family: 'Nanum Gothic', sans-serif;
 }
 
 #result td, #result th {
@@ -27,9 +33,9 @@
   padding: 8px;
 }
 
-#result tr:nth-child(even){background-color: #f2f2f2;}
+#result tr:nth-child(even){background-color: rgb(245, 248, 248);}
 
-#result tr:hover {background-color: #ddd;}
+#result tr:hover {background-color: rgb(237, 241, 241);}
 
 #result th {
   padding-top: 12px;
@@ -45,25 +51,34 @@
   .commute_title_text{
   	font-size: 30px;
   	font-weight: bold;
-  	margin-left: 1%;
+  	margin-left: 2%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   .commute_result_text{
-  	font-size: 25px;
+  	font-size: 27px;
   	font-weight: bold;
   	margin-left: 2%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   #result-area{
   	font-size: 15px;
   	font-weight: bold;
   	margin-left: 2%;
+  	font-family: 'Nanum Gothic', sans-serif;
+  }
+  #commute-title{
+  	font-size: 15px;
+  	font-weight: bold;
+  	margin-left: 1%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   #commute-main{
   	font-size: 15px;
   	font-weight: bold;
   	margin-left: 1%;
+  	font-family: 'Nanum Gothic', sans-serif;
   
   }
-  
   #reason-t{
    width:600px;
    height:50px;
@@ -77,7 +92,43 @@
   }
   .sub-menu{
   	font-size: 17px;
+  	margin-left:12%;
   }
+  #check{
+    font-size: 14px;
+    background: none;
+    color: white;
+    border: 0;
+    background-color:#72b1ca;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#non{
+    font-size: 14px;
+    background: none;
+    color: white;
+    border: 0;
+    background-color:#f0ae82;
+    border-radius: 10px;
+    cursor: pointer;
+}
+#wait{
+    font-size: 14px;
+    background: none;
+    color: white;
+    border: 0;
+    background-color:#bcbcbc;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.yes-btn, .no-btn{
+	background-color:#white;
+	border:1px solid black;
+}
+.yes-btn:hover, .no-btn:hover{
+	background-color:#bcbcbc;
+}
   
 </style>
 
@@ -122,34 +173,108 @@
 	        </div>
 	
 	        <div id="content-layout">
-            <div id="commute-main">
-                <span class="commute_title_text">휴가 신청 승인</span><br>
+	        <div id="commute-title">
+	               <span class="commute_title_text">휴가신청 승인</span>
                 <hr>
-                 &nbsp;기간  <input type="date" name = "date"> - <input type="date" name = "date">
-            <hr>
+	        </div>
+            <div id="commute-main">
+            	<form action="searchApproval.of" method="post">
+	                <input type="hidden" value="${loginUser.memberNo }" name="offWriter"> 
+	                 &nbsp;&nbsp;기간 &nbsp; <input type="date" name = "offStart" required> - <input type="date" name = "offEnd" required>
+	                <button class="check-btn" value="">조회</button>
+            	</form>
+	            <hr>
             </div>
            
             <div id="result-area">
-                <span class="commute_title_text">진행상태</span>
-                    <select name="status">
-			            <option value="st">선택</option>
-			            <option>승인</option>
-			            <option>대기</option>
-			        </select>
+	                <span class="commute_result_text">진행상태</span>
+	                    <select name="status" onchange="changeSelect(this.value)">
+				            <option value="st">선택</option>
+				            <option value="승인">승인</option>
+				            <option value="대기">대기</option>
+				        </select>
                 
                 <br><br>
                 <table id="result">
+                <thead>
 				  <tr>
 				    <th>휴가신청일</th>
-				    <th width="150px">신청자</th>
-				    <th width="400px">사유</th>
+				    <th width="150px" id="hum">신청자</th>
+				    <th width="300px">사유</th>
 				    <th width="170px">승인여부</th>
 				    <th width="100px">진행상태</th>
 				  </tr>
+                </thead>
+                <tbody>
+                	<c:forEach var="o" items="${ list }">
+	                	<tr style="display:'';">
+		                	<td>${o.requestDate}</td> 
+		                	<td>${o.memberName}</td>
+		                	<td>${o.offReason}</td>
+			                <td>
+		                		<c:if test="${o.status eq 'W'}">
+			                		<button class="yes-btn" value="${o.offNo}">승인</button> &nbsp;
+			                		<button class="no-btn" value="${o.offNo}">반려</button>
+		                		</c:if>
+			                </td>
+		                	<c:choose>
+		                		<c:when test="${o.status eq 'W'}">
+			                <td class="대기"><input type="button" value="대기" id="wait" class="button disabled"></td>
+		                		</c:when>
+		                		<c:when test="${o.status eq 'Y'}">
+			                		<td class="승인"><input type="button" value="승인" id="check" class="button disabled"></td>
+		                		</c:when>
+		                		<c:otherwise>
+		                			<td class="반려"><input type="button" value="반려" id="non" class="button disabled"></td>
+		                		</c:otherwise>
+		                	</c:choose>
+	                	</tr>
+                	</c:forEach>
+                </tbody>
 				  </table>
             </div>
             
 	        </div>
 	    </div>
+	    
+<script type="text/javascript">
+	$(function(){
+		$('.yes-btn').click(function(){
+			var offNo = $(this).val();
+			location.href="yesOrNo.of?status=Y&offNo="+offNo;
+		})
+		$('.no-btn').click(function(){
+			var offNo = $(this).val();
+			location.href="yesOrNo.of?status=N&offNo="+offNo;
+		})
+	})
+	
+	function changeSelect(e){
+		
+		$("#result").find("td").parent().css("display",'');
+		
+		if(e ==='st'){
+		$("#result").find("td").parent().css("display",'');
+		}else if(e ==='승인'){
+		$("#result").find("td.대기").parent().css('display','none');
+		$("#result").find("td.반려").parent().css('display','none');
+		}else{
+		$("#result").find("td.승인").parent().css('display','none');
+		$("#result").find("td.반려").parent().css('display','none');
+		}
+		
+		
+		//if(e == "승인"){
+		//	$("#result").find("td.승인")
+		//}
+		//var result = $("#result>tbody>tr").children.last().text();
+		//console.log(result);
+		//if(e == $("#result>tbody>tr").children.last().text()){
+		//	$("#result>td").attr('style','display:none;')
+					
+		//}
+	}
+	
+</script>    
 </body>
 </html>

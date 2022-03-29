@@ -13,23 +13,30 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    
+     <!-- 폰트 -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    
 <title>월 근무내역</title>
 <style>
 #result {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 77%;
-  margin-left:3%
+  margin-left:1;
 }
 
 #result td, #result th {
   border: 1px solid #ddd;
   padding: 8px;
+  font-family: 'Nanum Gothic', sans-serif;
 }
 
-#result tr:nth-child(even){background-color: #f2f2f2;}
+#result tr:nth-child(even){background-color: rgb(245, 248, 248);}
 
-#result tr:hover {background-color: #ddd;}
+#result tr:hover {background-color: rgb(237, 241, 241);}
 
 #result th {
   padding-top: 12px;
@@ -45,23 +52,32 @@
   .commute_title_text{
   	font-size: 30px;
   	font-weight: bold;
-  	margin-left: 1%;
+  	margin-left: 2%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   .commute_result_text{
   	font-size: 27px;
   	font-weight: bold;
   	margin-left: 2%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   #result-area{
   	font-size: 15px;
   	font-weight: bold;
+  	margin-left: 2%;
+  	font-family: 'Nanum Gothic', sans-serif;
+  }
+  #commute-title{
+  	font-size: 15px;
+  	font-weight: bold;
   	margin-left: 1%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   #commute-main{
   	font-size: 15px;
   	font-weight: bold;
   	margin-left: 1%;
-  
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   
   #reason-t{
@@ -77,11 +93,23 @@
   }
   .sub-menu{
   	font-size: 17px;
+  	margin-left: 12%;
   }
   .graphBox{
-  width: 720px;
+  	width: 680px;
     margin-left: 250px;
   
+  }
+  .cal_top{
+  	margin-right: 5%;
+  }
+  #cal_top_year, #cal_top_month{
+  	font-size: 27px;
+  }
+  #movePrevMonth, #moveNextMonth{
+  	color : black;
+  	text-decoration : none;
+  	font-size: 15px;
   }
 </style>
   
@@ -128,17 +156,13 @@
             </div>
            
             <div id="result-area">
-              &nbsp;기간선택  <input type="date" name = "date"> - <input type="date" name = "date"> 
-              <button>조회</button>
-              <hr>
-              
-            <div class="graphBox">
-
-				<canvas id="lineCanvas" width="384" height="210"></canvas>
-			
-			</div>
-              
                 <span class="commute_result_text">조회결과</span>
+                
+                
+	            <div class="graphBox">
+					<canvas id="lineCanvas" width="400" height="160"></canvas>
+				</div>
+                
                 <br><br>
 				<div id="calender-area" align="center">
 					<div class="cal_top">
@@ -293,8 +317,8 @@
 					</c:forEach>
 		    	  		    	   
 		    	  ],
-		      borderColor: "green", 
-		      backgroundColor: "green",
+		      borderColor: "#b0d7d8", 
+		      backgroundColor: "#66a4a6",
 		      pointStyle: 'circle',
 		      pointRadius: 4,
 		      pointHoverRadius: 10
@@ -319,16 +343,6 @@
 		};
 		// </block:config>
 		new Chart(ctx, config, data);
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

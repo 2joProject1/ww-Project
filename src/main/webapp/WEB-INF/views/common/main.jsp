@@ -158,9 +158,11 @@
 	    	$(function(){
 	    		$("#commute-on").click(function(){
 	    			location.href = "on.cm";
+	    			alert("출근 완료");
 	    		})
 	    		$("#commute-off").click(function(){
 	    			location.href = "off.cm";
+	    			alert("오늘 하루도 고생하셨습니다");
 	    		})
 	    		
 	    	})

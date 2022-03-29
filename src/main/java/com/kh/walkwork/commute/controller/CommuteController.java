@@ -27,10 +27,8 @@ public class CommuteController {
 	
 	@RequestMapping(value="main.cm", method=RequestMethod.GET)
 	public ModelAndView commuteMain(HttpSession session, ModelAndView mv, String year, String month) {
-		//String memberNo = ((Member)session.getAttribute("loginUser")).getMemberNo();
+		String memberNo = ((Member)session.getAttribute("loginUser")).getMemberNo();
 		
-		
-		String memberNo = "12345";
 		Commute commute = new Commute();
 
 		// 현재 날짜 구하기 (시스템 시계, 시스템 타임존)
@@ -62,8 +60,7 @@ public class CommuteController {
 	
 	@RequestMapping("month.cm")
 	public ModelAndView commuteMonth(HttpSession session, ModelAndView mv, String year, String month) {
-		//String memberNo = ((Member)session.getAttribute("loginUser")).getMemberNo();
-		String memberNo = "12345";
+		String memberNo = ((Member)session.getAttribute("loginUser")).getMemberNo();
 		Commute commute = new Commute();
 
 		// 현재 날짜 구하기 (시스템 시계, 시스템 타임존)
@@ -159,7 +156,6 @@ public class CommuteController {
 			
 		}
 		
-		//화이팅!
 		mv.addObject("list", list);
 		mv.addObject("listCount", listCount);
 		mv.setViewName("commute/workingHourView");
@@ -170,8 +166,7 @@ public class CommuteController {
 	// 출근
 	@RequestMapping("on.cm") 
 	public ModelAndView commuteOn(HttpSession session, ModelAndView mv) {
-		//String memberNo = ((Member)session.getAttribute("loginUser")).getMemberNo();
-		String memberNo = "12345";
+		String memberNo = ((Member)session.getAttribute("loginUser")).getMemberNo();
 		Commute commute = new Commute();
 		
 		// 현재 날짜 구하기 (시스템 시계, 시스템 타임존)
@@ -216,8 +211,7 @@ public class CommuteController {
 	// 퇴근
 	@RequestMapping("off.cm")
 	public ModelAndView commuteOff(HttpSession session, ModelAndView mv) {
-		//String memberNo = ((Member)session.getAttribute("loginUser")).getMemberNo();
-		String memberNo = "12345";
+		String memberNo = ((Member)session.getAttribute("loginUser")).getMemberNo();
 		Commute commute = new Commute();
 		
 		// 현재 날짜 구하기 (시스템 시계, 시스템 타임존)
@@ -237,14 +231,20 @@ public class CommuteController {
 			int commuteTime = 18;
 			int realTime = Integer.parseInt(commuteEnd.substring(0,2));
 			int checkLate = commuteService.checkLate(commute);
-			
+			// checkDate = 1 지각
 			if(commuteTime <= realTime && checkLate == 0) {
+				// 정상출근 지각이아니면서 퇴근시간보다 현재시간이 같거나 크다
 				commute.setWorkStatus("Y");
 			}else if(checkLate == 1 && commuteTime > realTime ){
+				// 근무태만 - 지각이면서 퇴근시간보다 현재시간이 작을때
 				commute.setWorkStatus("L");
-			}else {
+			}else if(checkLate == 0 && commuteTime > realTime){
+				// 조퇴 - 지각이 아닐때 , 퇴근시간보다 현재시간이 작을때
 				commute.setWorkStatus("E");
+			}else {
+				commute.setWorkStatus("N");
 			}
+			// 지각
 			commute.setCommuteEnd(commuteEnd);
 			
 			int result = commuteService.updateCommute(commute);

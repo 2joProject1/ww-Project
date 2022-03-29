@@ -13,6 +13,11 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    
+     <!-- 폰트 -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 
 <title>근태관리 메인</title>
 <style>
@@ -20,17 +25,19 @@
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 80%;
-  margin-left: 1%
+  margin-left: 1%;
+  font-family: 'Nanum Gothic', sans-serif;
 }
 
 #result td, #result th {
   border: 1px solid #ddd;
   padding: 8px;
+  font-family: 'Nanum Gothic', sans-serif;
 }
 
-#result tr:nth-child(even){background-color: #f2f2f2;}
+#result tr:nth-child(even){background-color: rgb(245, 248, 248);}
 
-#result tr:hover {background-color: #ddd;}
+#result tr:hover {background-color: rgb(237, 241, 241);}
 
 #result th {
   padding-top: 12px;
@@ -38,6 +45,7 @@
   text-align: center;
   background-color: #66a4a6;
   color: white;
+  font-family: 'Nanum Gothic', sans-serif;
 }
 
 #result td{
@@ -46,23 +54,32 @@
   .commute_title_text{
   	font-size: 30px;
   	font-weight: bold;
-  	margin-left: 1%;
+  	margin-left: 2%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   .commute_result_text{
   	font-size: 27px;
   	font-weight: bold;
-  	margin-left: 1%;
+  	margin-left: 2%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   #result-area{
   	font-size: 15px;
   	font-weight: bold;
   	margin-left: 2%;
+  	font-family: 'Nanum Gothic', sans-serif;
+  }
+  #commute-title{
+  	font-size: 15px;
+  	font-weight: bold;
+  	margin-left: 1%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   #commute-main{
   	font-size: 15px;
   	font-weight: bold;
   	margin-left: 1%;
-  
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   
   #reason-t{
@@ -78,7 +95,9 @@
   }
   .sub-menu{
   	font-size: 17px;
+  	margin-left:12%;
   }
+  
   .cal_top{
   	margin-right: 5%;
   }
@@ -91,8 +110,6 @@
   	text-decoration: none; 
   	font-size: 15px;
   }
-  
-  
 </style>
 
  	<link rel="stylesheet" href="resources/css/layout.css">
@@ -153,13 +170,13 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="c" items="${ list }">
+							<c:forEach var="c" items="${ list }"> 
 								<tr>
 									<td>${c.commuteDate}</td>
 									<td>${c.commuteStart}</td>
 									<td>${c.commuteEnd}</td>
 									<c:choose>
-										<c:when test="${c.workStatus eq 'Y'}">
+										<c:when test="${c.workStatus eq 'Y'}"> 
 											<td>정상출근</td>
 										</c:when>
 										<c:when test="${c.workStatus eq 'N'}">
@@ -168,7 +185,7 @@
 										<c:when test="${c.workStatus eq 'E'}">
 											<td>조퇴</td>
 										</c:when>
-										<c:otherwise>
+										<c:otherwise> 
 											<td>근무태만</td>
 										</c:otherwise>
 									</c:choose>
@@ -182,7 +199,6 @@
 	</div>
 	
 <script type="text/javascript">
-    
     var today = null;
     var year = null;
     var month = null;

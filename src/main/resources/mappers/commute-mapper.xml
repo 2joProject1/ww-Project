@@ -65,7 +65,14 @@
 	<!-- 해당사원 조회 -->
 	<select id="selectListCommute" parameterType="commute" resultMap="commuteResultSet">
 		<![CDATA[
-			SELECT * FROM COMMUTE
+			SELECT 
+				MEMBER_NO,
+				COMMUTE_START,
+				COMMUTE_END,
+				COMMUTE_STATUS,
+				WORK_STATUS,
+				COMMUTE_DATE 
+			FROM COMMUTE
 			WHERE COMMUTE_DATE LIKE #{commuteDate}||'%'
 			AND MEMBER_NO = #{memberNo}
 			ORDER BY COMMUTE_DATE DESC
@@ -84,7 +91,14 @@
 	
 	<select id="selectMonthList" parameterType="commute" resultMap="commuteResultSet">
 		<![CDATA[
-			SELECT * FROM COMMUTE
+			SELECT 
+				MEMBER_NO,
+				COMMUTE_START,
+				COMMUTE_END,
+				COMMUTE_STATUS,
+				WORK_STATUS,
+				COMMUTE_DATE  
+			FROM COMMUTE
 			WHERE COMMUTE_DATE LIKE #{commuteDate}||'%'
 			AND MEMBER_NO = #{memberNo}
 			AND COMMUTE_END IS NOT NULL	
