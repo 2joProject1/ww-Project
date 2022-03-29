@@ -21,6 +21,7 @@ public class mainPage {
 	@RequestMapping("main")
 	public ModelAndView returnMain(ModelAndView mv) { 
 		mv.addObject("notice", noticeService.selectNoticeList());
+//		mv.addObject("todo", noticeService.selectToDoList());
 		mv.setViewName("common/main");
 		
 		return mv;

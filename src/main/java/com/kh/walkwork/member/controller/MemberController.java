@@ -247,7 +247,7 @@ public class MemberController {
 	//비밀번호변경
 	@ResponseBody
 	@RequestMapping("changePwd.me")
-	public ModelAndView changePwd(Member m, ModelAndView mv, HttpSession session) {
+	public ModelAndView changePwdLogin(Member m, ModelAndView mv, HttpSession session) {
 		
 		
 		String encPwd = bcryptPasswordEncoder.encode(m.getMemberPwd());
@@ -255,7 +255,7 @@ public class MemberController {
 		m.setMemberPwd(encPwd);
 		
 		
-		int result = memberService.changePwd(m);
+		int result = memberService.changePwdLogin(m);
 
 		if(result>0) {
 			session.setAttribute("changeResult", "비밀번호 변경 성공. 로그인하세요");

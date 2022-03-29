@@ -154,7 +154,7 @@
         and email = #{email}
 	</update>
 	
-	<update id="changePwd" parameterType="member">
+	<update id="changePwdLogin" parameterType="member">
 		update member 
 		set member_pwd = #{memberPwd}
 		where member_no = #{memberNo}

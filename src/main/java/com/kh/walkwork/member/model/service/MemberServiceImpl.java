@@ -120,8 +120,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public int changePwd(Member m) {
-		return memberDao.changePwd(sqlSession, m);
+	public int changePwdLogin(Member m) {
+		return memberDao.changePwdLogin(sqlSession, m);
 	}
 	
 	@Override
@@ -159,6 +159,11 @@ public class MemberServiceImpl implements MemberService {
 	List<Member> deleteList = memberDao.deleteOrgani(paramMap1);
 		return deleteList;
 		
+	}
+
+	@Override
+	public int changePwd(Member m) {
+		return memberDao.changePwd(sqlSession, m);
 	}
 
 

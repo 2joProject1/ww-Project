@@ -160,7 +160,7 @@
                                 <td>
                                     <select name="noticeRange" id="noticeRange">
                                         <option value="전직원">전직원</option>
-                                        <option value="개발팀">기획팀</option>
+                                        <option value="기획팀">기획팀</option>
                                         <option value="운영팀">운영팀</option>
                                         <option value="재무팀">재무팀</option>
                                         <option value="서비스팀">서비스팀</option>
@@ -211,7 +211,9 @@
 										    id="upfile" class="form-control-file border"
 										    name="upfile" onChange="onFileUpload(event)">
 		                                <label for="upfile" id="uplabel"><i class="xi-file-add-o"></i> </label>
-		                                <span id="spanFile" name="spanFile" value="ㅋㅋ"></span>
+		                                <span id="spanFile0" name="spanFile"></span>
+		                                <span id="spanFile1" name="spanFile"></span>
+		                                <span id="spanFile2" name="spanFile"></span>
 		                               <!--  <input type="text" id="spanFile" name="spanFile" value="ㅋㅋ"> -->
 	                                <td>
                                 <div id="d_file">
@@ -228,15 +230,12 @@
             </div>
 	        </div>
 	    </div>
-<!-- 	    <input type="file" multiple="multiple"
-	    id="upfile" class="form-control-file border"
-	    name="upfile" onChange="onFileUpload(event)"> -->
 		                                
 <script>
 
 window.onload = $(function(){
-	$('#upfile').hide();
-	
+ 	$('#upfile').hide(); 
+	 
 })
 
 function onFileUpload(event){
@@ -244,26 +243,49 @@ function onFileUpload(event){
 	    $("upfile").text("event.target.files[0]");
 	    
 	    var a = "";
-	    
-	    for(var i = 0; i < event.target.files.length; i++){
+ 	    var h1 = "<button type='button' id='x-btn' class='btn' onclick='btndelete(0)'>X</button>";
+ 	    var h2 = "<button type='button' id='x-btn' class='btn' onclick='btndelete(1)'>X</button>";
+ 	    var h3 = "<button type='button' id='x-btn' class='btn' onclick='btndelete(2)'>X</button>";
+
+/* 	    for(var i = 0; i < event.target.files.length; i++){
 	    	console.log(i+"ㅋㅋ");
-	    }
-	    for(var i = 0; i < event.target.files.length; i++){
-	    	a += "파일"+(i+1)+" "+document.getElementById('upfile').files[i].name+" ";
-	    }
-	    console.log(a);
+	    } */
+/* 	    for(var i = 0; i < event.target.files.length; i++){
+	    	a += "파일"+(i+1)+" "+document.getElementById('upfile').files[i].name+" "+ h;
+	    } */
 	    
 	    if(event.target.files.length>3){
 	    	alert("파일은 3개 이하만 업로드가 가능합니다.");
 	    	$("#btn").attr("disabled", true);
 	    } else{
 	    	$("#btn").attr("disabled", false);
-	    	console.log("됐냐");
-	    
-	    	$("#spanFile").val(a);
-	    	$("#spanFile").text(a);
+	    	$("#spanFile0").html("파일"+document.getElementById('upfile').files[0].name+h1);
+	    	$("#spanFile1").html("파일"+document.getElementById('upfile').files[1].name+h2);
+	    	$("#spanFile2").html("파일"+document.getElementById('upfile').files[2].name+h3);
 	    }     
 }
+
+
+function btndelete(fileNum){	//fileNum은 li 의 index 값
+	console.log(fileNum);
+    const dataTransfer = new DataTransfer();
+    
+    let files = $('#upfile')[0].files;	//사용자가 입력한 파일을 변수에 할당
+    
+    let fileArray = Array.from(files);	//변수에 할당된 파일을 배열로 변환(FileList -> Array)
+    
+    fileArray.splice(fileNum, 1);	//해당하는 index의 파일을 배열에서 제거
+    
+    fileArray.forEach(file => { dataTransfer.items.add(file); });
+    //남은 배열을 dataTransfer로 처리(Array -> FileList)
+    
+    $('#upfile')[0].files = dataTransfer.files;	//제거 처리된 FileList를 돌려줌
+/*     $fileNum = "#spanFile"+fileNum; */
+	$("#spanFile"+fileNum).text('');
+
+}
+
+
 
 
 

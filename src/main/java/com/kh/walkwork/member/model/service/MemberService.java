@@ -36,7 +36,7 @@ public interface MemberService {
 	
 	int loginFailCount(Member loginUser);
 	
-	int changePwd(Member m);
+	int changePwdLogin(Member m);
 	
 	Member searchMember(Member m);
 //-------------------------------------------------------
