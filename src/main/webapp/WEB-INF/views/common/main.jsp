@@ -36,7 +36,7 @@
 	                <br><br>
 	                
 	                <i class="xi-sitemap-o"></i>&nbsp;
-	                <a href="chart.li"><b>조직도</b></a>
+	                <a href="officerList"><b>조직도</b></a>
 	                <br><br>
 	                
 	                <i class="xi-document"></i>&nbsp;
