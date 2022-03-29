@@ -41,14 +41,12 @@ public class MemberController {
 	@Autowired
 	private JavaMailSender sender; // 이메일전송
 
-	
 	@RequestMapping("login.back")
 	public String loginBack(HttpSession session) {
 		session.removeAttribute("alertMsg");
 		return "common/login";
 	}
-	
-	
+
 // 회원가입창으로 이동	
 	@RequestMapping("enroll.me")
 	public String selectNoticeList(HttpSession session) {
@@ -59,7 +57,7 @@ public class MemberController {
 //	회원가입
 	@RequestMapping("insert.me")
 	public String insertMember(Member m, Model model, HttpSession session, HttpServletRequest request) {
-		//주소 합치기
+		// 주소 합치기
 		String str = m.getAddress();
 		String[] strArr = str.split(",", 3);
 
@@ -67,7 +65,6 @@ public class MemberController {
 
 		// 암호화 작업(암호문을 만들어내는 과정)
 		String encPwd = bcryptPasswordEncoder.encode(m.getMemberPwd());
-
 
 		m.setMemberPwd(encPwd);
 
@@ -120,8 +117,7 @@ public class MemberController {
 
 		int result = memberService.emailDuplicationCheck(emailDupl);
 
-
-		return result; 
+		return result;
 	}
 
 //아이디 중복체크	
@@ -131,139 +127,122 @@ public class MemberController {
 
 		int result = memberService.idDuplicationCheck(id);
 
-
-		return result; 
+		return result;
 	}
 
 //---------------------------로그인-----------------------------------
 
 	@RequestMapping("login.me")
-	public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv, HttpServletRequest request) {
-		Member loginUser = memberService.loginMember(m);
+	   public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv, HttpServletRequest request) {
+	      Member loginUser = memberService.loginMember(m);
 
-		//아이디 존재 + 비밀번호 일치
-		if(loginUser != null && bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
-																//입력받은			//암호화된
-			//로그인 성공
-			session.setAttribute("loginUser", loginUser);
-			mv.addObject("alertMsg", "로그인성공");
-//			mv.setViewName("common/main");
-			mv.setViewName("redirect:main");
-			if(loginUser.getTmpPwd()!=null) {				
-				int pwdResult = memberService.deleteTmpPwd(loginUser);
-			}
-			//로그인 성공 시 실패 횟수 초기화
-			int result = memberService.loginFailReset(loginUser);
-			
-			
-			
-			return mv;
-		} 
-		// 아이디 존재 + 임시비밀번호 일치
-		else if(loginUser != null && m.getMemberPwd().equals(loginUser.getTmpPwd())) {
-//			System.out.println("임시비밀번호일치");
-			session.setAttribute("loginUser", loginUser);
-			mv.addObject("alertMsg", "로그인성공");
-//			mv.setViewName("common/main");
-			mv.setViewName("redirect:main");
-			
-			//로그인 성공 시 임시비밀번호 삭제(일회용, 더이상 사용할 수 없도록)
-			int pwdResult = memberService.deleteTmpPwd(loginUser);
-			//로그인 성공 시 실패 횟수 초기화
-			int failReset = memberService.loginFailReset(loginUser);
-			
-			return mv;
+	      //아이디 존재 + 비밀번호 일치
+	      if(loginUser != null && bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
+	                                                //입력받은         //암호화된
+	         //로그인 성공
+	         session.setAttribute("loginUser", loginUser);
+	         mv.addObject("alertMsg", "로그인성공");
+//	         mv.setViewName("common/main");
+	         mv.setViewName("redirect:main");
+	         if(loginUser.getTmpPwd()!=null) {            
+	            int pwdResult = memberService.deleteTmpPwd(loginUser);
+	         }
+	         //로그인 성공 시 실패 횟수 초기화
+	         int result = memberService.loginFailReset(loginUser);
+	         
+	         
+	         
+	         return mv;
+	      } 
+	      // 아이디 존재 + 임시비밀번호 일치
+	      else if(loginUser != null && m.getMemberPwd().equals(loginUser.getTmpPwd())) {
+//	         System.out.println("임시비밀번호일치");
+	         session.setAttribute("loginUser", loginUser);
+	         mv.addObject("alertMsg", "로그인성공");
+//	         mv.setViewName("common/main");
+	         mv.setViewName("redirect:main");
+	         
+	         //로그인 성공 시 임시비밀번호 삭제(일회용, 더이상 사용할 수 없도록)
+	         int pwdResult = memberService.deleteTmpPwd(loginUser);
+	         //로그인 성공 시 실패 횟수 초기화
+	         int failReset = memberService.loginFailReset(loginUser);
+	         
+	         return mv;
+	         
+	      }
+	      // 존재하는 아이디 + 비밀번호 불일치 => 로그인실패횟수증가
+	      else if(loginUser != null && !(bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd()))){
+	         
+	         //로그인 실패 횟수 증가
+	         int result = memberService.loginFail(loginUser);
+	         //로그인 실패 횟수 조회
+	         int loginFail = memberService.loginFailCount(loginUser);
+	         //실패횟수 jsp로이동
 
-		} else {
-
-			// 로그인 실패 session.setAttribute("errorMsg", "아이디와 비밀번호를 확인하세요");
-
-			mv.addObject("errorMsg", "로그인실패").setViewName("redirect:/");
-			System.out.println(m.getMemberPwd());
-			System.out.println(loginUser.getMemberPwd());
-
-			
-		}
-		// 존재하는 아이디 + 비밀번호 불일치 => 로그인실패횟수증가
-		else if(loginUser != null && !(bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd()))){
-			
-			//로그인 실패 횟수 증가
-			int result = memberService.loginFail(loginUser);
-			//로그인 실패 횟수 조회
-			int loginFail = memberService.loginFailCount(loginUser);
-			//실패횟수 jsp로이동
-
-			
-			if(loginFail > 5) {
-//				System.out.println("5회초과");
-				mv.addObject("loginFail", loginFail);
-				mv.setViewName("member/changePwd");
-				
-				request.setAttribute("countOverMsg", "로그인 실패 횟수가 5회를 초과하였습니다. 비밀번호 변경 페이지로 이동합니다.");
-				return mv;
-				
-			} 
-			
-			mv.addObject("loginFail", loginFail);
-			//jsp로이동
-			mv.setViewName("member/loginFail");
-			//알림메시지
-			request.setAttribute("errorMsg", "잘못된 비밀번호입니다.");
-			request.setAttribute("loginFailMsg", "로그인 실패 횟수"+loginFail+"회");
-			return mv;
-
-			
-		} 
-		else{
-		  // 존재하지 않는 아이디 
-			request.setAttribute("err", "존재하지않는 아이디입니다.");
-			mv.setViewName("member/loginFail");
-			
-			return mv;
-		}
-
-	}
-	
-
+	         
+	         if(loginFail > 5) {
+//	            System.out.println("5회초과");
+	            mv.addObject("loginFail", loginFail);
+	            mv.setViewName("member/changePwd");
+	            
+	            request.setAttribute("countOverMsg", "로그인 실패 횟수가 5회를 초과하였습니다. 비밀번호 변경 페이지로 이동합니다.");
+	            return mv;
+	            
+	         } 
+	         
+	         mv.addObject("loginFail", loginFail);
+	         //jsp로이동
+	         mv.setViewName("member/loginFail");
+	         //알림메시지
+	         request.setAttribute("errorMsg", "잘못된 비밀번호입니다.");
+	         request.setAttribute("loginFailMsg", "로그인 실패 횟수"+loginFail+"회");
+	         return mv;
+	      } 
+	      else{
+	        // 존재하지 않는 아이디 
+	         request.setAttribute("err", "존재하지않는 아이디입니다.");
+	         mv.setViewName("member/loginFail");
+	         
+	         return mv;
+	      }
+	   }
 
 
 //	---------------------------------------------
-	//아이디찾기
+	// 아이디찾기
 	@ResponseBody
 	@RequestMapping("searchId.me")
 	public ModelAndView searchId(Member m, ModelAndView mv, HttpSession session, HttpServletRequest request) {
-				
+
 		Member b = memberService.searchId(m);
-		
-		if(b!=null) {
-			
+
+		if (b != null) {
+
 			String id = b.getMemberNo();
-			session.setAttribute("alertMsg", m.getMemberName()+"님의 아이디는"+id+"입니다.");
-			
+			session.setAttribute("alertMsg", m.getMemberName() + "님의 아이디는" + id + "입니다.");
+
 			mv.addObject("id", "id").setViewName("redirect:/");
 			return mv;
 		} else {
-			
+
 			session.setAttribute("alertMsg", "존재하지 않는 회원입니다.");
 			mv.addObject("id", "id").setViewName("redirect:/");
 			return mv;
 		}
 	}
-	
-	//비밀번호변경
+
+	// 비밀번호변경
 	@ResponseBody
 	@RequestMapping("changePwd.me")
 	public ModelAndView changePwdLogin(Member m, ModelAndView mv, HttpSession session) {
-		
-		
+
 		String encPwd = bcryptPasswordEncoder.encode(m.getMemberPwd());
 
 		m.setMemberPwd(encPwd);
-		
-		
+
 		int result = memberService.changePwdLogin(m);
 
-		if(result>0) {
+		if (result > 0) {
 			session.setAttribute("changeResult", "비밀번호 변경 성공. 로그인하세요");
 			mv.setViewName("common/login");
 		} else {
@@ -274,45 +253,42 @@ public class MemberController {
 		return mv;
 	}
 
-
 	// 로그아웃
 
-	//임시비밀번호 발급
+	// 임시비밀번호 발급
 	@RequestMapping("tmpPwd.me")
 	public ModelAndView tmpPwd(Member m, ModelAndView mv, HttpServletRequest request) throws MessagingException {
-		
-		//있는 회원인지 조회
+
+		// 있는 회원인지 조회
 		Member resultMember = memberService.searchMember(m);
 		System.out.println(resultMember);
 
-		if(resultMember!=null) {
-			
+		if (resultMember != null) {
+
 			String email = m.getEmail();
 			String secret = memberService.sendPwd(m);
-			
-			//메일로 전송
-			MimeMessage message = sender.createMimeMessage(); 
-			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8"); 
+
+			// 메일로 전송
+			MimeMessage message = sender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 			helper.setTo(email);
-			helper.setSubject("walkWork 임시 비밀번호 발급"); 
+			helper.setSubject("walkWork 임시 비밀번호 발급");
 			helper.setText("임시 비밀번호 : " + secret + "일회용 비밀번호입니다. 로그인 후 비밀번호를 변경하세요.");
-			
+
 			sender.send(message);
 			request.setAttribute("tmpMsg", "메일로 임시비밀번호가 전송되었습니다.");
 			mv.setViewName("common/login");
-			
+
 			return mv;
 		} else {
 			request.setAttribute("tmpMsg", "존재하지 않는 회원입니다. 다시 입력하세요.");
 			mv.setViewName("common/login");
-			
+
 			return mv;
 		}
-		
+
 	}
-	
-	
-	
+
 	// 로그아웃
 	@RequestMapping("logout.me")
 	public String logoutMember(HttpSession session) {
@@ -411,11 +387,11 @@ public class MemberController {
 		m.setFile(saveFileName);
 		m.setFilePath(uploadpath);
 		memberService.updateMemberFile(m);
-		//로그아웃 안하고 보여줌 
-		Member loginUser = memberService.loginMember(m);																								// 성공
+		// 로그아웃 안하고 보여줌
+		Member loginUser = memberService.loginMember(m); // 성공
 		session.setAttribute("loginUser", loginUser);
 		//
-		
+
 		return result;
 	}
 
