@@ -2,7 +2,6 @@ package com.kh.walkwork.notice.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,21 +29,19 @@ public class NoticeController {
 	@Autowired
 	private AttachmentService attachmentService;
 
-
-
-
-
+	//공지조회로 이동
 	@RequestMapping("notice.no")
 	public ModelAndView selectNoticeList(@RequestParam(value = "cpage", defaultValue = "1") int currentPage,
 			ModelAndView mv) {
 		
 		int listCount = noticeService.selectNoticeListCount();
-		
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
-
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 15);
 		ArrayList<Notice> list = noticeService.selectNoticeList(pi);
-		System.out.println(list.size());
 		mv.addObject("pi", pi).addObject("list", list);
+		
+		ArrayList<Notice> topList = noticeService.selectTopList();
+		mv.addObject("topList", topList);
+		
 		mv.setViewName("notice/noticeListView");
 		
 		
@@ -52,31 +49,34 @@ public class NoticeController {
 	}
 	
 	
+	//공지상세조회
 	@RequestMapping("detail.no")
 	public ModelAndView selectNotice(ModelAndView mv, int bno, String mno, Notice n){
 		
-//		System.out.println(mno);
 		n.setBoardNo(bno);
 		n.setBoardWriter(mno);
 		
-//		System.out.println(n);
 		int result = noticeService.increaseCount(bno);
-//		System.out.println(result);
+
 		
 		if(result > 0) {
-			ArrayList<Notice> list = noticeService.selectNotice(n);
-//			System.out.println("리스트머잇음"+list.isEmpty());
-//			System.out.println(list.size());
-			System.out.println(list.get(0));
-			System.out.println(list.get(1));
-			mv.addObject("list", list).setViewName("notice/noticeDetailView");
+			Notice rn = noticeService.selectNotice(n);
+			ArrayList<Attachment> file = noticeService.selectFile(n);
+				if(!file.isEmpty()) {
+					mv.addObject("file", file);
+				} 
+
+			mv.addObject("rn", rn).setViewName("notice/noticeDetailView");
+			return mv;
 		} else {
 			mv.addObject("errorMsg", "상세조회실패").setViewName("common/errorPage");
+			return mv;
 		}
-		return mv;
+
 	}
 	
 	
+	//공지작성폼으로 이동
 	@RequestMapping("enrollForm.no")
 	public String noticeEnrollForm(){
 		
@@ -84,20 +84,22 @@ public class NoticeController {
 	}
 	
 
+	//공지 작성
 	@RequestMapping("insert.no")
 	public String insertNotice(Notice n, MultipartFile[] upfile, HttpSession session) throws IOException {
 
 		Notice b = noticeService.insertNotice(n);
+		
 
 		if(upfile!=null) {
 			
 			for(int i = 0; i<upfile.length; i++) {
 				if(!upfile[i].getOriginalFilename().equals("")) {	//getOriginalFilename() == filename필드의 값을 반환함
 					MultipartFile file = upfile[i];
-					System.out.println(upfile[i].getOriginalFilename());
+
 					String originName = upfile[i].getOriginalFilename();
 					String changeName = saveFile(file, session);	// 얘가 이해가 안됨??
-					 
+					
 					long fileSize = file.getSize();
 					
 					Attachment a = new Attachment(); //아 뉴 쓰지 ㅁ라랬는데 ㅠㅠ... 
@@ -107,9 +109,9 @@ public class NoticeController {
 					a.setMemberNo(b.getBoardWriter());
 					a.setFileOriginName(originName);
 					a.setFilePath("resources/uploadFiles/");
+					
 					a.setFileSize(String.valueOf(fileSize)); //getSize해서 나오는 결과값이 long형이라 String으로 변경
 					int success = attachmentService.insertNoticeAttachment(a);
-
 				}
 			}
 
@@ -119,13 +121,89 @@ public class NoticeController {
 		
 	}
 	
-	@RequestMapping("update.no")
-	public String updateNotice(){
+	//공지 업데이트창으로 이동
+	@RequestMapping("updateForm.no")
+	public ModelAndView updateForm(int bno, String mno, Notice n, ModelAndView mv) {
+		System.out.println(bno);
+		System.out.println(mno);
+		n.setBoardNo(bno);
+		n.setBoardWriter(mno);
+		Notice b = noticeService.selectNotice(n);
+		ArrayList<Attachment> a = noticeService.selectFile(b);
 		
-		return "notice/noticeUpdqteView";
+				
+		mv.addObject("b", b).addObject("a", a).setViewName("notice/noticeUpdateView");
+		
+
+		return mv;
+	}
+	
+	//공지업뎃
+	@RequestMapping("update.no")
+	public String updateNotice(Notice n, Attachment a, MultipartFile[] reupfile, HttpSession session){
+		int result = noticeService.updateNotice(n);
+		
+		System.out.println(reupfile.length);
+		int fileLength = reupfile.length;
+		int boardNo = n.getBoardNo();
+		if(reupfile.length>0) { //업로드된 갯수만큼 파일 삭제
+			int result1 = noticeService.selectAttachCount(n.getBoardNo());
+			int deleteResult = noticeService.deleteFile(fileLength, boardNo);
+		}
+		
+		
+		if(reupfile!=null) {
+			
+			for(int i = 0; i<reupfile.length; i++) {
+				if(!reupfile[i].getOriginalFilename().equals("")) {	//getOriginalFilename() == filename필드의 값을 반환함
+					MultipartFile file = reupfile[i];
+
+					String originName = reupfile[i].getOriginalFilename();
+					String changeName = saveFile(file, session);
+					
+					long fileSize = file.getSize();
+					
+
+					a.setFileName(changeName);
+					a.setBoardNo(n.getBoardNo());
+					a.setMemberNo(n.getBoardWriter());
+					a.setFileOriginName(originName);
+					a.setFilePath("resources/uploadFiles/");
+					
+					a.setFileSize(String.valueOf(fileSize)); //getSize해서 나오는 결과값이 long형이라 String으로 변경
+					int success = attachmentService.insertNoticeAttachment(a);
+				}
+			}
+		}
+		return "redirect:notice.no";
+	}
+	
+	
+	//게시글완전삭제
+	@RequestMapping("delete.no")
+	public String deleteNotice(int bno, String mno, Notice n) {
+		n.setBoardWriter(mno);
+		n.setBoardNo(bno);
+		
+		int result = noticeService.deleteNotice(n);
+
+		return "redirect:notice.no";
+	}
+	
+	//부서별 공지 조회
+	@RequestMapping("range.no")
+	public ModelAndView rangeNotice(@RequestParam(value = "cpage", defaultValue = "1")int currentPage, ModelAndView mv, String noticeRange) {
+		int listCount = noticeService.selectRangeListCount(noticeRange);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		ArrayList<Notice> list = noticeService.rangeNotice(noticeRange, pi);
+		System.out.println(list);
+		mv.addObject("pi", pi).addObject("list", list).addObject("noticeRange", noticeRange);
+		mv.setViewName("notice/noticeRangeView");
+		return mv;
 	}
 	
 
+	//파일관련
 	public String saveFile(MultipartFile upfile, HttpSession session) { 
 
 		String originName = upfile.getOriginalFilename();
@@ -139,8 +217,6 @@ public class NoticeController {
 
 		try {
 			upfile.transferTo(new File(savePath + changeName));
-			
-			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
