@@ -9,8 +9,8 @@
  	<link rel="stylesheet" href="resources/css/layout.css">
  	<link rel="stylesheet" href="resources/css/header.css">
 <style>
-        /*  여기부터복붙 */
-        .switch {
+/*  여기부터복붙 */
+.switch {
   position: relative;
   display: inline-block;
   width: 60px;
@@ -83,7 +83,7 @@ input:checked + .slider:before {
 .notice_title{
   font-weight: bold;
   font-size: 30px;
-  margin-bottom: 30px;
+/*   margin-bottom: 30px; */
   
 }
 .notice_content{
@@ -92,6 +92,7 @@ input:checked + .slider:before {
   font-size: 20px;
   color: grey;
   border: 1px solid grey;
+  width:1500[x]
   /* background-color:rgb(185, 207, 199) */
 }
 .notice_content input{
@@ -113,6 +114,20 @@ input:checked + .slider:before {
     height: 40px;
     margin-top: 30px;
     margin-bottom: 30px;
+    text-decoration : none;
+    
+}
+/* .notice_submit_btn>button>a{
+    text-decoration : none;
+    color:black;
+} */
+.atag{
+    text-decoration : none;
+    color:black;
+}
+.atag:hover{
+	text-decoration : none;
+    color:black;
 }
 .notice_submit_btn>button:first-child{
     margin-left: 450px;
@@ -121,79 +136,134 @@ input:checked + .slider:before {
 .notice_content textarea:focus{
     outline: none;
 }
+.td2{
+	font-size:19px;
+	font-weight:lighter;	
+}
+#back_btn a{
+	text-decoration:none;
+	color:black;
+}
 
 </style>
 </head>
 <body>
-        <div id="header-layout">
-        	<jsp:include page="../common/header.jsp" />
+<div id="header-layout">
+	<jsp:include page="../common/header.jsp" />
+</div>
+<div id="container">
+    <div id="sidebar-layout">
+    	<div id="main-sidebar">
+   	<jsp:include page="noticeSidebar.jsp" />
+    	</div>
+    </div>
 
-        </div>
-	    <div id="container">
-	        <div id="sidebar-layout">
-	        	<div id="main-sidebar">
-	        	사이드바에 들어갈 내용을 작성하세요
-	        	</div>
-	        </div>
+    <div id="content-layout">
+       <div class="notice">
+           <div class="notice_title">
+               <div class="d-flex">
+                   <div class="p-2">
+                       	공지사항
+                   </div>
+               </div>
+           </div>
+           
+           
+           <div class="notice_content">
+               <form action="updateForm.no" method="post">
+               		<input type="hidden" id="boardWriter" name="boardWriter" value="${ rn.boardWriter }">
+                   <table>
+                   <tr>
+                   &nbsp;
+                   </tr>
+                   <tr>
+                       <td style="width: 100px;">공지대상</td>
+                       <td class="td2">${ rn.noticeRange }</td>
+                       <td style="width: 60px;">분류</td>
+	                   <td class="td2">${ rn.noticeCategory }</td>
+                   </tr>
+                   <tr>
+                       <td>제목</td>
+                       <td colspan="3" class="td2" name="boardTitle" value=""> ${ rn.boardTitle }</td>
+                   </tr>
+                   <tr>
+                       <td>작성자</td>
+                       <td colspan="3" class="td2" name="memberName">${ rn.memberName }</td>
+                   </tr>
+                   <tr>
+                       <td>기간</td>
+                       <td colspan="3" class="td2" name="noticePeriod"> ${ rn.noticePeriod }</td>
+                   </tr>
+                   <tr>
+                       <td>내용</td>
+                       <td colspan="3" class="td2">
+                       		<textarea name="boardContent" id="" cols="100" rows="10" readonly>${ rn.boardContent }</textarea>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>첨부파일</td>
+                       <td colspan="3" class="td2" name="fileName">
+
+							<c:if test="${ not empty file }">         
+								              	
+								<c:forEach var="n" items="${ file }">
+									<a href="${n.filePath }${ n.fileName }" class="atag" style="color:gray">${n.fileOriginName }</a>
+									
+								</c:forEach>
+		                  	</c:if>
+		                  	
+		                  	
+
+                       </td>
+                   </tr>
+               </table>
+               
+               <!-- 로그인세션 작성자랑 이거 작성자랑 일치하는지 -->
+				<c:if test="${ loginUser.memberNo == rn.boardWriter }">            
+                   <div class="notice_submit_btn">
+                       <button type="button" id="update_btn">수정</button>
+                       <button type="button" id="delete_btn">삭제</button>
+                   </div>
+				</c:if>
+				<c:if test="${ loginUser.memberNo != rn.boardWriter }">            
+                   <div class="notice_submit_btn">
+                       <button type="button"><a href="javascript:history.back();" class="atag">돌아가기</a></button>
+                   </div>
+				</c:if>
+               </form>
+           </div>
+       </div>
+    </div>
+</div>
+
+<script>
+$(function(){
+	$("#delete_btn").click(function(){
+		if(confirm("정말 삭제하시겠습니까?")){
+			window.location = 'delete.no?bno='+${rn.boardNo}+'&&mno='+$('#boardWriter').val();	
+
+		}
+	})
 	
-	        <div id="content-layout">
-            <div class="notice">
-                <div class="notice_title">
-                    <div class="d-flex">
-                        <div class="p-2">
-                            공지사항
-                            <hr>
-                        </div>
-                    </div>
-                </div>
-                
-                
-                <div class="notice_content">
-                    <form action="">
-                        <table>
-                            <tr>
-                                <td style="width: 100px;">공지대상</td>
-                                <td>
-									${ n.noticeRange }
-                                </td>
-                                <td style="width: 60px;">분류</td>
-                                <td>                        
-									${ n.noticeCategory }
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>제목</td>
-                                <td colspan="3"> ${ n.boardTitle }</td>
-                            </tr>
-                            <tr>
-                                <td>작성자</td>
-                                <td  colspan="3">${ n.memberName }</td>
-                            </tr>
-                            <tr>
-                                <td>기간</td>
-                                <td colspan="3"> ${ n.noticePeriod }</td>
-                            </tr>
-                            <tr>
-                                <td>내용</td>
-                                <td colspan="3">
-                                    <textarea name="" id="" cols="100" rows="10">${ n.boardContent }</textarea>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>첨부파일</td>
-                                <td  colspan="3"></td>
-                            </tr>
-                        </table>
-                        
-                        <!-- 로그인세션 작성자랑 이거 작성자랑 일치하는지 -->
-                        <div class="notice_submit_btn">
-                            <button>수정</button>
-                            <button>삭제</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-	        </div>
-	    </div>
+	
+	
+	
+	
+	
+	
+	
+	$("#update_btn").click(function(){
+		if(confirm("수정하시겠습니까?")){
+			window.location = 'updateForm.no?bno='+${rn.boardNo}+'&&mno='+$('#boardWriter').val();			
+		}
+	})
+	
+	
+	
+	
+})
+
+
+</script>
 </body>
 </html>

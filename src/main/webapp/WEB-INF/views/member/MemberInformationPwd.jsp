@@ -16,6 +16,19 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
 <link rel="stylesheet" href="resources/css/layout.css">
+<style>
+
+.pwdBtn button{
+	width: 90px;
+    height: 45px;
+    background-color: rgb(30,137,140);
+    color: white;
+    font-weight: bold;
+    font-size: 19px;
+    border: none;
+    border-radius: 16px;
+}
+</style>
 </head>
 <body>
 
@@ -25,66 +38,72 @@
 		</div>
 		<jsp:include page="../member/MemberInformationSideBar.jsp" />
 		<h1>비밀번호 설정</h1>
-		<form class="row pwd_box was-validated" id="pwd_box" action="modifyPwd.me" method="post" onsubmit="return checkPwd()">
+		<form class="row pwd_box" id="pwd_box"
+			action="modifyPwd.me" method="post" onsubmit="return checkPwd()">
 			<div class="col-md-12">
-			    <label for="pwd1" class="form-label">현재 비밀번호</label>
-			    <input type="password" class="form-control" id="pwd1" name="memberPwd"  required>
-	   		</div>
-		    <div class="col-md-12">
-			    <label for="pwd2" class="form-label">새 비밀번호</label>
-			    <input type="password" class="form-control" id="pwd2" name="tmpPwd" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$" required>
-			    <div class="valid-feedback">
-			              안전합니다.
-			    </div>
-			    <div class="invalid-feedback">
-			       8~16자 영문 대 소문자, 숫자, 특수문자(!@#$) 필수
-			    </div>
-		   </div>
-		    <div class="col-md-12">
-			    <label for="pwd3" class="form-label">비밀번호 확인</label>
-			    <input type="password" class="form-control" id="pwd3" pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$" required>
-			    <div id="matchPwd" style="width: 100%;margin-top: 0.25rem;font-size: .875em;">
-			    </div>
-		   </div>
-		   <div class="col-md-12 pwdBtn">
-		    <button class="btn btn-primary" type="submit">저장</button>
-		   </div>
+				<label for="pwd1" class="form-label">현재 비밀번호</label>
+				 <input
+					type="password" class="form-control" id="pwd1" name="memberPwd"
+					style="border: 1px solid black;"required>
+			</div>
+			<br><br><br>
+			<div class="col-md-12">
+				<label for="pwd2" class="form-label">새 비밀번호</label> <input
+					type="password" class="form-control" id="pwd2" name="tmpPwd"
+					pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$"
+					style="border: 1px solid black;" required>
+				<div class="valid-feedback">안전합니다.</div>
+				<div style="font-size:20px; color:red">8~16자 영문 대 소문자, 숫자, 특수문자(!@#$) 필수</div>
+				<br>
+			</div>
+			<br><br>
+			<div class="col-md-12">
+				<label for="pwd3" class="form-label">비밀번호 확인</label> <input
+					type="password" class="form-control" id="pwd3"
+					pattern="^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,16}$"
+					style="border: 1px solid black;" required>
+				<div id="matchPwd"
+					style="width: 100%; margin-top: 0.25rem; font-size: .875em;">
+				</div>
+			</div>
+			<br><br><br>
+			<div class="col-md-12 pwdBtn">
+				<button class="btn btn-primary" type="submit">저장</button>
+			</div>
 		</form>
 	</div>
 	<script type="text/javascript">
-		
-		$('#pwd3').on('change',function (){
+		$('#pwd3').on('change', function() {
 			var pwd1 = $('#pwd1').val();
 			var pwd2 = $('#pwd2').val();
 			var pwd3 = $('#pwd3').val();
-			if(pwd2 == pwd3){
+			if (pwd2 == pwd3) {
 				$('#matchPwd').text('비밀번호가 일치합니다');
-				$('#matchPwd').css('color','#198754');
-			}else{
+				$('#matchPwd').css('color', '#198754');
+			} else {
 				$('#matchPwd').text('비밀번호가 일치하지 않습니다.');
-				$('#matchPwd').css('color','#dc3545');
+				$('#matchPwd').css('color', '#dc3545');
 			}
 		})
-		
-		function checkPwd(){
+
+		function checkPwd() {
 			var result = false;
 			var pwd1 = $('#pwd1').val();
 			var pwd2 = $('#pwd2').val();
 			var pwd3 = $('#pwd3').val();
-			if(pwd2 == pwd3){
+			if (pwd2 == pwd3) {
 				$('#matchPwd').text('비밀번호가 일치합니다');
-				$('#matchPwd').css('color','#198754');
+				$('#matchPwd').css('color', '#198754');
 				result = true;
-			}else{
+			} else {
 				$('#matchPwd').text('비밀번호가 일치하지 않습니다.');
-				$('#matchPwd').css('color','#dc3545');
+				$('#matchPwd').css('color', '#dc3545');
 				result = false;
 			}
-			
+
 			return result;
 		}
-		
 	</script>
-	
+
 </body>
 </html>

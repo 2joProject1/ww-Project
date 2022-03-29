@@ -117,8 +117,58 @@
 		EMAIL = #{email}
 	</select>
 
-
-
+	<update id="loginFail" parameterType="string">
+		update member 
+		set login_Fail =(login_Fail+1)
+		where member_no = #{memberNo}
+	
+	</update>
+	<update id="loginFailReset" parameterType="member">
+		update member 
+		set login_Fail = default
+		where member_no = #{memberNo}
+	
+	</update>
+	<select id="loginFailCount" parameterType="member" resultType="_int">
+        select login_fail
+        from member
+        where member_no = #{memberNo}
+        and member_name = #{memberName}
+        and email = #{email}
+        
+	</select>
+	
+	<update id="sendPwd" parameterType="member">
+       	update member 
+		set tmp_pwd = #{tmpPwd}
+		where member_no = #{memberNo}
+        and member_name = #{memberName}
+        and email = #{email}
+	
+	</update>
+	
+	<update id="deleteTmpPwd" parameterType="member">
+		update member 
+		set tmp_pwd = null
+		where member_no = #{memberNo}
+        and member_name = #{memberName}
+        and email = #{email}
+	</update>
+	
+	<update id="changePwdLogin" parameterType="member">
+		update member 
+		set member_pwd = #{memberPwd}
+		where member_no = #{memberNo}
+        and member_name = #{memberName}
+        and email = #{email}
+	</update>
+	
+	<select id="selectMember" parameterType="member"  resultMap="memberResultSet">
+		select * from member
+		where member_no = #{memberNo}
+		and member_name= #{memberName}
+		and email = #{email}
+	</select>
 
 	<select id="selectAddrList" resultMap="memberResultSet">
 		select
@@ -144,7 +194,26 @@
 
 	<!-- 멤버 정보 -->
 	<select id="selectMemberInformation" resultMap="memberResultSet" parameterType="member">
-		select *
+		select 
+			MEMBER_NO,
+			(select Dept_Name from dept where dept_no = (select dept_no from "MEMBER" where member_no = #{memberNo}) 
+			) DEPT_NO,
+			(select RANK_NAME from rank where rank_no = (select rank_no from "MEMBER" where member_no = #{memberNo})
+            ) RANK_NO,
+			MEMBER_NAME,
+			MEMBER_PWD,
+			BIRTH,
+			ADDRESS,
+			EMAIL,
+			PHONE,
+			TELEPHONE,
+			STATUS,
+			"FILE",
+			FILEPATH,
+			LOGIN_FAIL,
+			TMP_PWD,
+			ENROLL_DATE,
+			RESIGN_DATE
 		from
 		member
 		where

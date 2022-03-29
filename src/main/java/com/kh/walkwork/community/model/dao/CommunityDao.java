@@ -30,6 +30,10 @@ public class CommunityDao {
 	public int selectListCount(SqlSessionTemplate sqlSession, String search) {
 		return sqlSession.selectOne("communityMapper.selectListCount", search);
 	}
+	
+	public int selectMyListCount(SqlSessionTemplate sqlSession, Community c) {
+		return sqlSession.selectOne("communityMapper.selectMyListCount", c);
+	}
 
 	public ArrayList<Community> selectList(SqlSessionTemplate sqlSession, PageInfo pi, String search) {
 

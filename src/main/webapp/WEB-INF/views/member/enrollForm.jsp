@@ -15,13 +15,13 @@
  	<!-- 제이쿼리 --> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
  
- <!-- 자바스크립트 -->
- <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+	 <!-- 자바스크립트 -->
+	 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
  
 <title>Insert title here</title>
     <style>
         #enroll_green_bg{
-            width: 600px;
+            width: 700px;
             margin: auto;
             background-color: rgb(78, 137, 140);
             height: 800px;
@@ -40,7 +40,7 @@
             padding-top: 10px;
         }
         #enroll_white_bg{
-            width: 550px;
+            width: 650px;
             height: 700px;
             background-color: white;
             margin: auto;
@@ -90,6 +90,9 @@
 			BORDER-RIGHT: medium none;
 			BORDER-TOP: medium none;
 			outline: none;
+        }
+        #address_input>input{
+        	height:30px;
         }
     </style>
     
@@ -165,22 +168,27 @@
                         <tr>
                             <td>주소</td>
                             <td class="enroll_td2" id="address_input">
-								<input type="text" id="sample6_postcode" placeholder="우편번호" style="width:200px">
+								<input type="text" id="sample6_postcode" placeholder="우편번호" style="width:200px;">
 								<input type="button" onclick="execDaumPostcode()" value="우편번호 찾기" style="width:100px"><br>
 								<input type="text" id="sample6_address" placeholder="주소" name="address"><br>
-								<input type="text" id="sample6_detailAddress" placeholder="상세주소"  name="address">
+								<input type="text" id="sample6_detailAddress" placeholder="상세주소"  name="address" required>
 								<input type="text" id="sample6_extraAddress" placeholder="참고항목"  name="address">
                             </td>
                         </tr>
                         <tr>
-                            <td>이메일</td>
+                            <td></td>
+                            <td class="enroll_td3"></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" style="height:35px;">이메일</td>
                             <td class="enroll_td2">
-                                <input type="email" name="email" id="email" required><button type="button" id="email_btn" disabled="disabled">인증번호전송</button><br>
+                                <input type="email" name="email" id="email" required style="width:200px;">
+                                <button type="button" id="email_d_btn">중복확인</button>
+                                <button type="button" id="email_btn" disabled="disabled">인증번호전송</button><br>
                             </td>
                         </tr>
                         
                         <tr>
-                            <td></td>
                             <td class="enroll_td3" id="email_chk"></td>
                         </tr>
                         <tr id="email_vali">
@@ -193,27 +201,32 @@
                             <td></td>
                             <td class="enroll_td3" id="email_vali_chk"></td>
                         </tr>
+
                         <tr>
                             <td>휴대폰번호</td>
                             <td class="enroll_td2">
-                                <input type="text" style="width: 260px;" name="phone" required><button type="button" >인증</button><br>
+                                <input type="text" style="width: 260px;" name="phone" id="phone" required><button type="button" id="phone_btn">인증</button><br>
                             </td>
                         </tr>
+                       	<tr>
+                            <td></td>
+                            <td class="enroll_td3" id="phone_chk"></td>
+                        </tr>
                     
-                        <tr>
+                        <tr class="phone_vali">
                             <td>인증번호</td>
                             <td class="enroll_td2">
                                 <input type="text" style="width: 260px;" required><button type="button" >확인</button><br>
                             </td>
                         </tr>
-                        <tr>
+                        <tr class="phone_vali">
                             <td></td>
                             <td class="enroll_td3">잘못된 인증번호입니다</td>
                         </tr>
                     </table>
                     <div id="enroll_form_btn">
                         <button>확인</button>
-                        <button type="reset"><a href="javascript:history.back();">취소</a></button>
+                        <button id="back_btn"><a href="javascript:history.back();">취소</a></button>
                     </div>
                 </div>
                 </form>
@@ -277,7 +290,10 @@
 <script>
 //이메일 인증번호 입력 창 숨김
 window.onload = $(function(){
+	$('#email_btn').hide();
 	$('#email_vali').hide();
+	$('#email_vali_chk').hide();
+	$('.phone_vali').hide();
 	
 })
 
@@ -286,6 +302,12 @@ $(function(){
 	
 	
 //아이디 정규식, 중복체크
+ 	$('#back_btn').click(function(){
+ 		location.href = 'login.back';
+	})
+ 	$('#phone_btn').click(function(){
+ 		alert("현재 지원하지 않는 기능입니다.");
+	})
  	$('#id').blur(function(){
 		var $id = $('#id').val();
 		var regExp =  /^\d{5}$/;
@@ -319,7 +341,6 @@ $(function(){
 	//이름 정규식 검증
 	$('#name').blur(function(){
 		var $name = $('#name').val();
-		console.log($name);
 		var regExp =  /^[가-힣]{2,6}$/;
 			
 		if(!regExp.test($name)){
@@ -391,7 +412,6 @@ $(function(){
 	$('#email').blur(function(){
 
 		var $emailDupl = $('#email').val();
-		console.log($emailDupl);
 		var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 		/* 
 		만약, 구글메일로 변경할거라면! 여기 정규식 @뒤에 google.com만 올 수 있도록 설정
@@ -403,7 +423,7 @@ $(function(){
 			$('#email').val('');
 		}
 		if(regExp.test($emailDupl)){
- 			$('#email_chk').text("굿").css("color","gray");
+ 			$('#email_chk').text("사용 가능한 이메일입니다. 인증번호 전송 버튼을 클릭하세요.").css("color","gray");
  			$.ajax({
  				url : "emailDupl.chk",
  				data : {emailDupl : $emailDupl},
@@ -413,6 +433,8 @@ $(function(){
 	 					$('#email_chk').html($emailDupl + "은(는) 이미 사용중인 이메일입니다. <br>다른 이메일 주소를 입력하세요.").css("color","red");
  						$('#email').val('');
  					} else {
+ 						$('#email_d_btn').hide();
+ 						$('#email_btn').show();
  						$("#email_btn").attr("disabled",false); //이메일형식에 맞고, 중복 X 시 인증번호 전송 버튼 활성화
  					}
  				}
@@ -425,8 +447,8 @@ $(function(){
 	$('#email_btn').click(function(){
 		
 		$('#email_vali').show();
+		$('#email_vali_chk').show();
 		var $email = $('#email').val();
-		console.log($email);
 		
 		$.ajax({
 			url : "email.chk",
@@ -438,29 +460,6 @@ $(function(){
 	
 	//이메일 인증번호 일치여부 확인
 	
-	/*
-	//클릭말고!!!!blur로 바구자~~~~
-	$('#email_vali_btn').click(function(){
-		var $emailVali = $('#email_vali_input').val();
-		$.ajax({
-			url : "emailVali.chk",
-			data : {emailVali : $emailVali},
-			type : "post",
-			success : function(result){
-				console.log(result);
-				if(result>0){ //result 1이상 == 일치결과있음
-					console.log(result)
-					$('#email_vali_chk').text("굿").css("color","gray");
-					
-				} else{
-					$('#email_vali_chk').text($emailVali + "은(는) 잘못된 인증번호입니다. 다시 입력하세요.").css("color","red");
-					$('#email_vali_input').val('');				
-				}
-			}
-		})
-		
-	})
-	*/
 	$('#email_vali_input').blur(function(){
 		var $emailVali = $('#email_vali_input').val();
 		$.ajax({
@@ -468,9 +467,7 @@ $(function(){
 			data : {emailVali : $emailVali},
 			type : "post",
 			success : function(result){
-				console.log(result);
 				if(result>0){ //result 1이상 == 일치결과있음
-					console.log(result)
 					$('#email_vali_chk').text("굿").css("color","gray");
 					
 				} else{
@@ -482,9 +479,39 @@ $(function(){
 		
 	})
 	
+	//핸드폰번호 형식 + 중복체크
+	$('#phone').blur(function(){
 
+		var $phoneDupl = $('#phone').val();
+		var regExp = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
 	
+		if(!regExp.test($phoneDupl)){
+			$('#phone_chk').text("잘못 입력하셨습니다. 올바른 핸드폰번호를 입력하세요").css("color","red");
+			$('#phone').val('');
+		}
+		if(regExp.test($phoneDupl)){
+ 			$('#phone_chk').text("굿").css("color","gray");
+/*  			$.ajax({
+ 				url : "emailDupl.chk",
+ 				data : {emailDupl : $emailDupl},
+ 				type : "post",
+ 				success : function(result){
+ 					if(result>0){
+	 					$('#email_chk').html($emailDupl + "은(는) 이미 사용중인 이메일입니다. <br>다른 이메일 주소를 입력하세요.").css("color","red");
+ 						$('#email').val('');
+ 					} else {
+ 						$("#email_btn").attr("disabled",false); //이메일형식에 맞고, 중복 X 시 인증번호 전송 버튼 활성화
+ 					}
+ 				}
 
+ 			}) */
+		}
+	})
+	
+	
+	
+	
+	
 })
 </script>
 
@@ -495,6 +522,7 @@ $(function(){
 	1. 핸드폰인증 어떻게 할건지(중복체크만할건지)
 	2. td 첫번째꺼 선택해서 어케 설정하는지 찾고 글씨크기조절등등하기(css)
 	3. 취소버튼 누르면 뒤로 돌아가기
+	4. 주소 여유주기
 	하고싶은것
 	2. 비밀번호 눈 아이콘 클릭하면 *** -> 12345보이게(input type="여기 속성 바꾸면 될것같은데") 
  -->
