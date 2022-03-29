@@ -191,19 +191,24 @@ input[type="search"] {
 			<div id="main-sidebar">
 				<br> <i class="fi fi-rr-menu-burger"></i>&nbsp;<b>전자결재</b>
 				<div class="sub-menu">
-					<i class="fi fi-rr-edit"></i>&nbsp;<a href="signoffs.docu">문서작성하기</a>
+					<i class="fi fi-rr-edit"></i>&nbsp;
+					<a href="signoffs.docu?foramt=1">문서작성하기</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="docubox.draft">기안문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.draft">기안문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="">수신문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.receive">수신문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="">부서문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.dept">부서문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="">반려문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.reject">반려문서함</a>
 				</div>
 			</div>
 		</div>
@@ -213,6 +218,7 @@ input[type="search"] {
 				<input type="hidden" name="signoffs" data-signoffs-index="1">
 				<input type="hidden" name="signoffs" data-signoffs-index="2">
 				<input type="hidden" name="signoffsDeptNo" id="signoffsDeptNo" value="0" >
+				<input type="hidden" id="loginMemberNo" value="${loginUser.memberNo}">
 			
 				<div id="docu-header-area">
 					<div id="docu-basic-area">
@@ -224,8 +230,8 @@ input[type="search"] {
 							<tr>
 								<th>&nbsp;형식</th>
 								<td><select id="docuFormat" name="docuFormat" onchange="changeFormat(this)">
-										<option value="1">기안문서</option>
-										<option value="2">품의서</option>
+										<option value="1" <c:if test="${format == '1'}">selected</c:if> >기안문서</option>
+										<option value="2" <c:if test="${format == '2'}">selected</c:if> >품의서</option>
 								</select>&nbsp;&nbsp;</td>
 								<th>&nbsp;문서보존기간</th>
 								<td>&nbsp;5년</td>
@@ -241,10 +247,11 @@ input[type="search"] {
 								</td>
 							</tr>
 							<tr>
-								<th>&nbsp;기안일자</th>
+								<th>&nbsp;<c:if test="${format == '1'}">기안일자</c:if><c:if test="${format == '2'}">품의일자</c:if>
+								</th>
 								<td>&nbsp;${now}</td>
 								<th>&nbsp;소속</th>
-								<td>&nbsp;개발팀</td>
+								<td>&nbsp;${writerDept.deptName}</td>
 							</tr>
 						</table>
 					</div>
@@ -255,20 +262,35 @@ input[type="search"] {
 							<tr>
 								<th rowspan="3">결재</th>
 								<th>대표이사</th>
-								<th>팀장</th>
-								<th>차장</th>
+								<c:if test="${format == '1'}">
+									<th>팀장</th>
+									<th>차장</th>
+								</c:if>
+								<c:if test="${format == '2'}">
+									<th>팀장</th>
+								</c:if>
 								<th>사원</th>
 							</tr>
 							<tr>
 								<td>대표자</td>
-								<td style="cursor: pointer; border: 1px solid black;" onclick="selectMemberModal(1)" data-index="1">서명</td>
-								<td style="cursor: pointer; border: 1px solid black;" onclick="selectMemberModal(2)" data-index="2">서명</td>
+								<c:if test="${format == '1'}">
+									<td style="cursor: pointer; border: 1px solid black;" onclick="selectMemberModal(1)" data-index="1">서명</td>
+									<td style="cursor: pointer; border: 1px solid black;" onclick="selectMemberModal(2)" data-index="2">서명</td>
+								</c:if>
+								<c:if test="${format == '2'}">
+									<td style="cursor: pointer; border: 1px solid black;" onclick="selectMemberModal(1)" data-index="1">서명</td>
+								</c:if>
 								<td>서명</td>
 							</tr>
 							<tr>
 								<td>결재일</td>
-								<td>결재일</td>
-								<td>결재일</td>
+								<c:if test="${format == '1'}">
+									<td>결재일</td>
+									<td>결재일</td>
+								</c:if>
+								<c:if test="${format == '2'}">
+									<td>결재일</td>
+								</c:if>
 								<td>결재일</td>
 							</tr>
 						</table>
@@ -288,7 +310,10 @@ input[type="search"] {
 				<br>
 				<div id="button-area">
 					<button class="btn-custom" type="reset" style="margin-right: 30px;">취소</button>
-					<button class="btn-custom" type="button" onclick="submitDocument()" id="draftDocu">기안</button>
+					<button class="btn-custom" type="button" onclick="submitDocument()" id="draftDocu">
+						<c:if test="${format == '1'}">기안</c:if>
+						<c:if test="${format == '2'}">품의</c:if>
+					</button>
 				</div>
 			</form>
 		</div>

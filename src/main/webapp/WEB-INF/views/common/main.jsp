@@ -27,8 +27,7 @@
 	                <br>
 	                
 	                <a href="email.form" class="side_subtitle side_subtitle">메일</a>
-	                <br>
-	                <a href="" class="side_subtitle">읽지않음</a>
+
 	                <br><br>
 	
 	                <i class="fi fi-rr-time-check"></i>&nbsp;
@@ -42,8 +41,7 @@
 	                
 	                <i class="xi-document"></i>&nbsp;
 	                <a href="signoffs.docu"><b>전자결재</b></a>
-	                <br>
-	                <a href="docubox.draft" class="side_subtitle">기안문서함</a>
+
 	                <br><br>
 	                
 	                <i class="xi-presentation"></i>&nbsp;

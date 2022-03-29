@@ -24,7 +24,7 @@
 				,#{docuTitle}
 				,#{docuContent}
 				,#{docuRetentionPeriod}
-				,#{approvalDecision}
+				,0
 				,#{docuWriteDate}
 				)	
 	</insert>
@@ -73,9 +73,22 @@
 						)
 					)
 			</if>
+			<if test="selectType == 2">
+				AND A.APPROVAL_DECISION = 2
+			</if>
 			<if test="signoffsDeptNo != null and !signoffsDeptNo.equals('')">
 				AND B.DEPT_NO = #{signoffsDeptNo}
 			</if>
+			<if test="docuWriteStartDate != null and !docuWriteStartDate.equals('')">
+				AND TO_CHAR(A.DOCU_WRITE_DATE, 'YYYY-MM-DD') BETWEEN #{docuWriteStartDate} and #{docuWriteEndDate}
+			</if>
+			<if test="docuFormat != null and !docuFormat.equals('')">
+				AND A.DOCU_FORMAT = #{docuFormat}
+			</if>
+			<if test="approvalDecision != null and !approvalDecision.equals('')">
+				AND A.APPROVAL_DECISION = #{approvalDecision}
+			</if>
+			ORDER BY DOCU_WRITE_DATE DESC
 	</select>
 	
 	<!-- 문서 상세보기(문서하나 가져오기) -->
@@ -94,8 +107,8 @@
 			<if test="docuNo != null and !docuNo.equals('')">
 			AND DOCU_NO = #{docuNo}
 			</if>
-			<if test="approvalNo != null and !approvalNo.equals('')">
-			AND DOCU_NO = #{approvalNo}
+			<if test="approvalNo != 0">
+			AND DOCU_NO IN ( SELECT DOCU_NO FROM SIGNOFFS WHERE APPROVAL_NO = #{approvalNo} )
 			</if>
 			
 	</select>
@@ -111,10 +124,32 @@
 				AND A.DRAFTER = #{drafter}
 			</if>
 			<if test="selectType == 1">
-				AND A.DOCU_NO IN (select DOCU_NO from signoffs A WHERE APPROVAL_STATUS = 0 AND APPROVAL_RANK = (SELECT MIN(APPROVAL_RANK) FROM signoffs B WHERE A.DOCU_NO = B.DOCU_NO))
+				AND A.DOCU_NO IN 
+					(select DOCU_NO from signoffs C 
+					WHERE APPROVER = #{approver} 
+						AND APPROVAL_STATUS = 0 
+						AND APPROVAL_RANK = (
+						SELECT MAX(APPROVAL_RANK) FROM signoffs B 
+						WHERE C.DOCU_NO = B.DOCU_NO
+	                        AND C.APPROVER = B.APPROVER
+	                        AND B.APPROVAL_STATUS = C.APPROVAL_STATUS
+						)
+					)
+			</if>
+			<if test="selectType == 2">
+				AND A.APPROVAL_DECISION = 2
 			</if>
 			<if test="signoffsDeptNo != null and !signoffsDeptNo.equals('')">
 				AND B.DEPT_NO = #{signoffsDeptNo}
+			</if>
+			<if test="docuWriteStartDate != null and !docuWriteStartDate.equals('')">
+				AND TO_CHAR(A.DOCU_WRITE_DATE, 'YYYYMMDD') BETWEEN #{docuWriteStartDate} and #{docuWriteEndDate}
+			</if>
+			<if test="docuFormat != null and !docuFormat.equals('')">
+				AND A.DOCU_FORMAT = #{docuFormat}
+			</if>
+			<if test="approvalDecision != null and !approvalDecision.equals('')">
+				AND A.APPROVAL_DECISION = #{approvalDecision}
 			</if>
 	</select>
 	

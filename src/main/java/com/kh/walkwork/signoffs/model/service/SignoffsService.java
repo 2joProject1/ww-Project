@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kh.walkwork.member.model.vo.Dept;
+import com.kh.walkwork.dept.model.vo.Dept;
 import com.kh.walkwork.signoffs.model.dao.SignoffsDao;
 import com.kh.walkwork.signoffs.model.vo.Signoffs;
 import com.kh.walkwork.signoffs.model.vo.SignoffsDept;

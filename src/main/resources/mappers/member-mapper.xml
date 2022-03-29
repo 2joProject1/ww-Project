@@ -13,6 +13,7 @@
 		<result column="DEPT_NO" property="deptNo" />
 		<result column="DEPT_NAME" property="deptName" />
 		<result column="RANK_NO" property="rankNo" />
+		<result column="RANK_NAME" property="rankName" />
 		<result column="MEMBER_NAME" property="memberName" />
 		<result column="MEMBER_PWD" property="memberPwd" />
 		<result column="BIRTH" property="birth" />
