@@ -91,7 +91,7 @@ a.page-link {
 				<br> <i class="fi fi-rr-menu-burger"></i>&nbsp;<b>전자결재</b>
 				<div class="sub-menu">
 					<i class="fi fi-rr-edit"></i>&nbsp;
-					<a href="signoffs.docu">문서작성하기</a>
+					<a href="signoffs.docu?format=1">문서작성하기</a>
 				</div>
 				<div class="sub-menu">
 					<i class="fi fi-rr-folder"></i>&nbsp;
@@ -112,42 +112,57 @@ a.page-link {
 			</div>
 		</div>
 		<div id="content-layout">
-			<div class="docubox-title">기안문서함</div>
+			<div class="docubox-title">
+				<c:if test="${viewType == 'DRAFT'}">
+				기안문서함
+				</c:if>
+				<c:if test="${viewType == 'RECEIVE'}">
+				수신문서함
+				</c:if>
+				<c:if test="${viewType == 'DEPT'}">
+				부서문서함
+				</c:if>
+				<c:if test="${viewType == 'REJECT'}">
+				반려문서함
+				</c:if>
+			</div>
 			<hr>
 			<div class="docubox-search-area mt-3">
 				<label class="box-radio-input" data-index="0" data-toggle="collapse" data-target="#fDay" aria-expanded="false">
-					<input type="radio" name="docubox" value="day">
+					<input type="radio" name="docubox" value="day" <c:if test="${d.docuWriteStartDate != null || d.docuWriteEndDate != null}">checked</c:if> >
 					<span>기안일자</span>
 				</label>
 				<label class="box-radio-input" data-index="1" data-toggle="collapse" data-target="#fDocu">
-					<input type="radio" name="docubox" value="format">
+					<input type="radio" name="docubox" value="format" <c:if test="${d.docuFormat == '1' || d.docuFormat == '2'}">checked</c:if> >
 					<span>결재양식</span>
 				</label>
 				<label class="box-radio-input" data-index="2" data-toggle="collapse" data-target="#fStatus">
-					<input type="radio" name="docubox" value="status">
+					<input type="radio" name="docubox" value="status" <c:if test="${d.approvalDecision == '0' || d.approvalDecision == '1' || d.approvalDecision == '2'}">checked</c:if> >
 					<span>결재상태</span>
 				</label>
+				
+				<button type="button" onclick="submitDocu()">검색하기</button>
 			<input type="search" class="docubox-search" name="q">
 			</div>
 
-			<div class="box-radio-input-hidden collapse" id="fDay">
-				<input type="date" name="dayFilterStart">
+			<div class="box-radio-input-hidden collapse <c:if test="${d.docuWriteStartDate != null || d.docuWriteEndDate != null}">show</c:if>" id="fDay">
+				<input type="date" id="docuWriteStartDate" name="docuWriteStartDate" value="${d.docuWriteStartDate}">
 				-
-				<input type="date" name="dayFilterEnd">
+				<input type="date" id="docuWriteEndDate" name="docuWriteEndDate" value="${d.docuWriteEndDate}">
 			</div>
-			<div class="box-radio-input-hidden collapse" id="fDocu">
-				<input type="radio" name="formatFilter" value="1">
+			<div class="box-radio-input-hidden collapse <c:if test="${d.docuFormat == '1' || d.docuFormat == '2'}">show</c:if>" id="fDocu">
+				<input type="radio" name="docuFormat" value="1" <c:if test="${d.docuFormat == '1'}">checked</c:if> >
 				기안문서
-				<input type="radio" name="formatFilter" value="2">
+				<input type="radio" name="docuFormat" value="2" <c:if test="${d.docuFormat == '2'}">checked</c:if> >
 				품의서
 			</div>
-			<div class="box-radio-input-hidden collapse" id="fStatus">
-				<input type="radio" name="statusFilter" value="1">
-				대기
-				<input type="radio" name="statusFilter" value="2">
+			<div class="box-radio-input-hidden collapse <c:if test="${d.approvalDecision == '0' || d.approvalDecision ==  '1' || d.approvalDecision == '2'}">show</c:if>" id="fStatus">
+				<input type="radio" name="approvalDecision" value="0" <c:if test="${d.approvalDecision == '0'}">checked</c:if> >
 				진행
-				<input type="radio" name="statusFilter" value="3">
+				<input type="radio" name="approvalDecision" value="1" <c:if test="${d.approvalDecision == '1'}">checked</c:if> >
 				완료
+				<input type="radio" name="approvalDecision" value="2" <c:if test="${d.approvalDecision == '2'}">checked</c:if> >
+				반려
 			</div>
 
 			<div class="docubox-board-area">
@@ -170,10 +185,10 @@ a.page-link {
 								<td>${item.docuNo}</td>
 								<td>
 									<c:choose>
-										<c:when test="${item.docuFormat == 1}">
+										<c:when test="${item.docuFormat == '1'}">
 											기안
 										</c:when>
-										<c:when test="${item.docuFormat == 2}">
+										<c:when test="${item.docuFormat == '2'}">
 											품의
 										</c:when>
 										<c:otherwise>
@@ -187,17 +202,14 @@ a.page-link {
 								</td>
 								<td>
 									<c:choose>
-										<c:when test="${item.approvalDecision == 0}">
-											대기
+										<c:when test="${item.approvalDecision == '2'}">
+											반려
 										</c:when>
-										<c:when test="${item.approvalDecision == 1}">
-											진행
-										</c:when>
-										<c:when test="${item.approvalDecision == 2}">
+										<c:when test="${item.approvalDecision == '1'}">
 											완료
 										</c:when>
 										<c:otherwise>
-											몰라
+											진행
 										</c:otherwise>
 									</c:choose>
 								</td>

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.function.Predicate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,8 +23,8 @@ import com.kh.walkwork.common.model.service.AttachmentService;
 import com.kh.walkwork.common.model.vo.Attachment;
 import com.kh.walkwork.common.model.vo.PageInfo;
 import com.kh.walkwork.common.template.Pagination;
+import com.kh.walkwork.dept.model.vo.Dept;
 import com.kh.walkwork.member.model.service.MemberService;
-import com.kh.walkwork.member.model.vo.Dept;
 import com.kh.walkwork.member.model.vo.Member;
 import com.kh.walkwork.signoffs.model.service.DocumentService;
 import com.kh.walkwork.signoffs.model.service.SignoffsService;
@@ -59,6 +58,7 @@ public class SignoffsController {
 		
 		Member loginUser = (Member) session.getAttribute("loginUser");
 		boolean isReceiver = false; //"결재대상자 아님" 를 기본값으로
+		System.out.println(d.getApprovalNo()+"approvalNo");
 		Document documentItem = documentService.getDocumentOne(d);
 		
 		Signoffs receiverSignoffs = null; //결재대상자
@@ -106,28 +106,28 @@ public class SignoffsController {
 	
 	//문서작성 - 문서형식 기안문서/품의서 나누기(format 1 == 기안문서, format 2 == 품의서)
 	@RequestMapping("signoffs.docu")
-	public String docuEnrollForm(HttpServletRequest request, HttpSession session) {
+	public String docuEnrollForm(HttpServletRequest request, HttpSession session, Model model) {
 		// 로그인 세션에서 로그인 유저 GET
 		if (session.getAttribute("loginUser") == null) {
 			// 로그인이 안되어있을 경우 로그인페이지로 이동
 			return "redirect:/";
 		}
+		// 로그인 세션에서 로그인 유저 GET
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		Dept writerDept = signoffsService.getDept(loginUser.getDeptNo());
 
 		String format = request.getParameter("format");
 
-		if ("1".equals(format)) {
-			return "signoffs/documentsEnrollForm";
-		} else if ("2".equals(format)) {
-			return "signoffs/documentsEnrollForm2";
-		} else {
-			return "signoffs/documentsEnrollForm";
-		}
+		model.addAttribute("writerDept", writerDept);
+		model.addAttribute("loginUser", loginUser);
+		model.addAttribute("format", format);
+
+		return "signoffs/documentsEnrollForm";
 	}
 
 	// 기안문서함
 	@RequestMapping("docubox.draft")
-	public String draftDocuBox(@RequestParam(value = "cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
-		Document d = new Document();
+	public String draftDocuBox(Document d, @RequestParam(value = "cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		if (session.getAttribute("loginUser") == null) {
 			// 로그인이 안되어있을 경우 로그인페이지로 이동
 			return "redirect:/";
@@ -140,16 +140,18 @@ public class SignoffsController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		
 		List<Document> documentList = documentService.getDocumentList(d, pi);
-		
+
 		model.addAttribute("documentList", documentList);
+		model.addAttribute("pi", pi);
+		model.addAttribute("viewType", "DRAFT");
+		model.addAttribute("d", d);
 		
 		return "signoffs/draftDocuBox";
 	}
 
 	//수신문서함
 	@RequestMapping("docubox.receive")
-	public String receiveDocuBox(@RequestParam(value = "cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
-		Document d = new Document();
+	public String receiveDocuBox(Document d, @RequestParam(value = "cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		if (session.getAttribute("loginUser") == null) {
 			// 로그인이 안되어있을 경우 로그인페이지로 이동
 			return "redirect:/";
@@ -164,14 +166,16 @@ public class SignoffsController {
 		List<Document> documentList = documentService.getDocumentList(d, pi);
 		
 		model.addAttribute("documentList", documentList);
+		model.addAttribute("pi", pi);
+		model.addAttribute("viewType", "RECEIVE");
+		model.addAttribute("d", d);
 		
-		return "signoffs/receiveDocuBox";
+		return "signoffs/draftDocuBox";
 	}
 	
 	//부서문서함
 	@RequestMapping("docubox.dept")
-	public String deptDocuBox(@RequestParam(value = "cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
-		Document d = new Document();
+	public String deptDocuBox(Document d, @RequestParam(value = "cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
 		if (session.getAttribute("loginUser") == null) {
 			// 로그인이 안되어있을 경우 로그인페이지로 이동
 			return "redirect:/";
@@ -185,8 +189,11 @@ public class SignoffsController {
 		List<Document> documentList = documentService.getDocumentList(d, pi);
 		
 		model.addAttribute("documentList", documentList);
+		model.addAttribute("pi", pi);
+		model.addAttribute("viewType", "DEPT");
+		model.addAttribute("d", d);
 		
-		return "signoffs/deptDocuBox";
+		return "signoffs/draftDocuBox";
 	}
 	
 	//결재승인
@@ -224,7 +231,7 @@ public class SignoffsController {
 		
 		// 마지막 결재순번인 경우 문서(Document) 결재 상태를 1(완료)로 업데이트 처리
 		if (item.getApprovalRank().equals(latestApprovalRank)) {
-			d.setApprovalDecision(1);
+			d.setApprovalDecision("1");
 			documentService.updateDocument(d);
 		}
 
@@ -232,8 +239,27 @@ public class SignoffsController {
 	}
 
 	@RequestMapping("docubox.reject")
-	public String rejectSignoffs(Signoffs s, HttpSession session) {
-		return "signoffs/rejectDocuBox";
+	public String rejectDocuBox(Document d, @RequestParam(value = "cpage", defaultValue="1") int currentPage, Model model, HttpSession session) {
+		if (session.getAttribute("loginUser") == null) {
+			// 로그인이 안되어있을 경우 로그인페이지로 이동
+			return "redirect:/";
+		}
+		// 로그인 세션에서 로그인 유저 GET
+		Member loginUser = (Member) session.getAttribute("loginUser");
+		d.setDrafter(loginUser.getMemberNo());
+		d.setSelectType(2);
+		
+		int listCount = documentService.selectDocumentCount(d);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		
+		List<Document> documentList = documentService.getDocumentList(d, pi);
+
+		model.addAttribute("documentList", documentList);
+		model.addAttribute("pi", pi);
+		model.addAttribute("viewType", "REJECT");
+		model.addAttribute("d", d);
+		
+		return "signoffs/draftDocuBox";
 	}
 	
 	//결재반려
@@ -260,7 +286,7 @@ public class SignoffsController {
 		Document vo = new Document();
 		vo.setApprovalNo(s.getApprovalNo());
 		Document d = documentService.getDocumentOne(vo);
-		d.setApprovalDecision(2);
+		d.setApprovalDecision("2");
 		documentService.updateDocument(d);
 
 		return result > 0 ? "Y" : "N";

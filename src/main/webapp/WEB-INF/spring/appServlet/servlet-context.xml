@@ -37,6 +37,18 @@
 		-->
 	</websocket:handlers>
 	
-	
+		 
+	 <interceptors>
+	 	<interceptor>
+	 		<mapping path="/main"/>
+	 		<mapping path="/notice.no"/>
+	 		<mapping path="/range.no"/>
+	 		<mapping path="/enrollForm.no"/>
+	 		<mapping path="/detail.no"/>
+	 		<mapping path="/updateForm.no"/>
+	 		<beans:bean class="com.kh.walkwork.common.interceptor.LoginIntercepter" id="loginIntercepter" />
+ 		</interceptor>
+	 </interceptors>
+	 
 	
 </beans:beans>

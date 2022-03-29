@@ -16,18 +16,132 @@
 	  		,TASK_HANDLER
   		) VALUES(
   			 SEQ_BNO.NEXTVAL
-  			,#{taskWriter}
+  			,#{boardWriter}
   			,#{projectNo}
   			,3
-  			,#{taskTitle}
-  			,#{taskContent}
+  			,#{boardTitle}
+  			,#{boardContent}
   			,DEFAULT
-  			,#{endDate}
+  			,#{taskEndDate}
   			,1
   			,#{taskHandler}
   		)
+		<selectKey resultType="int" keyProperty="boardNo" order="AFTER">
+			SELECT SEQ_BNO.CURRVAL FROM DUAL
+		</selectKey>
   </insert>
   
+  <update id="updateTask" parameterType="task">
+  	UPDATE BOARD_ALL SET
+	  		 BOARD_TITLE = #{boardTitle}
+	  		,BOARD_CONTENT = #{boardContent}
+	  		,TASK_END_DATE = #{taskEndDate}
+	  		,TASK_STATUS = #{taskStatus}
+	  		,TASK_HANDLER = #{taskHandler}
+ 	WHERE BOARD_NO = #{boardNo}
+  </update>
+  
+  <select id="getTaskDetail" resultType="task" parameterType="task">
+  	SELECT A.BOARD_NO
+	  		,A.BOARD_WRITER
+	  		,A.PROJECT_NO
+	  		,A.BOARD_TYPE
+	  		,A.BOARD_TITLE
+	  		,A.BOARD_CONTENT
+	  		,A.BOARD_REPORT_DATE
+	  		,A.TASK_END_DATE
+	  		,A.TASK_STATUS
+	  		,A.TASK_HANDLER
+	  		,A.TASK_MODIFY_DATE
+	  		,B.MEMBER_NAME AS TASK_HANDLER_NAME
+ 	FROM BOARD_ALL A
+ 	INNER JOIN MEMBER B ON A.TASK_HANDLER = B.MEMBER_NO
+ 	WHERE BOARD_NO = #{boardNo}
+  </select>
+  
+  <select id="getTaskListByFilter" parameterType="task" resultType="task">
+  	SELECT A.BOARD_NO
+	  		,A.BOARD_WRITER
+	  		,A.PROJECT_NO
+	  		,A.BOARD_TYPE
+	  		,A.BOARD_TITLE
+	  		,A.BOARD_CONTENT
+	  		,A.BOARD_REPORT_DATE
+	  		,A.TASK_END_DATE
+	  		,A.TASK_STATUS
+	  		,A.TASK_HANDLER
+	  		,A.TASK_MODIFY_DATE
+	  		,B.MEMBER_NAME AS TASK_HANDLER_NAME
+	FROM BOARD_ALL A
+ 	INNER JOIN MEMBER B ON A.TASK_HANDLER = B.MEMBER_NO
+	WHERE PROJECT_NO = #{projectNo}
+	<if test="taskFilter1 != 0">
+		<if test="taskFilter1 == 1">
+			<!-- 내업무 -->
+			AND TASK_HANDLER = #{taskHandler}
+		</if>
+		<if test="taskFilter1 == 2">
+			<!-- 요청한 업무 -->
+			AND BOARD_WRITER = #{boardWriter}
+		</if>
+	</if>
+	<if test="taskFilter2 != 0">
+		AND TASK_STATUS = #{taskFilter2}
+	</if>
+  </select>
+  
+  <select id="getTaskList" parameterType="project" resultType="task">
+  	SELECT A.BOARD_NO
+	  		,A.BOARD_WRITER
+	  		,A.PROJECT_NO
+	  		,A.BOARD_TYPE
+	  		,A.BOARD_TITLE
+	  		,A.BOARD_CONTENT
+	  		,A.BOARD_REPORT_DATE
+	  		,A.TASK_END_DATE
+	  		,A.TASK_STATUS
+	  		,A.TASK_HANDLER
+	  		,A.TASK_MODIFY_DATE
+	  		,B.MEMBER_NAME AS TASK_HANDLER_NAME
+	FROM BOARD_ALL A
+ 	INNER JOIN MEMBER B ON A.TASK_HANDLER = B.MEMBER_NO
+	WHERE PROJECT_NO = #{projectNo}
+  </select>
+  
+  <select id="getTaskReplyList" parameterType="reply" resultType="reply">
+  	SELECT 
+  		A.REPLY_NO, 
+  		A.BOARD_NO, 
+  		A.MEMBER_NO, 
+  		A.REPLY_CONTENT, 
+  		A.ENROLL_DATE,
+  		B.MEMBER_NAME
+  	FROM REPLY A
+  	INNER JOIN MEMBER B ON A.MEMBER_NO=B.MEMBER_NO
+  	WHERE BOARD_NO = #{boardNo}
+  </select>
+  
+  <!-- 업무: 댓글작성 -->
+  <insert id="insertReplyList" parameterType="reply">
+  	INSERT INTO REPLY
+  	(REPLY_NO, BOARD_NO, MEMBER_NO, REPLY_CONTENT, ENROLL_DATE)
+  	VALUES
+  	(SEQ_RNO.NEXTVAL, #{boardNo}, #{memberNo}, #{replyContent}, SYSDATE)
+  </insert>
+  
+  <!-- 업무: 댓글수정 -->
+  <update id="updateReplyList" parameterType="reply">
+  	UPDATE REPLY SET 
+  	REPLY_CONTENT = #{ boardContent },
+  	ENROLL_DATE = SYSDATE
+	WHERE REPLY_NO = #{ replyNo }
+  </update>
+  
+  <!-- 업무: 댓글삭제 -->
+  <delete id="deleteReplyList" parameterType="reply">
+  	DELETE FROM REPLY
+  	WHERE REPLY_NO = #{replyNo}
+  </delete>
   
   
 </mapper>

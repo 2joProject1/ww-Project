@@ -10,28 +10,18 @@ import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor @AllArgsConstructor
 public class Notice {
-	private int boardNo;
-	private String boardWriter;
-	private String boardType;
-	private String boardTitle;
-	private String boardContent;
-	private Date EnrollDate;
-	private int count;
-	private String Status;
-	private String topFix;
-	private String noticeRange;
-	private String noticeCategory;
-	private String noticePeriod;
-	private String memberName;
+	private int 	boardNo;
+	private String 	boardWriter; // Author
+	private String 	boardType;
+	private String 	boardTitle;
+	private String 	boardContent;
 	
-	
-// 파일관련
-	
-	private String fileName;
-	private String fileOriginName;
-	private String filePath;
-	private String fileSize;
-	private Date fileUploadDate;
-
-
+	private Date 	enrollDate;
+	private int 	count;  // 조회수
+	private String 	status; // 글 삭제의 상태 
+	private String 	topFix; // 상단 고정
+	private String 	noticeRange;
+	private String 	noticeCategory;
+	private String 	noticePeriod;
+	private String 	memberName;
 }

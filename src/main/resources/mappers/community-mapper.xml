@@ -71,15 +71,18 @@
 	<select id="selectListCount" resultType="_int" parameterType="string">
 		select count(*)
 		  from board_all
-		 where status = 'Y'
+		 where status = 'Y' and board_type = '4'
 		 		and board_title like '%'||#{search}||'%'
+		 		and BOARD_CONTENT like '%'||#{search}||'%'
 	</select>
+	
 	<!-- 내 게시글 총 게시판 수 -->
 	<select id="selectMyListCount" resultType="_int" parameterType="community">
 		select count(*)
 		  from board_all
-		 where status = 'Y'
-		 		and board_title like '%'||#{search}||'%' and board_writer = #{boardWriter}
+		 where status = 'Y' and board_type = '4'
+		 		and board_title like '%'||#{boardTitle}||'%' and board_writer = #{boardWriter} 
+				and BOARD_CONTENT like '%'||#{boardTitle}||'%'
 	</select>
 	
 	<!-- 게시글 목록 조회 -->
@@ -104,6 +107,7 @@
 			board_all
 		where
 			board_type = '4' and status = 'Y' and board_title like '%'||#{search}||'%'
+			and BOARD_CONTENT like '%'||#{search}||'%' 
 		order by
 		 board_no desc	
 		
@@ -131,6 +135,7 @@
 			board_all
 		where
 			board_type = '4' and status = 'Y' and board_title like '%'||#{boardTitle}||'%' and BOARD_WRITER = #{boardWriter}
+			and BOARD_CONTENT like '%'||#{boardTitle}||'%'
 		order by
 		 board_no desc	
 		

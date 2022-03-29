@@ -128,19 +128,24 @@
 			<div id="main-sidebar">
 				<br> <i class="fi fi-rr-menu-burger"></i>&nbsp;<b>전자결재</b>
 				<div class="sub-menu">
-					<i class="fi fi-rr-edit"></i>&nbsp;<a href="signoffs.docu">문서작성하기</a>
+					<i class="fi fi-rr-edit"></i>&nbsp;
+					<a href="signoffs.docu?format=1">문서작성하기</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="docubox.draft">기안문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.draft">기안문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="">수신문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.receive">수신문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="">부서문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.dept">부서문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="">반려문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.reject">반려문서함</a>
 				</div>
 			</div>
 		</div>
@@ -228,7 +233,17 @@
 							<tr>
 								<td style="font-size: 8pt"></td>
 								<c:forEach var="item" items="${signoffsList}">
-									<td style="font-size: 8pt"><fmt:formatDate value="${item.approvalDate}" pattern="MM/dd hh:mm"/></td>
+									<c:choose>
+										<c:when test="${item.approvalStatus == 1}">
+											<td style="font-size: 8pt"><fmt:formatDate value="${item.approvalDate}" pattern="MM/dd hh:mm"/></td>
+										</c:when>
+										<c:when test="${item.approvalStatus == 2}">
+											<td style="font-size: 8pt">반려</td>
+										</c:when>
+										<c:otherwise>
+											<td></td>
+										</c:otherwise>
+									</c:choose>
 								</c:forEach>
 								<td style="font-size: 8pt"><fmt:formatDate value="${documentItem.docuWriteDate}" pattern="MM/dd hh:mm"/></td>
 							</tr>
@@ -266,6 +281,7 @@
 			window.location.href = 'signoffs.docu?format=' + target.value;
 		}
 
+		//승인
 		function approveSignoffs(approvalNo) {
 			var is = confirm("승인하시겠습니까?");
 			if (is) {
@@ -278,11 +294,13 @@
 					},
 					success : function (data) {
 						console.log(data);
+						window.location.reload();
 					}
 				})
 			}
 		}
-
+	
+		//반려
 		function denySignoffs(approvalNo) {
 			var is = confirm("반려하시겠습니까?");
 			if (is) {
@@ -295,6 +313,7 @@
 					},
 					success : function (data) {
 						console.log(data);
+						window.location.reload();
 					}
 				})
 			}

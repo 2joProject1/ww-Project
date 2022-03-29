@@ -17,10 +17,63 @@
 	
 <link rel='stylesheet'
 	href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-<link rel="stylesheet" href="resources/css/communityWriteForm.css">
+<!-- <link rel="stylesheet" href="resources/css/communityWriteForm.css"> -->
+<style>
+.community_write_title{
+	border: none;
+    width: 100%;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.community_write_title:focus {
+	outline: none;
+}
+
+.community_write_content{
+	border: none;
+    width: 100%;
+    height:300px;
+    font-size: 12px;
+    resize : none;
+}
+
+.community_write_content:focus {
+	outline: none;
+}
+
+#CommunityInsertForm{
+	margin : 20px 0 0 20px;
+}
+
+
+.file_pic_information:focus{
+	outline : none;
+}
+.cm_file{
+	display: none;
+}
+.wt_x:hover{
+	cursor: pointer;
+}
+
+.cm_images{
+	width : 100%;
+	height : 100%;
+}
+#cm_submit{
+	 width: 90px;
+    height: 45px;
+    background-color: rgb(30,137,140);
+    color: white;
+    font-weight: bold;
+    font-size: 19px;
+    border: none;
+    border-radius: 16px;
+}
+</style>
 </head>
 <body>
-
 	<div id="header-layout">
 		<jsp:include page="../common/header.jsp" />
 	</div>
@@ -31,13 +84,12 @@
 		<div id="content-layout">
 			<div class="container">
 		<div class="row">
-
 			<div class="col-10">
 				<h1>글 작성</h1>
 			</div>
 			<div class="col-2" class="wt_x" onclick="location.href='list.co'">
-				<svg xmlns="http://www.w3.org/2000/svg" width="17" height="20"
-					fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+				<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+					fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16" style="float:right">
   						<path fill-rule="evenodd"
 						d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
  						 <path fill-rule="evenodd"
@@ -81,8 +133,8 @@
 							</svg>
 						</label>
 						<span id="cm_file_name"></span>
+							<div onclick="cancelFileBtn()">X</div>
 					</div>
-				<!-- 	<textarea placeholder="설명을 추가할 수 있어요." class="file_pic_information"></textarea> -->
 				</div>
 			</div>
 
@@ -112,7 +164,6 @@
 				<div class="col" style="text-align: right;">
 					<button type="submit" id="cm_submit" >완료</button>
 				</div>
-
 			</div>
 
 		</div>
@@ -125,6 +176,37 @@
 			$('#cm_file').on("change", cm_filefunc);
 		});
 		
+		
+		function cancelFileBtn(){
+			$('#fileName').val('');
+			$('#fileOriginName').val('');
+			$('#filePath').val('');
+			$('#fileSize').val('');
+			
+			$('#fileName2').val('');
+			$('#fileOriginName2').val('');
+			$('#filePath2').val('');
+			$('#fileSize2').val('');
+			
+			$('#fileName3').val('');
+			$('#fileOriginName3').val('');
+			$('#filePath3').val('');
+			$('#fileSize3').val('');
+			
+			$('#cm_img1').attr("src", '');
+			$('#cm_img1').css('display', 'none');
+			
+			$('#cm_img2').attr("src", '');
+			$('#cm_img2').css('display', 'none');
+			
+			$('#cm_img3').attr("src", '');
+			$('#cm_img3').css('display', 'none');
+			
+			$('#cm_file').val('');
+			
+			$('#cm_file_name').text('');
+		}
+		
 		// 파일 업로드
 		function cm_submitFiles(){
 			var result = false;
@@ -132,7 +214,6 @@
 			for(var i=0; i<$('#cm_file')[0].files.length; i++){
 				form.append("file1", $('#cm_file')[0].files[i]);
 			}
-	
 			
 			// 파일개수 3개로 제한하는 코드
 			// file1 에 배열로 담아서 3개다 보냄  List<MultipartFile>로 받아서 반복문 돌릴 예정
@@ -199,8 +280,7 @@
 					}
 				}
 				reader.readAsDataURL(f);
-			})
-			
+			})	
 		}
 		
 		// 파일명 나열

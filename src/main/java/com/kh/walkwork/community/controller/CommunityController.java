@@ -130,14 +130,18 @@ public class CommunityController {
 	// 내 게시글 조회
 	@RequestMapping("mylist.co")
 	public ModelAndView selectMyList(HttpSession session, @RequestParam(value = "cpage", defaultValue="1") int currentPage, ModelAndView mv, @RequestParam(value = "search", required = false, defaultValue = "") String search) {
+		Member userInfo = (Member)session.getAttribute("loginUser");
+		String memberNo = userInfo.getMemberNo();
 		
-		int listCount = communityService.selectListCount(search); // 내 게시글 전체 수로 변경
+		Community c = new Community();
+		c.setBoardWriter(memberNo);
+		c.setBoardTitle(search);
+		
+		int listCount = communityService.selectMyListCount(c); // 내 게시글 전체 수로 변경
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 6);
 		
-		Member m = new Member();
-		Member userInfo = (Member)session.getAttribute("loginUser");
-		String memberNo = userInfo.getMemberNo();
+		
 		
 		Community community = new Community();
 		community.setBoardTitle(search);
@@ -263,7 +267,6 @@ public class CommunityController {
 	@RequestMapping("delete.ac")
 	public String deleteAttachment(HttpServletRequest req, HttpSession session, Attachment a, Model model)  {
 		String result = "";
-		System.out.println("del in");
 		if(a.getFileName() != null) {
 			System.out.println("del" + a.getFileName());
 			String[] delArr = a.getFileName().split(",");
@@ -339,10 +342,11 @@ public class CommunityController {
 	
 	// 댓글 입력
 	@RequestMapping("insertReply.co")
-	public String insertReply(Reply r, Model model) {
+	public String insertReply(Reply r, Model model, HttpSession session) {
 		String result = "redirect:detail.co?pageNo=" + r.getBoardNo();
 		r.setBoardNo(r.getBoardNo());
-		r.setMemberNo("1");
+		Member userInfo = (Member) session.getAttribute("loginUser");
+		r.setMemberNo(userInfo.getMemberNo());
 		int num = communityService.insertReply(r);
 		
 		

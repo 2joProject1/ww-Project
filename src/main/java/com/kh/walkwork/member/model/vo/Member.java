@@ -16,6 +16,7 @@ public class Member {
 	private String deptNo;
 	private String deptName;
 	private String rankNo;
+	private String rankName;
 	private String memberName;
 	private String memberPwd;
 	private String birth;
@@ -26,9 +27,9 @@ public class Member {
 	private String status;
 	private String file;
 	private String filePath;
-	private String loginFail;
+	private int loginFail;
 	private String tmpPwd;
-	private Date enrollDate;
+	private Date EnrollDate;
 	private String resignDate;
 
 	
