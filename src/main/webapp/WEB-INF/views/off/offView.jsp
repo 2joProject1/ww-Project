@@ -13,6 +13,12 @@
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css'>
     <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+    
+    <!-- 폰트 -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+    
 <title>휴가관리 메인</title>
 
 <style>
@@ -20,7 +26,8 @@
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 77%;
-  margin-left: 9%
+  margin-left: 9%;
+  font-family: 'Nanum Gothic', sans-serif;
 }
 
 #result td, #result th {
@@ -28,9 +35,9 @@
   padding: 8px;
 }
 
-#result tr:nth-child(even){background-color: #f2f2f2;}
+#result tr:nth-child(even){background-color: rgb(245, 248, 248);}
 
-#result tr:hover {background-color: #ddd;}
+#result tr:hover {background-color: rgb(237, 241, 241);}
 
 #result th {
   padding-top: 12px;
@@ -47,32 +54,36 @@
   	font-size: 30px;
   	font-weight: bold;
   	margin-left: 2%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   .commute_result_text{
-  	font-size: 25px;
+  	font-size: 27px;
   	font-weight: bold;
   	margin-left: 4%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   #result-area{
   	font-size: 15px;
   	font-weight: bold;
-  	margin-left: 2%;
+  	margin-left: 1%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   #commute-title{
   	font-size: 15px;
   	font-weight: bold;
   	margin-left: 1%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   #commute-main{
   	font-size: 15px;
   	font-weight: bold;
-  	margin-left: 2%;
-  
+  	margin-left: 1%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
   
   #reason-t{
-   width:600px;
-   height:50px;
+   width:420px;
+   height:60px;
    border-radius : 7px;
    border: 1px solid #bcbcbc;
   }
@@ -83,13 +94,55 @@
   }
   .sub-menu{
   	font-size: 17px;
+  	margin-left:12%;
+  	font-family: 'Nanum Gothic', sans-serif;
   }
+    #check{
+    font-size: 14px;
+    background: none;
+    color: white;
+    border: 0;
+    background-color:#72b1ca;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#non{
+    font-size: 14px;
+    background: none;
+    color: white;
+    border: 0;
+    background-color:#f0ae82;
+    border-radius: 10px;
+    cursor: pointer;
+}
+#wait{
+    font-size: 14px;
+    background: none;
+    color: white;
+    border: 0;
+    background-color:#bcbcbc;
+    border-radius: 10px;
+    cursor: pointer;
+}
   
 </style>
  	<link rel="stylesheet" href="resources/css/layout.css">
  	<link rel="stylesheet" href="resources/css/off.css">
 </head>
 <body>
+<script>
+	//휴가일수 자동계산 스크립트
+	function dateresult(){
+		var start = $("input[name=offStart]").val();
+		var end = $("input[name=offEnd]").val();
+		var nstart = start.substring(8);
+		var nend = end.substring(8);
+		$("input[name=offDays]").val(nend-nstart);
+	}
+
+
+</script>
         <div id="header-layout">
         	<jsp:include page="../common/header.jsp" />
 
@@ -116,11 +169,13 @@
 							<a href="status.of" class="">휴가현황</a>
 							<br>
 						</div>
+						<c:if test="${loginUser.rankNo eq '5' }">
 		                <div class="sub-menu">
 							&nbsp;
 							<a href="approval.of" class="">휴가신청승인</a>
 							<br>
 						</div>
+						</c:if>
 		            </ul>
 	        	</div>
 	        </div>
@@ -131,25 +186,27 @@
                 <hr>
 	        </div>
 	            <div id="commute-main">
-	                <form action="insert.of" method="post">
-	                
-		                <input type="hidden" value="12345" name="offWriter">
-		                <input type="hidden" value="0" name="offDept">
-			                기간선택 <input type="date" name = "offStart"> - <input type="date" name = "offEnd"> <br><br>
-			              휴가일수 <input type="text" name="offDays" id="days-t">   <br><br>  
-			         &nbsp; 사유&nbsp;&nbsp;&nbsp;&nbsp; 
-			         <input type="text-area" name="offReason" placeholder="20자 이하" id="reason-t">  &nbsp;
-		               <input type="submit" value="신청">
+	                <form action="insert.of" method="post" onsubmit='return insert()' name="insert">
+			        	<input type="hidden" value="${loginUser.memberNo }" name="offWriter">
+			            	<div id="date">
+					          &nbsp;기간선택 <input type="date" name = "offStart" onchange="dateresult();" required> - <input type="date" name = "offEnd" onchange="dateresult();"required> <br><br>
+				            </div>
+				              &nbsp;휴가일수 <input type="number" name="offDays" id="days-t" readonly>   <br><br>  
+				        &nbsp; &nbsp;사유&nbsp;&nbsp;&nbsp;&nbsp; 
+					        <input type="text-area" name="offReason" placeholder="20자 이하" id="reason-t" required>  &nbsp;
+				            <input type="submit" name="신청" value="신청" id="applyOff">
+					<hr>
 	                </form>
-				<hr>
 	            </div>
            
             <div id="result-area">
-              기간조회  <input type="date" name = "date"> - <input type="date" name = "date"> 
-              <button>조회</button> <br><br>
+            	<form action="searchList.of" method="post">
+            	<input type="hidden" value="${loginUser.memberNo }" name="offWriter"> 
+              	&nbsp; 기간조회  <input type="date" name = "offStart" required> - <input type="date" name = "offEnd" required> 
+              	<input type="submit" name="조회" value="조회">
+            	</form>
+				<hr>
             </div>
-                
-               
                 
             <div id="result-area1">
                 <span class="commute_result_text">조회결과</span><br><br>
@@ -172,13 +229,13 @@
 					  			<td>${o.requestDate}</td>
 						  			<c:choose>
 						  				<c:when test="${o.status eq 'W'}">
-						  					<td>대기</td>
+						  					<td><input type="button" value="대기" id="wait" class="button disabled"></td>
 						  				</c:when>
 						  				<c:when test="${o.status eq 'Y'}">
-						  					<td>승인</td>
+						  					<td><input type="button" value="승인" id="check" class="button disabled"></td>
 						  				</c:when>
 						  				<c:otherwise>
-						  					<td>반려</td>
+						  					<td><input type="button" value="반려" id="non" class="button disabled"></td>
 						  				</c:otherwise>
 						  			</c:choose>
 					  		</tr>
@@ -190,5 +247,6 @@
             
 	        </div>
 	    </div>
+
 </body>
 </html>

@@ -82,7 +82,25 @@
              <button id="commute-on">출근</button>
              <button id="commute-off">퇴근</button>
            </div>
-
+                </table>
+            </div>
+	        </div>
+	    </div>
+	    
+	    <script>
+	    	$(function(){
+	    		$("#commute-on").click(function(){
+	    			location.href = "on.cm";
+	    			alert("출근 완료");
+	    		})
+	    		$("#commute-off").click(function(){
+	    			location.href = "off.cm";
+	    			alert("오늘 하루도 고생하셨습니다");
+	    		})
+	    		
+	    	})
+	   
+	    </script>
            <div id="comming-sc-area">
              <span class="main_title_text">다가오는 일정</span>
              <ul>
@@ -134,18 +152,6 @@
            </div>
         </div>
     </div>
-    
-    <script>
-    	$(function(){
-    		$("#commute-on").click(function(){
-    			location.href = "on.cm";
-    		})
-    		$("#commute-off").click(function(){
-    			location.href = "off.cm";
-    		})
-    		
-    	})	    	
-    </script>
     
 	<script>
 		window.onload = $(function(){
