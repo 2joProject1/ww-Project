@@ -40,7 +40,7 @@
 	                <br><br>
 	                
 	                <i class="xi-document"></i>&nbsp;
-	                <a href="signoffs.docu"><b>전자결재</b></a>
+	                <a href="signoffs.docu?format=1"><b>전자결재</b></a>
 
 	                <br><br>
 	                
