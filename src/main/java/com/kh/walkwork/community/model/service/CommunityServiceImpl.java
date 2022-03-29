@@ -43,6 +43,11 @@ public class CommunityServiceImpl implements CommunityService {
 	public int selectListCount(String search) {
 		return communityDao.selectListCount(sqlSession, search);
 	}
+	@Override
+	public int selectMyListCount(Community c) {
+		return communityDao.selectMyListCount(sqlSession, c);
+	}
+	
 	
 	@Override
 	public ArrayList<Community> selectList(PageInfo pi, String search) {

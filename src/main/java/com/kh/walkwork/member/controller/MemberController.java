@@ -154,31 +154,31 @@ public class MemberController {
 
 //---------------------------로그인-----------------------------------
 
-	
-
-
 	@RequestMapping("login.me")
 	public ModelAndView loginMember(Member m, HttpSession session, ModelAndView mv) {
 
 		Member loginUser = memberService.loginMember(m);
 
-		if(loginUser != null && bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
-																//입력받은			//암호화된
-			//로그인 성공
+		if (loginUser != null && bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) { // 입력받은
+																												// //암호화된																							// //로그인
+																										// 성공
 			session.setAttribute("loginUser", loginUser);
 			mv.addObject("alertMsg", "로그인성공");
 			mv.setViewName("common/main");
 			return mv;
-		} else{
-			
-		//로그인 실패
-			session.setAttribute("errorMsg", "아이디와 비밀번호를 확인하세요");
+		} else {
+
+			// 로그인 실패 session.setAttribute("errorMsg", "아이디와 비밀번호를 확인하세요");
 
 			mv.addObject("errorMsg", "로그인실패").setViewName("redirect:/");
-			
+			System.out.println(m.getMemberPwd());
+			System.out.println(loginUser.getMemberPwd());
 			return mv;
 		}
+
 	}
+	
+
 
 //---------------------------------------------
 
@@ -211,7 +211,7 @@ public class MemberController {
 	}
 
 	// 로그아웃
-	
+
 	@RequestMapping("logout.me")
 	public String logoutMember(HttpSession session) {
 
@@ -226,9 +226,7 @@ public class MemberController {
 	@RequestMapping("information.me")
 	public ModelAndView selectMemberInformation(Member m, HttpSession session, ModelAndView mv) {
 		Member userInfo = (Member) session.getAttribute("loginUser");
-		System.out.println(userInfo.getMemberNo());
 		Member memberInfo = memberService.selectMemberInformation(userInfo);
-		System.out.println(memberInfo.getMemberName());
 		mv.addObject("memberInfo", memberInfo).setViewName("member/MemberInformation");
 		return mv;
 	}
@@ -311,8 +309,11 @@ public class MemberController {
 		m.setFile(saveFileName);
 		m.setFilePath(uploadpath);
 		memberService.updateMemberFile(m);
+		//로그아웃 안하고 보여줌 
+		Member loginUser = memberService.loginMember(m);																								// 성공
+		session.setAttribute("loginUser", loginUser);
+		//
 		
-
 		return result;
 	}
 

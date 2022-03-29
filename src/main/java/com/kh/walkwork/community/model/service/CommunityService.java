@@ -22,6 +22,9 @@ public interface CommunityService {
 	// 총 게시물 수
 	public int selectListCount(String search);
 	
+	// 내 게시물 총 수
+	public int selectMyListCount(Community c);
+	
 	// 커뮤니티 리스트 조회
 	public ArrayList<Community> selectList(PageInfo pi, String search);
 	

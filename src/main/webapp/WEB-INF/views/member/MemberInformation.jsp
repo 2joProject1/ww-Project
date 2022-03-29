@@ -15,6 +15,14 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="resources/css/MemberInformation.css">
 <link rel="stylesheet" href="resources/css/layout.css">
+<style>
+.cameraIcon{
+	width: 37px;
+    position: absolute;
+    left: 300px;
+    bottom: 190px;
+}
+</style>
 </head>
 <body>
 
@@ -33,7 +41,7 @@
 			</div>
 		<br><br><br><br><br><br><br>
 		<div class="col-5">
-			<div class="memberImg">
+			<div class="memberImg" style="margin-left:95px">
 				<img id="mem_img" src="/filepath/${memberInfo.file }" onerror='this.src="resources/images/person-fill.svg"' alt="profileImg">
 
 				<div id="ImghiddenBtn">
@@ -49,9 +57,6 @@
 				<img src="resources/images/camera-fill.svg" alt="camera" class="cameraIcon">
 			</label>
 			
-
-				
-
 		</div>
 		<div class="col-7">
 			<div class="row">
@@ -76,21 +81,22 @@
 				<div class="col-4 info_sub">
 					<b>휴대폰번호</b>
 				</div>
+				
 				<!-- 수정모드 전 -->
 				<div class="col-8" id="beforeMdf">
 					<div class="row">
 						<div class="col-7 info_input">
 							${memberInfo.phone}
 						</div>
-						<div class="col-5">
+						<!-- <div class="col-5">
 							<button id="modifyBtn">수정</button>						
-						</div>
+						</div> -->
 					</div>
-				</div>
+				</div> 
 				
 				
 				<!-- 수정모드 -->
-				<div class="col-8" id="afterMdf">
+				<!-- <div class="col-8" id="afterMdf">
 					<div class="row">
 						<div class="col-7 info_input">
 							<input type="text" placeholder="숫자만 입력" class="info_num">
@@ -101,7 +107,7 @@
 							<button id="cancelBtn">취소</button>
 						</div>
 					</div>
-				</div>
+				</div>  -->
 			
 				
 				
@@ -140,20 +146,22 @@
 	</div>
 </div>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$('#afterMdf').css('display', 'none');
+	 $(document).ready(function(){
+		/* $('#afterMdf').css('display', 'none');*/
 		$('#mem_file').on("change", mem_filefunc);
 		$('#ImghiddenBtn').css('display', 'none');
 	})
 	
+	/*
 	$('#modifyBtn').click(function(){
 		$('#beforeMdf').css('display', 'none');
 		$('#afterMdf').css('display', '');
 	})
+	
 	$('#cancelBtn').click(function(){
 		$('#beforeMdf').css('display', '');
 		$('#afterMdf').css('display', 'none');
-	})
+	}) */
 	
 	// 미리보기
 	function mem_filefunc(e){
