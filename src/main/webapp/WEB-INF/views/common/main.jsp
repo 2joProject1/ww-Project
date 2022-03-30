@@ -10,6 +10,37 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+<style>
+/* div{
+	border:1px solid red;
+} */
+	#comming-sc-area li{
+		list-style:none;
+	}
+	.atag{
+		text-decoration:none;
+		color:black;
+	}
+	.atag:hover{
+		text-decoration:none;
+		color:black;
+	}
+	.main_pj_div{
+		text-align:center;
+		padding-top:32px;
+		color:white;
+		margin-bottom:5px;
+		margin-left:4px;
+	}
+	.main_pj_div div{
+		color:black;
+	}
+
+	
+
+
+</style>
+
 </head>
 <body>
 	<div id="header-layout">
@@ -59,8 +90,8 @@
 						<b>공지사항</b>
 					</a>
 					<br> <br>
-
-					<a href="logout.me">로그아웃</a>
+					<br><br><br><br><br><br><br>
+					<a href="logout.me" style="font-size:18px;">로그아웃</a>
 				</div>
 			</div>
 		</div>
@@ -69,15 +100,16 @@
 			<div id="myproject-area">
 				<span class="main_title_text">내 프로젝트</span>
 				<br> <br>
-				<div class="main_pj_div"></div>
-				<div class="main_pj_div"></div>
-				<div class="main_pj_div"></div>
-				<div class="main_pj_div"></div>
-				<br>
-				<div class="main_pj_div"></div>
-				<div class="main_pj_div"></div>
-				<div class="main_pj_div"></div>
-				<div class="main_pj_div"></div>
+					<c:forEach var="n" items="${ project }">
+						<a href="project?projectNo=${n.projectNo }" class="atag"> 
+							<div class="main_pj_div">
+								<div class="ptitle" style="font-size: 13pt; ">${ n.projectTitle }</div><br>
+								<div class="pmember" style="font-size: 13px; color:gray;">${ n.projectMemberStr }</div>
+							</div>
+						</a>
+
+					</c:forEach>
+
 			</div>
 
 			<div id="commute-area">
@@ -101,11 +133,12 @@
 		</script>
 		<div id="comming-sc-area">
 			<span class="main_title_text">다가오는 일정</span>
-			<ul>
-				<li>Lorem</li>
-				<li>Ipsum</li>
-				<li>Dolor</li>
-			</ul>
+			<hr>
+				<c:forEach var="n" items="${ schedule }">
+					<li>
+						${n.startDate}&nbsp&nbsp${n.title}
+					</li>
+				</c:forEach>
 		</div>
 		<div id="notice-area">
 			<span class="main_title_text">공지사항</span>
@@ -113,7 +146,7 @@
 			<table id="noticeList" border="1">
 				<thead style="text-align: center">
 					<tr>
-						<th style="width: 300px;">제목</th>
+						<th style="width: 350px; height:40px;">제목</th>
 						<th style="width: 100px;">작성일</th>
 						<th style="width: 100px;"">작성자</th>
 						<th style="width: 100px;">조회수</th>
@@ -122,7 +155,7 @@
 				<tbody>
 					<c:forEach var="n" items="${ notice }">
 						<tr>
-							<td>${ n.boardTitle }</td>
+							<td style="height:40px">&nbsp&nbsp ${ n.boardTitle }</td>
 							<td style="text-align: center">${ n.enrollDate }</td>
 							<td class="writer" style="text-align: center">${ n.memberName }</td>
 							<td style="text-align: center">${ n.count }</td>
@@ -135,18 +168,29 @@
 		</div>
 		<div id="todolist-area">
 			<span class="main_title_text">TODOLIST</span>
-			<ul>
-				<li><input type="checkbox" name="" id=""> ${loginUser.memberName}</li>
-				<li><input type="checkbox" name="" id=""> <i class="fi fi-ss-Circle-small"></i></li>
-				<li><input type="checkbox" name="" id=""> <i class="fi fi-ss-Circle-small"></i></li>
-				<li><input type="checkbox" name="" id=""> <i class="fi fi-ss-Circle-small"></i></li>
-				<li><input type="checkbox" name="" id=""> <i class="fi fi-rr-Angle-small-down"></i></li>
-				<li><input type="checkbox" name="" id=""> <i class="fi fi-rr-Cross-circle"></i></li>
-				<li><input type="checkbox" name="" id=""> <i class="fi fi-rr-Arrow-small-right"></i></li>
-				<li><input type="checkbox" name="" id=""> <i class="fi fi-br-Angle-right"></i></li>
-				<li><input type="checkbox" name="" id=""><i class="fi fi-rs-inbox side_subtitle"></i></li>
-				<li><input type="checkbox" name="" id=""> <i class="fi fi-rr-folder"></i></li>
-			</ul>
+			<br>
+			<table id="todo_tb">
+				<tbody>
+<%-- 					<c:forEach var="n" items="${ todo }">
+						<tr style="height:35px;">
+							<td class="boardNo">${n.boardNo}</td>
+							<td class="check">&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkList" class="check"></td>
+							<td class="content">${n.content}</td>
+						</tr>
+					</c:forEach> --%>
+				</tbody>
+			</table>
+			
+			
+<%-- 			<ul>
+				<c:forEach var="n" items="${ todo }">
+					<li>
+						<input type="checkbox" name="checkList" value="${n.content}">
+						<label for="checkList">${n.content}</label>
+					</li>
+				</c:forEach>
+
+			</ul> --%>
 		</div>
 		</div>
 	</div>
@@ -154,19 +198,13 @@
 		window.onload = $(function() {
 			$('.bno').hide();
 			$('.mno').hide();
+			$('.boardNo').hide();
 
 		})
-		$(function() {
-			$("#noticeList>tbody>tr").click(
-					function() {
-						location.href = 'detail.no?bno='
-								+ $(this).children(".bno").text() + '&mno='
-								+ $(this).children(".mno").text();
-						console.log($(this).children(".bno").text())
-						console.log($(this).children(".writer").text())
-						console.log($(this).children(".mno").text())
-					})
-		})
+		
+		
+
+
 	</script>
 </body>
 </html>
