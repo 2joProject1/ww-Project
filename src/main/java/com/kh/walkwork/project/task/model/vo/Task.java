@@ -12,7 +12,7 @@ public class Task {
 	private String boardType;
 	private String boardTitle;
 	private String boardContent;
-	private Date boardReportDate;
+	private Date enrollDate;
 	private int count;
 	private String status;
 	private String topFix;

@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>업무 상세보기</title>
 <style>
 #content-layout {
 	border: 1px solid lightgray;
@@ -143,8 +143,8 @@ table.section-table {
 
 .project-desc-list>li {
 	margin: 5px 0 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #DDD;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #DDD;
 }
 
 .button-area {
@@ -277,45 +277,45 @@ table.section-table {
 }
 
 /*댓글작성*/
-#content{
+#content {
 	width: 954px;
-    height: 70px;
-    margin-left: 48px;
-    margin-top: -40px;
+	height: 70px;
+	margin-left: 48px;
+	margin-top: -40px;
 }
+
 #btn-insertReply {
-    width: 86px;
-    height: 68px;
-    background: rgb(102, 164, 166);
-    color: white;
-    border: none;
-    border-radius: 10px;
+	width: 86px;
+	height: 68px;
+	background: rgb(102, 164, 166);
+	color: white;
+	border: none;
+	border-radius: 10px;
 }
 /*댓글*/
-#taskReply{
+#taskReply {
 	margin-left: 64px;
 	line-height: 70px;
 }
 
-
 /*담당자선택*/
-#projectMemberList{
-    display: inline-block;
-    border: 1px solid #DDD;
-    border-top: 0;
-    width: 300px;
-    border-radius: 10px;
-    padding: 10px;
-    cursor: pointer;
-    transition: 0.3s;
+#projectMemberList {
+	display: inline-block;
+	border: 1px solid #DDD;
+	border-top: 0;
+	width: 300px;
+	border-radius: 10px;
+	padding: 10px;
+	cursor: pointer;
+	transition: 0.3s;
 }
 
-#projectMemberList > li:hover {
-    background: #EEE;
+#projectMemberList>li:hover {
+	background: #EEE;
 }
 
-#projectMemberList > li {
-    transition: 0.015s;
+#projectMemberList>li {
+	transition: 0.015s;
 }
 </style>
 </head>
@@ -327,25 +327,23 @@ table.section-table {
 	<div id="container">
 		<div id="sidebar-layout">
 			<div id="main-sidebar">
-				<button type="button" class="new-project">새 프로젝트</button>
-				<br> <br>
 				<div class="sub-menu-title">
 					<i class="fi fi-rr-menu-burger"></i>&nbsp;<b>프로젝트</b><br>
 				</div>
 				<div class="sub-menu">
 					<i class="fi fi-rr-apps"></i>&nbsp;
-					<a href="#" class="">&nbsp;전체</a>
+					<a href="project.main" class="">&nbsp;전체</a>
 					<br>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-check"></i>&nbsp;
-					<a href="project.no-read" class="">&nbsp;읽지않음</a>
+					<i class="fi fi-rr-apps"></i>&nbsp;
+					<a href="" class="">&nbsp;공지사항</a>
 					<br>
 				</div>
 				<hr>
 				<div class="sub-menu">
 					&nbsp;
-					<a href="" class="">&nbsp;내 일정</a>
+					<a href="notice.pro" class="">&nbsp;내 일정</a>
 					<br>
 				</div>
 			</div>
@@ -354,34 +352,34 @@ table.section-table {
 		<div id="content-layout">
 			<div class="project-info">
 				<c:forEach var="p" items="${ list }">
-				<div class="info-left">
-					<div class="project-title-area">
-						<h2 class="project-title">${ p.projectTitle }</h2>
-						&nbsp;&nbsp;&nbsp;
-						<span class="title-label">
-							<c:if test="${p.projectStatus == 0}">
-								<i>완료</i>
-							</c:if>
+					<div class="info-left">
+						<div class="project-title-area">
+							<h2 class="project-title">${ p.projectTitle }</h2>
+							&nbsp;&nbsp;&nbsp;
+							<span class="title-label">
+								<c:if test="${p.projectStatus == 0}">
+									<i>완료</i>
+								</c:if>
+								<c:if test="${p.projectStatus == 1}">
+									<i>진행중</i>
+								</c:if>
+							</span>
 							<c:if test="${p.projectStatus == 1}">
-								<i>진행중</i>
+								<button type="button" class="project-end-btn">완료</button>
 							</c:if>
-						</span>
-						<c:if test="${p.projectStatus == 1}">
-							<button type="button" class="project-end-btn">완료</button>
-						</c:if>
-					</div>
+						</div>
 
-					<ul class="project-desc-list">
-						<li><b>프로젝트 기간</b>${ p.projectStartDate } - ${ p.projectEndDate }</li>
-						<li><b>프로젝트 개요</b>
-							<div class="desc-wrapper">
-								<p>${ p.projectSummary }</p>
-							</div></li>
-						<li><b>프로젝트 매니저(PM)</b> <span>${ p.projectWriter }</span></li>
-						<li><b>프로젝트 인원</b> <span class="add-team">${p.projectMemberStr}</span></li>
-					</ul>
-				</div>
-				<div class="info-right"></div>
+						<ul class="project-desc-list">
+							<li><b>프로젝트 기간</b>${ p.projectStartDate } - ${ p.projectEndDate }</li>
+							<li><b>프로젝트 개요</b>
+								<div class="desc-wrapper">
+									<p>${ p.projectSummary }</p>
+								</div></li>
+							<li><b>프로젝트 매니저(PM)</b> <span>${ p.projectWriter }</span></li>
+							<li><b>프로젝트 인원</b> <span class="add-team">${p.projectMemberStr}</span></li>
+						</ul>
+					</div>
+					<div class="info-right"></div>
 				</c:forEach>
 			</div>
 			<hr>
@@ -394,34 +392,28 @@ table.section-table {
 					<input type="hidden" name="type">
 					<input type="hidden" name="taskWriter">
 					<input type="hidden" name="boardNo" value="${ item.boardNo }">
-					
+
 					<ul class="project-desc-list">
-						<li><b><input type="text" name="boardTitle" class="project-write-field-title" placeholder="제목을 입력해주세요" value="${item.boardTitle}"
-							<c:if test="${item.boardWriter != writerInfo.memberNo}">readonly</c:if> ></b></li>
+						<li><b><input type="text" name="boardTitle" class="project-write-field-title" placeholder="제목을 입력해주세요" value="${item.boardTitle}" <c:if test="${item.boardWriter != writerInfo.memberNo}">readonly</c:if>></b></li>
 						<li><b>진행상태</b>
 							<div class="task-search-area">
 								<label class="box-radio-input">
-									<input type="radio" name=taskStatus value="1" <c:if test="${item.taskStatus == 1}">checked</c:if>
-										<c:if test="${item.boardWriter != writerInfo.memberNo}">readonly onclick="return false;"</c:if> >
+									<input type="radio" name=taskStatus value="1" <c:if test="${item.taskStatus == 1}">checked</c:if> <c:if test="${item.boardWriter != writerInfo.memberNo}">readonly onclick="return false;"</c:if>>
 									<span>요청</span>
 								</label>
 								<label class="box-radio-input">
-									<input type="radio" name="taskStatus" value="2" <c:if test="${item.taskStatus == 2}">checked</c:if>
-										 <c:if test="${item.boardWriter != writerInfo.memberNo}">readonly onclick="return false;"</c:if> >
+									<input type="radio" name="taskStatus" value="2" <c:if test="${item.taskStatus == 2}">checked</c:if> <c:if test="${item.boardWriter != writerInfo.memberNo}">readonly onclick="return false;"</c:if>>
 									<span>진행</span>
 								</label>
 								<label class="box-radio-input">
-									<input type="radio" name="taskStatus" value="3" <c:if test="${item.taskStatus == 3}">checked</c:if>
-										<c:if test="${item.boardWriter != writerInfo.memberNo}">readonly onclick="return false;"</c:if> >
+									<input type="radio" name="taskStatus" value="3" <c:if test="${item.taskStatus == 3}">checked</c:if> <c:if test="${item.boardWriter != writerInfo.memberNo}">readonly onclick="return false;"</c:if>>
 									<span>완료</span>
 								</label>
-							</div>
-						</li>
+							</div></li>
 						<li>
 							<div>
-								<b>담당자</b> <input type="text" name="taskHandlername"  value="${item.taskHandlerName }"
-									class="project-write-field" id="projectTaskHandler" 
-									readonly >
+								<b>담당자</b>
+								<input type="text" name="taskHandlername" value="${item.taskHandlerName }" class="project-write-field" id="projectTaskHandler" readonly>
 							</div>
 							<div>
 								<input type="hidden" name="taskHandler" id="taskHandler" value="${item.taskHandlerName }">
@@ -429,17 +421,16 @@ table.section-table {
 								<div id="projectMemberList" style="display: none;"></div>
 							</div>
 						</li>
-						<li><b>요청일자</b> <span><fmt:formatDate value="${item.boardReportDate}" pattern="yyyy-MM-dd"/></span></li>
-						<li><b>요청기한</b> <input type="date" name="taskEndDate" class="project-write-date"
-							value="<fmt:formatDate value="${item.taskEndDate}" pattern="yyyy-MM-dd"/>"
-							<c:if test="${item.boardWriter != writerInfo.memberNo}">readonly</c:if> > </li>
+						<li><b>요청일자</b> <span>
+								<fmt:formatDate value="${item.enrollDate}" pattern="yyyy-MM-dd" />
+							</span></li>
+						<li><b>요청기한</b> <input type="date" name="taskEndDate" class="project-write-date" value="<fmt:formatDate value="${item.taskEndDate}" pattern="yyyy-MM-dd"/>" <c:if test="${item.boardWriter != writerInfo.memberNo}">readonly</c:if>></li>
 						<li><b onclick="attachFile()">파일첨부</b>
 							<ul id="fileList">
 								<c:forEach var="item" items="${fileList}">
 									<li><a href="${pageContext.request.contextPath}/resources/uploadFiles/${item.fileName}" target="_blank">${item.fileOriginName}</a></li>
 								</c:forEach>
-							</ul>
-						</li>
+							</ul></li>
 						<li><textarea name="boardContent" class="project-write-field-content" placeholder="내용을 입력하세요">${item.boardContent }</textarea></li>
 					</ul>
 					<div class="button-area">
@@ -449,18 +440,22 @@ table.section-table {
 					</div>
 				</form>
 			</div>
-			
+
 			<div style="padding: 30px;">
-					<input type="text" name="content" id="content" placeholder="댓글을 입력해주세요" required>
-					<button type="submit" style="height: auto;" id="btn-insertReply" onclick="addReply()">등록</button>
+				<input type="text" name="content" id="content" placeholder="댓글을 입력해주세요" required>
+				<button type="submit" style="height: auto;" id="btn-insertReply" onclick="addReply()">등록</button>
 				<br>
-				<table id="taskReply">
+				<table id="taskReply" width="100%" width="900px">
 					<c:forEach var="r" items="${ taskReplyList }">
 						<tr>
-							<%-- <td width="100px"><img src="${ r.file }" id="profileReply" width="70px" height="70px" alt="" onerror="this.src='/resources/images/person-fill.svg'"></td> --%>
-							<td width="100px">${ r.memberName }</td>
-							<td width="650px">${ r.replyContent }</td>
-							<td width="150px"><fmt:formatDate value="${ r.enrollDate }" pattern="yyyy-MM-dd mm:ss"/></td>
+							<td>${ r.memberName }</td>
+							<td>${ r.replyContent }</td>
+							<td>
+								<fmt:formatDate value="${ r.enrollDate }" pattern="yyyy-MM-dd mm:ss" />
+							</td>
+							<td>
+								<i class="xi-close-min"></i>
+							</td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -478,46 +473,49 @@ table.section-table {
 				var fileIndex = $(this).attr('data-file-index');
 				$('#file_' + fileIndex).remove();
 			})
-			
+
 			//프로젝트멤버 리스트
 			$('body').on('click', '#projectMemberList > li', function() {
 				$('#projectTaskHandler').val($(this).text().trim());
 				$('#projectMemberList').hide();
 				$('#taskHandler').val($(this).attr('data-member-no'));
 			})
-			
-			//댓글 가져오기 실행
+
 			selectReplyList();
 		});
-		
-		
-		
-		
-		//업무 수정하기 폼으로 이동
-		$('#project-enroll-btn').on("click", function(){
+
+		//업무 상세보기 및 업무 수정 폼으로 이동
+		$('#project-enroll-btn').on("click", function() {
 			window.location.href = "project/task/projectTaskUpdateForm";
 		})
-		
+
 		//업무 작성하기 : 담당자 지정
-		$("#projectTaskHandler").on("click", function(){
-			$('#projectMemberList').show();
-			$('#projectMemberList').empty();
-			$.ajax({
-				url:"handler.task",
-				data: { projectNo : '${item.projectNo}'},
-				success: function(data){
-					console.log(data);
-					for(var i =0; i< data.length; i++){
-						var html = '<li data-member-no="'+data[i].memberNo+'">' + data[i].memberName + '</li>';
-						$('#projectMemberList').append(html);
-					}
-				}
-			})
-	    })
-		
-		
-		
-    	//클릭해서 파일 첨부하기
+		$("#projectTaskHandler")
+				.on(
+						"click",
+						function() {
+							$('#projectMemberList').show();
+							$('#projectMemberList').empty();
+							$
+									.ajax({
+										url : "handler.task",
+										data : {
+											projectNo : '${item.projectNo}'
+										},
+										success : function(data) {
+											console.log(data);
+											for (var i = 0; i < data.length; i++) {
+												var html = '<li data-member-no="'+data[i].memberNo+'">'
+														+ data[i].memberName
+														+ '</li>';
+												$('#projectMemberList').append(
+														html);
+											}
+										}
+									})
+						})
+
+		//클릭해서 파일 첨부하기
 		function attachFile() {
 			if ($('#fileList').children().length === 3) {
 				alert("첨부파일은 3개까지 가능합니다.");
@@ -543,59 +541,79 @@ table.section-table {
 			createFile.click(); //첨부클릭할때마다
 			index++; //data-file-index 값 하나씩 올리기
 		}
-		
+
 		//댓글 작성
-		function addReply(){ 
-			
-    		if($("#content").val().trim() != 0){ 
-    			$.ajax({
-    				url: "insert.reply",
-    				data: { 
-    					boardNo : '${ item.boardNo }', 
-    					replyContent : $("#content").val(), 
-    					replyWriter : $('#loginUserId').val() 
-    				},
-    				success: function(status){
-    					if(status == "success"){
-    						selectReplyList();
-    						$("#content").val("");
-    						alert("댓글이 등록되었습니다");
-    					}
-    				}, error: function(){
-    					alert("댓글 작성에 실패하였습니다");   					
-    				}
-    			})
-    		} else{
-    			alert("형식에 부적합한 댓글입니다");
-    		}	
-    	}
-			
-		//댓글 가져오기 @TODO 여기서부터 다시하기
-			function selectReplyList(){
-    		
-    		$.ajax({
-    			url: "replyList.task", 
-    			data: { boardNo : '${ item.boardNo }'},
-    			success: function(list){
-    				
-    				let value="";
-    				for(let i in list){
-    					value += "<tr>"
-    							+ "<th>" + list[i].memberName + "</th>"
-    							+ "<th>" + list[i].replyContent + "</th>"
-    							+ "<th>" + list[i].enrollDate + "</th>"
-    							+ "</tr>"
-    				}
-    				$("#taskReply").html(value);
-    			}, error : function(){
-    				console.log("댓글 조회 실패");
-    			}
-    		})
-    	}
-		
-			
-		
-		
+		function addReply() {
+			if ($("#content").val().trim() != 0) {
+				$.ajax({
+					url : "insert.reply",
+					data : {
+						boardNo : '${ item.boardNo }',
+						replyContent : $("#content").val(),
+						replyWriter : $('#loginUserId').val()
+					},
+					success : function(status) {
+						if (status == "success") {
+							selectReplyList();
+							$("#content").val("");
+							alert("댓글이 등록되었습니다");
+						}
+					},
+					error : function() {
+						alert("댓글 작성에 실패하였습니다");
+					}
+				})
+			} else {
+				alert("형식에 부적합한 댓글입니다");
+			}
+		}
+
+		function selectReplyList() {
+
+			$.ajax({
+				url : "selectReply.task", //전체조회를 하는 것이 아니라, 게시글에 딸린 댓글만 조회해야한다(현재게시글 번호를 넘겨야한다)
+				data : {
+					boardNo : '${ item.boardNo }'
+				},
+				success : function(list) {
+					console.log(list);
+
+					let value = "";
+					for ( let i in list) {
+						value += "<tr data-reply-no='"+list[i].replyNo+"'>"
+								+ "<td>" + list[i].memberName + "</td>"
+								+ "<td>" + list[i].replyContent + "</td>"
+								+ "<td>" + list[i].enrollDate + "</td>"
+								+ '<td><i class="xi-close-min"></i></td>'
+								+ "</tr>";
+					}
+					$("#taskReply").html(value);
+				},
+				error : function() {
+					console.log("댓글 조회 실패");
+				}
+			})
+		}
+
+		$('body').on("click", '.xi-close-min', function() {
+			var row = $(this).parents('tr');
+			var replyNo = row.attr('data-reply-no');
+			$.ajax({
+				url : "deleteReply.task",
+				data : {
+					replyNo : replyNo
+				},
+				success : function() {
+					console.log("성공");
+					alert("댓글이 삭제되었습니다");
+					row.remove();
+				},
+				error : function() {
+					console.log("에러");
+					alert("댓글이 정상적으로 삭제되지않았습니다. 다시 시도해주세요");
+				}
+			})
+		})
 	</script>
 
 </body>

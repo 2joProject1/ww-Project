@@ -1,6 +1,5 @@
 package com.kh.walkwork.project.task.model.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -28,21 +27,36 @@ public class TaskDao {
 		return sqlSession.selectList("taskMapper.getTaskReplyList", t);
 	}
 
+	//업무 : 댓글 삭제하기
+	public int deleteTaskReplyList(SqlSessionTemplate sqlSession, Reply r) {
+		return sqlSession.delete("taskMapper.deleteTaskReplyList", r);
+	}
+	
+	//업무 상세보기
 	public Task getTaskDetail(SqlSessionTemplate sqlSession, Task t) {
 		return sqlSession.selectOne("taskMapper.getTaskDetail", t);
 	}
-
+	
+	//업무 리스트가져오기
 	public List<Task> getTaskList(SqlSessionTemplate sqlSession, Project p) {
 		return sqlSession.selectList("taskMapper.getTaskList", p);
 	}
 
+	//업무 필터 보기
 	public List<Task> getTaskListByFilter(SqlSessionTemplate sqlSession, Task t) {
 		return sqlSession.selectList("taskMapper.getTaskListByFilter", t);
 	}
-
+	
+	//업무수정
 	public int updateTask(SqlSessionTemplate sqlSession, Task t) {
 		return sqlSession.update("taskMapper.updateTask", t);
 	}
+	
+	//업무 차트
+	public List<Integer> taskStateList(SqlSessionTemplate sqlSession, String pno) throws Exception{
+		return sqlSession.selectList("taskMapper.taskStateList", pno);
+	}
+	
 
 
 

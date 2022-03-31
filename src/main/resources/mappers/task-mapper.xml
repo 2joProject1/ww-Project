@@ -1,147 +1,161 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="taskMapper">
-  
-  <insert id="insertTask" parameterType="task">
-  	INSERT INTO BOARD_ALL(
-	  		 BOARD_NO
-	  		,BOARD_WRITER
-	  		,PROJECT_NO
-	  		,BOARD_TYPE
-	  		,BOARD_TITLE
-	  		,BOARD_CONTENT
-	  		,ENROLL_DATE
-	  		,TASK_END_DATE
-	  		,TASK_STATUS
-	  		,TASK_HANDLER
-  		) VALUES(
-  			 SEQ_BNO.NEXTVAL
-  			,#{boardWriter}
-  			,#{projectNo}
-  			,3
-  			,#{boardTitle}
-  			,#{boardContent}
-  			,DEFAULT
-  			,#{taskEndDate}
-  			,1
-  			,#{taskHandler}
-  		)
-		<selectKey resultType="int" keyProperty="boardNo" order="AFTER">
+	
+	<!-- 업무 등록하기 -->
+	<insert id="insertTask" parameterType="task">
+		INSERT INTO BOARD_ALL(
+		BOARD_NO
+		,BOARD_WRITER
+		,PROJECT_NO
+		,BOARD_TYPE
+		,BOARD_TITLE
+		,BOARD_CONTENT
+		,ENROLL_DATE
+		,TASK_END_DATE
+		,TASK_STATUS
+		,TASK_HANDLER
+		) VALUES(
+		SEQ_BNO.NEXTVAL
+		,#{boardWriter}
+		,#{projectNo}
+		,3
+		,#{boardTitle}
+		,#{boardContent}
+		,DEFAULT
+		,#{taskEndDate}
+		,1
+		,#{taskHandler}
+		)
+		<selectKey resultType="int" keyProperty="boardNo"
+			order="AFTER">
 			SELECT SEQ_BNO.CURRVAL FROM DUAL
 		</selectKey>
-  </insert>
-  
-  <update id="updateTask" parameterType="task">
-  	UPDATE BOARD_ALL SET
-	  		 BOARD_TITLE = #{boardTitle}
-	  		,BOARD_CONTENT = #{boardContent}
-	  		,TASK_END_DATE = #{taskEndDate}
-	  		,TASK_STATUS = #{taskStatus}
-	  		,TASK_HANDLER = #{taskHandler}
- 	WHERE BOARD_NO = #{boardNo}
-  </update>
-  
-  <select id="getTaskDetail" resultType="task" parameterType="task">
-  	SELECT A.BOARD_NO
-	  		,A.BOARD_WRITER
-	  		,A.PROJECT_NO
-	  		,A.BOARD_TYPE
-	  		,A.BOARD_TITLE
-	  		,A.BOARD_CONTENT
-	  		,A.ENROLL_DATE
-	  		,A.TASK_END_DATE
-	  		,A.TASK_STATUS
-	  		,A.TASK_HANDLER
-	  		,A.TASK_MODIFY_DATE
-	  		,B.MEMBER_NAME AS TASK_HANDLER_NAME
- 	FROM BOARD_ALL A
- 	INNER JOIN MEMBER B ON A.TASK_HANDLER = B.MEMBER_NO
- 	WHERE BOARD_NO = #{boardNo}
-  </select>
-  
-  <select id="getTaskListByFilter" parameterType="task" resultType="task">
-  	SELECT A.BOARD_NO
-	  		,A.BOARD_WRITER
-	  		,A.PROJECT_NO
-	  		,A.BOARD_TYPE
-	  		,A.BOARD_TITLE
-	  		,A.BOARD_CONTENT
-	  		,A.ENROLL_DATE
-	  		,A.TASK_END_DATE
-	  		,A.TASK_STATUS
-	  		,A.TASK_HANDLER
-	  		,A.TASK_MODIFY_DATE
-	  		,B.MEMBER_NAME AS TASK_HANDLER_NAME
-	FROM BOARD_ALL A
- 	INNER JOIN MEMBER B ON A.TASK_HANDLER = B.MEMBER_NO
-	WHERE PROJECT_NO = #{projectNo}
-	<if test="taskFilter1 != 0">
-		<if test="taskFilter1 == 1">
-			<!-- 내업무 -->
-			AND TASK_HANDLER = #{taskHandler}
+	</insert>
+	
+	<!-- 업무 수정하기 -->
+	<update id="updateTask" parameterType="task">
+		UPDATE BOARD_ALL SET
+		BOARD_TITLE = #{boardTitle}
+		,BOARD_CONTENT = #{boardContent}
+		,TASK_END_DATE = #{taskEndDate}
+		,TASK_STATUS = #{taskStatus}
+		,TASK_HANDLER = #{taskHandler}
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<!-- 업무 상세보기 -->
+	<select id="getTaskDetail" resultType="task"
+		parameterType="task">
+		SELECT A.BOARD_NO
+		,A.BOARD_WRITER
+		,A.PROJECT_NO
+		,A.BOARD_TYPE
+		,A.BOARD_TITLE
+		,A.BOARD_CONTENT
+		,A.ENROLL_DATE
+		,A.TASK_END_DATE
+		,A.TASK_STATUS
+		,A.TASK_HANDLER
+		,A.TASK_MODIFY_DATE
+		,B.MEMBER_NAME AS TASK_HANDLER_NAME
+		FROM BOARD_ALL A
+		INNER JOIN MEMBER B ON A.TASK_HANDLER = B.MEMBER_NO
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+
+	<!-- 업무 필터별 보기  -->
+	<select id="getTaskListByFilter" parameterType="task"
+		resultType="task">
+		SELECT A.BOARD_NO
+		,A.BOARD_WRITER
+		,A.PROJECT_NO
+		,A.BOARD_TYPE
+		,A.BOARD_TITLE
+		,A.BOARD_CONTENT
+		,A.ENROLL_DATE
+		,A.TASK_END_DATE
+		,A.TASK_STATUS
+		,A.TASK_HANDLER
+		,A.TASK_MODIFY_DATE
+		,B.MEMBER_NAME AS TASK_HANDLER_NAME
+		FROM BOARD_ALL A
+		INNER JOIN MEMBER B ON A.TASK_HANDLER = B.MEMBER_NO
+		WHERE PROJECT_NO = #{projectNo}
+		<if test="taskFilter1 != 0">
+			<if test="taskFilter1 == 1">
+				<!-- 내업무 -->
+				AND TASK_HANDLER = #{taskHandler}
+			</if>
+			<if test="taskFilter1 == 2">
+				<!-- 요청한 업무 -->
+				AND BOARD_WRITER = #{boardWriter}
+			</if>
 		</if>
-		<if test="taskFilter1 == 2">
-			<!-- 요청한 업무 -->
-			AND BOARD_WRITER = #{boardWriter}
+		<if test="taskFilter2 != 0">
+			AND TASK_STATUS = #{taskFilter2}
 		</if>
-	</if>
-	<if test="taskFilter2 != 0">
-		AND TASK_STATUS = #{taskFilter2}
-	</if>
-  </select>
-  
-  <select id="getTaskList" parameterType="project" resultType="task">
-  	SELECT A.BOARD_NO
-	  		,A.BOARD_WRITER
-	  		,A.PROJECT_NO
-	  		,A.BOARD_TYPE
-	  		,A.BOARD_TITLE
-	  		,A.BOARD_CONTENT
-	  		,A.ENROLL_DATE
-	  		,A.TASK_END_DATE
-	  		,A.TASK_STATUS
-	  		,A.TASK_HANDLER
-	  		,A.TASK_MODIFY_DATE
-	  		,B.MEMBER_NAME AS TASK_HANDLER_NAME
-	FROM BOARD_ALL A
- 	INNER JOIN MEMBER B ON A.TASK_HANDLER = B.MEMBER_NO
-	WHERE PROJECT_NO = #{projectNo}
-  </select>
-  
-  <select id="getTaskReplyList" parameterType="reply" resultType="reply">
-  	SELECT 
-  		A.REPLY_NO, 
-  		A.BOARD_NO, 
-  		A.MEMBER_NO, 
-  		A.REPLY_CONTENT, 
-  		A.ENROLL_DATE,
-  		B.MEMBER_NAME
-  	FROM REPLY A
-  	INNER JOIN MEMBER B ON A.MEMBER_NO=B.MEMBER_NO
-  	WHERE BOARD_NO = #{boardNo}
-  </select>
-  
-  <!-- 업무: 댓글작성 -->
-  <insert id="insertReplyList" parameterType="reply">
-  	INSERT INTO REPLY
-  	(REPLY_NO, BOARD_NO, MEMBER_NO, REPLY_CONTENT, ENROLL_DATE)
-  	VALUES
-  	(SEQ_RNO.NEXTVAL, #{boardNo}, #{memberNo}, #{replyContent}, SYSDATE)
-  </insert>
-  
-  <!-- 업무: 댓글수정 -->
-  <update id="updateReplyList" parameterType="reply">
-  	UPDATE REPLY SET 
-  	REPLY_CONTENT = #{ boardContent },
-  	ENROLL_DATE = SYSDATE
-	WHERE REPLY_NO = #{ replyNo }
-  </update>
-  
-  <!-- 업무: 댓글삭제 -->
-  <delete id="deleteReplyList" parameterType="reply">
-  	DELETE FROM REPLY
-  	WHERE REPLY_NO = #{replyNo}
-  </delete>
-  
-  
+	</select>
+	
+	<!-- 업무 리스트 가져오기 -->
+	<select id="getTaskList" parameterType="project"
+		resultType="task">
+		SELECT A.BOARD_NO
+		,A.BOARD_WRITER
+		,A.PROJECT_NO
+		,A.BOARD_TYPE
+		,A.BOARD_TITLE
+		,A.BOARD_CONTENT
+		,A.ENROLL_DATE
+		,A.TASK_END_DATE
+		,A.TASK_STATUS
+		,A.TASK_HANDLER
+		,A.TASK_MODIFY_DATE
+		,B.MEMBER_NAME AS TASK_HANDLER_NAME
+		FROM BOARD_ALL A
+		INNER JOIN MEMBER B ON A.TASK_HANDLER = B.MEMBER_NO
+		WHERE PROJECT_NO = #{projectNo}
+	</select>
+	
+	<!-- 업무 댓글 가져오기 -->
+	<select id="getTaskReplyList" parameterType="task" resultType="reply">
+		SELECT
+		A.REPLY_NO,
+		A.BOARD_NO,
+		A.MEMBER_NO,
+		A.REPLY_CONTENT,
+		A.ENROLL_DATE,
+		B.MEMBER_NAME
+		FROM REPLY A
+		INNER JOIN MEMBER B ON A.MEMBER_NO=B.MEMBER_NO
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+
+	<!-- 업무: 댓글작성 -->
+	<insert id="insertReplyList" parameterType="reply">
+		INSERT INTO REPLY
+		(REPLY_NO, BOARD_NO, MEMBER_NO, REPLY_CONTENT, ENROLL_DATE)
+		VALUES
+		(SEQ_RNO.NEXTVAL, #{boardNo}, #{memberNo}, #{replyContent}, SYSDATE)
+	</insert>
+
+	<!-- 업무: 댓글삭제 -->
+	<delete id="deleteTaskReplyList" parameterType="reply">
+		DELETE FROM REPLY
+		WHERE REPLY_NO = #{replyNo}
+	</delete>
+
+	<!-- 업무 : 차트 -->
+	<select id="taskStateList" resultType="int" parameterType="string">
+
+	<![CDATA[
+		SELECT COUNT(TASK_STATUS) AS COUNT 
+		FROM BOARD_ALL
+		WHERE PROJECT_NO=#{pno} and TASK_STATUS = #{taskStatus}
+		GROUP BY TASK_STATUS 
+		ORDER BY TASK_STATUS ASC
+		]]>
+	</select>
+
+
 </mapper>

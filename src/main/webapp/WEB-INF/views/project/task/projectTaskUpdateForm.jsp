@@ -1,15 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
-<%
-	
-%>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>업무 상세보기</title>
 <style>
 #content-layout {
 	border: 1px solid lightgray;
@@ -147,8 +142,8 @@ table.section-table {
 
 .project-desc-list>li {
 	margin: 5px 0 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #DDD;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #DDD;
 }
 
 .button-area {
@@ -280,15 +275,15 @@ table.section-table {
 
 /* 파일첨부 x버튼 css */
 button.x-btn {
-    line-height: 20px;
-    vertical-align: middle;
-    margin-left: 10px;
-    background: #EEEE;
-    transition: 0.05s;
+	line-height: 20px;
+	vertical-align: middle;
+	margin-left: 10px;
+	background: #EEEE;
+	transition: 0.05s;
 }
 
 button.x-btn:hover {
-    background: #CCC;
+	background: #CCC;
 }
 </style>
 </head>
@@ -300,20 +295,17 @@ button.x-btn:hover {
 	<div id="container">
 		<div id="sidebar-layout">
 			<div id="main-sidebar">
-				<button type="button" class="new-project">새 프로젝트</button>
-				<br>
-				<br>
 				<div class="sub-menu-title">
 					<i class="fi fi-rr-menu-burger"></i>&nbsp;<b>프로젝트</b><br>
 				</div>
 				<div class="sub-menu">
 					<i class="fi fi-rr-apps"></i>&nbsp;
-					<a href="#" class="">&nbsp;전체</a>
+					<a href="project.main" class="">&nbsp;전체</a>
 					<br>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-check"></i>&nbsp;
-					<a href="project.no-read" class="">&nbsp;읽지않음</a>
+					<i class="fi fi-rr-apps"></i>&nbsp;
+					<a href="notice.pro" class="">&nbsp;공지사항</a>
 					<br>
 				</div>
 				<hr>
@@ -322,13 +314,42 @@ button.x-btn:hover {
 					<a href="" class="">&nbsp;내 일정</a>
 					<br>
 				</div>
-				<a href="project.taskDetail">임시 디테일</a>
-				
 			</div>
 		</div>
 
 		<div id="content-layout">
-			<jsp:include page="../../project/common/projectInfo.jsp" />
+			<div class="project-info">
+				<c:forEach var="p" items="${ list }">
+					<div class="info-left">
+						<div class="project-title-area">
+							<h2 class="project-title">${ p.projectTitle }</h2>
+							&nbsp;&nbsp;&nbsp;
+							<span class="title-label">
+								<c:if test="${p.projectStatus == 0}">
+									<i>완료</i>
+								</c:if>
+								<c:if test="${p.projectStatus == 1}">
+									<i>진행중</i>
+								</c:if>
+							</span>
+							<c:if test="${p.projectStatus == 1}">
+								<button type="button" class="project-end-btn">완료</button>
+							</c:if>
+						</div>
+
+						<ul class="project-desc-list">
+							<li><b>프로젝트 기간</b>${ p.projectStartDate } - ${ p.projectEndDate }</li>
+							<li><b>프로젝트 개요</b>
+								<div class="desc-wrapper">
+									<p>${ p.projectSummary }</p>
+								</div></li>
+							<li><b>프로젝트 매니저(PM)</b> <span>${ p.projectWriter }</span></li>
+							<li><b>프로젝트 인원</b> <span class="add-team">${p.projectMemberStr}</span></li>
+						</ul>
+					</div>
+					<div class="info-right"></div>
+				</c:forEach>
+			</div>
 			<hr>
 			<div class="project-task">
 				<div class="section-title-wrapper">
@@ -355,17 +376,14 @@ button.x-btn:hover {
 								</label>
 							</div></li>
 						<hr>
-						<li><b>담당자</b>
-						<input type="text" name="taskHandler" class="project-write-field">${ t.taskHandler }</li>
+						<li><b>담당자</b> <input type="text" name="taskHandler" class="project-write-field">${ t.taskHandler }</li>
 						<hr>
-						<li><b>요청일자</b>
-						<input type="date" name="enrollDate" class="project-write-date"></li>
+						<li><b>요청일자</b> <input type="date" name="enrollDate" class="project-write-date"></li>
 						<hr>
-						<li><b>마감기한</b>
-						<input type="date" name="endDate" class="project-write-date"></li>
+						<li><b>마감기한</b> <input type="date" name="endDate" class="project-write-date"></li>
 						<hr>
 						<li><b>파일첨부</b>
-						<ul id="fileList" onclick="attachFile()"></ul></li>
+							<ul id="fileList" onclick="attachFile()"></ul></li>
 						<hr>
 						<li><textarea class="project-write-field-content" placeholder="내용을 입력하세요" required></textarea></li>
 						<hr>
@@ -380,41 +398,41 @@ button.x-btn:hover {
 	</div>
 
 	<script>
-	
-	//파일첨부시 개별 삭제
-	$(document).ready(function () {
-		$('body').on('click', '.x-btn', function () {
-			$(this).parent().remove();
-			var fileIndex = $(this).attr('data-file-index');
-			$('#file_' + fileIndex).remove();
-		})
-	});
+		//파일첨부시 개별 삭제
+		$(document).ready(function() {
+			$('body').on('click', '.x-btn', function() {
+				$(this).parent().remove();
+				var fileIndex = $(this).attr('data-file-index');
+				$('#file_' + fileIndex).remove();
+			})
+		});
 
+		//클릭해서 파일 첨부하기
+		function attachFile() {
+			if ($('#fileList').children().length === 3) {
+				alert("첨부파일은 3개까지 가능합니다.");
+				return;
+			}
 
-	//클릭해서 파일 첨부하기
-	function attachFile() {
-		if($('#fileList').children().length === 3) {
-			alert("첨부파일은 3개까지 가능합니다.");
-			return;
+			//"파일"타입 생성하고 리스트에 추가
+			var createFile = document.createElement("input");
+			createFile.id = "file_" + index;
+			createFile.name = 'attachment';
+			createFile.type = "file";
+			createFile.style.display = "none";
+
+			//리스트에 추가 형식
+			createFile.onchange = function() {
+				var html = '<li>'
+						+ this.files[0].name
+						+ '<button type="button" class="x-btn" data-file-index="'+index+'">X</button></li>'
+				$('#fileList').append(html);
+			};
+
+			document.getElementById('taskWriteForm').appendChild(createFile);
+			createFile.click(); //첨부클릭할때마다
+			index++; //data-file-index 값 하나씩 올리기
 		}
-		
-		//"파일"타입 생성하고 리스트에 추가
-		var createFile = document.createElement("input");
-		createFile.id = "file_" + index;
-		createFile.name= 'attachment';
-		createFile.type = "file";
-		createFile.style.display = "none";
-		
-		//리스트에 추가 형식
-		createFile.onchange = function() {
-			var html = '<li>' + this.files[0].name + '<button type="button" class="x-btn" data-file-index="'+index+'">X</button></li>'
-			$('#fileList').append(html);
-		};
-
-		document.getElementById('taskWriteForm').appendChild(createFile);
-		createFile.click(); //첨부클릭할때마다
-		index++; //data-file-index 값 하나씩 올리기
-	}
 
 		function attachFile() {
 			var createFile = document.createElement("input");
@@ -429,7 +447,6 @@ button.x-btn:hover {
 			document.body.appendChild(createFile);
 			createFile.click();
 		}
-
 	</script>
 
 </body>
