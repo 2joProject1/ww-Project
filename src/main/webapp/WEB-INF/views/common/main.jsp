@@ -66,7 +66,7 @@
 					</a>
 
 					<br> <br> <i class="xi-sitemap-o"></i>&nbsp;
-					<a href="officerList">
+					<a href="officerList.li">
 						<b>조직도</b>
 					</a>
 					<br> <br> <i class="xi-document"></i>&nbsp;
