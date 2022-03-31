@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -85,10 +86,10 @@ public class TaskController {
 		}
 
 		if (result > 0) {
-			session.setAttribute("alertMsg", "업무 작성에 성공했습니다");
+			session.setAttribute("alertMsg", "업무가 작성되었습니다");
 			return "redirect:project.taskDetail?boardNo=" + t.getBoardNo();
 		} else {
-			session.setAttribute("errorMsg", "업무 작성에 실패하였습니다. 다시 이용해주세요.");
+			session.setAttribute("errorMsg", "업무가 작성되지 않았습니다. 다시 이용해주세요.");
 			return "common/errorPage";
 		}
 	}
@@ -133,10 +134,10 @@ public class TaskController {
 		}
 
 		if (result > 0) {
-			session.setAttribute("alertMsg", "업무 수정에 성공했습니다");
+			session.setAttribute("alertMsg", "업무 내용이 수정되었습니다");
 			return "redirect:project.taskDetail?boardNo=" + t.getBoardNo();
 		} else {
-			session.setAttribute("errorMsg", "업무 수정에 실패하였습니다. 다시 이용해주세요.");
+			session.setAttribute("errorMsg", "업무 내용이 수정되지 않았습니다. 다시 이용해주세요.");
 			return "common/errorPage";
 		}
 	}
@@ -234,9 +235,31 @@ public class TaskController {
 		r.setFile(loginUser.getFile());
 		return taskService.insertReplyList(r) > 0 ? "success" : "fail";
 	}
-
-	// 업무 : 댓글 수정하기
+	
+	// 업무 : 댓글 가져오기
+	@ResponseBody
+	@RequestMapping(value = "selectReply.task", produces = "application/json; charset=UTF-8")
+	public String getTaskReplyList(Task t) {
+		return new Gson().toJson(taskService.getTaskReplyList(t)).toString();
+	}
 
 	// 업무 : 댓글 삭제하기
-
+	@ResponseBody
+	@RequestMapping(value = "deleteReply.task", produces = "application/json; charset=UTF-8")
+	public String deleteTaskReplyList(Reply r) {
+		return new Gson().toJson(taskService.deleteTaskReplyList(r)).toString();
+	}
+	
+	//프로젝트 업무 차트
+		@ResponseBody
+		@RequestMapping(value="/project/tstatereport")
+		public List<Integer> tstateReport(ModelAndView mv, @RequestParam(name = "pno") String pno) {
+			List<Integer> slist = new ArrayList<Integer>();
+			try {
+				slist=taskService.taskStateList(pno);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return slist;
+		}
 }

@@ -267,7 +267,7 @@
 				</div>
 				<br>
 				<div id="button-area">
-					<button class="btn-custom" type="button" onclick="history.back()" id="draftDocu">목록</button>
+					<button class="btn-custom" type="button" onclick="docuBoxBack()" id="draftDocu">목록</button>
 					<c:if test="${isReceiver}">
 						<button class="btn-custom" type="button" onclick="approveSignoffs(${receiverSignoffs.approvalNo})" id="draftDocuApprove">승인</button>
 						<button class="btn-custom" type="button" onclick="denySignoffs(${receiverSignoffs.approvalNo})" id="draftDocuReject">반려</button>
@@ -279,6 +279,10 @@
 	<script>
 		function changeFormat(target) {
 			window.location.href = 'signoffs.docu?format=' + target.value;
+		}
+		
+		function docuBoxBack(){
+			window.location.href = 'docubox.draft';
 		}
 
 		//승인

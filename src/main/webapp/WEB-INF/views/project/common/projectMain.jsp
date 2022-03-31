@@ -7,40 +7,59 @@
 <title>프로젝트 메인</title>
 
 <style>
-h2.project-title {
-	padding: 20px;
+
+.project-title {
+	padding: 15px;
 	font-weight: 400;
-	margin-left: 20px;
+	font-size: 24pt;
+	margin-left: 10px;
+	margin-bottom : 20px;
+	
 }
 
-ul.project-list {
-	list-style: none;
-	display: inline-block;
-	width: 100%;
-}
-
-ul.project-list>li {
-	width: 21%;
+.project-list {
+	width: 200px;
 	height: 200px;
-	line-height: 200px;
-	background: #edf1f1;
-	margin: 2%;
 	display: inline-block;
-	float: left;
+	background-color: rgb(185, 207, 199);
 	border-radius: 50px;
+	margin-left: 10px;
+	margin-bottom: 5px;
+	text-align: center;
+	text-decoration: none;
+}
+
+.project-list:hover {
 	cursor: pointer;
-	transition: 0.3s;
-}
-
-ul.project-list>li:hover {
 	opacity: 0.7;
-	border: 0.7px solid gray;
+	border: 1px solid gray;
+	text-decoration: none;
+	
+}
+.project-list a:hover{
+	text-decoration: none;
 }
 
-.project-list>li>a {
-	display: inline-block;
+.project-list a {
 	width: 100%;
 	height: 100%;
+	text-decoration: none;
+	display: inline-block;
+	float: left;
+}
+
+#projectTT {
+	margin-top: 35px;
+	margin-left: 5px;
+	font-size: 18pt;
+	color: black;
+	text-decoration: none;
+}
+
+#projectMM {
+	font-size: 15pt;
+	color: gray;
+	text-decoration: none;
 }
 
 /* 프로젝트 사이드바 */
@@ -221,7 +240,7 @@ input[type="search"] {
 					<br>
 					<br>
 				</c:if>
-				
+
 				<div class="sub-menu-title">
 					<i class="fi fi-rr-menu-burger"></i>&nbsp;<b>프로젝트</b><br>
 				</div>
@@ -230,46 +249,35 @@ input[type="search"] {
 					<a href="#" class="">&nbsp;전체</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-check"></i>&nbsp;
-					<a href="project.no-read" class="">&nbsp;읽지않음</a>
+					<i class="fi fi-rr-apps"></i>&nbsp;
+					<a href="" class="">&nbsp;공지사항</a>
+					<br>
 				</div>
 				<hr>
 				<div class="sub-menu">
 					&nbsp;
-					<a href="" class="">&nbsp;내 일정</a>
+					<a href="notice.pro" class="">&nbsp;내 일정</a>
 				</div>
 			</div>
 		</div>
 
 		<div id="content-layout">
-			<h2 class="project-title">내 프로젝트</h2>
-			<input type="hidden" name="projectMemberNo" value="${ loginUser.memberNo }">			
-			<ul class="project-list">
-				<c:forEach var="p" items="${ list }">
-					<li>
-						<a href="project?projectNo=${p.projectNo }"> 
-							<span style="font-size: 13pt">${ p.projectTitle }</span>
-							<span>${ p.projectMemberStr }</span>
-						</a>
-					</li>
-				</c:forEach>
-			</ul>
-
+			<span class="project-title">내 프로젝트</span>
+			<br><br>
+			<input type="hidden" name="projectMemberNo" value="${ loginUser.memberNo }">
+			<c:forEach var="p" items="${ list }">
+				<div class="project-list">
+					<a href="project?projectNo=${p.projectNo }">
+						<div id="projectTT">${ p.projectTitle }</div><br><br>
+						<div id="projectMM">${ p.projectMemberStr }</div>
+					</a>
+				</div>
+			</c:forEach>
 			<hr>
 			<h2 class="project-title">${ loginUser.deptName }</h2>
-			<ul class="project-list">
-				<li><a href="#"></a></li>
-				<li><a href="#"></a></li>
-				<li><a href="#"></a></li>
-				<li><a href="#"></a></li>
-				<li><a href="#"></a></li>
-				<li><a href="#"></a></li>
-				<li><a href="#"></a></li>
-				<li><a href="#"></a></li>
-			</ul>
+			여기는 일단 놔둬봐
 		</div>
 	</div>
-
 	<!-- The Modal -->
 	<div class="modal fade" id="newProject">
 		<div class="modal-dialog modal-lg">
@@ -315,7 +323,11 @@ input[type="search"] {
 								<th colspan="2">프로젝트 인원</th>
 							</tr>
 							<tr>
-								<th colspan="2">&nbsp;&nbsp;<span>총 <span id="projectMemberCount"></span>명</span>
+								<th colspan="2">&nbsp;&nbsp;<span>
+										총
+										<span id="projectMemberCount"></span>
+										명
+									</span>
 									<button type="button" id="projectMemberBtn">아이콘</button>
 							</tr>
 							<tr>
@@ -345,26 +357,28 @@ input[type="search"] {
 		var projectAddedMembers = [];
 		searchedMembers = []; //검색 전 빈 배열
 		searchMember('', '', onMemberDataUpdated); //이름, 부서,
-		
-		$(document).ready(function() {
-			$('#projectMemberBtn').on("click", function() {
-				$('#searchMember').modal('show');
-			})
 
-			$('#searchMember').on('click', '[data-member]', onClickSearchedMember)
+		$(document).ready(
+				function() {
+					$('#projectMemberBtn').on("click", function() {
+						$('#searchMember').modal('show');
+					})
 
-			$('#closeBtn').on('click', function() {
-				$(this).parents('.modal').modal('hide');
-			})
-		});
+					$('#searchMember').on('click', '[data-member]',
+							onClickSearchedMember)
+
+					$('#closeBtn').on('click', function() {
+						$(this).parents('.modal').modal('hide');
+					})
+				});
 
 		function addMemberModal() {
 			var html = $('#searchMemberResult').html();
 			$('#addMemberArea').html(html);
 			$('#searchMemberResult').empty();
 			$('#searchMember').hide();
-			
-			for (var i=0; i<projectAddedMembers.length; i++) {
+
+			for (var i = 0; i < projectAddedMembers.length; i++) {
 				var html = '<input type="hidden" name="projectMemberNo" value="' + projectAddedMembers[i] + '" >';
 				$('#insertProjectForm').append(html);
 			}
@@ -407,9 +421,12 @@ input[type="search"] {
 			//반복문으로 결과값 출력
 			for (var i = 0; i < members.length; i++) {
 				memberTable.innerHTML += '<tr data-member="' + members[i].memberNo + '">'
-						+ '<td><i class="xi-profile xi-3x"></i></td>' + '<td>'
-						+ members[i].memberName + '</td>'
-						+ '<td style="margin:10px">' + members[i].deptName
+						+ '<td><i class="xi-profile xi-3x"></i></td>'
+						+ '<td>'
+						+ members[i].memberName
+						+ '</td>'
+						+ '<td style="margin:10px">'
+						+ members[i].deptName
 						+ '/' + members[i].rankName + '</td>' + '</tr>'
 			}
 		}

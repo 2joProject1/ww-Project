@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>프로젝트 상세보기</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
 <style>
 #content-layout {
 	border: 1px solid lightgray;
@@ -14,7 +15,7 @@
 	margin-left: 30px;
 }
 
-.info-left, .info-right {
+.info-left {
 	float: left;
 	display: inline-block;
 }
@@ -30,10 +31,12 @@
 	width: 700px;
 }
 
-.info-right {
+.task-report-wrap {
 	width: 380px;
 	height: 400px;
 	border: 1px solid #ECECEC;
+	float: right;
+	border: 3px solid navy;
 }
 
 h2.project-title {
@@ -176,8 +179,8 @@ button.btn-write:hover {
 
 .project-desc-list>li {
 	margin: 5px 0 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #DDD;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #DDD;
 }
 
 .add-team {
@@ -217,20 +220,19 @@ button.btn-write:hover {
 	<div id="container">
 		<div id="sidebar-layout">
 			<div id="main-sidebar">
-				<button type="button" class="new-project">새 프로젝트</button>
-				<br>
-				<br>
+
 				<div class="sub-menu-title">
+				<br>
 					<i class="fi fi-rr-menu-burger"></i>&nbsp;<b>프로젝트</b><br>
 				</div>
 				<div class="sub-menu">
 					<i class="fi fi-rr-apps"></i>&nbsp;
-					<a href="#" class="">&nbsp;전체</a>
+					<a href="project.main" class="">&nbsp;전체</a>
 					<br>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-check"></i>&nbsp;
-					<a href="project.no-read" class="">&nbsp;읽지않음</a>
+					<i class="fi fi-rr-apps"></i>&nbsp;
+					<a href="notice.pro" class="">&nbsp;공지사항</a>
 					<br>
 				</div>
 				<hr>
@@ -245,35 +247,39 @@ button.btn-write:hover {
 		<div id="content-layout">
 			<div class="project-info">
 				<c:forEach var="p" items="${ list }">
-				<div class="info-left">
-					<div class="project-title-area">
-						<h2 class="project-title">${ p.projectTitle }</h2>
-						&nbsp;&nbsp;&nbsp;
-						<span class="title-label">
-							<c:if test="${p.projectStatus == 0}">
-								<i>완료</i>
-							</c:if>
+					<div class="info-left">
+						<div class="project-title-area">
+							<h2 class="project-title">${ p.projectTitle }</h2>
+							&nbsp;&nbsp;&nbsp;
+							<span class="title-label">
+								<c:if test="${p.projectStatus == 0}">
+									<i>완료</i>
+								</c:if>
+								<c:if test="${p.projectStatus == 1}">
+									<i>진행중</i>
+								</c:if>
+							</span>
 							<c:if test="${p.projectStatus == 1}">
-								<i>진행중</i>
+								<button type="button" class="project-end-btn">완료</button>
 							</c:if>
-						</span>
-						<c:if test="${p.projectStatus == 1}">
-							<button type="button" class="project-end-btn">완료</button>
-						</c:if>
-					</div>
+						</div>
 
-					<ul class="project-desc-list">
-					<li><b>요청일자</b>${ p.projectStartDate } - ${ p.projectEndDate }</li>
-						<li><b>프로젝트 개요</b>
-							<div class="desc-wrapper">
-								<p>${ p.projectSummary }</p>
-							</div></li>
-						<li><b>프로젝트 매니저(PM)</b> <span>${ p.projectWriter }</span></li>
-						<li><b>프로젝트 인원</b> <span class="add-team">${p.projectMemberStr}</span></li>
-					</ul>
-				</div>
-				<div class="info-right"></div>
+						<ul class="project-desc-list">
+							<li><b>프로젝트 기간</b>${ p.projectStartDate } - ${ p.projectEndDate }</li>
+							<li><b>프로젝트 개요</b>
+								<div class="desc-wrapper">
+									<p>${ p.projectSummary }</p>
+								</div></li>
+							<li><b>프로젝트 매니저(PM)</b> <span>${ p.projectWriter }</span></li>
+							<li><b>프로젝트 인원</b> <span class="add-team">${p.projectMemberStr}</span></li>
+						</ul>
+					</div>
 				</c:forEach>
+				<div class="task-report-wrap">
+					<div class="task-report" width="400px" height="400px">
+						<canvas id="taskChart"></canvas>
+					</div>
+				</div>
 			</div>
 
 			<hr>
@@ -398,76 +404,170 @@ button.btn-write:hover {
 		</div>
 	</div>
 	<script>
-		$(document).ready(function () {
-			//필터별로 나누기(필터1: 내업무/요청한업무, 필터2: 요청, 진행, 완료)
-			$('#taskFilter1, #taskFilter2').on('change', function () {
-				var taskFilter1 = $('#taskFilter1').val();
-				var taskFilter2 = $('#taskFilter2').val();
-				$.ajax({
-					url: 'project.taskList',
-					method: 'GET',
-					data: {
-						taskFilter1: taskFilter1,
-						taskFilter2: taskFilter2,
-						projectNo: '${projectNo}'
-					},
-					beforeSend : function () { //ajax실행하기 전에 게시판 내용 비우기
-						$('#taskListArea').empty();
-					},
-					success : function (data) {
-						console.log(data);
-						for (var i=0; i<data.length; i++) {
-							var html = '<tr data-board-no="'+data[i].boardNo+'">';
-								html += '<td>'+data[i].boardNo+'</td>';
-								html += '	<td>';
-							
-							if (data[i].taskStatus == 1) html += '요청';
-							if (data[i].taskStatus == 2) html += '진행';
-							if (data[i].taskStatus == 3) html += '완료';
-							html += '	</td>';
-							html += '	<td>'+data[i].boardTitle+'</td>';
-							html += '	<td>'+data[i].boardWriter+'</td>';
-							html += '	<td>'+data[i].taskModifyDate+'</td>';
-							html += '</tr>';
-							$('#taskListArea').append(html);
-						}
-					}
-				})
-			})
-		})
-		
+		$(document)
+				.ready(
+						function() {
+							//필터별로 나누기(필터1: 내업무/요청한업무, 필터2: 요청, 진행, 완료)
+							$('#taskFilter1, #taskFilter2')
+									.on(
+											'change',
+											function() {
+												var taskFilter1 = $(
+														'#taskFilter1').val();
+												var taskFilter2 = $(
+														'#taskFilter2').val();
+												$
+														.ajax({
+															url : 'project.taskList',
+															method : 'GET',
+															data : {
+																taskFilter1 : taskFilter1,
+																taskFilter2 : taskFilter2,
+																projectNo : '${projectNo}'
+															},
+															beforeSend : function() { //ajax실행하기 전에 게시판 내용 비우기
+																$(
+																		'#taskListArea')
+																		.empty();
+															},
+															success : function(
+																	data) {
+																console
+																		.log(data);
+																for (var i = 0; i < data.length; i++) {
+																	var html = '<tr data-board-no="'+data[i].boardNo+'">';
+																	html += '<td>'
+																			+ data[i].boardNo
+																			+ '</td>';
+																	html += '	<td>';
+
+																	if (data[i].taskStatus == 1)
+																		html += '요청';
+																	if (data[i].taskStatus == 2)
+																		html += '진행';
+																	if (data[i].taskStatus == 3)
+																		html += '완료';
+																	html += '	</td>';
+																	html += '	<td>'
+																			+ data[i].boardTitle
+																			+ '</td>';
+																	html += '	<td>'
+																			+ data[i].boardWriter
+																			+ '</td>';
+																	html += '	<td>'
+																			+ data[i].taskModifyDate
+																			+ '</td>';
+																	html += '</tr>';
+																	$(
+																			'#taskListArea')
+																			.append(
+																					html);
+																}
+															}
+														})
+											})
+						})
+
 		//프로젝트 상세보기에서 업무작성하기
-		function onClickWrite(){
-			window.location.href = 'project.taskWrite?projectNo=' + '${ projectNo }';
+		function onClickWrite() {
+			window.location.href = 'project.taskWrite?projectNo='
+					+ '${ projectNo }';
 		}
-		
+
 		//프로젝트 상세보기에서 업무 상세로 이동
 		$(function() {
-			$('body').on("click", '#taskTable tr', function() {
-				location.href = 'project.taskDetail?boardNo=' + $(this).attr('data-board-no');
-			})
+			$('body').on(
+					"click",
+					'#taskTable tr',
+					function() {
+						location.href = 'project.taskDetail?boardNo='
+								+ $(this).attr('data-board-no');
+					})
 		})
-		
+
 		//프로젝트 진행중, 완료 여부
-		$('.project-end-btn').on("click", function(){
+		$('.project-end-btn').on("click", function() {
 			var is = confirm("프로젝트를 완료하시겠습니까?");
-			if(is){
+			if (is) {
 				$.ajax({
-					url: "project.end",
-					data: { projectNo : '${ projectNo }' },				
-					type: "post",
-					success: function(data){
+					url : "project.end",
+					data : {
+						projectNo : '${ projectNo }'
+					},
+					type : "post",
+					success : function(data) {
 						alert("프로젝트가 완료되었습니다");
-						$('.project-end-btn').css('display','none');
-						$('.title-label').html("완료");
+						$('.project-end-btn').css('display', 'none');
+						$('.title-label').html("`완료");
 						return "project/common/projectDetailView";
-					}, error: function(){
+					},
+					error : function() {
 						alert("다시 시도해주세요");
 						return "common/errorPage";
 					}
 				})
 			}
 		})
+
+		//차트
+		$(function() {
+			var ctx = document.getElementById('taskChart').getContext('2d');
+			var pno = $
+			{
+				projectNo
+			}
+			;
+			report();
+			function report() {
+				$
+						.ajax({
+							url : "${pageContext.request.contextPath}/project/tstatereport",
+							data : {
+								pno : '${ projectNo }'
+							},
+							dataType : "json",
+							success : function(data) {
+								console.log("성공 들어옴");
+								if (data != null || data != '') {
+									createChart(data[0], data[1], data[2]);
+									console.log(data + "데이터 null이 아닐때 값 ")
+									return false;
+								}
+								console.log(data + "데이터데이터");
+							},
+							error : function() {
+								console.log("update 실패");
+							}
+						});
+			}
+			;
+
+			function createChart(s1, s2, s3) {
+				if (s1 == null || s1 == '') {
+
+					console.log("데이터 s1" + s1);
+				}
+				var myChart = new Chart(ctx, {
+					type : 'doughnut',
+					data : {
+						labels : [ '요청', '진행', '완료', ],
+						datasets : [ {
+							label : 'Score',
+							data : [ s1, s2, s3 ],
+							backgroundColor : [ '#F27781', '#f17a19',
+									'#50b766', ],
+						} ]
+					},
+					options : {
+						legend : {
+							display : true,
+							position : 'right',
+						}
+					}
+				});
+			}
+			;
+		});
 	</script>
 
 </body>

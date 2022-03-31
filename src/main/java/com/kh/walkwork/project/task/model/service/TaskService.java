@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.gson.JsonElement;
 import com.kh.walkwork.community.model.vo.Reply;
 import com.kh.walkwork.project.common.model.vo.Project;
 import com.kh.walkwork.project.task.model.dao.TaskDao;
@@ -49,6 +50,17 @@ public class TaskService {
 	public int updateTask(Task t) {
 		return taskDao.updateTask(sqlSession, t);
 	}
+	
+	//업무 : 차트
+	public List<Integer> taskStateList(String pno) throws Exception {
+		return taskDao.taskStateList(sqlSession, pno);
+	}
+	
+	//업무 : 댓글 삭제하기
+	public int deleteTaskReplyList(Reply r) {
+		return taskDao.deleteTaskReplyList(sqlSession, r);
+	}
+	
 
 	
 	

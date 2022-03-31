@@ -5,9 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
+<title>업무작성하기</title>
 
+<style>
 .project-write-field {
 	width: 300px;
 	height: 40px;
@@ -153,7 +153,7 @@ button.x-btn:hover {
 	margin-left: 30px;
 }
 
-.info-left, .info-right {
+.info-left, .task-report-wrap {
 	float: left;
 	display: inline-block;
 }
@@ -171,7 +171,7 @@ button.x-btn:hover {
 	width: 700px;
 }
 
-.info-right {
+.task-report-wrap {
 	width: calc(100% - 700px);
 	height: 400px;
 	border: 1px solid #999;
@@ -311,6 +311,9 @@ ul.project-desc-list {
 </style>
 </head>
 <body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" 
+    	integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" 
+    	crossorigin="anonymous"></script>
 	<div id="header-layout">
 		<jsp:include page="../../common/header.jsp" />
 
@@ -318,19 +321,18 @@ ul.project-desc-list {
 	<div id="container">
 		<div id="sidebar-layout">
 			<div id="main-sidebar">
-				<button type="button" class="new-project">새 프로젝트</button>
-				<br> <br>
 				<div class="sub-menu-title">
+				<br>
 					<i class="fi fi-rr-menu-burger"></i>&nbsp;<b>프로젝트</b><br>
 				</div>
 				<div class="sub-menu">
 					<i class="fi fi-rr-apps"></i>&nbsp;
-					<a href="#" class="">&nbsp;전체</a>
+					<a href="project.main" class="">&nbsp;전체</a>
 					<br>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-check"></i>&nbsp;
-					<a href="project.no-read" class="">&nbsp;읽지않음</a>
+					<i class="fi fi-rr-apps"></i>&nbsp;
+					<a href="notice.pro" class="">&nbsp;공지사항</a>
 					<br>
 				</div>
 				<hr>
@@ -339,8 +341,6 @@ ul.project-desc-list {
 					<a href="" class="">&nbsp;내 일정</a>
 					<br>
 				</div>
-				<a href="project.taskDetail">임시 디테일</a>
-
 			</div>
 		</div>
 
@@ -374,10 +374,74 @@ ul.project-desc-list {
 						<li><b>프로젝트 인원</b> <span class="add-team">${p.projectMemberStr}</span></li>
 					</ul>
 				</div>
-				<div class="info-right"></div>
 				</c:forEach>
+				<div class="task-report-wrap">
+					<div class="task-report" width="400px" height="400px">
+						<canvas id="taskChart"></canvas>
+					</div>
+				</div>
 			</div>
 			<hr>
+	<script>
+	$(function () {
+		// 업무리포트 그래프 뿌리기 
+		var ctx = document.getElementById('taskChart').getContext('2d');
+		var pno = ${ pno };
+		report();
+		function report() {
+			$.ajax({
+				url: "${pageContext.request.contextPath}/project/tstatereport",
+				data: {
+					pno: pno
+				},
+				dataType: "json",
+				success: function (data) {
+					console.log("성공 들어옴");
+					if(data!=null||data!=''){
+						createChart(data[0], data[1], data[2], data[3]);
+						console.log(data+"데이터 null이 아닐때 값 ")
+						return false;
+					}else{
+						$(".task-report-wrap").css("display","none");
+					}
+					console.log(data+"데이터데이터");
+				},
+				error: function () {
+					console.log("update 실패");
+				}
+			});
+		};
+		function createChart(s1, s2, s3) {
+			if(s1==null||s1==''){
+				$(".task-report-wrap").css("display","none");
+				console.log("데이터 s1"+s1);
+			}
+			var myChart = new Chart(ctx, {
+				type: 'doughnut',
+				data: {
+					labels: ['요청', '진행', '완료',],
+					datasets: [{
+						label: 'Score',
+						data: [s1, s2, s3, s4],
+						backgroundColor: [
+							'#F27781',
+							'#f17a19',
+							'#50b766',
+							'#4aaefb'
+						],
+					}]
+				},
+				options: {
+
+					legend: {
+						display: true,
+						position: 'right',
+					}
+				}
+			});
+		};
+		});
+</script>
 			<div class="project-task">
 				<div class="section-title-wrapper">
 					<h3 class="section-title">업무작성하기</h3>
