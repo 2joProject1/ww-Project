@@ -96,7 +96,7 @@
 								</span>
 								<c:if test="${c.fileName != null}">
 									<span class="cm_ends"> <img alt="img"
-										src="/filepath/${c.fileName}"
+										src="resources/coFile/${c.fileName}"
 										onerror="this.style.display='none';" width="100px;"  class="cm_imgs">
 									</span>
 								</c:if>

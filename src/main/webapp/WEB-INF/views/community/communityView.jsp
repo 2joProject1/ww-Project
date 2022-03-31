@@ -63,7 +63,7 @@
 						<div class="col topCol">
 							<div style="text-align: center;"
 								onclick="location.href='detail.co?pageNo=${top.boardNo}'">
-								<img alt="top5" src="/filepath/${top.fileName}" width="150px;"
+								<img alt="top5" src="resources/coFile/${top.fileName}" width="150px;"
 									onerror="this.src='resources/images/onerror.png'">
 								<p>${top.boardTitle}</p>
 							</div>
@@ -110,7 +110,7 @@
 								</span>
 								<c:if test="${c.fileName != null}">
 									 <img alt="img" class="cm_imgs"
-										src="/filepath/${c.fileName}"
+										src="resources/coFile/${c.fileName}"
 										onerror="this.style.display='none';" width="100px;">
 									
 								</c:if>

@@ -63,7 +63,7 @@ public class CommunityController {
 	
 	// 실제로 modify시키는거
 	@RequestMapping("modify.co")
-	public String modifyCommunity(Attachment a, Community c, Model model) {
+	public String modifyCommunity(HttpSession session, Attachment a, Community c, Model model) {
 		String[] nameArr = a.getFileName().split(",");
 //		String[] memberArr = a.getMemberNo().split(",");
 		String[] originArr = a.getFileOriginName().split(",");
@@ -71,8 +71,8 @@ public class CommunityController {
 		String[] sizeArr = a.getFileSize().split(",");
 
 		int num = communityService.updateCommunity(c); 
-		System.out.println("modify result >> "+num);
-		
+		Member userInfo = (Member)session.getAttribute("loginUser");
+		String memberNo = userInfo.getMemberNo();
 	
 		a.setBoardNo(c.getBoardNo());
 		  
@@ -82,7 +82,7 @@ public class CommunityController {
 				Attachment attachment = new Attachment();
 				attachment.setFileName(nameArr[i].trim());
 				attachment.setBoardNo(c.getBoardNo());
-				attachment.setMemberNo("임시");
+				attachment.setMemberNo(memberNo);
 				attachment.setFileOriginName(originArr[i].trim());
 				attachment.setFilePath(pathArr[i].trim());
 				attachment.setFileSize(sizeArr[i].trim());
@@ -178,13 +178,11 @@ public class CommunityController {
 		String[] pathArr = a.getFilePath().split(",");
 		String[] sizeArr = a.getFileSize().split(",");
 		
-		Member m = new Member();
 		Member userInfo = (Member)session.getAttribute("loginUser");
 		String memberNo = userInfo.getMemberNo();
 
 		
-		c.setBoardWriter(memberNo);  //임시 작성자 데이터 ! 나중에
-//			삭제 후 실 member 데이터 사용 
+		c.setBoardWriter(memberNo); 
 		
 		int num = communityService.insertCommunity(c); 
 		int lastBno = communityService.lastBno();
@@ -196,7 +194,7 @@ public class CommunityController {
 				Attachment attachment = new Attachment();
 				attachment.setFileName(nameArr[i].trim());
 				attachment.setBoardNo(lastBno);
-				attachment.setMemberNo("임시");
+				attachment.setMemberNo(memberNo);
 				attachment.setFileOriginName(originArr[i].trim());
 				attachment.setFilePath(pathArr[i].trim());
 				attachment.setFileSize(sizeArr[i].trim());
@@ -209,22 +207,21 @@ public class CommunityController {
 		return "redirect:list.co";
 	}
 	
-	// 파일 삽입하기
+	// 파일 삽입하기 
 	@ResponseBody
 	@RequestMapping("insert.ac")
 	public List<Attachment> insertAttachment(HttpServletRequest req, HttpSession session,@RequestPart(value="file1", required=false) List<MultipartFile> multi ,Attachment a, Model model)  {
-		String path = "C:\\walkworkFiles";
+//		String path = "C:\\walkworkFiles";
 //			ServletContext context = req.getSession().getServletContext();
-//			ClassPathResource cpr = new ClassPathResource("coFile/asdf.png");
-//			InputStream is = cpr.getInputStream();
-//			File file1 = File.createTempFile("asdf", ".png");
+//			ClassPathResource cpr = new ClassPathResource("coFile/20222163452665.png");
 //			try {
+//				InputStream is = cpr.getInputStream();
+//				File file1 = File.createTempFile("asdf", ".png");
 //				FileUtils.copyInputStreamToFile(is, file1);
 //			} catch (Exception e) {
-//				System.out.println("dd");
 //				e.printStackTrace();
 //			}		
-//			String path = session.getServletContext().getRealPath("/resources/coFile/");
+			String path = session.getServletContext().getRealPath("/resources/coFile/");
 		
 		List<Attachment> result = new ArrayList<Attachment>();
 		try {
@@ -255,11 +252,10 @@ public class CommunityController {
 			}
 			
 		} catch (Exception e) {
+			System.err.println("그림 없을때 catch");
 			e.printStackTrace();
-			System.out.println("그림 없을때 ㅇㅇ");
 		} 
 		return result;
-		
 	}
 	
 	// 파일 삭제
@@ -267,12 +263,11 @@ public class CommunityController {
 	@RequestMapping("delete.ac")
 	public String deleteAttachment(HttpServletRequest req, HttpSession session, Attachment a, Model model)  {
 		String result = "";
-		if(a.getFileName() != null) {
-			System.out.println("del" + a.getFileName());
+		if(a.getFileName().length() > 2) {
+			System.out.println("del" + a.getFileName().length());
 			String[] delArr = a.getFileName().split(",");
 			int num = communityService.deleteAttachment(delArr);
 		}
-		
 		
 		return result;
 	}
@@ -281,7 +276,8 @@ public class CommunityController {
 	@ResponseBody
 	@RequestMapping("modify.ac")
 	public List<Attachment> modifyAttachment(HttpServletRequest req, HttpSession session,@RequestPart(value="file1", required=false) List<MultipartFile> multi,@RequestParam(value = "bno") int bno, Model model)  {
-		String path = "C:\\walkworkFiles";
+//		String path = "C:\\walkworkFiles"; 
+		String path = session.getServletContext().getRealPath("/resources/coFile/");
 		List<Attachment> result = new ArrayList<Attachment>();
 		
 		try {
@@ -317,8 +313,8 @@ public class CommunityController {
 			
 			
 		} catch (Exception e) {
+			System.err.println("그림 없을때 catch");
 			e.printStackTrace();
-			System.out.println("그림 없을때 ㅇㅇ");
 		} 
 		return result;
 	}

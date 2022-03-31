@@ -72,7 +72,7 @@
 		<div class="row dt_margin">
 			<c:forEach var="a" items="${attachment }">
 				<div class="col-4 imgCol">
-					<img alt="이미지" src="/filepath/${a.fileName }" class="fileImg" width="100%">
+					<img alt="이미지" src="resources/coFile/${a.fileName }" class="fileImg" width="100%">
 				</div>
 			</c:forEach>
 		</div>

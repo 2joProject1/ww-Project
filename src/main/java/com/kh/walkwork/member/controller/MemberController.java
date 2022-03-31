@@ -359,7 +359,10 @@ public class MemberController {
 	public String addProfileImg(HttpSession session,
 			@RequestPart(value = "file1", required = false) MultipartFile file) {
 		String result = "";
-		String path = "C:\\walkworkFiles";
+//		String path = "C:\\walkworkFiles";
+		String path = session.getServletContext().getRealPath("/resources/coFile/");
+		
+		
 
 		String uploadpath = path;
 		String originFileName = file.getOriginalFilename();
