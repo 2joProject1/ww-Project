@@ -48,6 +48,7 @@
 		<mapper resource="/mappers/commute-mapper.xml" />
 		<mapper resource="/mappers/todo-mapper.xml" />
 		<mapper resource="/mappers/schedule-mapper.xml" />
+		<mapper resource="/mappers/ogChart-mapper.xml" />
 	</mappers>
 		<!-- 유의사항 : 미리 등록해두려면 해당 mapper파일이 진짜 존재하고 있는 상태여야함(namespace까지) -->
 

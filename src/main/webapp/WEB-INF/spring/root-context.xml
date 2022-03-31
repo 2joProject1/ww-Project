@@ -4,84 +4,89 @@
 	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
-	
+
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	
-	<!-- 
-		*root-context.xml
-		서버구동과 동시에 web.xml파일을 거쳐서 바로 로딩되는 문서 == preloading
-		=> 서버구동과 동시에 바로 셋팅(bean으로 등록)해야하는 내용들을 작성하면 됨
-			주로 db 연결정보, 트랜잭션처리, 내외부 모듈 연결 등등..
-			내가안만든건(라이브러리나 원래스프링에있는 것들)은 root-context에 등록
-			근데 암호관련은 따로 빼두는게 좋아서 따로 파일을 만들어서 빈등록함
-	 -->	
-	 
-	 <!-- DB연결 설정 3단계 -->
-	 <!-- 
-	 	1단계. DB연결을 위한 도구를 설정
-	  -->
-	
 
-	<bean class="org.apache.commons.dbcp.BasicDataSource" id="dataSource" destroy-method="close">	 
-	 	<!-- 어느 DB에 접속할건지 지정해주어야한다 -->
-	 	<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
-	 	<property name="url" value="jdbc:oracle:thin:@localhost:1521:xe" />
-	 	<property name="username" value="WALKWORK" />
-	 	<property name="password" value="WALKWORK" />
-	 </bean>
-	 <!-- 객체가 필요할때마다 내부적으로 실행되는 코드
-	 	BasicDateSource dataSource = new BasicDataSource();
-	 	dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-	 	dataSource.setUsername("SPRING");
-	 	dataSource.setPassword("SPRING");  -->
-	 	
-	 	<!-- 2단계. MyBtis Spring에서 제공하는 sql명령어 실행을 위한 도구 등록 -->
-	 	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="sqlSessionFactory">
-		 	<!-- MyBatis 설정파일의 위치를 설정(src/main/resources)하여 설정값들을 데려오겠다(classpath: 가 resources 폴더를 의미함 -->
-		 	<property name="configLocation" value="classpath:mybatis-config.xml" />
-		 	<!-- 어떤 DB에 연결할건지 연결을 위한 도구를 참조 설정 -->
-		 	<property name="dataSource" ref="dataSource" />
-		 </bean>
-		 <!-- 객체가 필요할때마다 내부적으로 이 코드가 실행됨 
-		 SqlSessionFactoryBean sqlSessionFactory = new SqlSessionFactoryBean();
-		 sqlSessionFactory.setConfigLocation("classpath:mybatis-config.xml");
-		 sqlSessionFactory.setDataSource(dataSource);
-		 -->
-		 <!-- 3단계. SQL구문 실행을 위한 템플릿을 제공하는 도구 등록-->
-		 <bean class="org.mybatis.spring.SqlSessionTemplate" id="sqlSession">
-		 	<!-- SQL명령어 실행을 위한 도구에 대한 참조설정 -->
-		 	<constructor-arg ref="sqlSessionFactory" />
-		 </bean>
-		 
-		 <!-- 객체가 필요할 때마다 내부적으로 이 코드가 실행됨 
-		 	SqlSessionTempalte sqlSession = new SqlSessionTemplate(sqlSessionFactory); -->
-		 	
-		 <!-- 
-		 	property : setter 주입
-		 	construtor-arg : 생성자주입
-		 	
-		  -->	
-		  <!-- 파일 업로드 관련 빈 등록 : 파일 용량 무제한  -->
-		  <bean class="org.springframework.web.multipart.commons.CommonsMultipartResolver" id="multipartResolver">
-		  		<property name="maxUploadSize" value="100000000" />
-		  		<property name="maxInMemorySize" value="100000000" />
-		  </bean>
+	<!-- *root-context.xml 서버구동과 동시에 web.xml파일을 거쳐서 바로 로딩되는 문서 == preloading 
+		=> 서버구동과 동시에 바로 셋팅(bean으로 등록)해야하는 내용들을 작성하면 됨 주로 db 연결정보, 트랜잭션처리, 내외부 모듈 
+		연결 등등.. 내가안만든건(라이브러리나 원래스프링에있는 것들)은 root-context에 등록 근데 암호관련은 따로 빼두는게 좋아서 
+		따로 파일을 만들어서 빈등록함 -->
 
-		<!-- 메일 전송 관련 -->
-		<bean id="sender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-			<property name="host" value="smtp.gmail.com" />
-			<property name="port" value="587" />
-			<property name="username" value="2jo2jo2jo2jo2jo@gmail.com" />
-			<property name="password" value="2jo2jo2jo2jo2jo!*" />
-			
-			<property name="javaMailProperties">
-				<props>
-					<prop key="mail.smtp.auth">true</prop>
-					<prop key="mail.smtp.starttls.enable">true</prop>
-					<prop key="mail.transport.protocol">smtp</prop>
-					<prop key="mail.debug">true</prop>
-				</props>
-	
-			</property>
-		</bean>
+	<!-- DB연결 설정 3단계 -->
+	<!-- 1단계. DB연결을 위한 도구를 설정 -->
+
+
+	<bean class="org.apache.commons.dbcp.BasicDataSource"
+		id="dataSource" destroy-method="close">
+		<!-- 어느 DB에 접속할건지 지정해주어야한다 -->
+		<property name="driverClassName"
+			value="oracle.jdbc.driver.OracleDriver" />
+		<property name="url"
+			value="jdbc:oracle:thin:@localhost:1521:xe" />
+		<property name="username" value="WALKWORK" />
+		<property name="password" value="WALKWORK" />
+	</bean>
+	<!-- 객체가 필요할때마다 내부적으로 실행되는 코드 BasicDateSource dataSource = new BasicDataSource(); 
+		dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver"); dataSource.setUsername("SPRING"); 
+		dataSource.setPassword("SPRING"); -->
+
+	<!-- 2단계. MyBtis Spring에서 제공하는 sql명령어 실행을 위한 도구 등록 -->
+	<bean class="org.mybatis.spring.SqlSessionFactoryBean"
+		id="sqlSessionFactory">
+		<!-- MyBatis 설정파일의 위치를 설정(src/main/resources)하여 설정값들을 데려오겠다(classpath: 
+			가 resources 폴더를 의미함 -->
+		<property name="configLocation"
+			value="classpath:mybatis-config.xml" />
+		<!-- 어떤 DB에 연결할건지 연결을 위한 도구를 참조 설정 -->
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- 객체가 필요할때마다 내부적으로 이 코드가 실행됨 SqlSessionFactoryBean sqlSessionFactory 
+		= new SqlSessionFactoryBean(); sqlSessionFactory.setConfigLocation("classpath:mybatis-config.xml"); 
+		sqlSessionFactory.setDataSource(dataSource); -->
+	<!-- 3단계. SQL구문 실행을 위한 템플릿을 제공하는 도구 등록 -->
+	<bean class="org.mybatis.spring.SqlSessionTemplate"
+		id="sqlSession">
+		<!-- SQL명령어 실행을 위한 도구에 대한 참조설정 -->
+		<constructor-arg ref="sqlSessionFactory" />
+	</bean>
+
+	<!-- 객체가 필요할 때마다 내부적으로 이 코드가 실행됨 SqlSessionTempalte sqlSession = new SqlSessionTemplate(sqlSessionFactory); -->
+
+	<!-- property : setter 주입 construtor-arg : 생성자주입 -->
+	<!-- 파일 업로드 관련 빈 등록 : 파일 용량 무제한 -->
+	<bean
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		id="multipartResolver">
+		<property name="maxUploadSize" value="100000000" />
+		<property name="maxInMemorySize" value="100000000" />
+	</bean>
+
+	<!-- 메일 전송 관련 -->
+	<bean id="sender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="2jo2jo2jo2jo2jo@gmail.com" />
+		<property name="password" value="2jo2jo2jo2jo2jo!*" />
+
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property>
+	</bean>
+	<bean id="uploadPath" class="java.lang.String">
+		<constructor-arg
+			value="C:\Users\JeongUk\Documents\ww-Project\src\main\webapp\resources\uploadFiles\">
+		</constructor-arg>
+	</bean>
+
+	<bean id="uploadPath2" class="java.lang.String">
+		<constructor-arg
+			value="C:\Users\JeongUk\Documents\ww-Project\src\main\webapp\resources\images\">
+		</constructor-arg>
+	</bean>
 </beans>
