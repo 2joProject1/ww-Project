@@ -99,30 +99,6 @@ public class MemberServiceImpl implements MemberService {
 	public Member selectMemberInformation(Member m) {
 		return memberDao.selectMemberInformation(sqlSession, m);
 	}
-
 	
 	
-	//---------------------조직도 ---------------------------
-	
-	public int listCountFirst(String cno) {
-		return memberDao.listCountFirst(cno);
-	}
-	public List<Member> selectOgFirst(int startPage, int limit, String cno) { 
-		return memberDao.selectOgFirst(startPage, limit, cno);
-	}
-		public int listCount(HashMap<String, String> paramMap) {
-		return memberDao.listCount(paramMap);
-	}
-	public List<Member> selectOgUser(int startPage, int limit, HashMap<String, String> paramMap) {
-		return memberDao.selectOrgani(startPage, limit, paramMap);
-	}
-	public int updateDept(Member m) {  
-		return memberDao.updateDept(m);
-	}
-	public List<Member> deleteOgUser(HashMap<String, String> paramMap1) {
-	List<Member> deleteList = memberDao.deleteOrgani(paramMap1);
-		return deleteList;
-		
-	}
-
 }

@@ -9,7 +9,6 @@
 </head>
 <body>
 	
-
 	<c:choose>
 		<c:when test="${ loginUser ne null }">
 			<jsp:forward page="WEB-INF/views/common/main.jsp" />

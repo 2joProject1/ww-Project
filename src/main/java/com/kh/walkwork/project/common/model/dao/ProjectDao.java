@@ -5,7 +5,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.kh.walkwork.member.model.vo.Dept;
+import com.kh.walkwork.dept.model.vo.Dept;
 import com.kh.walkwork.member.model.vo.Member;
 import com.kh.walkwork.project.common.model.vo.Project;
 

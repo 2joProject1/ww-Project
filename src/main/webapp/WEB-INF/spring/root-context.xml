@@ -84,4 +84,16 @@
 	
 			</property>
 		</bean>
+		
+		
+		
+			<bean id="uploadPath" class="java.lang.String">
+				<constructor-arg value="C:\Users\JeongUk\Documents\ww-Project\src\main\webapp\resources\uploadFiles\">
+				</constructor-arg>
+			</bean>
+
+			<bean id="uploadPath2" class="java.lang.String">
+				<constructor-arg value="C:\Users\JeongUk\Documents\ww-Project\src\main\webapp\resources\images\">
+				</constructor-arg>
+			</bean>
 </beans>

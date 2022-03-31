@@ -30,15 +30,7 @@ public class Member {
 	private String tmpPwd;
 	private Date enrollDate;
 	private String resignDate;
-
+	private String memberNo_old;
 	
-	public Member(String memberNo,  String memberName, String memberPwd, String email,String rankNo, String status) {
-		super();
-		this.memberNo = memberNo;
-		this.memberName = memberName;
-		this.memberPwd = memberPwd;
-		this.email = email;
-		this.rankNo = rankNo;
-		this.status = status;
-	}
+
 }

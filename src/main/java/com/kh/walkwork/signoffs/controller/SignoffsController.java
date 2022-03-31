@@ -25,7 +25,7 @@ import com.kh.walkwork.common.model.vo.Attachment;
 import com.kh.walkwork.common.model.vo.PageInfo;
 import com.kh.walkwork.common.template.Pagination;
 import com.kh.walkwork.member.model.service.MemberService;
-import com.kh.walkwork.member.model.vo.Dept;
+import com.kh.walkwork.dept.model.vo.Dept;
 import com.kh.walkwork.member.model.vo.Member;
 import com.kh.walkwork.signoffs.model.service.DocumentService;
 import com.kh.walkwork.signoffs.model.service.SignoffsService;

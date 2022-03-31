@@ -21,7 +21,7 @@
 		<typeAlias type="com.kh.walkwork.signoffs.model.vo.SignoffsDept" alias="signoffsDept" />
 		<typeAlias type="com.kh.walkwork.signoffs.model.vo.Document" alias="document" />
 		<typeAlias type="com.kh.walkwork.project.common.model.vo.Project" alias="project" />
-		<typeAlias type="com.kh.walkwork.member.model.vo.Dept" alias="dept" />
+		<typeAlias type="com.kh.walkwork.dept.model.vo.Dept" alias="dept" />
 		<typeAlias type="com.kh.walkwork.project.task.model.vo.Task" alias="task" />
 		<typeAlias type="com.kh.walkwork.notice.model.vo.Notice" alias="notice" />
 		<typeAlias type="com.kh.walkwork.community.model.vo.BoardGood" alias="boardgood"/>
@@ -43,6 +43,7 @@
 		<mapper resource="/mappers/task-mapper.xml" />
 		<mapper resource="/mappers/notice-mapper.xml" />
 		<mapper resource="/mappers/commute-mapper.xml" />
+		<mapper resource="/mappers/ogChart-mapper.xml" />
 	</mappers>
 		<!-- 유의사항 : 미리 등록해두려면 해당 mapper파일이 진짜 존재하고 있는 상태여야함(namespace까지) -->
 

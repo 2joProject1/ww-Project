@@ -17,14 +17,14 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.kh.walkwork.dept.model.service.DeptService;
-import com.kh.walkwork.dept.model.vo.Dept;
+//import com.kh.walkwork.dept.model.vo.Dept;
 import com.kh.walkwork.member.model.dao.MemberDao;
 import com.kh.walkwork.member.model.service.MemberService;
 import com.kh.walkwork.member.model.vo.Member;
 
 @Controller
 public class DeptController {
-
+/*
 	@Autowired
 	private DeptService deptServ;
 	
@@ -35,8 +35,13 @@ public class DeptController {
 	private MemberDao MemberDao;
 	
 	
-	
 	public static final int LIMIT = 10;
+	
+	@RequestMapping("deptlist")
+	public String emailForm() {
+		return "ogChart/ogChartListView";
+	}
+	
 	
 	//부서
 	@SuppressWarnings("unused")
@@ -47,40 +52,40 @@ public class DeptController {
 			@RequestParam(name = "deptName", required = false) String deptName,
 			Authentication authentication, ModelAndView mv) {
 			
-//			CustomMemberDetails userdetail = (CustomMemberDetails) authentication.getPrincipal();
-//			String MemberNo=userdetail.getMemberNo();
+			CustomMemberDetails userdetail = (CustomMemberDetails) authentication.getPrincipal();
+			String deptNo=userdetail.getDeptNo();
 			
 			
 		try {
 			//String cname = companyDao.cnameOne(cno);
 			HashMap<String, String> paramMap = new HashMap<String, String>();
-//			paramMap.put("MemberNo", MemberNo);
+			paramMap.put("deptNo", deptNo);
 			paramMap.put("deptName", deptName);
 			//
 			int currentPage = page;
 //			부서 출력
-//			int deptlistCount1 = deptServ.listCount(MemberNo);
+			int deptlistCount1 = deptServ.listCount(deptNo);
 			int deptlistCount2 = deptServ.searchlistCount();
 //			부서 사원 출력
-//			int listCount1 = MemberService.listCountFirst(MemberNo);
+			int listCount1 = MemberService.listCountFirst(deptNo);
 			int listCount2 = MemberService.listCount(paramMap);
 			
-//			int maxPage1 = (int) ((double) listCount1 / LIMIT + 0.9);
+			int maxPage1 = (int) ((double) listCount1 / LIMIT + 0.9);
 			int maxPage2 = (int) ((double) listCount2 / LIMIT + 0.9);
 			
-//			mv.addObject("deptlistCount", deptlistCount1);
-//			mv.addObject("selectDept", deptServ.selectDept(MemberNo));
+			mv.addObject("deptlistCount", deptlistCount1);
+			mv.addObject("selectDept", deptServ.selectDept(deptNo));
 			
 			mv.setViewName("/ogChart/ogChartListView");
 
 //			미분류그룹 default
 			if (deptName == null) {
-//				mv.addObject("MemberlistCount", listCount1);
+				mv.addObject("MemberlistCount", listCount1);
 				mv.addObject("currentPage", currentPage);
-//				mv.addObject("maxPage", maxPage1);
+				mv.addObject("maxPage", maxPage1);
 				mv.addObject("deptName", "미분류그룹");
 				//mv.addObject("cname", cname);
-//				mv.addObject("list", MemberService.selectOgFirst(currentPage, LIMIT, MemberNo));
+				mv.addObject("list", MemberService.selectOgFirst(currentPage, LIMIT, deptNo));
 				mv.setViewName("/ogChart/ogChartListView");
 			}
 			else if (deptName != null){
@@ -101,9 +106,10 @@ public class DeptController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			mv.addObject("msg", e.getMessage());
-			mv.setViewName("errorPage");
+			//mv.setViewName("errorPage");
 		}
 		return mv;
+		
 	}
 	
 	/*

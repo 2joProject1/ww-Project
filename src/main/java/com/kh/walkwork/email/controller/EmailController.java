@@ -2,6 +2,7 @@ package com.kh.walkwork.email.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -59,13 +60,14 @@ public class EmailController {
 	    return "redirect:/";
 	  }
 
-	/*
+	
 	@RequestMapping(value = "enrollajax", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> enrollStudent(MultipartHttpServletRequest multi) {
+		Map<String, Object> retVal = new HashMap<String, Object>();
 		
 		String root = multi.getSession().getServletContext().getRealPath("/");
-		String path = root + "resources/image";
+		String path = root + "resources/uploadFiles/";
 		
 		File dir = new File(path);
 		if(!dir.isDirectory()) {
@@ -81,7 +83,7 @@ public class EmailController {
 			
 			String fileName_original = mFile.getOriginalFilename();
 			
-			String file_save_path = "/src/main/webapp/resources/image/";
+			String file_save_path = "Users/JeongUk/Documents/ww-Project/src/main/webapp/resources/uploadFiles/";
 			
 			try {
 				mFile.transferTo(new File(file_save_path+fileName_original));
@@ -91,9 +93,6 @@ public class EmailController {
 			}
 			
 		}
-		return null;
-		
+		return retVal;
 	}
-    */
-	
 }

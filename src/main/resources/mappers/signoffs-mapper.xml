@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="signoffsMapper">
 
-	<!-- 결재할 데이터를 만들 때 -->
+	 
 	<insert id="insertSignoffs" parameterType="signoffs">
 		INSERT INTO
 			SIGNOFFS
@@ -31,7 +31,6 @@
 				)	
 	</insert>
 
-	<!-- 결재할 데이터를 만들 때 -->
 	<insert id="insertSignoffsDept" parameterType="signoffsDept">
 		INSERT INTO
 			SIGNOFFS_DEPT
@@ -66,7 +65,6 @@
 			DEPT_NO = #{deptNo}
 	</select>
 	
-	<!-- 결재 정보 수정 -->
 	<update id="updateSignoffs" parameterType="signoffs">
 		UPDATE
 			SIGNOFFS
@@ -88,7 +86,6 @@
 			APPROVAL_NO = #{approvalNo}
 	</update>
 	
-	<!-- 결재 삭제 -->
 	<delete id="deleteSignoffs" parameterType="signoffs">
 		DELETE FROM
 			SIGNOFFS
@@ -96,7 +93,6 @@
 			APPROVAL_NO = #{approvalNo}
 	</delete>
 	
-	<!-- 특정 결재번호로 조회 (단건) -->
 	<select id="selectSignoffsOne" parameterType="signoffs" resultType="signoffs">
 		SELECT 
 				APPROVAL_NO
@@ -114,7 +110,6 @@
 			AND APPROVAL_NO = #{approvalNo}
 	</select>
 	
-	<!-- 문서의 결재 조회 (다건) -->
 	<select id="selectSignoffsList" parameterType="signoffs" resultType="signoffs">
 		SELECT 
 				A.APPROVAL_NO
@@ -138,4 +133,5 @@
 		SELECT MIN(APPROVAL_RANK) FROM SIGNOFFS
 		WHERE DOCU_NO = #{docuNo}
 	</select>
+	
 </mapper>

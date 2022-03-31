@@ -38,12 +38,6 @@ public interface MemberService {
 	public int changePwd(Member m);
 
 	
-	//---------------------조직도 ---------------------------
-	public int listCountFirst(String cno);
-	public List<Member> selectOgFirst(int startPage, int limit, String cno);
-	public int listCount(HashMap<String, String> paramMap);
-	public List<Member> selectOgUser(int startPage, int limit, HashMap<String, String> paramMap);
-	public int updateDept(Member m); 
-	public List<Member> deleteOgUser(HashMap<String, String> paramMap1);
+	
 
 }

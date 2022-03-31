@@ -7,7 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kh.walkwork.member.model.vo.Dept;
+import com.kh.walkwork.dept.model.vo.Dept;
 import com.kh.walkwork.member.model.vo.Member;
 import com.kh.walkwork.project.common.model.dao.ProjectDao;
 import com.kh.walkwork.project.common.model.vo.Project;

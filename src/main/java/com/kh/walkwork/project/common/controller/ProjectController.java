@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.walkwork.member.model.vo.Dept;
+import com.kh.walkwork.dept.model.vo.Dept;
 import com.kh.walkwork.member.model.vo.Member;
 import com.kh.walkwork.project.common.model.service.ProjectService;
 import com.kh.walkwork.project.common.model.vo.Project;
