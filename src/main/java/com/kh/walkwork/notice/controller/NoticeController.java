@@ -124,8 +124,6 @@ public class NoticeController {
 	//공지 업데이트창으로 이동
 	@RequestMapping("updateForm.no")
 	public ModelAndView updateForm(int bno, String mno, Notice n, ModelAndView mv) {
-		System.out.println(bno);
-		System.out.println(mno);
 		n.setBoardNo(bno);
 		n.setBoardWriter(mno);
 		Notice b = noticeService.selectNotice(n);
@@ -143,7 +141,6 @@ public class NoticeController {
 	public String updateNotice(Notice n, Attachment a, MultipartFile[] reupfile, HttpSession session){
 		int result = noticeService.updateNotice(n);
 		
-		System.out.println(reupfile.length);
 		int fileLength = reupfile.length;
 		int boardNo = n.getBoardNo();
 		if(reupfile.length>0) { //업로드된 갯수만큼 파일 삭제
@@ -194,9 +191,8 @@ public class NoticeController {
 	@RequestMapping("range.no")
 	public ModelAndView rangeNotice(@RequestParam(value = "cpage", defaultValue = "1")int currentPage, ModelAndView mv, String noticeRange) {
 		int listCount = noticeService.selectRangeListCount(noticeRange);
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 15);
 		ArrayList<Notice> list = noticeService.rangeNotice(noticeRange, pi);
-		System.out.println(list);
 		mv.addObject("pi", pi).addObject("list", list).addObject("noticeRange", noticeRange);
 		mv.setViewName("notice/noticeRangeView");
 		return mv;

@@ -49,7 +49,6 @@ public class NoticeDao {
 	
 
 	public Notice insertNotice(SqlSessionTemplate sqlSession, Notice n) {
-		System.out.println(n.getTopFix());
 		int result = sqlSession.insert("noticeMapper.insertNotice", n);
 		
 		return sqlSession.selectOne("noticeMapper.selectBoardNo", n);

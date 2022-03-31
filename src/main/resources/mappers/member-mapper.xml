@@ -115,6 +115,7 @@
 		MEMBER_NAME = #{memberName}
 		AND
 		EMAIL = #{email}
+		AND BIRTH = #{birth}
 	</select>
 
 	<update id="loginFail" parameterType="string">

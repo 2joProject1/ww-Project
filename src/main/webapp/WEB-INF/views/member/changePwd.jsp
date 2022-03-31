@@ -14,98 +14,77 @@
 	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
  
 <style>
-        /* 모달 */
-        .modal{
-            /* 모달창 위치(높이) 조정 */
-            padding-top: 150px;
-        }
-        .modal-backdrop{
-            /* 모달 배경 뒤 검게 흐려지는 현상 사라지도록 */
-            background: none;
-        }
-        .modal-content{
-            /* 모달창내부 배경색 */
-            background-color: rgb(102, 164, 166);
-            height: 600px;
-            width:600px;
-            margin:auto;
-        }
 
-        .modal-title{
-            color: white;
-            font-weight: bold;
-            font-size: 20px;
-            text-align: center;    
-            width: 500px;
-        }
+    #wrap{
+        background-color: rgb(102, 164, 166);
+        height: 700px;
+        width:600px;
+        margin:auto;
+        margin-top:90px;
+    }
 
-        .login_form_title{
-            /* 모달창 내 walk-work 글씨 위치 */
-            text-align: center;
-        }
-        #login_modal_content{
-            /* 모달 바디 내부 하얀 배경 */
-            width: 468px;
-            height: 450px;
-            background-color: white;
-            border-radius: 3px;
-            margin:auto;
-        
-        }
-        #login_searchId_information{
-            margin: auto;
-        }
-        #login_searchId_information td{
-            height: 40px;
-        }
-        .login_td1{
-            width: 100px;
-        }
-        .login_td2{
-            width: 300px;
-        }
-        .login_td2>input{
-            width: 250px;
-        }
-        .modal-footer{
-            padding: 0px;
-            display: inline-block;
-            border: none;
-        }
-        .modal-footer>button{
-            border: none;
-            width: 100px;
-            height: 40px;
-            margin-left: 90px;
-        }
-        #searchPwd_form{
-            margin-top: 30px;
-            margin-left: 55px;
-        }
-        #searchPwd_form td{
-            height: 60px;
-        }
-        /* #searchPwd_form button{
-            border: none;
-            보류
-        } */
-        #login_searchPwd .modal-footer>button{
-            margin-top: 10px;
-        }
-        a{
-        	text-decoration:none;
-        	color:black;
-        }
-`
+     #header{
+         color: white;
+         font-weight: bold;
+         font-size: 20px;
+         text-align: center;    
+         width: 600px;
+         height:60px;
+         line-height:3;
+     }
+
+     #content{
+         /* 모달 바디 내부 하얀 배경 */
+         width: 500px;
+         height: 550px;
+         background-color: white;
+         border-radius: 3px;
+         margin:auto;
+         padding-top:30px;
+     
+     }
+     #changePwd_tb .td1{
+     	height:50px;
+     }
+     #changePwd_tb{
+     	margin:auto;
+     }
+     #changePwd_tb input{
+     	width:243px;
+     }
+     .td1{
+     	width:100px;
+     }
+     .td3{
+     	width:100px;
+     	height:20px;
+     }
+	.resultText{
+		height:20px;
+		font-size:12px;
+		color:grey;
+	}
+     #footer>button{
+         border: none;
+         width: 100px;
+         height: 40px;
+         margin-left: 90px;
+         margin-top:30px;
+     }
+	a{
+     	text-decoration:none;
+     	color:black;
+     }
+
 </style>
 </head>
 <body>
-	<script>
-		window.onload = function(){
-			window.alert("${countOverMsg }");
-			
-		}
-	</script>
+	<c:if test="${ not empty countOverMsg }">
+		<script>
+			alert("${ countOverMsg }");
+		</script>
+		<c:remove var="countOverMsg" scope="session" />
+	</c:if>
 	
 	<c:if test="${ not empty changeResult }">
 		<script>
@@ -114,83 +93,77 @@
 		<c:remove var="changeResult" scope="session" />
 	</c:if>
 	
-	        <!-- 아이디찾기용 모달 -->
-    <div class="modal" id="login_searchId">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            
-            <!-- Modal Header -->
-                <div class="modal-header">
-                    <div class="modal-title">
-                       	비밀번호변경
-                    </div>
-                </div>
-              <!-- Modal body -->
-            <form action="changePwd.me" method="post">
-                <div class="modal-body">
-                    <div id="login_modal_content">
-                        <div style="padding-left: 15px; line-height: 50px;">본인인증</div>
-                        <hr style="margin: 0px;">
-                        <table id="login_searchId_information" border="1px">
+	
+	<div id="wrap">
+		<div id="header">
+			비밀번호변경
+		</div>
+		
+		<form action="changePwd.me" method="post">
+			<div id="content">
+				<table id="changePwd_tb">
+					<tr>
+						<td class="td1" width="250px">사번</td>
+						<td class="td2"><input type="text" id="memberNo" name="memberNo" required><br></td>
+					</tr>
+					<tr>
+						<td class="td1" width="250px">이름</td>
+						<td class="td2"><input type="text" id="name" name="memberName" required><br></td>
+					</tr>
+					
+					<tr>
+						<td class="td1">이메일</td>
+						<td class="td2"><input type="text" id="email" name="email" style="width: 200px;" required><button type="button" id="email_btn">인증</button><br></td>
+					</tr>
+					<tr>
+						<td class="td3"></td>
+						<td id="email_result" class="td2 resultText"></td>
+					</tr>
+					<tr>
+						<td class="td1">인증번호</td>
+						<td class="td2">
+							<input type="text" id="email_chk" name="email_chk" style="width: 200px;" required><button type="button" id="email_chk_btn">확인</button><br>
+						</td>
+					</tr>
+					<tr>
+						<td class="td3"></td>
+						<td id="vali_result" class="td2 resultText"></td>
+					</tr>
+					<tr class="hidden_pwd">
+						<td class="td1">비밀번호</td>
+						<td class="td2">
+							<input type="password" name="memberPwd" id="pwd" required><br>
+						</td>
+					</tr>
+					<tr class="hidden_pwd">
+						<td class="td3 "></td>
+						<td class="td2 resultText" id="pwd_chk">8~16자 영문 대 소문자, 숫자, 특수문자(!@#$)</td>
+					</tr>
+					<tr class="hidden_pwd">
+						<td class="td1">비밀번호확인</td>
+						<td class="td2">
+							<input type="password" id="pwd_double" required><br>
+						</td>
+					</tr>
+					<tr class="hidden_pwd">
+						<td class="td3"></td>
+						<td class="td2  resultText" id="pwd_double_chk" required>비밀번호 확인을 위해 다시 입력해주세요</td>
+					</tr>
+				</table>
+				<div id="footer">
+					<button type="submit" id="change_btn" disabled="disabled">등록</button>
+					<button type="button" data-dismiss="modal">취소</button>
+				</div>
+			</div>
+		</form>
+	
+	
+	
+	</div>
+	
+	
+	
 
-                            <tr>
-                                <td class="login_td1" width="250px">사번</td>
-                                <td class="login_td2"><input type="text" id="memberNo" name="memberNo" required><br></td>
-                            </tr>
-                            <tr>
-                                <td class="login_td1" width="250px">이름</td>
-                                <td class="login_td2"><input type="text" id="name" name="memberName" required><br></td>
-                            </tr>
-
-                            <tr>
-                                <td class="login_td1">이메일</td>
-                                <td class="login_td2"><input type="text" id="email" name="email" style="width: 200px;" required><button type="button" id="email_btn">인증</button><br></td>
-                            </tr>
-                            <tr>
-                                <td style="height: 5px;"></td>
-                                <td id="email_result" style="height: 5px;"></td>
-                            </tr>
-                            <tr>
-                                <td class="login_td1">인증번호</td>
-                                <td class="login_td2"><input type="text" id="email_chk" name="email_chk" style="width: 200px;" required><button type="button" id="email_chk_btn">확인</button><br></td>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="height: 5px;"></td>
-                                <td id="vali_result" style="height: 5px;"></td>
-                            </tr>
-							<tr class="hidden_pwd">
-                            <td>비밀번호</td>
-	                            <td class="enroll_td2">
-	                                <input type="password" name="memberPwd" id="pwd" required><br>
-	                            </td>
-	                        </tr>
-	                        <tr class="hidden_pwd">
-	                            <td></td>
-	                            <td class="enroll_td3" id="pwd_chk">8~16자 영문 대 소문자, 숫자, 특수문자(!@#$)</td>
-	                        </tr>
-	                        <tr class="hidden_pwd">
-	                            <td>비밀번호확인</td>
-	                            <td class="enroll_td2">
-	                                <input type="password" id="pwd_double" required><br>
-	                            </td>
-	                        </tr>
-	                        <tr class="hidden_pwd">
-	                            <td></td>
-	                            <td class="enroll_td3" id="pwd_double_chk">비밀번호 확인을 위해 다시 입력해주세요</td>
-	                        </tr>
-                        </table>
-                        <div class="modal-footer">
-                            <!-- alert창으로 알려줘야겠음..ㅠㅠ... -->
-                            <button type="submit" id="change_btn" disabled="disabled">등록</button>
-                            <button type="button" data-dismiss="modal">취소</button>
-                        </div>
-                    </div><!-- 로그인모달content -->
-                </div> <!-- 바디 -->
-            </form>
-            </div> <!-- 모달content -->
-        </div><!-- dialog -->
-    </div><!-- 아이디찾기모달끝 -->
     
 <script>
     window.onload = $(function(){
@@ -261,7 +234,7 @@
 
 	
 		if(!regExp.test($pwd)){
-			$('#pwd_chk').text("잘못 입력하셨습니다. 8~16자 영문 대 소문자, 숫자, 특수문자(!@#$)").css("color","red");
+			$('#pwd_chk').html("잘못 입력하셨습니다. <br>8~16자 영문 대 소문자, 숫자, 특수문자(!@#$)<br>형식으로 입력하세요.").css("color","red");
 			$('#pwd').val('');
 			return false;
 		}

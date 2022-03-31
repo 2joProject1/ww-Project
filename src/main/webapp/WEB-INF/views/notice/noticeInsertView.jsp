@@ -105,7 +105,7 @@
 	    height: 40px;
 	}
 	.notice_content table input{
-	    width: 1000px;
+	    width: 862.67px;
 	}
 	
 	.notice_submit_btn>button{
@@ -122,7 +122,11 @@
        text-decoration: none;
        color: black;
 	}
- 
+ 	.addFile{
+		font-size:14px;
+		font-weight:lighter;
+		text-decoration:none;
+	}	
  </style>
 
 </head>
@@ -201,21 +205,21 @@
                             <tr>
                                 <td>내용</td>
                                 <td colspan="3">
-                                    <textarea name="boardContent" id="" cols="100" rows="10"></textarea>
+                                    <textarea name="boardContent" id="" cols="90" rows="10"></textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td>파일첨부</td>
-	                                <td colspan="3"> <!-- 파일아이콘 나중에 맞추기 -->
-		                                <input type="file" multiple="multiple"
-										    id="upfile" class="form-control-file border"
-										    name="upfile" onChange="onFileUpload(event)">
-		                                <label for="upfile" id="uplabel"><i class="xi-file-add-o"></i> </label>
-		                                <span id="spanFile0" name="spanFile"></span>
-		                                <span id="spanFile1" name="spanFile"></span>
-		                                <span id="spanFile2" name="spanFile"></span>
-		                               <!--  <input type="text" id="spanFile" name="spanFile" value="ㅋㅋ"> -->
-	                                <td>
+                                <td colspan="3" class="addFile"> <!-- 파일아이콘 나중에 맞추기 -->
+	                                <input type="file" multiple="multiple"
+									    id="upfile" class="form-control-file border"
+									    name="upfile" onChange="onFileUpload(event)">
+	                                <label for="upfile" id="uplabel"><i class="xi-file-add-o"></i> </label>
+	                                <span id="spanFile0" name="spanFile"></span>
+	                                <span id="spanFile1" name="spanFile"></span>
+	                                <span id="spanFile2" name="spanFile"></span>
+	                               <!--  <input type="text" id="spanFile" name="spanFile" value="ㅋㅋ"> -->
+                                <td>
                                 <div id="d_file">
             						</div>
                                 </td>
@@ -247,12 +251,6 @@ function onFileUpload(event){
  	    var h2 = "<button type='button' id='x-btn' class='btn' onclick='btndelete(1)'>X</button>";
  	    var h3 = "<button type='button' id='x-btn' class='btn' onclick='btndelete(2)'>X</button>";
 
-/* 	    for(var i = 0; i < event.target.files.length; i++){
-	    	console.log(i+"ㅋㅋ");
-	    } */
-/* 	    for(var i = 0; i < event.target.files.length; i++){
-	    	a += "파일"+(i+1)+" "+document.getElementById('upfile').files[i].name+" "+ h;
-	    } */
 	    
 	    if(event.target.files.length>3){
 	    	alert("파일은 3개 이하만 업로드가 가능합니다.");
@@ -267,7 +265,6 @@ function onFileUpload(event){
 
 
 function btndelete(fileNum){	//fileNum은 li 의 index 값
-	console.log(fileNum);
     const dataTransfer = new DataTransfer();
     
     let files = $('#upfile')[0].files;	//사용자가 입력한 파일을 변수에 할당

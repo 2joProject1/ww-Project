@@ -257,6 +257,7 @@
                 from board_all b
                 join member m on(b.board_Writer = m.member_no)
                 where b.status = 'Y'
+                and board_type=1
                 order by board_no desc) a
         where rownum <= 5]]>
         

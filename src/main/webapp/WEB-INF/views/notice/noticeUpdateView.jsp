@@ -105,7 +105,7 @@ input:checked + .slider:before {
     height: 40px;
 }
 .notice_content table input{
-    width: 1000px;
+    width: 862.67px;
 }
 
 .notice_submit_btn>button{
@@ -120,6 +120,19 @@ input:checked + .slider:before {
 }
 input:checked + .slider {
   background-color: red;
+}
+.addFile{
+	font-size:14px;
+	font-weight:lighter;
+	text-decoration:none;
+}
+.atag{
+	text-decoration:none;
+	color:black;
+}
+.atag:hover{
+	text-decoration:none;
+	color:black;
 }
 </style>
 </head>
@@ -212,12 +225,12 @@ input:checked + .slider {
                        <tr>
                            <td>내용</td>
                            <td colspan="3">
-                               <textarea name="boardContent" id="" cols="100" rows="10">${b.boardContent}</textarea>
+                               <textarea name="boardContent" id="" cols="90" rows="10">${b.boardContent}</textarea>
                            </td>
                        </tr>
 						<tr>
-							<td>파일첨부</td>
-							<td colspan="3"> <!-- 파일아이콘 나중에 맞추기 -->
+							<td>수정파일</td>
+							<td colspan="3" class="addFile"> <!-- 파일아이콘 나중에 맞추기 -->
 								<input type="file" multiple="multiple"
 								id="reupfile" class="form-control-file border"
 								name="reupfile" onChange="onFileUpload(event)">
@@ -226,6 +239,15 @@ input:checked + .slider {
 								<span id="spanFile1" name="spanFile"></span>
 								<span id="spanFile2" name="spanFile"></span>
 								
+							<td>
+								<div id="d_file">
+		                  	
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>기존파일</td>
+							<td colspan="3" class="addFile">
 								<c:if test="${ not empty a }">         
 		                                         
 			                        <c:forEach var="n" items="${ a }">
@@ -233,16 +255,12 @@ input:checked + .slider {
 			                           
 			                        </c:forEach>
 		                        </c:if>
-							<td>
-								<div id="d_file">
-		                  	
-								</div>
 							</td>
 						</tr>
                    </table>
                    <div class="notice_submit_btn">
                        <button type="submit">등록</button>
-                       <button><a href="javascript:history.back();">취소</a></button>
+                       <button><a href="javascript:history.back();" class="atag">취소</a></button>
                    </div>
                </form>
            </div>
@@ -266,13 +284,6 @@ function onFileUpload(event){
  	    var h2 = "<button type='button' id='x-btn' class='btn' onclick='btndelete(1)'>X</button>";
  	    var h3 = "<button type='button' id='x-btn' class='btn' onclick='btndelete(2)'>X</button>";
 
-/* 	    for(var i = 0; i < event.target.files.length; i++){
-	    	console.log(i+"ㅋㅋ");
-	    } */
-/* 	    for(var i = 0; i < event.target.files.length; i++){
-	    	a += "파일"+(i+1)+" "+document.getElementById('upfile').files[i].name+" "+ h;
-	    } */
-	    
 	    if(event.target.files.length>3){
 	    	alert("파일은 3개 이하만 업로드가 가능합니다.");
 	    	$("#btn").attr("disabled", true);
@@ -288,7 +299,6 @@ function onFileUpload(event){
 
 
 function btndelete(fileNum){	//fileNum은 li 의 index 값
-	console.log(fileNum);
     const dataTransfer = new DataTransfer();
     
     let files = $('#reupfile')[0].files;	//사용자가 입력한 파일을 변수에 할당

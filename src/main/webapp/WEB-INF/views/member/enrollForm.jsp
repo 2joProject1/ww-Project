@@ -11,12 +11,10 @@
  	
  	<!-- 주소api -->
  	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
- 	
  	<!-- 제이쿼리 --> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
- 
-	 <!-- 자바스크립트 -->
-	 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+	<!-- 자바스크립트 -->
+	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
  
 <title>Insert title here</title>
     <style>
@@ -56,7 +54,7 @@
         }
 
         .enroll_td2>input{
-            width: 300px;
+            width: 410px;
         }
         .enroll_td2{
             height: 32px;
@@ -74,7 +72,7 @@
             border: none;
             width: 100px;
             height: 40px;
-            margin-left: 30px;
+            margin-left: 70px;
             margin-right: 40px;
             margin-top: 5px;
         }
@@ -82,7 +80,7 @@
             background-color: rgb(102, 164, 166);
         }
         #address_input>input{
-        	width:300px;
+        	width:410px;
         }
         input{
         	BORDER-BOTTOM: solid 1px grey;
@@ -109,126 +107,128 @@
     <div id="enroll_wrap">
         <div id="enroll_green_bg">
             <div id="enroll_title">
-                회원가입
+                	회원가입
             </div>
             <div id="enroll_white_bg">
             	<form action="insert.me">
-                <div>
-                    <table id="enroll_Form_Table">
-                        <tr>
-                            <td style="width:120px">아이디</td>
-                            <td class="enroll_td2">
-                                <input type="text" name="memberNo" id="id" required><br>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="enroll_td3" id="id_chk">사번을 입력하세요(숫자5자리)</td>
-                        </tr>
-                        <tr>
-                            <td>이름</td>
-                            <td class="enroll_td2">
-                                <input type="text" name="memberName" id="name" required><br>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="enroll_td3" id="name_chk">실명을 입력하세요(한글 2자 이상, 6자 이하)</td>
-                        </tr>
-                        <tr>
-                            <td>비밀번호</td>
-                            <td class="enroll_td2">
-                                <input type="password" name="memberPwd" id="pwd" required><br>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="enroll_td3" id="pwd_chk">8~16자 영문 대 소문자, 숫자, 특수문자(!@#$)</td>
-                        </tr>
-                        <tr>
-                            <td>비밀번호확인&nbsp;&nbsp;</td>
-                            <td class="enroll_td2">
-                                <input type="password" id="pwd_double" required><br>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="enroll_td3" id="pwd_double_chk">비밀번호 확인을 위해 다시 입력해주세요</td>
-                        </tr>
-                        <tr>
-                            <td>생년월일</td>
-                            <td class="enroll_td2">
-                                <input type="text" name="birth" id="birth"required><br>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="enroll_td3" id="birth_chk">8자리로 입력하세요 예)19990909</td>
-                        </tr>
-                        <tr>
-                            <td>주소</td>
-                            <td class="enroll_td2" id="address_input">
-								<input type="text" id="sample6_postcode" placeholder="우편번호" style="width:200px;">
-								<input type="button" onclick="execDaumPostcode()" value="우편번호 찾기" style="width:100px"><br>
-								<input type="text" id="sample6_address" placeholder="주소" name="address"><br>
-								<input type="text" id="sample6_detailAddress" placeholder="상세주소"  name="address" required>
-								<input type="text" id="sample6_extraAddress" placeholder="참고항목"  name="address">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="enroll_td3"></td>
-                        </tr>
-                        <tr>
-                            <td rowspan="2" style="height:35px;">이메일</td>
-                            <td class="enroll_td2">
-                                <input type="email" name="email" id="email" required style="width:200px;">
-                                <button type="button" id="email_d_btn">중복확인</button>
-                                <button type="button" id="email_btn" disabled="disabled">인증번호전송</button><br>
-                            </td>
-                        </tr>
-                        
-                        <tr>
-                            <td class="enroll_td3" id="email_chk"></td>
-                        </tr>
-                        <tr id="email_vali">
-                            <td>이메일인증번호</td>
-                            <td class="enroll_td3">
-                            	<input type="text" name="email_vali_input" id="email_vali_input" required>
-                            </td>
-                        </tr>
-                       	<tr>
-                            <td></td>
-                            <td class="enroll_td3" id="email_vali_chk"></td>
-                        </tr>
-
-                        <tr>
-                            <td>휴대폰번호</td>
-                            <td class="enroll_td2">
-                                <input type="text" style="width: 260px;" name="phone" id="phone" required><button type="button" id="phone_btn">인증</button><br>
-                            </td>
-                        </tr>
-                       	<tr>
-                            <td></td>
-                            <td class="enroll_td3" id="phone_chk"></td>
-                        </tr>
-                    
-                        <tr class="phone_vali">
-                            <td>인증번호</td>
-                            <td class="enroll_td2">
-                                <input type="text" style="width: 260px;" required><button type="button" >확인</button><br>
-                            </td>
-                        </tr>
-                        <tr class="phone_vali">
-                            <td></td>
-                            <td class="enroll_td3">잘못된 인증번호입니다</td>
-                        </tr>
-                    </table>
-                    <div id="enroll_form_btn">
-                        <button>확인</button>
-                        <button id="back_btn"><a href="javascript:history.back();">취소</a></button>
-                    </div>
-                </div>
+	                <div>
+	                    <table id="enroll_Form_Table">
+	                        <tr>
+	                            <td style="width:120px">아이디</td>
+	                            <td class="enroll_td2">
+	                                <input type="text" name="memberNo" id="id" required><br>
+	                            </td>
+	                        </tr>
+	                        <tr>
+	                            <td></td>
+	                            <td class="enroll_td3" id="id_chk">사번을 입력하세요(숫자5자리)</td>
+	                        </tr>
+	                        <tr>
+	                            <td>이름</td>
+	                            <td class="enroll_td2">
+	                                <input type="text" name="memberName" id="name" required><br>
+	                            </td>
+	                        </tr>
+	                        <tr>
+	                            <td></td>
+	                            <td class="enroll_td3" id="name_chk">실명을 입력하세요(한글 2자 이상, 6자 이하)</td>
+	                        </tr>
+	                        <tr>
+	                            <td>비밀번호</td>
+	                            <td class="enroll_td2">
+	                                <input type="password" name="memberPwd" id="pwd" required><br>
+	                            </td>
+	                        </tr>
+	                        <tr>
+	                            <td></td>
+	                            <td class="enroll_td3" id="pwd_chk">8~16자 영문 대 소문자, 숫자, 특수문자(!@#$)</td>
+	                        </tr>
+	                        <tr>
+	                            <td>비밀번호확인&nbsp;&nbsp;</td>
+	                            <td class="enroll_td2">
+	                                <input type="password" id="pwd_double" required><br>
+	                            </td>
+	                        </tr>
+	                        <tr>
+	                            <td></td>
+	                            <td class="enroll_td3" id="pwd_double_chk">비밀번호 확인을 위해 다시 입력해주세요</td>
+	                        </tr>
+	                        <tr>
+	                            <td>생년월일</td>
+	                            <td class="enroll_td2">
+	                                <input type="text" name="birth" id="birth"required><br>
+	                            </td>
+	                        </tr>
+	                        <tr>
+	                            <td></td>
+	                            <td class="enroll_td3" id="birth_chk">8자리로 입력하세요 예)19990909</td>
+	                        </tr>
+	                        <tr>
+	                            <td>주소</td>
+	                            <td class="enroll_td2" id="address_input">
+									<input type="text" id="sample6_postcode" placeholder="우편번호" style="width:305px; ">
+									<button type="button" onclick="execDaumPostcode()" value="우편번호 찾기" style="width:100px;">우편번호 찾기</button>
+									<!-- <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기" style="width:100px;"><br> -->
+									<input type="text" id="sample6_address" placeholder="주소" name="address"><br>
+									<input type="text" id="sample6_detailAddress" placeholder="상세주소"  name="address" required>
+									<input type="text" id="sample6_extraAddress" placeholder="참고항목"  name="address">
+	                            </td>
+	                        </tr>
+	                        <tr>
+	                            <td></td>
+	                            <td class="enroll_td3"></td>
+	                        </tr>
+	                        <tr>
+	                            <td rowspan="2" style="height:35px;">이메일</td>
+	                            <td class="enroll_td2">
+	                                <input type="email" name="email" id="email" required style="width:305px;">
+	                                <button type="button" id="email_d_btn">중복확인하기</button>
+	                                <button type="button" id="email_btn" disabled="disabled">인증번호전송</button><br>
+	                            </td>
+	                        </tr>
+	                        
+	                        <tr>
+	                            <td class="enroll_td3" id="email_chk"></td>
+	                        </tr>
+	                        <tr id="email_vali">
+	                            <td>이메일인증번호</td>
+	                            <td class="enroll_td3">
+	                            	<input type="text" name="email_vali_input" id="email_vali_input" required>
+	                            </td>
+	                        </tr>
+	                       	<tr>
+	                            <td></td>
+	                            <td class="enroll_td3" id="email_vali_chk"></td>
+	                        </tr>
+	
+	                        <tr>
+	                            <td>휴대폰번호</td>
+	                            <td class="enroll_td2">
+	                                <input type="text" style="width: 410px;" name="phone" id="phone" required>
+	                                <!-- <button type="button" id="phone_btn">인증</button><br> -->
+	                            </td>
+	                        </tr>
+	                       	<tr>
+	                            <td></td>
+	                            <td class="enroll_td3" id="phone_chk"></td>
+	                        </tr>
+	                    
+	                        <tr class="phone_vali">
+	                            <td>인증번호</td>
+	                            <td class="enroll_td2">
+	                                <input type="text" style="width: 260px;"><button type="button" >확인</button><br>
+	                            </td>
+	                        </tr>
+	                        <tr class="phone_vali">
+	                            <td></td>
+	                            <td class="enroll_td3">잘못된 인증번호입니다</td>
+	                        </tr>
+	                    </table>
+	                    <div id="enroll_form_btn">
+	                        <button type="submit">확인</button>
+	                        <button id="back_btn"><a href="javascript:history.back();">취소</a></button>
+	                    </div>
+	                </div>
                 </form>
                 
                 
