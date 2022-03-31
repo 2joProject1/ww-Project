@@ -222,8 +222,7 @@ button.btn-write:hover {
 			<div id="main-sidebar">
 
 				<div class="sub-menu-title">
-				<br>
-					<i class="fi fi-rr-menu-burger"></i>&nbsp;<b>프로젝트</b><br>
+					<br> <i class="fi fi-rr-menu-burger"></i>&nbsp;<b>프로젝트</b><br>
 				</div>
 				<div class="sub-menu">
 					<i class="fi fi-rr-apps"></i>&nbsp;
@@ -404,9 +403,7 @@ button.btn-write:hover {
 		</div>
 	</div>
 	<script>
-		$(document)
-				.ready(
-						function() {
+		$(document).ready(function() {
 							//필터별로 나누기(필터1: 내업무/요청한업무, 필터2: 요청, 진행, 완료)
 							$('#taskFilter1, #taskFilter2')
 									.on(
@@ -416,8 +413,7 @@ button.btn-write:hover {
 														'#taskFilter1').val();
 												var taskFilter2 = $(
 														'#taskFilter2').val();
-												$
-														.ajax({
+												$.ajax({
 															url : 'project.taskList',
 															method : 'GET',
 															data : {
@@ -553,7 +549,7 @@ button.btn-write:hover {
 						labels : [ '요청', '진행', '완료', ],
 						datasets : [ {
 							label : 'Score',
-							data : [ s1, s2, s3 ],
+							data : [ 100, 200, 300 ],
 							backgroundColor : [ '#F27781', '#f17a19',
 									'#50b766', ],
 						} ]

@@ -250,13 +250,13 @@ input[type="search"] {
 				</div>
 				<div class="sub-menu">
 					<i class="fi fi-rr-apps"></i>&nbsp;
-					<a href="" class="">&nbsp;공지사항</a>
+					<a href="notice.pro" class="">&nbsp;공지사항</a>
 					<br>
 				</div>
 				<hr>
 				<div class="sub-menu">
 					&nbsp;
-					<a href="notice.pro" class="">&nbsp;내 일정</a>
+					<a href="" class="">&nbsp;내 일정</a>
 				</div>
 			</div>
 		</div>

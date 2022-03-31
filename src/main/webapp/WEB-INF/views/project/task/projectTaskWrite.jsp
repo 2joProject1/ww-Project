@@ -422,7 +422,7 @@ ul.project-desc-list {
 					labels: ['요청', '진행', '완료',],
 					datasets: [{
 						label: 'Score',
-						data: [s1, s2, s3, s4],
+						data: [100, 200, 300],
 						backgroundColor: [
 							'#F27781',
 							'#f17a19',
