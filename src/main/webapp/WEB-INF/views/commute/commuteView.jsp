@@ -110,6 +110,11 @@
   	text-decoration: none; 
   	font-size: 15px;
   }
+    .sub-menu{
+  	font-size: 17px;
+  	margin-left:12%;
+  	font-family: 'Nanum Gothic', sans-serif;
+  }
 </style>
 
  	<link rel="stylesheet" href="resources/css/layout.css">
@@ -137,7 +142,8 @@
 						<a href="month.cm" class="">월 근무내역</a>
 						<br><br>
 					</div>
-		                &nbsp;
+		               
+		                <i class="xi-cafe"></i>&nbsp;
 		                <a href="list.of"><b>휴가관리</b></a>
 		                <br><br>
 				</ul>

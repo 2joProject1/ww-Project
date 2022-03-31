@@ -23,8 +23,8 @@
 #result {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
-  width: 80%;
-  margin-left:8%;
+  width: 93%;
+  margin-left:3%;
   font-family: 'Nanum Gothic', sans-serif;
 }
 
@@ -129,6 +129,15 @@
 .yes-btn:hover, .no-btn:hover{
 	background-color:#bcbcbc;
 }
+
+.pager_area{
+	margin-left: 40%
+}
+  .sub-menu{
+  	font-size: 17px;
+  	margin-left:12%;
+  	font-family: 'Nanum Gothic', sans-serif;
+  }
   
 </style>
 
@@ -150,7 +159,7 @@
 		                <a href="main.cm"><b>근태관리</b></a>
 		                <br><br>
 		                
-		                <i class="fi fi-rs-chart-tree"></i>&nbsp;
+		                <i class="xi-cafe"></i>&nbsp;
 		                <a href="list.of"><b>휴가관리</b></a>
 		                <br>
 		                <div class="sub-menu">
@@ -178,8 +187,8 @@
                 <hr>
 	        </div>
             <div id="commute-main">
-            	<form action="searchApproval.of" method="post">
-	                <input type="hidden" value="${loginUser.memberNo }" name="offWriter"> 
+            	<form action="approval.of" method="get">
+            		<input type="hidden" name="searchPage" value="2">
 	                 &nbsp;&nbsp;기간 &nbsp; <input type="date" name = "offStart" required> - <input type="date" name = "offEnd" required>
 	                <button class="check-btn" value="">조회</button>
             	</form>
@@ -198,8 +207,9 @@
                 <table id="result">
                 <thead>
 				  <tr>
-				    <th>휴가신청일</th>
+				    <th width="150px">휴가신청일</th>
 				    <th width="150px" id="hum">신청자</th>
+				    <th>휴가기간</th>
 				    <th width="300px">사유</th>
 				    <th width="170px">승인여부</th>
 				    <th width="100px">진행상태</th>
@@ -210,6 +220,7 @@
 	                	<tr style="display:'';">
 		                	<td>${o.requestDate}</td> 
 		                	<td>${o.memberName}</td>
+		                	<td>${o.offStart} ~ ${o.offEnd}</td>
 		                	<td>${o.offReason}</td>
 			                <td>
 		                		<c:if test="${o.status eq 'W'}">
@@ -233,8 +244,68 @@
                 </tbody>
 				  </table>
             </div>
+            <br>
+            <c:choose>
+            	<c:when test="${searchPage == 1}">
+            		<div class="pager_area" align="center">
+			             <ul class="pagination"  >
+			                   <c:choose>
+			                    	<c:when test="${ pi.currentPage eq 1 }">
+				                    	<li class="page-item disabled"><a class="page-link" href="approval.of">Previous</a></li>
+			                    	</c:when>
+			                    	<c:otherwise>
+				                    	<li class="page-item"><a class="page-link" href="approval.of?cpage=${ pi.currentPage -1 }">Previous</a></li>
+			                    	</c:otherwise>
+			                   </c:choose>
+			                   
+			                   <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+			                    	<li class="page-item"><a class="page-link" href="approval.of?cpage=${ p }">${ p }</a></li>
+			                   </c:forEach>
+			
+			                   <c:choose>
+			                    	<c:when test="${ pi.currentPage eq  pi.endPage }">
+				                    	<li class="page-item disabled"><a class="page-link" href="#" >Previous</a></li>
+			                    	</c:when>
+			                    	<c:otherwise>
+				                    	<li class="page-item"><a class="page-link" href="approval.of?cpage=${ pi.currentPage +1 }">Next</a></li>
+			                    	</c:otherwise>
+			                   </c:choose>
+			              
+			             </ul>
+			     	</div>
+            	</c:when>
+            	<c:otherwise>
+            		<div class="pager_area" align="center">
+			             <ul class="pagination"  >
+			                   <c:choose>
+			                    	<c:when test="${ pi.currentPage eq 1 }">
+				                    	<li class="page-item disabled"><a class="page-link" href="approval.of?searchPage=2&offStart=${offStart }&offEnd=${offEnd}">Previous</a></li>
+			                    	</c:when>
+			                    	<c:otherwise>
+				                    	<li class="page-item"><a class="page-link" href="approval.of?cpage=${pi.currentPage -1 }&searchPage=2&offStart=${offStart }&offEnd=${offEnd}">Previous</a></li>
+			                    	</c:otherwise>
+			                   </c:choose>
+			                   
+			                   <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+			                    	<li class="page-item"><a class="page-link" href="approval.of?cpage=${ p }&searchPage=2&offStart=${offStart }&offEnd=${offEnd}">${ p }</a></li>
+			                   </c:forEach>
+			
+			                   <c:choose>
+			                    	<c:when test="${ pi.currentPage eq  pi.endPage }">
+				                    	<li class="page-item disabled"><a class="page-link" href="#" >Previous</a></li>
+			                    	</c:when>
+			                    	<c:otherwise>
+				                    	<li class="page-item"><a class="page-link" href="approval.of?cpage=${ pi.currentPage +1 }&searchPage=2&offStart=${offStart }&offEnd=${offEnd}">Next</a></li>
+			                    	</c:otherwise>
+			                   </c:choose>
+			              
+			             </ul>
+			     	</div>
+            	</c:otherwise>
+            </c:choose>
             
 	        </div>
+	        
 	    </div>
 	    
 <script type="text/javascript">

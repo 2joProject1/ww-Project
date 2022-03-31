@@ -78,7 +78,7 @@
                                     console.log(obj); //서버로 해당 객체를 전달해서 DB 연동 가능
                                 }
                             });
-                        }
+                        } 
                     }
                 },
                 editable: true, // false로 변경 시 draggable 작동 x 
@@ -90,7 +90,7 @@
         
         
         $(function(){ 
-
+        	
         	  $(".fc-addEventButton-button").click(function(){
         	    $(".modal2").fadeIn();
         	  });
@@ -103,23 +103,51 @@
     </script>
     <script>
     $(function(){
-    	console.log(calendar);
-    	$.ajax({
-    		url : "selectDto.of",
-    		success : function(e){
-    			for(var i=0; i< e.length;i++){
-    			calendar.addEvent({
-    				title:e[i].MEMBER_NAME,
-    				start:e[i].OFF_START,
-    				end:e[i].OFF_END
-    				})
-    			}
-    			
-    		},
-    		error : function(){
-    			console.log("휴가신청인원 불러오기실패");
-    		}
-    	})
+    	var rank = ${loginUser.rankNo}
+    	console.log('rank:::'+rank);
+    	if(rank == 5){
+    		$.ajax({
+        		url : "adminSelectDto.of",
+        		data : {deptNo : ${loginUser.deptNo} },
+        		success : function(e){
+        			for(var i=0; i< e.length;i++){
+        			calendar.addEvent({
+        				title:e[i].MEMBER_NAME,
+        				start:e[i].OFF_START,
+        				end:e[i].OFF_END
+        				})
+        			}
+        			$('.fc-addEventButton-button').css("display","none");
+        	    		
+        		},
+        		error : function(){
+        			console.log("휴가신청인원 불러오기실패");
+        		}
+        	})
+    	}else{
+    		$.ajax({
+        		url : "selectDto.of",
+        		data : {memberNo : ${loginUser.memberNo} },
+        		success : function(e){
+        			var myOff = 0;
+        			for(var i=0; i< e.length;i++){
+        				myOff = myOff + e[i].OFF_DAYS+1;
+        			calendar.addEvent({
+        				title:e[i].MEMBER_NAME,
+        				start:e[i].OFF_START,
+        				end:e[i].OFF_END
+        				})
+        			}
+        			console.log(e);
+        			$('.myOff').text(myOff);
+        			
+        		},
+        		error : function(){
+        			console.log("휴가신청인원 불러오기실패");
+        		}
+        	})
+    	}
+    	
     })
     
     
@@ -197,6 +225,12 @@ table.calendar td{
   	text-decoration: none; 
   	font-size: 15px;
   }
+    .sub-menu{
+  	font-size: 17px;
+  	margin-left:12%;
+  	font-family: 'Nanum Gothic', sans-serif;
+  }
+  
   
   <!-- 모달창 -->
   .fc-addEventButton-button{
@@ -226,7 +260,7 @@ table.calendar td{
   line-height:23px; cursor:pointer;
 }
   
-  
+
 </style>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
  	<link rel="stylesheet" href="resources/css/layout.css">
@@ -246,7 +280,7 @@ table.calendar td{
 		                <a href="main.cm"><b>근태관리</b></a>
 		                <br><br>
 		                
-		                <i class="fi fi-rs-chart-tree"></i>&nbsp;
+		                <i class="xi-cafe"></i>&nbsp;
 		                <a href="list.of"><b>휴가관리</b></a>
 		                <br>
 		                <div class="sub-menu">
@@ -277,10 +311,7 @@ table.calendar td{
             </div>
 
             <div id="calender-area">
-                월별조회 <input type="month" name="month"> 
-                
-               <br><br><br>
-				
+				<br>
 			                
    <div id="calendarBox">
         <div id="calendar"></div>
@@ -290,10 +321,10 @@ table.calendar td{
    <div class="modal2">
 		<div class="modal_content2" 
 			title="클릭하면 창이 닫힙니다.">
+			<br>
 			- 내 휴가 확인 -<br>
-			ㅇㅇ팀 사원 김사원 <br><br>
-			발생 휴가 : 20 <br>
-			사용 휴가 : 3 <br> 
+			발생 휴가 : 20 <br> 
+			사용 휴가 : <span class="myOff"></span> <br>
 		</div>
 	</div>
 

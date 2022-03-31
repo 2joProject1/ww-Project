@@ -111,6 +111,13 @@
   	text-decoration : none;
   	font-size: 15px;
   }
+    .sub-menu{
+  	font-size: 17px;
+  	margin-left:12%;
+  	font-family: 'Nanum Gothic', sans-serif;
+  }
+  
+
 </style>
   
  	<link rel="stylesheet" href="resources/css/layout.css">
@@ -143,6 +150,7 @@
 						</div>
 		                
 		                &nbsp;
+		                <i class="xi-cafe"></i>
 		                <a href="list.of"><b>휴가관리</b></a>
 		                <br><br>
 		            </ul>

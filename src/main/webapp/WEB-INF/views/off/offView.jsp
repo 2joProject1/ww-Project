@@ -136,9 +136,16 @@
 	function dateresult(){
 		var start = $("input[name=offStart]").val();
 		var end = $("input[name=offEnd]").val();
-		var nstart = start.substring(8);
-		var nend = end.substring(8);
-		$("input[name=offDays]").val(nend-nstart);
+		
+		const date1 = new Date(end);
+		const date2 = new Date(start);
+		  
+		const diffDate = date1.getTime() - date2.getTime();
+		  
+		const dateDays = Math.abs(diffDate / (1000 * 3600 * 24));
+		  
+		console.log(dateDays);
+		$("input[name=offDays]").val(dateDays+1);
 	}
 
 
@@ -156,7 +163,7 @@
 		                <a href="main.cm"><b>근태관리</b></a>
 		                <br><br>
 		                
-		                <i class="fi fi-rs-chart-tree"></i>&nbsp;
+		                <i class="xi-cafe"></i>&nbsp;
 		                <a href="list.of"><b>휴가관리</b></a>
 		                <br>
 		                <div class="sub-menu">
@@ -247,6 +254,33 @@
             
 	        </div>
 	    </div>
+	    
+	    <div id="pagingArea">
+                <ul class="pagination">
+                <c:choose>
+                	<c:when test="${ pi.currentPage eq 1 }">
+                    	<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li><!-- 1번페이지일 경우 -->
+                	</c:when>
+                	<c:otherwise>
+                		<li class="page-item"><a class="page-link" href="list.of?cpage=${ pi.currentPage - 1 }">Previous</a></li>
+                	</c:otherwise>
+                </c:choose>
+                    
+                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
+                    <li class="page-item"><a class="page-link" href="list.of?cpage=${ p }">${ p }</a></li>
+                    </c:forEach>
+
+					<c:choose>
+						<c:when test="${ pi.currentPage eq pi.maxPage }">
+                    	<li class="page-item disabled"><a class="page-link" href="#">Next</a></li><!-- 마지막 페이지 일 경우 -->
+						</c:when>
+						
+						<c:otherwise>
+                    	<li class="page-item"><a class="page-link" href="list.of?cpage=${ pi.currentPage + 1 }">Next</a></li><!-- 마지막 페이지 일 경우 -->
+						</c:otherwise>
+					</c:choose>
+                </ul>
+            </div>
 
 </body>
 </html>

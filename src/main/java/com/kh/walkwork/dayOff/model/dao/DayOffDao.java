@@ -65,8 +65,12 @@ public class DayOffDao {
 		return sqlSession.update("offMapper.adminSearchCountOff",off);
 	}
 
-	public List<Object> selectDto(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectList("offMapper.selectDto");
+	public List<Object> selectDto(SqlSessionTemplate sqlSession, int memberNo) {
+		return sqlSession.selectList("offMapper.selectDto", memberNo);
+	}
+
+	public List<Object> adminSelectDto(SqlSessionTemplate sqlSession, int deptNo) {
+		return sqlSession.selectList("offMapper.adminSelectDto", deptNo);
 	}
 	
 

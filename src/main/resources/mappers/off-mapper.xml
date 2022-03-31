@@ -56,6 +56,8 @@
 			, TO_CHAR(REQUEST_DATE, 'YYYY-MM-DD') AS REQUEST_DATE
 			, D.STATUS
 			, OFF_DAYS
+			, OFF_VOLUME
+			, OFF_EMPLOY
 			, M.MEMBER_NAME MEMBER_NAME
 			, T.DEPT_NAME DEPT_NAME
 		FROM DAYOFF D
@@ -109,7 +111,7 @@
 			FROM DAYOFF D
 			JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
 			JOIN DEPT T ON ( M.DEPT_NO = T.DEPT_NO)
-			WHERE T.DEPT_NO = #{deptNo}
+			WHERE T.DEPT_NO = #{offDept}
 			ORDER BY D.OFF_NO DESC
 	</select>
 
@@ -118,7 +120,7 @@
 		FROM DAYOFF D
 		JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
 		JOIN DEPT T ON ( M.DEPT_NO = T.DEPT_NO)
-		WHERE T.DEPT_NO = #{deptNo}
+		WHERE T.DEPT_NO = #{offDept}
 	</select>
 	
 	<update id="adminApprovalOff" parameterType="off">
@@ -138,28 +140,49 @@
 				TO_CHAR(REQUEST_DATE, 'YYYY-MM-DD') AS REQUEST_DATE,
 				D.STATUS, 
 				OFF_DAYS,
+				OFF_VOLUME,
+				OFF_EMPLOY,
 				M.MEMBER_NAME MEMBER_NAME, 
 				T.DEPT_NAME DEPT_NAME
 		FROM DAYOFF D
 		JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
 		JOIN DEPT T ON ( M.DEPT_NO = T.DEPT_NO)
 		WHERE REQUEST_DATE BETWEEN #{offStart} AND #{offEnd}
+		AND T.DEPT_NO = #{offDept}
 		ORDER BY D.OFF_NO DESC
 	</select>
 	
 	<select id="adminSearchCountOff" resultType="_int" parameterType="off">
 		SELECT COUNT(*)
-		FROM DAYOFF
-		WHERE REQUEST_DATE BETWEEN #{offStart} AND #{offEnd}
-	</select>
-	
-	<select id="selectDto" resultType="HashMap">
-		SELECT 
-				M.MEMBER_NO OFF_WRITER,
-				M.MEMBER_NAME MEMBER_NAME,
-		to_char(OFF_START,'YYYY-MM-DD') as OFF_START,
-		to_char(OFF_END,'YYYY-MM-DD') as OFF_END
 		FROM DAYOFF D
 		JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
+		JOIN DEPT T ON ( M.DEPT_NO = T.DEPT_NO)
+		WHERE REQUEST_DATE BETWEEN #{offStart} AND #{offEnd}
+		AND T.DEPT_NO = #{offDept}
+	</select>
+	
+	<select id="selectDto" resultType="HashMap" parameterType="_int">
+		SELECT 
+				M.MEMBER_NO OFF_WRITER,
+				M.MEMBER_NAME MEMBER_NAME, 
+		to_char(OFF_START,'YYYY-MM-DD') as OFF_START,
+		to_char(OFF_END+1,'YYYY-MM-DD') as OFF_END,
+		D.OFF_DAYS
+		FROM DAYOFF D
+		JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
+		WHERE D.STATUS = 'Y'
+		AND M.MEMBER_NO = #{memberNo}
+	</select>
+	<select id="adminSelectDto" resultType="HashMap" parameterType="_int">
+		SELECT 
+				M.MEMBER_NO OFF_WRITER,
+				M.MEMBER_NAME MEMBER_NAME, 
+		to_char(OFF_START,'YYYY-MM-DD') as OFF_START,
+		to_char(OFF_END+1,'YYYY-MM-DD') as OFF_END,
+		D.OFF_DAYS
+		FROM DAYOFF D
+		JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
+		WHERE D.STATUS = 'Y'
+		AND M.DEPT_NO = #{deptNo}
 	</select>
 </mapper>
