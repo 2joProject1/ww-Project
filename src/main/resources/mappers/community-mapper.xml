@@ -106,8 +106,8 @@
 		from
 			board_all
 		where
-			board_type = '4' and status = 'Y' and board_title like '%'||#{search}||'%'
-			and BOARD_CONTENT like '%'||#{search}||'%' 
+			board_type = '4' and status = 'Y' and (board_title like '%'||#{search}||'%'
+			or BOARD_CONTENT like '%'||#{search}||'%' )
 		order by
 		 board_no desc	
 		
@@ -134,8 +134,8 @@
 		from
 			board_all
 		where
-			board_type = '4' and status = 'Y' and board_title like '%'||#{boardTitle}||'%' and BOARD_WRITER = #{boardWriter}
-			and BOARD_CONTENT like '%'||#{boardTitle}||'%'
+			board_type = '4' and status = 'Y'  and BOARD_WRITER = #{boardWriter}
+			and (BOARD_CONTENT like '%'||#{boardTitle}||'%' or board_title like '%'||#{boardTitle}||'%')
 		order by
 		 board_no desc	
 		

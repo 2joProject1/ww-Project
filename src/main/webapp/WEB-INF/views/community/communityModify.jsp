@@ -120,13 +120,13 @@ width: 90px;
 
 			<div class="row">
 				<div style="border: 1px solid #CCCCCC; width: 200px; height: 135px" class="col-2">
-					<img alt="img1" src="/filepath/${attachment[0].fileName }" id="cm_img1" class="cm_images" onerror="this.style.display='none';">
+					<img alt="img1" src="resources/coFile/${attachment[0].fileName }" id="cm_img1" class="cm_images" onerror="this.style.display='none';">
 				</div>
 				<div style="border: 1px solid #CCCCCC; width: 200px; height: 135px" class="col-2">
-					<img alt="img2" src="/filepath/${attachment[1].fileName }" id="cm_img2" class="cm_images" onerror="this.style.display='none';">
+					<img alt="img2" src="resources/coFile/${attachment[1].fileName }" id="cm_img2" class="cm_images" onerror="this.style.display='none';">
 				</div>
 				<div style="border: 1px solid #CCCCCC; width: 200px; height: 135px" class="col-2">
-					<img alt="img3" src="/filepath/${attachment[2].fileName }" id="cm_img3" class="cm_images" onerror="this.style.display='none';">
+					<img alt="img3" src="resources/coFile/${attachment[2].fileName }" id="cm_img3" class="cm_images" onerror="this.style.display='none';">
 				</div>
 				<div class="col-6"></div>
 				<div class="col-2">

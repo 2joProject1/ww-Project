@@ -239,7 +239,7 @@ div.prof-info-wrap:target+.dim {
 						<div class="container">
 							<div class="row memberModalFont">
 								<div class="col-4" style="margin-bottom: 10px">
-									<img src="/filepath/${loginUser.file }" alt="person"
+									<img src="resources/coFile/${loginUser.file }" alt="person"
 										class="img-circle" width="100%"
 										onerror='this.src="resources/images/person-fill.svg"'>
 								</div>

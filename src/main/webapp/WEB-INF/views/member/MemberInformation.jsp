@@ -42,7 +42,7 @@
 		<br><br><br><br><br><br><br>
 		<div class="col-5">
 			<div class="memberImg" style="margin-left:95px">
-				<img id="mem_img" src="/filepath/${memberInfo.file }" onerror='this.src="resources/images/person-fill.svg"' alt="profileImg">
+				<img id="mem_img" src="resources/coFile/${memberInfo.file }" onerror='this.src="resources/images/person-fill.svg"' alt="profileImg">
 
 				<div id="ImghiddenBtn">
 					<button onclick="mem_submitFiles()">이대로 저장</button>
@@ -188,6 +188,7 @@
 			data : form,
 			success:function(data){
 				alert("프로필 변경 완료");
+				window.location.reload();
 			},
 			error : function(jqXHR,txt){
 				alert("프로필 변경 오류");
@@ -197,7 +198,7 @@
 	
 	// 되돌리기
 	function undoBtn(){
-		$('#mem_img').attr("src", "/filepath/"+$('#imgSrc').val());
+		$('#mem_img').attr("src", "resources/coFile/"+$('#imgSrc').val());
 		$('#ImghiddenBtn').css('display', 'none');
 	}
 	
