@@ -57,7 +57,7 @@ public class MemberController {
 //	회원가입
 	@RequestMapping("insert.me")
 	public String insertMember(Member m, Model model, HttpSession session, HttpServletRequest request) {
-		// 주소 합치기
+		//주소 합치기
 		String str = m.getAddress();
 		String[] strArr = str.split(",", 3);
 
@@ -65,6 +65,7 @@ public class MemberController {
 
 		// 암호화 작업(암호문을 만들어내는 과정)
 		String encPwd = bcryptPasswordEncoder.encode(m.getMemberPwd());
+
 
 		m.setMemberPwd(encPwd);
 
@@ -156,10 +157,8 @@ public class MemberController {
 	      } 
 	      // 아이디 존재 + 임시비밀번호 일치
 	      else if(loginUser != null && m.getMemberPwd().equals(loginUser.getTmpPwd())) {
-//	         System.out.println("임시비밀번호일치");
 	         session.setAttribute("loginUser", loginUser);
 	         mv.addObject("alertMsg", "로그인성공");
-//	         mv.setViewName("common/main");
 	         mv.setViewName("redirect:main");
 	         
 	         //로그인 성공 시 임시비밀번호 삭제(일회용, 더이상 사용할 수 없도록)
@@ -181,11 +180,10 @@ public class MemberController {
 
 	         
 	         if(loginFail > 5) {
-//	            System.out.println("5회초과");
 	            mv.addObject("loginFail", loginFail);
 	            mv.setViewName("member/changePwd");
 	            
-	            request.setAttribute("countOverMsg", "로그인 실패 횟수가 5회를 초과하였습니다. 비밀번호 변경 페이지로 이동합니다.");
+	            session.setAttribute("countOverMsg", "로그인 실패 횟수가 5회를 초과하였습니다. 비밀번호 변경 페이지로 이동합니다.");
 	            return mv;
 	            
 	         } 
@@ -261,7 +259,6 @@ public class MemberController {
 
 		// 있는 회원인지 조회
 		Member resultMember = memberService.searchMember(m);
-		System.out.println(resultMember);
 
 		if (resultMember != null) {
 

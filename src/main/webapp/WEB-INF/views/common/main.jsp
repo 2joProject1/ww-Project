@@ -168,42 +168,133 @@
 		</div>
 		<div id="todolist-area">
 			<span class="main_title_text">TODOLIST</span>
-			<br>
-			<table id="todo_tb">
+			<br><br>
+			<table id="todo_tb" style="margin-left:30px">
 				<tbody>
-<%-- 					<c:forEach var="n" items="${ todo }">
+				
+ <%--  				정적으로 추가	
+ 					<c:forEach var="n" items="${ todo }">
 						<tr style="height:35px;">
 							<td class="boardNo">${n.boardNo}</td>
 							<td class="check">&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkList" class="check"></td>
 							<td class="content">${n.content}</td>
 						</tr>
-					</c:forEach> --%>
+					</c:forEach>  --%>
 				</tbody>
 			</table>
 			
-			
-<%-- 			<ul>
-				<c:forEach var="n" items="${ todo }">
-					<li>
-						<input type="checkbox" name="checkList" value="${n.content}">
-						<label for="checkList">${n.content}</label>
-					</li>
-				</c:forEach>
 
-			</ul> --%>
 		</div>
 		</div>
 	</div>
 	<script>
-		window.onload = $(function() {
+ 		window.onload = $(function() {
 			$('.bno').hide();
 			$('.mno').hide();
-			$('.boardNo').hide();
+		})
 
+
+		
+		
+		$(function() {
+			$("#noticeList>tbody>tr").click(
+				function() {
+					location.href = 'detail.no?bno='
+							+ $(this).children(".bno").text() + '&mno='
+							+ $(this).children(".mno").text();
+				})
 		})
 		
-		
+	//동적추가
+ 		window.onload = $(function() {
+			$(function() {
+				$.ajax({
+	    			url : "test.main",
+					success : function(data){
+						console.log(data);
+						let value="";
+						for(let i in data){
+							value += "<tr style='height:35px;'>"
+									+ "<td class='boardNo'>" + data[i].boardNo + "</td>"
+									+ "<td class=check'>" + "<input type='checkbox' name='checkList' class='check'>" + "</td>"
+									+ "<td class='content'>" + data[i].content + "</td>"
+									+ "</tr>";
+									
+						$("#todo_tb>tbody").html(value);
+						$('.boardNo').hide();
+						}
+	    			}
+				})
+			})
+		}) 
 
+
+	//동적
+		$(function() {
+			$(document).on("click", "#todo_tb>tbody>tr", function() {
+				var $boardNo = $(this).children(".boardNo").text();
+				var $content = $(this).children(".content").text();
+	            var $memberNo = ${loginUser.memberNo};
+	            
+	            
+	            $(this).find(".check").attr("checked", true);
+	            $(this).children(".content").css('text-decoration', 'line-through');
+	            
+		        alert($content + "을(를) 완료합니다.");
+		            
+	            setTimeout(function(){
+		            $.ajax({
+						
+		            	url : "complete.to",
+		    			data : {
+		    						boardNo : $boardNo,
+		    						content : $content,
+		    						memberNo : $memberNo
+		    					},
+		    			success : function(data){
+							let value="";
+							
+							for(let i in data){
+								value += "<tr style='height:35px;'>"
+										+ "<td class='boardNo'>" + data[i].boardNo + "</td>"
+										+ "<td class=check'>" + "<input type='checkbox' name='checkList' class='check'>" + "</td>"
+										+ "<td class='content'>" + data[i].content + "</td>"
+										+ "</tr>";
+										
+							$("#todo_tb>tbody").html(value);
+							$('.boardNo').hide();
+							}
+		    			}
+		    		}) //ajax끝
+	            },   3000); //set time 끝
+			})
+		})
+ 		
+ 	//정적으로 로드 -> 동적으로 완료
+/* 		$(function() {
+			$("#todo_tb>tbody>tr").click(function() {
+					console.log($(this));
+					var $boardNo = $(this).children(".boardNo").text();
+					var $content = $(this).children(".content").text();
+		            var $memberNo = ${loginUser.memberNo};
+		            
+		            $(this).find(".check").attr("checked", true);
+		            $(this).children(".content").css('text-decoration', 'line-through');
+		            
+		    		$.ajax({
+		    			url : "complete.to",
+		    			data : {
+		    						boardNo : $boardNo,
+		    						content : $content,
+		    						memberNo : $memberNo
+		    					},
+						complete : function(mv){
+							console.log(mv);
+						}
+		    		})
+				})
+		}) */
+		
 
 	</script>
 </body>

@@ -57,7 +57,7 @@
 	<div id="notice_title">
 		<div class="d-flex">
 			<div class="p-2" id="notice_banner">공지사항</div>
-			<div class="p-2 ml-auto">
+			<div class="p-2 ml-auto" style="margin-bottom:20px">
 				<c:if test="${ loginUser.rankNo eq 9 }">
 					<a href="enrollForm.no"><button id="write_btn" class="btn">글작성</button></a>				
 				</c:if>
@@ -124,9 +124,6 @@ window.onload = $(function(){
 	$(function(){
 		$("#noticeList>tbody>tr").click(function(){
 			location.href = 'detail.no?bno=' + $(this).children(".bno").text()+'&mno='+$(this).children(".mno").text();
-			console.log($(this).children(".bno").text())
-			console.log($(this).children(".writer").text())
-			console.log($(this).children(".mno").text())
 		})
 	})
        

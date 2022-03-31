@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="scheduleMapper">
+	<resultMap id="scheduleResultSet" type="schedule">
+		<result column="BOARD_NO" property="boardNo" />
+		<result column="MEMBER_NO" property="memberNo" />
+		<result column="START_DATE" property="startDate" />
+		<result column="END_DATE" property="endDate" />
+		<result column="PLACE" property="place" />
+		<result column="TITLE" property="title" />
+		<result column="CONTENT" property="content" />
+	
+	</resultMap>
+	<select id="mainScheduleList" parameterType="string" resultMap="scheduleResultSet">
+		select * from schedule
+		where member_no = #{memberNo}
+		order by start_date asc
+
+	</select>
+
+</mapper>
+
+
+
+
+
+
