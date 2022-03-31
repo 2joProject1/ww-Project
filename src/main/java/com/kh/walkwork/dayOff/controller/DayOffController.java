@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -54,12 +55,18 @@ public class DayOffController {
 		String offWriter = ((Member)session.getAttribute("loginUser")).getMemberNo();
 		int listCount = dayOffService.selectCountOff(offWriter);
 		//System.out.println(listCount);
-		PageInfo pi = Pagination.getPageInfo(listCount, 1, 10, 10); 
+		PageInfo pi = Pagination.getPageInfo(listCount, 1, 5, 5); 
 		//System.out.println(pi);
 		ArrayList<DayOff> list = dayOffService.selectListOff(offWriter, pi);
 		mv.addObject("list", list);
 		mv.addObject("pi", pi);
-		
+		System.out.println(list);
+		int myOff= 0;
+		for(int i =0; i<list.size(); i++) {
+			System.out.println(list.get(i).getOffDays());
+			myOff = myOff + list.get(i).getOffDays(); 
+		}
+		mv.addObject("myOff", myOff);
 		mv.setViewName("off/offView");
 		return mv;
 	
@@ -87,14 +94,36 @@ public class DayOffController {
 	}
 	
 	@RequestMapping(value = "approval.of")
-	public ModelAndView offApproval(ModelAndView mv, HttpSession session) {
-		int deptNo = Integer.parseInt(((Member)session.getAttribute("loginUser")).getDeptNo());
-		int listCount = dayOffService.adminSelectCountOff(deptNo);
-		
-		PageInfo pi = Pagination.getPageInfo(listCount, 1, 10, 10); 
-		ArrayList<DayOff> list = dayOffService.adminSelectListOff(deptNo, pi);
-		mv.addObject("list", list);
-		mv.addObject("pi", pi);
+	public ModelAndView offApproval(ModelAndView mv, HttpSession session, @RequestParam(value = "cpage", defaultValue = "1") int currentPage, 
+			@RequestParam(value = "searchPage", defaultValue = "1") int searchPage, 
+			@RequestParam(value = "offStart", defaultValue = "") String offStart, 
+			@RequestParam(value = "offEnd", defaultValue = "") String offEnd) {
+		int offDept = Integer.parseInt(((Member)session.getAttribute("loginUser")).getDeptNo());
+		System.out.println(searchPage);
+		if(searchPage == 1) {
+			
+			int listCount = dayOffService.adminSelectCountOff(offDept);
+			//(총게시물, 페이지넘버, 페이지당개수, 페이징개수) 기억하시고 나중에 수정 ㅇㅋ??
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10); 
+			ArrayList<DayOff> list = dayOffService.adminSelectListOff(offDept, pi);
+			mv.addObject("list", list);
+			mv.addObject("pi", pi);
+		}else {
+			DayOff off = new DayOff();
+			off.setOffDept(offDept);
+			off.setOffStart(offStart);
+			off.setOffEnd(offEnd);
+			System.out.println(off);
+			int listCount = dayOffService.adminSearchCountOff(off);
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10); 
+			ArrayList<DayOff> list = dayOffService.adminSearchListOff(off, pi);
+			mv.addObject("list", list);
+			mv.addObject("pi", pi);
+			
+		}
+		mv.addObject("offStart",offStart);
+		mv.addObject("offEnd",offEnd);
+		mv.addObject("searchPage",searchPage);
 		
 		mv.setViewName("off/offApprovalView");
 		return mv;
@@ -118,7 +147,7 @@ public class DayOffController {
 	}
 	
 	@RequestMapping("searchApproval.of") 
-	public ModelAndView offApproval(ModelAndView mv, HttpSession session, DayOff off) {
+	public ModelAndView offApproval(ModelAndView mv, HttpSession session, DayOff off, @RequestParam(value = "cpage", defaultValue = "1") int currentPage) {
 		System.out.println(off);
 		int listCount = dayOffService.adminSearchCountOff(off);
 		//System.out.println(listCount);
@@ -132,13 +161,21 @@ public class DayOffController {
 		return mv;
 	
 	}
-	
 	@ResponseBody
 	@RequestMapping("selectDto.of")
-	public List<Object> selectDto(){
-		List<Object> list = dayOffService.selectDto();
+	public List<Object> selectDto(int memberNo){
 		
+		List<Object> list = dayOffService.selectDto(memberNo);		
 		return list;
 	}
+	@ResponseBody
+	@RequestMapping("adminSelectDto.of")
+	public List<Object> adminSelectDto(int deptNo){
+		
+		List<Object> list = dayOffService.adminSelectDto(deptNo);		
+		return list;
+	}
+	
+	
 	
 }

@@ -75,9 +75,14 @@ public class DayOffServiceImpl implements DayOffService {
 	public int adminApprovalOff(DayOff off) {
 		return dayOffDao.adminApprovalOff(sqlSession, off);
 	}
-
-	public List<Object> selectDto() {
-		return dayOffDao.selectDto(sqlSession);
+	@Override
+	public List<Object> selectDto(int memberNo) {
+		return dayOffDao.selectDto(sqlSession, memberNo);
+	}
+	
+	@Override
+	public List<Object> adminSelectDto(int deptNo) {
+		return dayOffDao.adminSelectDto(sqlSession, deptNo);
 	}
 
 

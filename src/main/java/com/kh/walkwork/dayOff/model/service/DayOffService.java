@@ -1,6 +1,7 @@
 package com.kh.walkwork.dayOff.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.kh.walkwork.common.model.vo.PageInfo;
 import com.kh.walkwork.dayOff.model.vo.DayOff;
@@ -30,5 +31,9 @@ public interface DayOffService {
 	int adminSearchCountOff(DayOff off);
 	
 	public int adminApprovalOff(DayOff off);
+	
+	List<Object> selectDto(int memberNo);
+	
+	List<Object> adminSelectDto(int deptNo);
 
 }
