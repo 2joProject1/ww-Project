@@ -138,7 +138,7 @@ public class DayOffController {
 		int result = dayOffService.adminApprovalOff(off);
 		
 		if(result > 0) {
-			session.setAttribute("alertMsg", "승인완료");
+			session.setAttribute("alertMsg", "확인되었습니다.");
 		}else {
 			session.setAttribute("alertMsg", "승인실패");
 		}
