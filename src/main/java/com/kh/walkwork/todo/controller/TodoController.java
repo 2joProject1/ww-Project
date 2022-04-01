@@ -20,26 +20,15 @@ public class TodoController {
 	
 	@Autowired
 	private TodoService todoService;
-	/*
-	@RequestMapping(value="complete.to", produces="application/json; charset=utf-8")
-	public ModelAndView mainTodoDelete(Todo todo, ModelAndView mv) {
-		int result = todoService.mainTodoDelete(todo);
-		
-		String memberNo = todo.getMemberNo();
-		
-		
-		return mv.addObject("todo", todoService.mainTodoList(memberNo));
-	}
-	*/
 	@ResponseBody
 	@RequestMapping(value="complete.to", produces="application/json; charset=utf-8")
-	public String mainTodoDelete(Todo todo, ModelAndView mv) {
+	public String mainTodoDelete(Todo todo, ModelAndView mv, HttpSession session) {
+		System.out.println(todo);
+		Member loginUser = (Member)session.getAttribute("loginUser");
+		todo.setMemberNo(loginUser.getMemberNo());
+		System.out.println(todo);
 		int result = todoService.mainTodoDelete(todo);
-		
 		String memberNo = todo.getMemberNo();
-		
-		
-//		return mv.addObject("todo", todoService.mainTodoList(memberNo));
 		return new Gson().toJson(todoService.mainTodoList(memberNo));
 	}
 	
