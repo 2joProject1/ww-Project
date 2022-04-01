@@ -27,6 +27,8 @@
 		<result column="ENROLL_DATE" property="enrollDate" />
 		<result column="RESIGN_DATE" property="resignDate" />
 	
+		<result column="DEPT_NAME" property="deptName" />
+		<result column="RANK_NAME" property="rankName" />
 	
 	</resultMap>
 
@@ -113,8 +115,8 @@
 	<select id="selectAddrList" resultMap="memberResultSet">
 		select
 		        member_no, 
-		        dept_name dept_no, 
-		        rank_name rank_no, 
+		        dept_name, 
+		        rank_name, 
 		        member_name, 
 		        email,
 		        phone,
@@ -127,8 +129,18 @@
 		        rank using (rank_no)
 		 where
 		        status = 'Y'
+		   and  
+		   		member_no NOT IN (#{memberNo})
 
 	</select>
+	
+	<select id="selectChatMemeber" resultMap="memberResultSet">
+		select member_name
+		  from member
+		 where member_no = #{memberNo}
+	</select>
+	
+	
 	<!-- 윤희 -->
 	<!-- 멤버 정보 -->
 	<select id="selectMemberInformation" resultMap="memberResultSet">

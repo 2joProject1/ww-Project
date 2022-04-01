@@ -22,6 +22,8 @@
 		<typeAlias type="com.kh.walkwork.signoffs.model.vo.Signoffs" alias="signoffs" />
 		<typeAlias type="com.kh.walkwork.signoffs.model.vo.Document" alias="document" />
 		<typeAlias type="com.kh.walkwork.notice.model.vo.Notice" alias="notice" />
+		<typeAlias type="com.kh.walkwork.chatContent.model.vo.ChatContent" alias="chatContent" />
+		<typeAlias type="com.kh.walkwork.chatMember.model.vo.ChatMember" alias="chatMember" />
 	</typeAliases>
 	
 	
@@ -37,6 +39,9 @@
 		<mapper resource="/mappers/document-mapper.xml" />
 		<mapper resource="/mappers/signoffs-mapper.xml" />
 		<mapper resource="/mappers/notice-mapper.xml" />
+		<mapper resource="/mappers/chat-mapper.xml" />
+		<mapper resource="/mappers/chatMember-mapper.xml" />
+		<mapper resource="/mappers/chatContent-mapper.xml" />
 	</mappers>
 		<!-- 유의사항 : 미리 등록해두려면 해당 mapper파일이 진짜 존재하고 있는 상태여야함(namespace까지) -->
 

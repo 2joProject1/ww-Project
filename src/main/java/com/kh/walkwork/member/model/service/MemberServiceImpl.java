@@ -85,8 +85,8 @@ public class MemberServiceImpl implements MemberService{
 
 	//------------헤더--------------
 	@Override
-	public ArrayList<Member> selectAddrList() {
-		return memberDao.selectAddrList(sqlSession);
+	public ArrayList<Member> selectAddrList(String memberNo) {
+		return memberDao.selectAddrList(sqlSession, memberNo);
 	}
-
+	
 }

@@ -26,9 +26,7 @@ public interface MemberService {
 	
 
 	// 헤더
-	ArrayList<Member> selectAddrList();
-	
-	
+	ArrayList<Member> selectAddrList(String memberNo);
 
 	// ---윤희
 	public Member selectMemberInformation(Member m);

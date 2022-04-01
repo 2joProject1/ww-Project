@@ -14,6 +14,7 @@ public class Member {
 	private String deptNo;
 	private String deptName;
 	private String rankNo;
+	private String rankName;
 	private String memberName;
 	private String memberPwd;
 	private String birth;
