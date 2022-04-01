@@ -22,12 +22,14 @@ CHAT_FILEPATH	VARCHAR2(500 BYTE)
 public class ChatContent {
 	
 	private int ccNo;
-	private int chatNo;
+	private String chatNo;
 	private String memberNo;
 	private Date chatDate;
 	private String chatContent;
 	private int chatFix;
 	private String chatImg;
 	private String chatFilePath;
+	private String formatDate;
+	private String memberName;
 
 }

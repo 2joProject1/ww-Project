@@ -12,207 +12,172 @@
 <link rel="stylesheet" href="resources/css/header.css">
 
 <!-- 부트스트랩관련 -->
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-<script
-	src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
-	integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
-	crossorigin="anonymous"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
-	integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
-	crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 
 <!-- 아이콘관련 -->
-<link rel="stylesheet"
-	href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
 
 <!-- ajax -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <title>Document</title>
 
 <style>
-.pop {
-	background-color: rgba(203, 212, 212, 0.918);
-	width: 350px;
-	height: 600px;
-	position: absolute;
-	right: 230px;
-	display: none;
-}
+  .pop{
+    background-color: rgba(203, 212, 212, 0.918);
+    width: 350px;
+    height: 600px;
+    position: absolute;
+    right: 230px;
+    display: none;
+  }
+  
+  #title>a{
+    text-decoration: none;
+    color:black;
+  }
 
-#title>a {
-	text-decoration: none;
-	color: black;
-}
+  .chat-button{
+    background-color: rgb(203, 212, 212);
+    border: none;
+    font-weight: bolder;
+    color: rgb(66, 66, 66);
+    margin: 13px 0 0 15px;
+  }
+  .scroll_div::-webkit-scrollbar {
+  width: 6px;
+  }
+  .scroll_div::-webkit-scrollbar-thumb {
+    background-color: #2f3b42;
+  }
+  .scroll_div::-webkit-scrollbar-track {
+    background-color: grey;
+  }
+  .chat_li, .addr_li{
+    height: 70px;
+    align-content: center;
+    align-items: center;
+    padding: 8px 10px;
+    background-color: rgba(236, 255, 255, 0.603);
+  }
+  .chat_li>*, .addr_li>*{
+    display: inline-block;
+    /* float: left; */
+  }
+  .chat_search{
+    /* 클릭되었을 때 색상 바꾸는 법은 모징? */
+    /* background-color: #2f3b42; */
+  }
+  
+  .prof-info-wrap {
+    background-color: rgb(245, 245, 245);
+    border-radius: 5px;
+    box-shadow: 0px 10px 20px -10px rgba(0,0,0,0.75);
+    color: #747474;
+    position: absolute;
+    width: 350px;
+    max-width: 100%;
+    text-align: center;
+    left: 700px;
+    height: 350px;
+    z-index: 3;
+  }
+  /* 버튼 색 바꾸깅 */
+  button.primary {
+    background-color: #03BFCB;
+    border: 1px solid #03BFCB;
+    border-radius: 3px;
+    color: #231E39;
+    font-weight: 500;
+    padding: 10px 25px;
+    margin-bottom: 15px;
+    width: 300px;
+  }
+  .dim{
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.4);
+    position: fixed;
+  }
+  div.prof-info-wrap:target + .dim {
+    position: fixed;
+    z-index: 2;
+    transition: all 0.5s;
+  }
+  .search-icon{
+    position: absolute;
+    left: 635px;
+  }
 
-.chat-button {
-	background-color: rgb(203, 212, 212);
-	border: none;
-	font-weight: bolder;
-	color: rgb(66, 66, 66);
-	margin: 13px 0 0 15px;
-}
-
-.scroll_div::-webkit-scrollbar {
-	width: 6px;
-}
-
-.scroll_div::-webkit-scrollbar-thumb {
-	background-color: #2f3b42;
-}
-
-.scroll_div::-webkit-scrollbar-track {
-	background-color: grey;
-}
-
-.chat_li, .addr_li {
-	height: 70px;
-	align-content: center;
-	align-items: center;
-	padding: 8px 10px;
-	background-color: rgba(236, 255, 255, 0.603);
-}
-
-.chat_li>*, .addr_li>* {
-	display: inline-block;
-	/* float: left; */
-}
-
-.chat_search {
-	/* 클릭되었을 때 색상 바꾸는 법은 모징? */
-	/* background-color: #2f3b42; */
-	
-}
-
-.prof-info-wrap {
-	background-color: rgb(245, 245, 245);
-	border-radius: 5px;
-	box-shadow: 0px 10px 20px -10px rgba(0, 0, 0, 0.75);
-	color: #747474;
-	position: absolute;
-	width: 350px;
-	max-width: 100%;
-	text-align: center;
-	left: 700px;
-	height: 350px;
-	z-index: 3;
-}
-/* 버튼 색 바꾸깅 */
-button.primary {
-	background-color: #03BFCB;
-	border: 1px solid #03BFCB;
-	border-radius: 3px;
-	color: #231E39;
-	font-weight: 500;
-	padding: 10px 25px;
-	margin-bottom: 15px;
-	width: 300px;
-}
-
-.dim {
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	background-color: rgba(0, 0, 0, 0.4);
-	position: fixed;
-}
-
-div.prof-info-wrap:target+.dim {
-	position: fixed;
-	z-index: 2;
-	transition: all 0.5s;
-}
-
-.search-icon {
-	position: absolute;
-	left: 635px;
-}
-
-.prof-content {
-	margin: 0;
-	float: left;
-	display: block;
-}
-
-.pElement {
-	height: 24px;
-	margin-left: 15px;
-}
+  .prof-content{
+    margin: 0;
+    float: left;
+    display: block;
+  }
+   .pElement{
+     height: 24px;
+     margin-left: 15px;
+   }
 </style>
 </head>
 <body>
-	<c:if test="${ not empty alertMsg }">
-		<script>
-			alert("${ alertMsg }");
-		</script>
-		<c:remove var="alertMsg" scope="session" />
-	</c:if>
 
-	<div id="header">
-		<div id="title">
-			<!--  style="margin-bottom: -15px;" 강사님이 고쳐주신 코드. flex넣으니까 쳐지는거 해결되어서 삭제했는데 문제생기면 다시 추가 -->
-			<a href="main">WALK-WORK</a>
-		</div>
-		<div id="search-area" style="position: relative;">
-			<input type="text"> <span class="search-icon"> <label>
-					<i class="xi-search"></i>
-			</label>
-			</span>
-		</div>
-		<div id="banner-area">
-			<i class="xi-message-o popup" style="margin-right: 15px;"></i> <i
-				class="xi-bell-o">&nbsp;</i> <i class="xi-profile"
-				data-bs-toggle="modal" data-bs-target="#memberModal">&nbsp;</i>
+<div id="header">
+  <div id="title"> <!--  style="margin-bottom: -15px;" 강사님이 고쳐주신 코드. flex넣으니까 쳐지는거 해결되어서 삭제했는데 문제생기면 다시 추가 -->
+    <a href="main">WALK-WORK</a>
+  </div>
+  <div id="search-area" style="position: relative;">
+    <input type="text">
+    <span class="search-icon">
+    	<label>
+	    	<i class="xi-search"></i>
+    	</label>
+    </span>
+  </div>
+  <div id="banner-area">
+    <i class="xi-message-o popup" style="margin-right: 15px;"></i>
+    <i class="xi-bell-o">&nbsp;</i>
+    
+    <i class="xi-profile" data-bs-toggle="modal" data-bs-target="#memberModal">&nbsp;</i>
+    
+    <div class="pop" style="font-size: 15px;">
+        <div>
+          <button class="chat-button" id="chat_btn">채팅</button>
+          <button class="chat-button" id="addr_btn">연락처</button>
+          <div style="display: inline; float: right; margin: 10px 15px 0 0;" onclick="chatInvite();">
+            <i class="xi-plus-circle-o xi-2x"></i>
+          </div>
+        </div>
+        <hr style="height: 2px; margin-bottom: 5px;">
+        <div>
+          <input class="form-control me-2 chat_search" type="search" placeholder="채팅방 또는 이름 검색" aria-label="Search" style="margin-bottom: 5px;">
 
-			<div class="pop" style="font-size: 15px;">
-				<div>
-					<button class="chat-button" id="chat_btn">채팅</button>
-					<button class="chat-button" id="addr_btn">연락처</button>
-					<div style="display: inline; float: right; margin: 10px 15px 0 0;" onclick="chatInvite();">
-						<i class="xi-plus-circle-o xi-2x"></i>
-					</div>
-				</div>
-				<hr style="height: 2px; margin-bottom: 5px;">
-				<div>
-					<input class="form-control me-2 chat_search" type="search"
-						placeholder="채팅방 또는 이름 검색" aria-label="Search"
-						style="margin-bottom: 5px;">
-
-					<div class="scroll_div" style="overflow-y: auto; height: 485px;">
-						<!-- 채팅창 리스트 -->
-						<ul class="list-group chat_ul">
-							<li
-								class="list-group-item justify-content-between align-items-center chat_li">
-								<i class="xi-group xi-3x"></i>
-								<div style="margin-left: 6px;">
-									<div>채팅방이름</div>
-									<div>안녕하세영</div>
-								</div> <span class="badge bg-primary rounded-pill"
-								style="float: right; margin-top: 15px;">14</span>
-							</li>
-						</ul>
-						<!-- 연락처 리스트 -->
-						<div class="list-group addr_ul">
-							<!-- 
+          <div class="scroll_div" style="overflow-y: auto; height: 485px;">
+            <!-- 채팅창 리스트 -->
+            <ul class="list-group chat_ul">
+              <li class="list-group-item justify-content-between align-items-center chat_li">
+                <i class="xi-group xi-3x"></i>
+                <div style="margin-left: 6px;">
+                  <div>채팅방이름</div>
+                  <div>안녕하세영</div>
+                </div>
+                <span class="badge bg-primary rounded-pill" style="float: right; margin-top: 15px;">14</span>
+              </li>
+            </ul>
+            <!-- 연락처 리스트 -->
+            <div class="list-group addr_ul">
+            	<!-- 
               <li class="list-group-item justify-content-between align-items-center addr_li">
                 <i class="xi-profile xi-3x"></i>
                 <div  style="margin-left: 6px;">
@@ -226,8 +191,6 @@ div.prof-info-wrap:target+.dim {
 				</div>
 			</div>
 		</div>
-
-
 
 		<!-- 윤희 계정정보 Modal -->
 		<div class="modal" id="memberModal" tabindex="-1"
@@ -311,7 +274,7 @@ div.prof-info-wrap:target+.dim {
 
 	<script>
 	$(".popup").click(function(){
-	    console.log("ㅣㅅ발");
+	    console.log("zzzzz");
 	    $(".pop").toggle();
 	    $(".chat_ul").show();
 	    $("#chat_btn").click();
@@ -485,6 +448,7 @@ div.prof-info-wrap:target+.dim {
 			$(".addr_ul").hide();
 		});
 	</script>
+
 
 </body>
 </html>

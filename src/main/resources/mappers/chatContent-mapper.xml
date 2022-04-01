@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="chatContentMapper">
+
+	<resultMap type="chatContent" id="chatContentResultSet">
+		<result column="CHAT_NO" property="chatNo" />
+		<result column="MEMBER_NO" property="memberNo" />
+		<result column="CHAT_DATE" property="chatDate" />
+		<result column="CHAT_CONTENT" property="chatContent" />
+		<result column="CHAT_FIX" property="chatFix" />
+		<result column="CHAT_IMG" property="chatImg" />
+		<result column="CHAT_FILEPATH" property="chatFilePath" />
+		
+		<result column="MEMBER_NAME" property="memberName" />
+	</resultMap>
+
+	<select id="selectOtherChatContent" parameterType="String" resultType="arrayList" resultMap="chatContentResultSet">
+		select m.member_name, m.member_no, c.chat_content, c.chat_date
+		  from chat_content c, member m
+		 where c.chat_no = #{chatNo}
+		   and c.member_no = m.member_no
+		 order 
+		    by chat_date
+	</select>
+	
+	<insert id="insertChatContent" parameterType="chatContent">
+		insert 
+		  into chat_content(cc_no, chat_no, member_no, chat_date, chat_content, chat_fix)
+		values (seq_ccno.NEXTVAL, #{chatNo}, #{memberNo}, SYSDATE, #{chatContent}, 0)
+	</insert>
+
+</mapper>

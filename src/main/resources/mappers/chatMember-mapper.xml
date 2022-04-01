@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="chatMemberMapper">
+
+	<resultMap type="chatMember" id="chatMemberResultSet">
+		<result column="CHAT_NO" property="chatNo" />
+		<result column="MEMBER_NO" property="memberNo" />
+		<result column="CREATE_CHAT" property="createChat" />
+		<result column="START_DATE" property="startDate" />
+		<result column="END_DATE" property="endDate" />
+		
+		<result column="MEMBER_COUNT" property="memberCount" />
+		<result column="CHAT_NAME" property="chatName" />
+		<result column="CHAT_CONTENT" property="chatContent" />
+	</resultMap>
+	
+	<!-- 채팅방 멤버 insert -->
+	<insert id="insertChatMember" parameterType="hashmap">
+		insert into chat_member (member_no, chat_no, create_chat, start_date)
+				values (#{memberNo}, #{chatNo}, #{createChat}, SYSDATE)
+	</insert>
+	
+	<!-- 채팅방 번호 조회 -->
+	<select id="searchChatNo" parameterType="hashmap" resultType="string">
+		select distinct cm.chat_no as chat_no
+		from chat_member cm
+		inner join chat_member cm2 on cm.chat_no=cm2.chat_no
+		where cm.member_no = #{memberNo}
+		and cm2.member_no= #{chatMemberNo}
+		group by cm.chat_no, cm2.chat_no
+	</select>
+	
+	<select id="selectChatMemberCount" parameterType="string" resultType="_int">
+		select count(*)
+		from chat_member
+		where chat_no
+		   in (select chat_no
+		   		from chat_member
+		   		where chat_no = #{a})
+	</select>
+	
+	<select id="selectChatMemberList" resultType="String">
+		select m.member_name
+		  from chat_member cm
+		  join member m on (m.member_no = cm.member_no)
+		 where cm.chat_no = #{chatNo}
+	</select>
+	
+	<select id="selectMyChatList" parameterType="String" resultType="arrayList" resultMap="chatMemberResultSet">
+		select c.chat_name, c.chat_no, count(cm.member_no) member_count, cc.chat_content
+		  from chat c
+		  join chat_member cm on c.chat_no in (select chat_no
+		                                         from chat_member 
+		                                        where member_no = #{memberNo})
+		  join chat_content cc on (cc.chat_no = c.chat_no)
+		 where cc.cc_no in (select max(cc_no)
+		                      from chat_content
+		                     where chat_no = c.chat_no)
+		 group by c.chat_name, c.chat_no, cm.chat_no, cc.chat_content, cc.chat_date
+		having cm.chat_no = c.chat_no
+		  order by cc.chat_date desc
+	</select>
+</mapper>

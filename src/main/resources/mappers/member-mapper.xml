@@ -169,7 +169,6 @@
 		and email = #{email}
 	</select>
 
-	<!-- 려진 -->
 	<select id="selectAddrList" resultMap="memberResultSet">
 		select member_no, dept_name, rank_name, member_name, email, phone, filepath 
 		from member
