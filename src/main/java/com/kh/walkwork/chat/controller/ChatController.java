@@ -92,7 +92,7 @@ public class ChatController {
 					System.out.println("채팅멤버(나) 추가 : " + result);
 					redirectAttributes.addFlashAttribute("map", map);
 					
-					return "redirect:chat/otherChatAdd";
+					return "redirect:/chat/otherChatAdd";
 					
 				}
 				
