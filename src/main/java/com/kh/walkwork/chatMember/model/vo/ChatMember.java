@@ -22,5 +22,10 @@ public class ChatMember {
 	private String createChat;
 	private Date startDate;
 	private Date endDate;
+	
+	
+	private String memberCount;
+	private String chatName;
+	private String chatContent;
 
 }

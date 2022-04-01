@@ -171,6 +171,7 @@
 		and email = #{email}
 	</select>
 
+
 	<select id="selectAddrList" resultMap="memberResultSet">
 		select
 		member_no,
