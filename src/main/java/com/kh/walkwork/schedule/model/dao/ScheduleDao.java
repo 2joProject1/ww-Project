@@ -11,6 +11,8 @@ import com.kh.walkwork.schedule.model.vo.Schedule;
 public class ScheduleDao {
 
 	public ArrayList<Schedule> mainScheduleList(SqlSessionTemplate sqlSession, String memberNo) {
+		
+		
 		return (ArrayList)sqlSession.selectList("scheduleMapper.mainScheduleList", memberNo);
 	}
 

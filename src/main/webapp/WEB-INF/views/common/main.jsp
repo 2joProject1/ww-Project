@@ -146,10 +146,10 @@
 			<table id="noticeList" border="1">
 				<thead style="text-align: center">
 					<tr>
-						<th style="width: 350px; height:40px;">제목</th>
-						<th style="width: 100px;">작성일</th>
-						<th style="width: 100px;"">작성자</th>
-						<th style="width: 100px;">조회수</th>
+						<th style="width: 400px; height:40px;">제목</th>
+						<th style="width: 90px;">작성일</th>
+						<th style="width: 80px;"">작성자</th>
+						<th style="width: 80px;">조회수</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -172,14 +172,6 @@
 			<table id="todo_tb" style="margin-left:30px">
 				<tbody>
 				
- <%--  				정적으로 추가	
- 					<c:forEach var="n" items="${ todo }">
-						<tr style="height:35px;">
-							<td class="boardNo">${n.boardNo}</td>
-							<td class="check">&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" name="checkList" class="check"></td>
-							<td class="content">${n.content}</td>
-						</tr>
-					</c:forEach>  --%>
 				</tbody>
 			</table>
 			
@@ -211,7 +203,6 @@
 				$.ajax({
 	    			url : "test.main",
 					success : function(data){
-						console.log(data);
 						let value="";
 						for(let i in data){
 							value += "<tr style='height:35px;'>"
@@ -235,6 +226,7 @@
 				var $boardNo = $(this).children(".boardNo").text();
 				var $content = $(this).children(".content").text();
 	            var $memberNo = ${loginUser.memberNo};
+	            console.log($memberNo);
 	            
 	            
 	            $(this).find(".check").attr("checked", true);
@@ -270,30 +262,7 @@
 			})
 		})
  		
- 	//정적으로 로드 -> 동적으로 완료
-/* 		$(function() {
-			$("#todo_tb>tbody>tr").click(function() {
-					console.log($(this));
-					var $boardNo = $(this).children(".boardNo").text();
-					var $content = $(this).children(".content").text();
-		            var $memberNo = ${loginUser.memberNo};
-		            
-		            $(this).find(".check").attr("checked", true);
-		            $(this).children(".content").css('text-decoration', 'line-through');
-		            
-		    		$.ajax({
-		    			url : "complete.to",
-		    			data : {
-		    						boardNo : $boardNo,
-		    						content : $content,
-		    						memberNo : $memberNo
-		    					},
-						complete : function(mv){
-							console.log(mv);
-						}
-		    		})
-				})
-		}) */
+
 		
 
 	</script>
