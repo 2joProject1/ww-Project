@@ -15,14 +15,20 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="resources/css/MemberInformation.css">
 <link rel="stylesheet" href="resources/css/layout.css">
+<style>
+.cameraIcon{
+	width: 37px;
+    position: absolute;
+    left: 300px;
+    bottom: 190px;
+}
+</style>
 </head>
 <body>
 
 <div class="container" style="min-width : 1500px;">
-	<div class="row">
-		<div class="col-12">
-			<h3 onclick="location.href='main'">walk-work</h3>
-		</div>
+	<div id="header-layout">
+		<jsp:include page="../common/header.jsp" />
 	</div>
 	<jsp:include page="../member/MemberInformationSideBar.jsp" />
 	<div class="row">
@@ -35,10 +41,22 @@
 			</div>
 		<br><br><br><br><br><br><br>
 		<div class="col-5">
-			<div class="memberImg">
-				<img src="resources/images/person-fill.svg" alt="person">
+			<div class="memberImg" style="margin-left:95px">
+				<img id="mem_img" src="resources/coFile/${memberInfo.file }" onerror='this.src="resources/images/person-fill.svg"' alt="profileImg">
+
+				<div id="ImghiddenBtn">
+					<button onclick="mem_submitFiles()">이대로 저장</button>
+					<button onclick="undoBtn()">되돌리기</button>
+				</div>
+				
 			</div>
-			<img src="resources/images/camera-fill.svg" alt="camera" class="cameraIcon">
+			
+			<input type="file" id="mem_file" class="cm_file"
+							accept="image/gif, image/jpeg, image/jpg, image/png"/>
+			<label for="mem_file">
+				<img src="resources/images/camera-fill.svg" alt="camera" class="cameraIcon">
+			</label>
+			
 		</div>
 		<div class="col-7">
 			<div class="row">
@@ -63,21 +81,22 @@
 				<div class="col-4 info_sub">
 					<b>휴대폰번호</b>
 				</div>
+				
 				<!-- 수정모드 전 -->
 				<div class="col-8" id="beforeMdf">
 					<div class="row">
 						<div class="col-7 info_input">
 							${memberInfo.phone}
 						</div>
-						<div class="col-5">
+						<!-- <div class="col-5">
 							<button id="modifyBtn">수정</button>						
-						</div>
+						</div> -->
 					</div>
-				</div>
+				</div> 
 				
 				
 				<!-- 수정모드 -->
-				<div class="col-8" id="afterMdf">
+				<!-- <div class="col-8" id="afterMdf">
 					<div class="row">
 						<div class="col-7 info_input">
 							<input type="text" placeholder="숫자만 입력" class="info_num">
@@ -88,7 +107,7 @@
 							<button id="cancelBtn">취소</button>
 						</div>
 					</div>
-				</div>
+				</div>  -->
 			
 				
 				
@@ -122,22 +141,66 @@
 			</div>
 			
 		</div>
-		
+		<input type="hidden" value="${memberInfo.memberNo }" id="memberNo">
+		<input type="hidden" value="${memberInfo.file }" id="imgSrc">
 	</div>
 </div>
 <script type="text/javascript">
-	$(document).ready(function(){
-		$('#afterMdf').css('display', 'none');
+	 $(document).ready(function(){
+		/* $('#afterMdf').css('display', 'none');*/
+		$('#mem_file').on("change", mem_filefunc);
+		$('#ImghiddenBtn').css('display', 'none');
 	})
 	
+	/*
 	$('#modifyBtn').click(function(){
 		$('#beforeMdf').css('display', 'none');
 		$('#afterMdf').css('display', '');
 	})
+	
 	$('#cancelBtn').click(function(){
 		$('#beforeMdf').css('display', '');
 		$('#afterMdf').css('display', 'none');
-	})
+	}) */
+	
+	// 미리보기
+	function mem_filefunc(e){
+		var reader = new FileReader();
+		reader.onload = function(e){
+				$('#mem_img').attr("src", e.target.result);
+		}
+		reader.readAsDataURL(e.target.files[0]);
+		
+		$('#ImghiddenBtn').css('display', '');
+	}
+	
+	// 파일 업로드
+	function mem_submitFiles(){
+		var form = new FormData();
+		form.append("file1", $('#mem_file')[0].files[0]);
+	 $.ajax({
+			url : "addProfileImg.me",
+			type : "POST",
+			processData : false,
+			contentType : false,
+			async : false,
+			enctype : 'multipart/form-data',
+			data : form,
+			success:function(data){
+				alert("프로필 변경 완료");
+				window.location.reload();
+			},
+			error : function(jqXHR,txt){
+				alert("프로필 변경 오류");
+			}
+		})
+	}
+	
+	// 되돌리기
+	function undoBtn(){
+		$('#mem_img').attr("src", "resources/coFile/"+$('#imgSrc').val());
+		$('#ImghiddenBtn').css('display', 'none');
+	}
 	
 </script>
 </body>

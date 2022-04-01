@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kh.walkwork.common.model.vo.PageInfo;
 import com.kh.walkwork.community.model.dao.CommunityDao;
 import com.kh.walkwork.common.model.vo.Attachment;
+import com.kh.walkwork.community.model.vo.BoardGood;
 import com.kh.walkwork.community.model.vo.Community;
 import com.kh.walkwork.community.model.vo.Reply;
 
@@ -42,12 +43,21 @@ public class CommunityServiceImpl implements CommunityService {
 	public int selectListCount(String search) {
 		return communityDao.selectListCount(sqlSession, search);
 	}
+	@Override
+	public int selectMyListCount(Community c) {
+		return communityDao.selectMyListCount(sqlSession, c);
+	}
+	
 	
 	@Override
 	public ArrayList<Community> selectList(PageInfo pi, String search) {
 		return communityDao.selectList(sqlSession, pi, search);
 	}
 	
+	@Override
+	public ArrayList<Community> selectMyCommunity(PageInfo pi, Community c) {
+		return communityDao.selectMyCommunity(sqlSession, pi, c);
+	}
 	
 	@Override
 	public ArrayList<Community> selectTopCm() {
@@ -118,4 +128,21 @@ public class CommunityServiceImpl implements CommunityService {
 	public int thumbsMinus(Community c) {
 		return communityDao.thumbsMinus(sqlSession, c);
 	}
+	
+	@Override
+	public int insertThumbsGood(BoardGood g) {
+		return communityDao.insertThumbsGood(sqlSession, g);
+	}
+	
+	@Override
+	public int deleteThumbsGood(BoardGood g) {
+		return communityDao.deleteThumbsGood(sqlSession, g);
+	}
+	
+	@Override
+	public int selectThumbsGood(BoardGood g) {
+		return communityDao.selectThumbsGood(sqlSession, g);
+	}
+	
+	
 }

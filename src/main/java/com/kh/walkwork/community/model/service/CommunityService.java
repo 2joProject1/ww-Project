@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.kh.walkwork.common.model.vo.PageInfo;
 import com.kh.walkwork.common.model.vo.Attachment;
+import com.kh.walkwork.community.model.vo.BoardGood;
 import com.kh.walkwork.community.model.vo.Community;
 import com.kh.walkwork.community.model.vo.Reply;
 
@@ -21,8 +22,14 @@ public interface CommunityService {
 	// 총 게시물 수
 	public int selectListCount(String search);
 	
+	// 내 게시물 총 수
+	public int selectMyListCount(Community c);
+	
 	// 커뮤니티 리스트 조회
 	public ArrayList<Community> selectList(PageInfo pi, String search);
+	
+	// 내 게시물 조회
+	public ArrayList<Community> selectMyCommunity(PageInfo pi, Community c);
 	
 	public ArrayList<Community> selectTopCm();
 	public ArrayList<Attachment> selectViewAtt();
@@ -51,5 +58,13 @@ public interface CommunityService {
 	
 	public int thumbsPlus(Community c);
 	public int thumbsMinus(Community c);
+	
+	// 추천 중복 방지 
+	
+	public int insertThumbsGood(BoardGood g);
+	public int deleteThumbsGood(BoardGood g);
+	public int selectThumbsGood(BoardGood g);
+	
+	
 	
 }

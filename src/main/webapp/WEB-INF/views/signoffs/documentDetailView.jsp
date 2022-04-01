@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -107,6 +108,7 @@
 	border: 1px solid #999;
 	clear: both;
 	display: inline-block;
+	overflow: auto;
 }
 
 #fileList>li {
@@ -116,6 +118,8 @@
 
 </head>
 <body>
+	<input type="hidden" id="docuNo" value="${documentItem.docuNo }">
+	<input type="hidden" id="approvalNo" value="${documentItem.approvalNo }">
 	<div id="header-layout">
 		<jsp:include page="../common/header.jsp" />
 	</div>
@@ -124,19 +128,24 @@
 			<div id="main-sidebar">
 				<br> <i class="fi fi-rr-menu-burger"></i>&nbsp;<b>전자결재</b>
 				<div class="sub-menu">
-					<i class="fi fi-rr-edit"></i>&nbsp;<a href="signoffs.docu">문서작성하기</a>
+					<i class="fi fi-rr-edit"></i>&nbsp;
+					<a href="signoffs.docu?format=1">문서작성하기</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="docubox.draft">기안문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.draft">기안문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="">수신문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.receive">수신문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="">부서문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.dept">부서문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="">반려문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.reject">반려문서함</a>
 				</div>
 			</div>
 		</div>
@@ -146,16 +155,34 @@
 				<div id="docu-header-area">
 					<div id="docu-basic-area">
 						<br>
-						<h2>&nbsp;기안문서</h2>
+						<h2>
+							<c:choose>
+								<c:when test="${isReceiver}">
+									수신문서
+								</c:when>
+								<c:otherwise>
+									<c:if test="${documentItem.docuFormat == '1'}">
+									기안문서
+									</c:if>
+									<c:if test="${documentItem.docuFormat == '2'}">
+									품의서
+									</c:if>
+								</c:otherwise>
+							</c:choose>
+						</h2>
 						<hr>
 
 						<table class="docu-format-base">
 							<tr>
-								<th>&nbsp;형식</th>
-								<td><select id="docu-format" name="docuFormat" onchange="changeFormat(this)">
-										<option value="1">기안문서</option>
-										<option value="2">품의서</option>
-								</select>&nbsp;&nbsp;</td>
+								<th>형식</th>
+								<td>
+									<c:if test="${documentItem.docuFormat == '1'}">
+									기안문서
+									</c:if>
+									<c:if test="${documentItem.docuFormat == '2'}">
+									품의서
+									</c:if>
+								</td>
 								<th>문서보존기간</th>
 								<td>5년</td>
 							</tr>
@@ -163,13 +190,20 @@
 								<th>문서번호</th>
 								<td>${documentItem.docuNo}</td>
 								<th>수신부서</th>
-								<td>재무기획팀</td>
+								<td>${dept.deptName}</td>
 							</tr>
 							<tr>
-								<th>기안일자</th>
-								<td>${documentItem.docuWriteDate}</td>
+								<th>
+									<c:if test="${documentItem.docuFormat == '1'}">
+										기안일자
+									</c:if>
+									<c:if test="${documentItem.docuFormat == '2'}">
+										품의일자
+									</c:if>
+								</th>
+								<td><fmt:formatDate value="${documentItem.docuWriteDate}" pattern="yyyy-MM-dd"/></td>
 								<th>소속</th>
-								<td>개발팀</td>
+								<td>${writerDept.deptName}</td>
 							</tr>
 						</table>
 					</div>
@@ -180,21 +214,38 @@
 							<tr>
 								<th rowspan="3">결재</th>
 								<th>대표이사</th>
-								<th>팀장</th>
-								<th>차장</th>
+								<c:if test="${documentItem.docuFormat == '1'}">
+									<th>팀장</th>
+									<th>차장</th>
+								</c:if>
+								<c:if test="${documentItem.docuFormat == '2'}">
+									<th>팀장</th>
+								</c:if>
 								<th>사원</th>
 							</tr>
 							<tr>
 								<td>대표자</td>
-								<td>서명</td>
-								<td>서명</td>
-								<td>서명</td>
+								<c:forEach var="item" items="${signoffsList}">
+									<td>${item.memberName}</td>
+								</c:forEach>
+								<td>${writerInfo.memberName}</td>
 							</tr>
 							<tr>
-								<td>결재일</td>
-								<td>결재일</td>
-								<td>결재일</td>
-								<td>결재일</td>
+								<td style="font-size: 8pt"></td>
+								<c:forEach var="item" items="${signoffsList}">
+									<c:choose>
+										<c:when test="${item.approvalStatus == 1}">
+											<td style="font-size: 8pt"><fmt:formatDate value="${item.approvalDate}" pattern="MM/dd hh:mm"/></td>
+										</c:when>
+										<c:when test="${item.approvalStatus == 2}">
+											<td style="font-size: 8pt">반려</td>
+										</c:when>
+										<c:otherwise>
+											<td></td>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								<td style="font-size: 8pt"><fmt:formatDate value="${documentItem.docuWriteDate}" pattern="MM/dd hh:mm"/></td>
 							</tr>
 						</table>
 					</div>
@@ -202,43 +253,74 @@
 				<br> <br>
 				<hr>
 				<div id="docu-content">
-					<br> <b>제목</b>&nbsp;&nbsp;<input type="text" name="docuTitle" value="" id="docuTitle" red><br>
+					<br> <b>제목</b>&nbsp;&nbsp;<input type="text" name="docuTitle" value="${documentItem.docuTitle}" id="docuTitle" readonly><br>
 					<br> <b>내용</b>&nbsp;
-					<textarea class="docu-content-textarea" name="docuContent" required></textarea>
+					<textarea class="docu-content-textarea" name="docuContent" readonly>${documentItem.docuContent}</textarea>
 					<br>
 					<br>
 					<b>첨부</b>&nbsp;
-					<ul id="fileList" onclick="attachFile()"></ul>
+					<ul id="fileList">
+						<c:forEach var="item" items="${fileList}">
+							<li><a href="${item.fileName}" target="_blank">${item.fileOriginName}</a></li>
+						</c:forEach>
+					</ul>
 				</div>
 				<br>
 				<div id="button-area">
-					<button class="btn-custom" type="reset" style="margin-right: 30px;">취소</button>
-					<button class="btn-custom" type="submit" id="draftDocu">기안</button>
+					<button class="btn-custom" type="button" onclick="docuBoxBack()" id="draftDocu">목록</button>
+					<c:if test="${isReceiver}">
+						<button class="btn-custom" type="button" onclick="approveSignoffs(${receiverSignoffs.approvalNo})" id="draftDocuApprove">승인</button>
+						<button class="btn-custom" type="button" onclick="denySignoffs(${receiverSignoffs.approvalNo})" id="draftDocuReject">반려</button>
+					</c:if>
 				</div>
 			</form>
 		</div>
 	</div>
 	<script>
-		function attachFile() {
-			if($('#fileList').children().length === 3) {
-				alert("첨부파일은 3개까지 가능합니다.");
-				return;
-			}
-			var createFile = document.createElement("input");
-			createFile.type = "file";
-			createFile.style.display = "none";
-
-			createFile.onchange = function() {
-				var html = '<li>' + this.files[0].name + '</li>'
-				$('#fileList').append(html);
-			};
-
-			document.enrollForm.appendChild(createFile);
-			createFile.click();
-		}
-
 		function changeFormat(target) {
 			window.location.href = 'signoffs.docu?format=' + target.value;
+		}
+		
+		function docuBoxBack(){
+			window.location.href = 'docubox.draft';
+		}
+
+		//승인
+		function approveSignoffs(approvalNo) {
+			var is = confirm("승인하시겠습니까?");
+			if (is) {
+				$.ajax({
+					url: 'docubox.approve',
+					method: 'POST',
+					data: {
+						approvalNo : approvalNo,
+						docuNo: $('#docuNo').val()
+					},
+					success : function (data) {
+						console.log(data);
+						window.location.reload();
+					}
+				})
+			}
+		}
+	
+		//반려
+		function denySignoffs(approvalNo) {
+			var is = confirm("반려하시겠습니까?");
+			if (is) {
+				$.ajax({
+					url: 'docubox.deny',
+					method: 'POST',
+					data: {
+						approvalNo : approvalNo,
+						docuNo: $('#docuNo').val()
+					},
+					success : function (data) {
+						console.log(data);
+						window.location.reload();
+					}
+				})
+			}
 		}
 	</script>
 </body>

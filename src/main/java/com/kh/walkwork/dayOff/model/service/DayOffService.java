@@ -1,6 +1,7 @@
 package com.kh.walkwork.dayOff.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.kh.walkwork.common.model.vo.PageInfo;
 import com.kh.walkwork.dayOff.model.vo.DayOff;
@@ -21,11 +22,18 @@ public interface DayOffService {
 	//관리자
 	int approval(int offNo); // 휴가 승인,반려
 	
-	ArrayList<DayOff> adminSelectListOff(PageInfo pi); // 휴가자들 신청리스트 전체조회
+	ArrayList<DayOff> adminSelectListOff(int deptNo, PageInfo pi); // 휴가자들 신청리스트 전체조회
+	
+	int adminSelectCountOff(int deptNo);
 	
 	ArrayList<DayOff> adminSearchListOff(DayOff off, PageInfo pi); // 휴가자 휴가 기간검색
 
-	int adminSelectCountOff();
-	
 	int adminSearchCountOff(DayOff off);
+	
+	public int adminApprovalOff(DayOff off);
+	
+	List<Object> selectDto(int memberNo);
+	
+	List<Object> adminSelectDto(int deptNo);
+
 }

@@ -1,6 +1,7 @@
 package com.kh.walkwork.dayOff.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class DayOffServiceImpl implements DayOffService {
 
 	@Override
 	public ArrayList<DayOff> searchListOff(DayOff off, PageInfo pi) {
-		return null;
+		return dayOffDao.searchListOff(sqlSession, off, pi);
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class DayOffServiceImpl implements DayOffService {
 
 	@Override
 	public int searchCountOff(DayOff off) {
-		return 0;
+		return dayOffDao.searchCountOff(sqlSession, off);
 	}
 
 	@Override
@@ -50,26 +51,39 @@ public class DayOffServiceImpl implements DayOffService {
 	}
 
 	@Override
-	public ArrayList<DayOff> adminSelectListOff(PageInfo pi) {
-		return null;
+	public ArrayList<DayOff> adminSelectListOff(int deptNo, PageInfo pi) {
+		return dayOffDao.adminSelectListOff(sqlSession, deptNo, pi);
 	}
 
 	@Override
 	public ArrayList<DayOff> adminSearchListOff(DayOff off, PageInfo pi) {
-		return null;
+		return dayOffDao.adminSearchListOff(sqlSession, off, pi);
 	}
 
-	@Override
-	public int adminSelectCountOff() {
-		return 0;
-	}
 
 	@Override
 	public int adminSearchCountOff(DayOff off) {
-		return 0;
+		return dayOffDao.adminSearchCountOff(sqlSession, off);
+	}
+
+	@Override
+	public int adminSelectCountOff(int deptNo) {
+		return dayOffDao.adminSelectCountOff(sqlSession, deptNo);
 	}
 	
-
+	@Override
+	public int adminApprovalOff(DayOff off) {
+		return dayOffDao.adminApprovalOff(sqlSession, off);
+	}
+	@Override
+	public List<Object> selectDto(int memberNo) {
+		return dayOffDao.selectDto(sqlSession, memberNo);
+	}
+	
+	@Override
+	public List<Object> adminSelectDto(int deptNo) {
+		return dayOffDao.adminSelectDto(sqlSession, deptNo);
+	}
 
 
 }

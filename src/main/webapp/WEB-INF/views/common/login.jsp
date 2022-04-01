@@ -12,15 +12,6 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- 아이콘관련 -->
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-bold-straight/css/uicons-bold-straight.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-straight/css/uicons-regular-straight.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-straight/css/uicons-solid-straight.css'>
-    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-solid-rounded/css/uicons-solid-rounded.css'>
- 	<link rel="stylesheet" href="resources/css/layout.css">
-
 <!-- 제이쿼리 --> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
  
@@ -71,7 +62,7 @@
             color:white;
         }
         .login_input{
-            width: 492px;
+            width: 500px;
             height: 50px;
             margin-bottom: 10px;
             
@@ -139,6 +130,9 @@
         #login_searchId_information td{
             height: 60px;
         }
+        #searchId_form{
+        	margin-top: 30px;
+        }
         .login_td1{
             width: 100px;
         }
@@ -166,10 +160,7 @@
         #searchPwd_form td{
             height: 60px;
         }
-        /* #searchPwd_form button{
-            border: none;
-            보류
-        } */
+
         #login_searchPwd .modal-footer>button{
             margin-top: 10px;
         }
@@ -181,18 +172,25 @@
 
 </head>
 <body>
-
 	<c:if test="${ not empty alertMsg }">
 		<script>
 			alert("${ alertMsg }");
 		</script>
 		<c:remove var="alertMsg" scope="session" />
 	</c:if>
+	<c:if test="${ not empty changeResult }">
+		<script>
+			alert("${ changeResult }");
+		</script>
+		<c:remove var="changeResult" scope="session" />
+	</c:if>
+	<c:if test="${ not empty tmpMsg }">
+		<script>
+			alert("${ tmpMsg }");
+		</script>
+		<c:remove var="tmpMsg" scope="session" />
+	</c:if>
 	
-<script>
-
-</script>
-
     <div id="container">
         <div id="logo_layout">
             WALK-WORK<br>
@@ -205,20 +203,10 @@
                     <div id="login_top">
                         <a>ID/PW 로그인</a>
                     </div>
-                    <input type="text" class="login_input" name="memberNo" id="memberNo" placeholder="아이디(사번)를 입력하세요"><br>
+                    <input type="text" class="login_input" name="memberNo" placeholder="아이디(사번)를 입력하세요"><br>
                     <input type="password" class="login_input" name="memberPwd" id="memberPwd" placeholder="비밀번호를 입력하세요"><br>
                     <div class="login_text">
-                        <!-- if문사용하기 -->
-                        
-	                    <c:if test="${not empty errorMsg}">
-	    					<font color="red">
-	       					 <p>로그인에 실패했습니다.<br/>
-	           			 	${errorMsg}</p>
-	   					 </font>
-						</c:if>
-                        원하는 서비스를 이용하시려면 로그인이 필요합니다.
-                        <br> 
-                        로그인 실패 1회. 5회 실패 시 임시비밀번호 발급 창으로 이동합니다.
+                                            원하는 서비스를 이용하시려면 로그인이 필요합니다.
                     </div>
                     <div id="login_button">
                         <button>로그인(Login)</button>
@@ -227,11 +215,11 @@
                     <div id="login_option">
                         <button type="button" id="searchId" class="btn" data-toggle="modal" data-target="#login_searchId">아이디찾기</button> | 
                         
-                        <button type="button" id="searchPwd" class="btn" data-toggle="modal" data-target="#login_searchPwd">임시비밀번호발급</button> |
+                        <button type="button" id="tmpPwd" class="btn" data-toggle="modal" data-target="#login_searchPwd">임시비밀번호발급</button> |
                         <a href="enroll.me"><button class="btn">회원가입</button></a>
                     </div>
                     <div class="login_text">
-                        이용 후 반드시 로그아웃 해주세요
+                        	이용 후 반드시 로그아웃 해주세요
                     </div>
 
             </div><!-- 로그인폼 -->
@@ -259,33 +247,44 @@
                     <div id="login_modal_content">
                         <div style="padding-left: 15px; line-height: 50px;">본인인증</div>
                         <hr style="margin: 0px;">
-                        <table id="login_searchId_information">
-
-                            <tr>
-                                <td class="login_td1">이름</td>
-                                <td class="login_td2"><input type="text" id="name" name="memberName" required><br></td>
-                            </tr>
-
-                            <tr>
-                                <td class="login_td1">이메일</td>
-                                <td class="login_td2"><input type="text" id="email" name="email" style="width: 200px;" required><button type="button" id="email_btn">인증</button><br></td>
-                            </tr>
-                            <tr>
-                                <td style="height: 5px;"></td>
-                                <td id="email_result" style="height: 5px;"></td>
-                            </tr>
-                            <tr>
-                                <td class="login_td1">인증번호</td>
-                                <td class="login_td2"><input type="text" id="email_chk" name="email_chk" style="width: 200px;" required><button type="button" id="email_chk_btn">확인</button><br></td>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="height: 5px;"></td>
-                                <td id="vali_result" style="height: 5px;"></td>
-                            </tr>
-                        </table>
+                        <div id="searchId_form">
+	                        <table id="login_searchId_information">
+	
+	                            <tr>
+	                                <td class="login_td1">이름</td>
+	                                <td class="login_td2"><input type="text" class="name" name="memberName" required><br></td>
+	                            </tr>
+	                            
+	                            <tr>
+	                                <td class="login_td1">생년월일</td>
+	                                <td class="login_td2"><input type="text" class="name" id="birth" name="birth" required><br></td>
+	                            </tr>
+	                            
+		                        <tr>
+	                                <td style="height: 5px;"></td>
+	                                <td id="birth_chk" style="height: 5px; font-size:11px"></td>
+	                            </tr>
+	                            
+	                            <tr>
+	                                <td class="login_td1">이메일</td>
+	                                <td class="login_td2"><input type="text" class="email" name="email" style="width: 200px;" required><button type="button" class="email_btn">인증</button><br></td>
+	                            </tr>
+	                            <tr>
+	                                <td style="height: 5px;"></td>
+	                                <td class="email_result" style="height: 5px;"></td>
+	                            </tr>
+	                            <tr>
+	                                <td class="login_td1">인증번호</td>
+	                                <td class="login_td2"><input type="text" class="email_chk" name="email_chk" style="width: 200px;" required><button type="button" class="email_chk_btn">확인</button><br></td>
+	                                
+	                            </tr>
+	                            <tr>
+	                                <td style="height: 5px;"></td>
+	                                <td class="vali_result" style="height: 5px;"></td>
+	                            </tr>
+	                        </table>
+	                    </div>
                         <div class="modal-footer">
-                            <!-- alert창으로 알려줘야겠음..ㅠㅠ... -->
                             <button type="submit" id="searchId_btn" disabled="disabled">등록</button>
                             <button type="button" data-dismiss="modal">취소</button>
                         </div>
@@ -311,7 +310,7 @@
                 </div>
 
               <!-- Modal body -->
-            <form action="먼데.html" method="post">
+            <form action="tmpPwd.me" method="post">
                 <div class="modal-body">
                     <div id="login_modal_content">
                         <div style="padding-left: 15px; line-height: 50px;">본인인증</div>
@@ -319,31 +318,36 @@
 
                         <div id="searchPwd_form">
                             <table id="login_searchPwd_information">
-                                <tr>
-                                    <td class="login_td1">아이디(사번)</td>
-                                    <td class="login_td2"><input type="text"><br></td>
-                                </tr>
-                                <tr>
-                                    <td class="login_td1">이름</td>
-                                    <td class="login_td2"><input type="text"><br></td>
-                                </tr>
-                                <tr>
-                                    <td class="login_td1">이메일</td>
-                                    <td class="login_td2"><input type="text" style="width: 200px;"><button>인증</button><br></td>
-                                </tr>
-                                <tr>
-                                    <td class="login_td1">인증번호</td>
-                                    <td class="login_td2"><input type="text" style="width: 200px;"><button>확인</button><br></td>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="height: 5px;"></td>
-                                    <td style="height: 5px;"><br>&nbsp;</td>
-                                </tr>
+	                            <tr>
+	                                <td class="login_td1">아이디(사번)</td>
+	                                <td class="login_td2"><input type="text" name="memberNo" required><br></td>
+	                            </tr>
+	                            <tr>
+	                                <td class="login_td1">이름</td>
+	                                <td class="login_td2"><input type="text" class="name" name="memberName" required><br></td>
+	                            </tr>
+	
+	                            <tr>
+	                                <td class="login_td1">이메일</td>
+	                                <td class="login_td2"><input type="text" class="email2" name="email" style="width: 200px;" required><button type="button" class="email_btn2">인증</button><br></td>
+	                            </tr>
+	                            <tr>
+	                                <td style="height: 5px;"></td>
+	                                <td class="email_result2" style="height: 5px;"></td>
+	                            </tr>
+	                            <tr>
+	                            	<td class="login_td1">인증번호</td>
+                                	<td class="login_td2"><input type="text" class="email_chk2" name="email_chk2" style="width: 200px;" required><button type="button" class="email_chk_btn2">확인</button><br></td>
+                                
+	                            </tr>
+	                            <tr>
+	                                <td style="height: 5px;"></td>
+	                                <td class="vali_result" style="height: 5px;"></td>
+	                            </tr>
                             </table>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit">등록</button>
+                            <button type="submit" id="tmpPwd_btn" disabled="disabled">등록</button>
                             <button type="button" data-dismiss="modal">취소</button>
                         </div>
                     </div><!-- 로그인모달content -->
@@ -365,58 +369,136 @@
     $(function(){
     	
 	    $('#searchId').click(function(){
-	    	$('#vali_result').text("");
+	    	$('.vali_result').text("");
 	    	$("#searchId_btn").attr("disabled",true);
-	    	$('#email').text('');
+	    	$('.email').text('');
+	    	$('.email_result').text('');
+	    })
+	    
+	    $('#tmpPwd').click(function(){
+	    	$('.vali_result').text("");
+	    	$("#tmpPwd_btn").attr("disabled",true);
+	    	$('.email').text('');
+	    	$('.email_result').text('');
 	    })
 	    	
-	    $('#email_btn').click(function(){
+	    $('.email_btn').click(function(){
 	    		
-	    		var $email = $('#email').val();
-		    	var $name = $('#name').val();
-				var $emailVali = $('#email_chk').val();
+	    		var $email = $('.email').val();
+		    	var $name = $('.name').val();
+				var $emailVali = $('.email_chk').val();
 
 	    		$.ajax({
 	    			url : "email.chk",
 	    			data : {email : $email},
 	    			type : "post",					
 	    			complete : function(){
-						console.log("성공이든 실패든간에 실행");
-						$('#email_result').text("이메일 전송이 완료되었습니다.").css("color","gray");
+						$('.email_result').text("이메일 전송이 완료되었습니다.").css("color","gray");
 					}
 	    			
 	    		})
 	    		
-	    	})
+	    })
+	    $('.email_btn2').click(function(){
+	    		
+	    		var $email = $('.email2').val();
+		    	var $name = $('.name').val();
+				var $emailVali = $('.email_chk2').val();
+
+	    		$.ajax({
+	    			url : "email.chk",
+	    			data : {email : $email},
+	    			type : "post",					
+	    			complete : function(){
+						$('.email_result2').text("이메일 전송이 완료되었습니다.").css("color","gray");
+					}
+	    			
+	    		})
+	    		
 	    })
 	    
-	    $('#email_chk').blur(function(){
-			var $emailVali = $('#email_chk').val();
-	    	var $name = $('#name').val();
-			var $email = $('#email').val();
-			
+	    
+	    
+	})
 	
-			$.ajax({
-				url : "emailVali.chk",
-				data : {emailVali : $emailVali},
-				type : "post",
-				success : function(result){
-					console.log(result);
-					if(result>0){ //result 1이상 == 일치결과있음
-						console.log(result)
-						$('#vali_result').text("굿").css("color","gray");
-						
-					} else{
-						$('#vali_result').text($emailVali + "은(는) 잘못된 인증번호입니다. 다시 입력하세요.").css("color","red");
-						$('#email_chk').val('');				
-					}
-				},
-				complete : function(){
-					if($name!=null&&$email!=null&&$emailVali!=null)
-						$("#searchId_btn").attr("disabled",false);
-				}
-			})
+	//아이디찾기
+    $('.email_chk').blur(function(){
+		var $emailVali = $('.email_chk').val();
+    	var $name = $('.name').val();
+		var $email = $('.email').val();
 		
+
+		$.ajax({
+			url : "emailVali.chk",
+			data : {emailVali : $emailVali},
+			type : "post",
+			success : function(result){
+				if(result>0){ //result 1이상 == 일치결과있음
+					$('.vali_result').text("굿").css("color","gray");
+					
+				} else{
+					$('.vali_result').text($emailVali + "은(는) 잘못된 인증번호입니다. 다시 입력하세요.").css("color","red");
+					$('.email_chk').val('');				
+				}
+			},
+			complete : function(){
+				if($name!=null&&$email!=null&&$emailVali!=null)
+					$("#searchId_btn").attr("disabled",false);
+					$("#tmpPwd_btn").attr("disabled",false);
+			}
+		})
+		
+	})
+	
+	//임시비밀번호발급 -> 위랑 합쳤더니 실행 안되서 분리
+    $('.email_chk2').blur(function(){
+		var $emailVali = $('.email_chk2').val();
+    	var $name = $('.name').val();
+		var $email = $('.email').val();
+		
+
+		$.ajax({
+			url : "emailVali.chk",
+			data : {emailVali : $emailVali},
+			type : "post",
+			success : function(result){
+				if(result>0){ //result 1이상 == 일치결과있음
+					$('.vali_result').text("굿").css("color","gray");
+					
+				} else{
+					$('.vali_result').text($emailVali + "은(는) 잘못된 인증번호입니다. 다시 입력하세요.").css("color","red");
+					$('.email_chk2').val('');				
+				}
+			},
+			complete : function(){
+				if($name!=null&&$email!=null&&$emailVali!=null){					
+					$("#searchId_btn").attr("disabled",false);
+					$("#tmpPwd_btn").attr("disabled",false);
+				} else{
+					$("#searchId_btn").attr("disabled",true);
+					$("#tmpPwd_btn").attr("disabled",true);
+					
+				}
+			}
+		})
+	
+	})
+	
+	//생년월일 검증
+	$('#birth').blur(function(){
+
+		var $birth = $('#birth').val();
+		var regExp =  /^(19[0-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+
+	
+		if(!regExp.test($birth)){
+			$('#birth_chk').text("잘못 입력하셨습니다. 숫자 8자리를 입력하세요.").css("color","gray");
+			$('#birth').val('');
+			return false;
+		}
+		if(regExp.test($birth)){
+ 			$('#birth_chk').text("굿").css("color","gray");
+		}
 	})
 
     	

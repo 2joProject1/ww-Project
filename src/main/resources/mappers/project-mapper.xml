@@ -2,37 +2,129 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="projectMapper">
 
-<insert id="insertProject" parameterType="project">
+	
+	<!-- 프로젝트 메인 : 프로젝트 생성하기 -->
+	<insert id="insertProject" parameterType="project">
 		INSERT INTO PROJECT(
-				 PROJECT_NO
-				,PROJECT_WRITER
-				,PROJECT_TITLE
-				,PROJECT_SUMMARY
-				,PROJECT_STARTDATE
-				,PROJECT_ENDDATE
-				,PROJECT_STATUS
-				,PROJECT_PERCENT
-				)
-			VALUES
-				(SEQ_PNO.NEXTVAL
-				,#{projectWriter}
-				,#{projectTitle}
-				,#{projectSummary}
-				,#{projectStartDate}
-				,#{projectEndDate}
-				,DEFAULT
-				,DEFAULT
-				)	
-</insert>
+		PROJECT_NO
+		,PROJECT_WRITER
+		,PROJECT_TITLE
+		,PROJECT_SUMMARY
+		,PROJECT_STARTDATE
+		,PROJECT_ENDDATE
+		,PROJECT_STATUS
+		,PROJECT_PERCENT
+		)
+		VALUES
+		(SEQ_PNO.NEXTVAL
+		,#{projectWriter}
+		,#{projectTitle}
+		,#{projectSummary}
+		,#{projectStartDate}
+		,#{projectEndDate}
+		,DEFAULT
+		,DEFAULT
+		)
+		<selectKey resultType="int" keyProperty="projectNo" order="AFTER">
+			SELECT SEQ_PNO.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<!-- 프로젝트 메인: 프로젝트 생성하기(팀원 추가) -->
+	<insert id="insertProjectMember" parameterType="projectMember">
+		INSERT INTO PROJECT_MEMBER (PROJECT_NO, MEMBER_NO) VALUES (#{projectNo}, #{memberNo})
+	</insert>
+	
+	<!-- 프로젝트 메인 : 프로젝트 생성 - 사원 검색  -->
+	<select id="selectMember" parameterType="Member"
+		resultMap="memberMapper.memberResultSet">
+		SELECT *
+		FROM MEMBER M
+		JOIN DEPT D ON (D.DEPT_NO = M.DEPT_NO)
+		JOIN RANK F ON M.RANK_NO = F.RANK_NO
+		WHERE
+		(MEMBER_NAME LIKE '%'||#{memberName}||'%' OR
+		DEPT_NAME LIKE '%'||#{deptName}||'%')
+		AND M.DEPT_NO != 0
+	</select>
+	
+	<!-- 프로젝트 메인 : 프로젝트 생성 - 부서 검색 -->
+	<select id="selectDept" parameterType="dept" resultType="dept">
+		SELECT *
+		FROM DEPT M
+		WHERE
+		DEPT_NAME LIKE '%'||#{deptName}||'%'
+	</select>
 
-
-<select id="selectMember" parameterType="Member" resultMap="memberMapper.memberResultSet">
-	SELECT *
-	FROM MEMBER M
-	JOIN DEPT D ON (D.DEPT_NO = M.DEPT_NO)
-	WHERE 
-	      MEMBER_NAME LIKE '%'||#{memberName}||'%' OR 
-	      DEPT_NAME LIKE '%'||#{deptName}||'%' 
-</select>
-
+	<!-- 프로젝트 메인 : 프로젝트 글 수 -->
+	<select id="selectProjectListCount" resultType="int">
+		SELECT COUNT(*)
+		FROM PROJECT P
+		JOIN PROJECT_MEMBER PM ON (P.PROJECT_NO = PM.PROJECT_NO)
+		WHERE PROJECT_STATUS = '1' 
+		AND PM.MEMBER_NO LIKE '%'||#{projectMemberNo}||'%'
+	</select>
+	
+	<!-- 프로젝트 메인 : 프로젝트 리스트 불러오기 -->
+	<select id="selectProjectList" parameterType="project" resultType="project">
+		SELECT
+		P.PROJECT_NO,
+		PROJECT_TITLE,
+		PROJECT_STATUS,
+		(SELECT MEMBER_NAME || ' 등 '|| (SELECT COUNT(*) FROM PROJECT_MEMBER D WHERE P.PROJECT_NO = D.PROJECT_NO) || '명' FROM (
+			SELECT MEMBER_NAME, PROJECT_NO FROM MEMBER A INNER JOIN PROJECT_MEMBER B ON A.MEMBER_NO = B.MEMBER_NO
+			) C WHERE ROWNUM = 1 AND P.PROJECT_NO = C.PROJECT_NO
+		) AS projectMemberStr
+		FROM PROJECT P
+        WHERE PROJECT_NO IN (SELECT PROJECT_NO FROM PROJECT_MEMBER D WHERE #{projectMemberNo} = D.MEMBER_NO)
+		ORDER BY PROJECT_ENDDATE DESC
+	</select>
+	
+	<select id="selectProjectListDept" parameterType="project" resultType="project">
+		SELECT
+		P.PROJECT_NO,
+		PROJECT_TITLE,
+		PROJECT_STATUS,
+		(SELECT MEMBER_NAME || ' 등 '|| (SELECT COUNT(*) FROM PROJECT_MEMBER D WHERE P.PROJECT_NO = D.PROJECT_NO) || '명' FROM (
+			SELECT MEMBER_NAME, PROJECT_NO FROM MEMBER A INNER JOIN PROJECT_MEMBER B ON A.MEMBER_NO = B.MEMBER_NO
+			) C WHERE ROWNUM = 1 AND P.PROJECT_NO = C.PROJECT_NO
+		) AS projectMemberStr
+		FROM PROJECT P
+        WHERE DEPT_NO IN (SELECT PROJECT_NO FROM PROJECT D WHERE #{deptNo} = D.DEPT_NO)
+		ORDER BY PROJECT_ENDDATE DESC
+	</select>
+	
+	<!-- 프로젝트 진행중/완료 여부 업데이트  -->
+	<update id="endProject" parameterType="project">
+		UPDATE PROJECT
+		SET PROJECT_STATUS = 0
+		WHERE PROJECT_NO = #{projectNo}
+	</update>
+	
+	<!-- 프로젝트 상세 : 해당 프로젝트 상세보기 -->
+	<select id="selectProjectDetailList" parameterType="project" resultType="project">
+		SELECT
+		A.PROJECT_NO,
+		A.PROJECT_WRITER,
+		A.PROJECT_TITLE,
+		A.PROJECT_SUMMARY,
+		A.PROJECT_STARTDATE,
+		A.PROJECT_ENDDATE,
+		A.PROJECT_STATUS,
+		(SELECT COUNT(*) FROM PROJECT_MEMBER B WHERE A.PROJECT_NO = B.PROJECT_NO) AS PROJECT_MEMBER_COUNT,
+        (SELECT LISTAGG(C.MEMBER_NAME, ',') within group(order by C.MEMBER_NAME) FROM PROJECT_MEMBER B INNER JOIN MEMBER C ON B.MEMBER_NO = C.MEMBER_NO WHERE A.PROJECT_NO = B.PROJECT_NO) AS PROJECT_MEMBER_STR
+		FROM PROJECT A
+		WHERE A.PROJECT_NO = #{projectNo}
+	</select>
+	
+	<!-- 프로젝트 상세 : 해당 프로젝트 팀원들 불러오기 -->
+	<select id="getProjectMemberList" parameterType="project" resultType="projectMember">
+		SELECT
+			A.PROJECT_NO,
+			A.MEMBER_NO,
+			B.MEMBER_NAME
+		FROM PROJECT_MEMBER A
+		INNER JOIN MEMBER B ON A.MEMBER_NO = B.MEMBER_NO
+		WHERE A.PROJECT_NO = #{projectNo}
+	</select>
 </mapper>

@@ -34,7 +34,7 @@
 	padding-left: 25px;
 }
 
-#docu-format {
+#docuFormat {
 	width: 160px;
 }
 
@@ -107,10 +107,77 @@
 	border: 1px solid #999;
 	clear: both;
 	display: inline-block;
+	overflow: auto;
 }
 
 #fileList>li {
 	list-style: none;
+}
+
+button.x-btn {
+    line-height: 20px;
+    vertical-align: middle;
+    margin-left: 10px;
+    background: #EEEE;
+    transition: 0.05s;
+}
+
+button.x-btn:hover {
+    background: #CCC;
+}
+
+
+/* 사원검색 */
+input[type="search"] {
+	width: 409px;
+	height: 58px;
+	border-radius: 15px;
+	margin-top: -18px;
+	margin-bottom: 33px;
+	margin-left: 10px;
+}
+
+.search-member {
+	width: 409px;
+	height: 70px;
+	text-align: center;
+	margin-left: 10px;
+	font-size: 13pt;
+	line-height: 50px;
+	border-radius: 10px;
+}
+
+#searchMemberResult, #searchDeptResult {
+	width: 409px;
+	height: 100px;
+	border: 1px solid lightgray;
+	margin-left: 10px;
+	overflow: auto;
+}
+
+#searchMember>div>div>div.modal-body>div.search-area>table>tbody>tr:hover,
+#searchDept>div>div>div.modal-body>div.search-area>table>tbody>tr:hover
+	{
+	cursor: pointer;
+	padding: 10px;
+	background-color: #edf1f1;
+	border-radius: 10px;
+}
+
+#searchMember>div>div>div.modal-body>div.search-area>table>tbody>tr>td,
+#searchDept>div>div>div.modal-body>div.search-area>table>tbody>tr>td {
+	margin-left: 5px;
+}
+
+.btn-searchMember {
+	width: 112px;
+	height: 37px;
+	background-color: rgb(102, 164, 164);
+	color: white;
+	border: 1px lightgray;
+	border-radius: 10px;
+	margin-left: 37%;
+	margin-bottom: 16px;
 }
 </style>
 
@@ -124,25 +191,35 @@
 			<div id="main-sidebar">
 				<br> <i class="fi fi-rr-menu-burger"></i>&nbsp;<b>전자결재</b>
 				<div class="sub-menu">
-					<i class="fi fi-rr-edit"></i>&nbsp;<a href="signoffs.docu">문서작성하기</a>
+					<i class="fi fi-rr-edit"></i>&nbsp;
+					<a href="signoffs.docu?foramt=1">문서작성하기</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="docubox.draft">기안문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.draft">기안문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="">수신문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.receive">수신문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="">부서문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.dept">부서문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;<a href="">반려문서함</a>
+					<i class="fi fi-rr-folder"></i>&nbsp;
+					<a href="docubox.reject">반려문서함</a>
 				</div>
 			</div>
 		</div>
 
 		<div id="content-layout">
 			<form id="enrollForm" class="enroll-form" action="docubox.insert" enctype="multipart/form-data" method="post">
+				<input type="hidden" name="signoffs" data-signoffs-index="1">
+				<input type="hidden" name="signoffs" data-signoffs-index="2">
+				<input type="hidden" name="signoffsDeptNo" id="signoffsDeptNo" value="0" >
+				<input type="hidden" id="loginMemberNo" value="${loginUser.memberNo}">
+			
 				<div id="docu-header-area">
 					<div id="docu-basic-area">
 						<br>
@@ -152,9 +229,9 @@
 						<table class="docu-format-base">
 							<tr>
 								<th>&nbsp;형식</th>
-								<td><select id="docu-format" name="docuFormat" onchange="changeFormat(this)">
-										<option value="1">기안문서</option>
-										<option value="2">품의서</option>
+								<td><select id="docuFormat" name="docuFormat" onchange="changeFormat(this)">
+										<option value="1" <c:if test="${format == '1'}">selected</c:if> >기안문서</option>
+										<option value="2" <c:if test="${format == '2'}">selected</c:if> >품의서</option>
 								</select>&nbsp;&nbsp;</td>
 								<th>&nbsp;문서보존기간</th>
 								<td>&nbsp;5년</td>
@@ -163,13 +240,18 @@
 								<th></th>
 								<td></td>
 								<th>&nbsp;수신부서</th>
-								<td>&nbsp;재무기획팀</td>
+								<td id="signoffsDept" 
+									style="cursor: pointer; border: 1px solid black; 
+										text-align: center" onclick="selectDeptModal()">
+									선택
+								</td>
 							</tr>
 							<tr>
-								<th>&nbsp;기안일자</th>
-								<td>&nbsp;2022-03-01</td>
+								<th>&nbsp;<c:if test="${format == '1'}">기안일자</c:if><c:if test="${format == '2'}">품의일자</c:if>
+								</th>
+								<td>&nbsp;${now}</td>
 								<th>&nbsp;소속</th>
-								<td>&nbsp;개발팀</td>
+								<td>&nbsp;${writerDept.deptName}</td>
 							</tr>
 						</table>
 					</div>
@@ -180,20 +262,35 @@
 							<tr>
 								<th rowspan="3">결재</th>
 								<th>대표이사</th>
-								<th>팀장</th>
-								<th>차장</th>
+								<c:if test="${format == '1'}">
+									<th>팀장</th>
+									<th>차장</th>
+								</c:if>
+								<c:if test="${format == '2'}">
+									<th>팀장</th>
+								</c:if>
 								<th>사원</th>
 							</tr>
 							<tr>
 								<td>대표자</td>
-								<td>서명</td>
-								<td>서명</td>
+								<c:if test="${format == '1'}">
+									<td style="cursor: pointer; border: 1px solid black;" onclick="selectMemberModal(1)" data-index="1">서명</td>
+									<td style="cursor: pointer; border: 1px solid black;" onclick="selectMemberModal(2)" data-index="2">서명</td>
+								</c:if>
+								<c:if test="${format == '2'}">
+									<td style="cursor: pointer; border: 1px solid black;" onclick="selectMemberModal(1)" data-index="1">서명</td>
+								</c:if>
 								<td>서명</td>
 							</tr>
 							<tr>
 								<td>결재일</td>
-								<td>결재일</td>
-								<td>결재일</td>
+								<c:if test="${format == '1'}">
+									<td>결재일</td>
+									<td>결재일</td>
+								</c:if>
+								<c:if test="${format == '2'}">
+									<td>결재일</td>
+								</c:if>
 								<td>결재일</td>
 							</tr>
 						</table>
@@ -207,39 +304,23 @@
 					<textarea class="docu-content-textarea" name="docuContent" required></textarea>
 					<br>
 					<br>
-					<b>첨부</b>&nbsp;
-					<ul id="fileList" onclick="attachFile()"></ul>
+					<b style="cursor: pointer;" onclick="attachFile()">첨부</b>&nbsp;
+					<ul id="fileList"></ul>
 				</div>
 				<br>
 				<div id="button-area">
 					<button class="btn-custom" type="reset" style="margin-right: 30px;">취소</button>
-					<button class="btn-custom" type="submit" id="draftDocu">기안</button>
+					<button class="btn-custom" type="button" onclick="submitDocument()" id="draftDocu">
+						<c:if test="${format == '1'}">기안</c:if>
+						<c:if test="${format == '2'}">품의</c:if>
+					</button>
 				</div>
 			</form>
 		</div>
 	</div>
-	<script>
-		function attachFile() {
-			if($('#fileList').children().length === 3) {
-				alert("첨부파일은 3개까지 가능합니다.");
-				return;
-			}
-			var createFile = document.createElement("input");
-			createFile.type = "file";
-			createFile.style.display = "none";
-
-			createFile.onchange = function() {
-				var html = '<li>' + this.files[0].name + '</li>'
-				$('#fileList').append(html);
-			};
-
-			document.enrollForm.appendChild(createFile);
-			createFile.click();
-		}
-
-		function changeFormat(target) {
-			window.location.href = 'signoffs.docu?format=' + target.value;
-		}
-	</script>
+	
+	<jsp:include page="/WEB-INF/views/signoffs/enrollDeptModal.jsp" />
+	<jsp:include page="/WEB-INF/views/signoffs/enrollMemberModal.jsp" />
+	<jsp:include page="/WEB-INF/views/signoffs/enrollFormJs.jsp" />
 </body>
 </html>

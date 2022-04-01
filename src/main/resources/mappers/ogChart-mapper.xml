@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.kh.walkwork.ogChart-mapper"> 
+
+
+	<select id="officerList" parameterType="Map" resultType="Map">
+		SELECT B.RNUM,
+		       B.MEMBER_NO,
+		       B.FILEPATH, 
+		       B.MEMBER_NAME, 
+		       B.RANK_NAME, 
+		       B.DEPT_NAME, 
+		       <!-- B.ADMN_PW, -->
+		       B.PHONE, 
+		       B.TELEPHONE, 
+		       B.EMAIL
+		FROM (
+		    SELECT ROWNUM AS RNUM,
+		           A.MEMBER_NO,
+		           A.FILEPATH, 
+		           A.MEMBER_NAME, 
+		           A.RANK_NAME, 
+		           A.DEPT_NAME, 
+		          <!--  A.ADMN_PW, -->
+		           A.PHONE, 
+		           A.TELEPHONE, 
+		           A.EMAIL
+		    FROM (
+		        SELECT  M.MEMBER_NO,
+		                M.FILEPATH, 
+		                M.MEMBER_NAME, 
+		                R.RANK_NO,
+		                R.RANK_NAME,
+		                D.DEPT_NAME, 
+		               <!-- ADMN.ADMN_PW, -->
+		                M.PHONE, 
+		                M.TELEPHONE, 
+		                M.EMAIL
+		        <!--  FROM MEMBER M, ADMN_TB ADMN, RANK R, DEPT D-->
+		        FROM MEMBER M, RANK R, DEPT D
+		       <!--  WHERE ADMN.ADMN_SQ = M.ADMN_SQ-->
+		        WHERE R.RANK_NO = M.RANK_NO
+		        AND D.DEPT_NO = M.DEPT_NO
+				
+				<choose>
+						<when test="cate == 1">
+							AND M.MEMBER_NAME LIKE #{keyword} || '%'
+						</when>
+						<when test="cate == 2">
+							AND R.RANK_NAME LIKE #{keyword} || '%'
+						</when>
+						<when test="cate == 3">
+							AND D.DEPT_NAME LIKE #{keyword} || '%'
+						</when>
+						<otherwise>
+			
+						</otherwise>
+				</choose>
+				
+				ORDER BY DEPT_NAME DESC, RANK_NO ASC, MEMBER_NAME ASC
+				
+				<![CDATA[
+					    )A
+					    WHERE ROWNUM <= #{endCount}
+					)B
+					WHERE B.RNUM >= #{startCount}
+					ORDER BY RNUM DESC
+				]]>
+	</select>
+
+	<select id="officerListCount" parameterType="Map" resultType="int">
+		SELECT COUNT(*) AS CNT
+		<!-- FROM MEMBER M, ADMN_TB ADMN, RANK R, DEPT D -->
+		FROM MEMBER M,  RANK R, DEPT D
+		<!-- WHERE ADMN.ADMN_SQ = M.ADMN_SQ -->
+		WHERE R.RANK_NO = M.RANK_NO
+		AND D.DEPT_NO = M.DEPT_NO
+		
+		<choose>
+			<when test="cate == 1">
+				AND M.MEMBER_NAME LIKE #{keyword} || '%'
+			</when>
+			<when test="cate == 2">
+				AND R.RANK_NAME LIKE #{keyword} || '%'
+			</when>
+			<when test="cate == 3">
+				AND D.DEPT_NAME LIKE #{keyword} || '%'
+			</when>
+			<otherwise>
+
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="selectMember" resultType="Map">
+		SELECT M.MEMBER_NAME, 
+			   R.RANK_NAME, 
+			   D.DEPT_NAME
+		<!-- FROM MEMBER M, ADMN_TB ADMN, RANK R, DEPT D -->
+		FROM MEMBER M, RANK R, DEPT D
+        <!--  WHERE ADMN.ADMN_SQ = M.ADMN_SQ-->
+        WHERE R.RANK_NO = M.RANK_NO
+        AND D.DEPT_NO = M.DEPT_NO
+	</select>
+	
+	<!--  <select id="selectAdmn_Tb" parameterType="Map" resultType="Map">
+		SELECT ADMN_SQ, ADMN_PW
+		FROM ADMN_TB
+		ORDER BY ADMN_SQ
+	</select>-->
+	
+	<select id="selectRank" parameterType="Map" resultType="Map">
+		SELECT RANK_NO, RANK_NAME
+		FROM RANK
+		ORDER BY RANK_NO
+	</select>
+	
+	<select id="selectDept" parameterType="Map" resultType="Map">
+		SELECT DEPT_NO, DEPT_NAME
+		FROM DEPT
+		ORDER BY DEPT_NO
+	</select>
+	
+	<select id="selectMemberNo" parameterType="Map" resultType="int">
+		SELECT COUNT(*) AS CNT
+		FROM MEMBER
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	
+	<insert id="officerInsert" parameterType="Member">
+		INSERT INTO MEMBER 
+		VALUES (#{memberNo}, 
+				<!-- #{admn_sq}, -->
+				#{deptNo}, 
+				#{rankNo}, 
+				#{memberName}, 
+				<!--  CRYPTPACK.ENCRYPT(#{memberPwd}, 'admin'), -->
+				#{phone},
+				#{telephone}, 
+				#{email}, 
+				#{enrollDate}, 
+				#{filePath}, 
+				#{file})
+	</insert>
+	
+	<select id="selectUpdateOfficer" parameterType="Map" resultType="Map">
+		SELECT  MEMBER_NO,
+				<!-- ADMN_SQ,-->
+				DEPT_NO,
+				RANK_NO,
+				MEMBER_NAME,
+				PHONE,
+				TELEPHONE,
+				EMAIL,
+				ENROLL_DATE,
+				FILEPATH,
+				'FILE'
+		FROM MEMBER
+		WHERE MEMBER_NO = #{memberNo, jdbcType=VARCHAR}
+	</select>
+	
+	<update id="officerUpdate" parameterType="Member">
+		UPDATE MEMBER
+		SET MEMBER_NAME = #{memberName}, 
+			<!-- ADMN_SQ = #{admn_sq}, -->
+			DEPT_NO = #{deptNo}, 
+			RANK_NO = #{rankNo}, 
+			EMAIL = #{email}, 
+			PHONE = #{phone}, 
+			TELEPHONE = #{telephone}, 
+			ENROLL_DATE = #{enrollDate}, 
+			<if test="memberNo != ''">
+				,MEMBER_NO = #{memberNo}
+			</if>
+			<!--  
+			<if test="memberPwd != ''">
+				,MEMBER_PWD = CRYPTPACK.ENCRYPT(#{memberPwd}, 'admin')
+			</if>-->
+			<if test="filePath != null">
+				,FILEPATH = #{filePath}
+			</if>
+			<if test="file != null">
+				,FILE = #{file}
+			</if>
+		WHERE MEMBER_NO = #{memberNo_old}
+	</update>
+	
+	<insert id="deptInsert" parameterType="Map">
+		INSERT INTO DEPT(DEPT_NO, DEPT_NAME) VALUES(#{deptNo}, #{deptName})
+	</insert>
+	
+	<select id="selectDeptName" parameterType="Map" resultType="int">
+		SELECT COUNT(*) AS CNT
+		FROM DEPT
+		WHERE DEPT_NAME = #{deptName}
+	</select>
+	
+	<update id="deptUpdate" parameterType="Map">
+		UPDATE DEPT
+		SET DEPT_NAME = #{deptName}
+		WHERE DEPT_NO = #{deptNo}
+	</update>
+	
+	
+	<delete id="deptDelete" parameterType="Map">
+		DELETE 
+		FROM DEPT
+		WHERE DEPT_NO = #{deptNo}
+	</delete>
+	
+</mapper>

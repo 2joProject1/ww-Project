@@ -17,7 +17,66 @@
 	
 <link rel='stylesheet'
 	href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
-<link rel="stylesheet" href="resources/css/communityWriteForm.css">
+<!-- <link rel="stylesheet" href="resources/css/communityWriteForm.css"> -->
+<style>
+.community_write_title{
+	border: none;
+    width: 100%;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.community_write_title:focus {
+	outline: none;
+}
+
+.community_write_content{
+	border: none;
+    width: 100%;
+    height:300px;
+    font-size: 12px;
+    resize : none;
+}
+
+.community_write_content:focus {
+	outline: none;
+}
+
+#CommunityInsertForm{
+	margin : 20px 0 0 20px;
+}
+
+
+.file_pic_information:focus{
+	outline : none;
+}
+.cm_file{
+	display: none;
+}
+.wt_x:hover{
+	cursor: pointer;
+}
+
+.cm_images{
+	width : 100%;
+	height : 100%;
+}
+
+#cm_submit{
+width: 90px;
+    height: 45px;
+    background-color: rgb(30,137,140);
+    color: white;
+    font-weight: bold;
+    font-size: 19px;
+    border: none;
+    border-radius: 16px;
+   }
+   
+.cm_fileDelBtn:focus {
+	cursor : pointer;
+}
+</style>
 </head>
 <body>
 
@@ -36,8 +95,8 @@
 				<h1>글 수정</h1>
 			</div>
 			<div class="col-2" class="wt_x" onclick="location.href='list.co'">
-				<svg xmlns="http://www.w3.org/2000/svg" width="17" height="20"
-					fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+				<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+					fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16" style="float:right">
   						<path fill-rule="evenodd"
 						d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z" />
  						 <path fill-rule="evenodd"
@@ -61,13 +120,13 @@
 
 			<div class="row">
 				<div style="border: 1px solid #CCCCCC; width: 200px; height: 135px" class="col-2">
-					<img alt="img1" src="/filepath/${attachment[0].fileName }" id="cm_img1" class="cm_images" onerror="this.style.display='none';">
+					<img alt="img1" src="resources/coFile/${attachment[0].fileName }" id="cm_img1" class="cm_images" onerror="this.style.display='none';">
 				</div>
 				<div style="border: 1px solid #CCCCCC; width: 200px; height: 135px" class="col-2">
-					<img alt="img2" src="/filepath/${attachment[1].fileName }" id="cm_img2" class="cm_images" onerror="this.style.display='none';">
+					<img alt="img2" src="resources/coFile/${attachment[1].fileName }" id="cm_img2" class="cm_images" onerror="this.style.display='none';">
 				</div>
 				<div style="border: 1px solid #CCCCCC; width: 200px; height: 135px" class="col-2">
-					<img alt="img3" src="/filepath/${attachment[2].fileName }" id="cm_img3" class="cm_images" onerror="this.style.display='none';">
+					<img alt="img3" src="resources/coFile/${attachment[2].fileName }" id="cm_img3" class="cm_images" onerror="this.style.display='none';">
 				</div>
 				<div class="col-6"></div>
 				<div class="col-2">
@@ -80,7 +139,7 @@
 							  <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
 							</svg>
 						</label>
-						<span id="cm_file_name1"></span>
+						<span id="cm_file_name1"></span><div id="cm_fileDelBtn1" onclick="cancelFile(1)" class="cm_fileDelBtn"> X </div>
 					</div>
 				</div>
 				<div class="col-2">
@@ -93,7 +152,7 @@
 							  <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
 							</svg>
 						</label>
-						<span id="cm_file_name2"></span>
+						<span id="cm_file_name2"></span><div id="cm_fileDelBtn2" onclick="cancelFile(2)" class="cm_fileDelBtn"> X </div>
 					</div>
 				</div>
 				<div class="col-2">
@@ -106,7 +165,7 @@
 							  <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
 							</svg>
 						</label>
-						<span id="cm_file_name3"></span>
+						<span id="cm_file_name3"></span><div id="cm_fileDelBtn3" onclick="cancelFile(3)" class="cm_fileDelBtn"> X </div>
 					</div>
 				</div>
 			</div>
@@ -172,6 +231,31 @@
 			
 		});
 		
+		
+		function cancelFile(num){
+			
+			if(num === 1){
+				$('#cm_file1').val('');
+				$('#delfileName1').val($('#compName1').val());
+				$('#cm_img1').attr("src", '');
+				$('#cm_img1').css('display', 'none');
+				$('#cm_file_name1').text('');
+			}else if(num === 2){
+				$('#cm_file2').val('');
+				$('#delfileName2').val($('#compName2').val());
+				$('#cm_img2').attr("src",'');
+				$('#cm_img2').css('display', 'none');
+				$('#cm_file_name2').text('');
+			}else if(num === 3){
+				$('#cm_file3').val('');
+				$('#delfileName3').val($('#compName3').val());
+				$('#cm_img3').attr("src", '');
+				$('#cm_img3').css('display', 'none');
+				$('#cm_file_name3').text('');
+			}
+			
+		}
+		
 		// 파일 업로드
 		function cm_submitFiles(){
 			var result = false;
@@ -196,7 +280,6 @@
 			form.append("file1", $('#cm_file3')[0].files[0]);
 			form.append("bno", $('#boardNo').val());
 			
-			console.log($('#delfileName1').val());
 			
 			// 파일개수 3개로 제한하는 코드
 			// file1 에 배열로 담아서 3개다 보냄  List<MultipartFile>로 받아서 반복문 돌릴 예정

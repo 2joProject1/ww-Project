@@ -19,6 +19,8 @@ public class Commute {
 	private String commuteStatus; //COMMUTE_STATUS	VARCHAR2(1 BYTE)
 	private String workStatus; //WORK_STATUS	VARCHAR2(1 BYTE)
 	private String commuteDate; //COMMUTE_DATE	DATE
+	private double dayWorkTime;
+	private double accureMonth; //월 누적
 	
 
 }

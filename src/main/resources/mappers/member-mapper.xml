@@ -7,11 +7,13 @@
 		<result column="VERI_CODE" property="veriCode" />
 		<result column="CERT_TIME" property="certTime" />
 	</resultMap>
-	
+
 	<resultMap id="memberResultSet" type="member">
 		<result column="MEMBER_NO" property="memberNo" />
 		<result column="DEPT_NO" property="deptNo" />
+		<result column="DEPT_NAME" property="deptName" />
 		<result column="RANK_NO" property="rankNo" />
+		<result column="RANK_NAME" property="rankName" />
 		<result column="MEMBER_NAME" property="memberName" />
 		<result column="MEMBER_PWD" property="memberPwd" />
 		<result column="BIRTH" property="birth" />
@@ -26,13 +28,13 @@
 		<result column="TMP_PWD" property="tmpPwd" />
 		<result column="ENROLL_DATE" property="enrollDate" />
 		<result column="RESIGN_DATE" property="resignDate" />
-	
-	
+
+
 	</resultMap>
 
 
 	<insert id="insertMember" parameterType="member">
-	INSERT INTO MEMBER(
+		INSERT INTO MEMBER(
 		MEMBER_NO,
 		DEPT_NO,
 		RANK_NO,
@@ -45,99 +47,194 @@
 		STATUS,
 		LOGIN_FAIL,
 		ENROLL_DATE
-	)
-	VALUES(
+		)
+		VALUES(
 		#{memberNo}, DEFAULT, DEFAULT, #{memberName}, #{memberPwd},
-		#{birth}, #{address}, #{email},
+		#{birth},
+		#{address}, #{email},
 		#{phone}, DEFAULT, DEFAULT, SYSDATE)
-	
-	</insert>
-	
-	<insert id="regist" parameterType="cert">
-		INSERT INTO CERT(IP_INFO, VERI_CODE, CERT_TIME) VALUES(#{ipInfo}, #{veriCode}, sysdate)
-	</insert>
-	
-	<select id="emailValidate"  resultType="_int" parameterType="cert">
-		SELECT count(*) FROM CERT
-		WHERE 
-			IP_INFO = #{ipInfo}
-			and VERI_CODE = #{veriCode}
-			and CERT_TIME between sysdate - 3/24/60 and sysdate
-			<!-- and sysdate / 24 / 60 - when / 24 / 60 <= 3 -->
-			<!-- 현재시각 - 생성시간 <= 3분 -->
-	</select>
-	
-	<delete id="emailValidateRemove" parameterType="cert">
-		DELETE CERT WHERE IP_INFO = #{ipInfo} and VERI_CODE = #{veriCode}
-	</delete>
-	
-	<select id="emailDuplicationCheck" resultType="_int" parameterType="string">
-		select count(*) as email 
-		from member 
-		where 
-			email=#{emailDupl}
-	</select>
-	<select id="idDuplicationCheck" resultType="_int" parameterType="string">
-		select count(*) as id
-		from member 
-		where 
-			member_no=#{id}
-	</select>
-	
-	
-	<!-- 로그인 -->
-	
-	<select id="loginMember" resultMap="memberResultSet" parameterType="member">
-		SELECT *
-		  FROM
-				MEMBER		
-		  WHERE 
-				MEMBER_NO = #{memberNo}
-			AND 
-				STATUS = 'Y'
-	</select>
-	
-	<select id="searchId" resultMap="memberResultSet" parameterType="member">
-		SELECT MEMBER_NO
-		  FROM
-				MEMBER		
-		  WHERE 
-				MEMBER_NAME = #{memberName}
-			AND 
-				EMAIL = #{email}
-	</select>
-	
 
-	<!-- 려진 -->
+	</insert>
+
+	<insert id="regist" parameterType="cert">
+		INSERT INTO CERT(IP_INFO,
+		VERI_CODE, CERT_TIME) VALUES(#{ipInfo}, #{veriCode}, sysdate)
+	</insert>
+
+	<select id="emailValidate" resultType="_int"
+		parameterType="cert">
+		SELECT count(*) FROM CERT
+		WHERE
+		IP_INFO = #{ipInfo}
+		and VERI_CODE = #{veriCode}
+		and CERT_TIME between sysdate - 3/24/60 and sysdate
+		<!-- and sysdate / 24 / 60 - when / 24 / 60 <= 3 -->
+		<!-- 현재시각 - 생성시간 <= 3분 -->
+	</select>
+
+	<delete id="emailValidateRemove" parameterType="cert">
+		DELETE CERT WHERE
+		IP_INFO = #{ipInfo} and VERI_CODE = #{veriCode}
+	</delete>
+
+	<select id="emailDuplicationCheck" resultType="_int"
+		parameterType="string">
+		select count(*) as email
+		from member
+		where
+		email=#{emailDupl}
+	</select>
+	<select id="idDuplicationCheck" resultType="_int"
+		parameterType="string">
+		select count(*) as id
+		from member
+		where
+		member_no=#{id}
+	</select>
+
+
+	<!-- 로그인 -->
+
+	<select id="loginMember" resultMap="memberResultSet"
+		parameterType="member">
+		SELECT *
+		FROM
+		MEMBER
+		WHERE
+		MEMBER_NO = #{memberNo}
+		AND
+		STATUS = 'Y'
+	</select>
+
+	<select id="searchId" resultMap="memberResultSet"
+		parameterType="member">
+		SELECT MEMBER_NO
+		FROM
+		MEMBER
+		WHERE
+		MEMBER_NAME = #{memberName}
+		AND
+		EMAIL = #{email}
+		AND BIRTH = #{birth}
+	</select>
+
+	<update id="loginFail" parameterType="string">
+		update member 
+		set login_Fail =(login_Fail+1)
+		where member_no = #{memberNo}
+	
+	</update>
+	<update id="loginFailReset" parameterType="member">
+		update member 
+		set login_Fail = default
+		where member_no = #{memberNo}
+	
+	</update>
+	<select id="loginFailCount" parameterType="member" resultType="_int">
+        select login_fail
+        from member
+        where member_no = #{memberNo}
+        and member_name = #{memberName}
+        and email = #{email}
+        
+	</select>
+	
+	<update id="sendPwd" parameterType="member">
+       	update member 
+		set tmp_pwd = #{tmpPwd}
+		where member_no = #{memberNo}
+        and member_name = #{memberName}
+        and email = #{email}
+	
+	</update>
+	
+	<update id="deleteTmpPwd" parameterType="member">
+		update member 
+		set tmp_pwd = null
+		where member_no = #{memberNo}
+        and member_name = #{memberName}
+        and email = #{email}
+	</update>
+	
+	<update id="changePwdLogin" parameterType="member">
+		update member 
+		set member_pwd = #{memberPwd}
+		where member_no = #{memberNo}
+        and member_name = #{memberName}
+        and email = #{email}
+	</update>
+	
+	<select id="selectMember" parameterType="member"  resultMap="memberResultSet">
+		select * from member
+		where member_no = #{memberNo}
+		and member_name= #{memberName}
+		and email = #{email}
+	</select>
+
 
 	<select id="selectAddrList" resultMap="memberResultSet">
 		select
-		        member_no, 
-		        dept_name dept_no, 
-		        rank_name rank_no, 
-		        member_name, 
-		        email,
-		        phone,
-		        filepath
-		  from
-		        member
-		  join
-		        dept using (dept_no)
-		  join  
-		        rank using (rank_no)
-		 where
-		        status = 'Y'
+		member_no,
+		dept_name dept_no,
+		rank_name rank_no,
+		member_name,
+		email,
+		phone,
+		filepath
+		from
+		member
+		join
+		dept using (dept_no)
+		join
+		rank using (rank_no)
+		where
+		status = 'Y'
 
 	</select>
+
 	<!-- 윤희 -->
+
 	<!-- 멤버 정보 -->
-	<select id="selectMemberInformation" resultMap="memberResultSet">
-		select *
-		
-		from member
-		
-		where member_no = 1
+	<select id="selectMemberInformation" resultMap="memberResultSet" parameterType="member">
+		select 
+			MEMBER_NO,
+			(select Dept_Name from dept where dept_no = (select dept_no from "MEMBER" where member_no = #{memberNo}) 
+			) DEPT_NO,
+			(select RANK_NAME from rank where rank_no = (select rank_no from "MEMBER" where member_no = #{memberNo})
+            ) RANK_NO,
+			MEMBER_NAME,
+			MEMBER_PWD,
+			BIRTH,
+			ADDRESS,
+			EMAIL,
+			PHONE,
+			TELEPHONE,
+			STATUS,
+			"FILE",
+			FILEPATH,
+			LOGIN_FAIL,
+			TMP_PWD,
+			ENROLL_DATE,
+			RESIGN_DATE
+		from
+		member
+		where
+		member_no = #{memberNo}
+		and
+		status = 'Y'
 	</select>
-	
+
+	<update id="updateMemberFile" parameterType="member">
+		update member set
+		"FILE" = #{file}, "FILEPATH" = #{filePath} where member_no =
+		#{memberNo}
+
+	</update>
+
+	<update id="changePwd" parameterType="member">
+		update member set
+		MEMBER_PWD = #{memberPwd} where member_no = #{memberNo}
+	</update>
+
 
 </mapper>

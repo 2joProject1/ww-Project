@@ -1,12 +1,15 @@
 package com.kh.walkwork.notice.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.walkwork.common.model.vo.Attachment;
 import com.kh.walkwork.common.model.vo.PageInfo;
 import com.kh.walkwork.notice.model.vo.Notice;
 
@@ -29,29 +32,79 @@ public class NoticeDao {
 		return sqlSession.update("noticeMapper.increaseCount", bno);
 	}
 
-	public ArrayList<Notice> selectNotice(SqlSessionTemplate sqlSession, Notice n) {
-		
-		/*
-		 * ArrayList list = (ArrayList)
-		 * sqlSession.selectList("noticeMapper.selectNotice", n);
-		 * System.out.println(list.size()); List<Object> list2 =
-		 * sqlSession.selectList("noticeMapper.selectNotice", n);
-		 * System.out.println(list2.size()); for(int i = 0; i < list.size(); i++) {
-		 * System.out.println(list.get(i)); } for(int i = 0; i < list2.size(); i++) {
-		 * System.out.println(list2.get(i)); }
-		 */
-		System.out.println("디에이오임게시글ㅇㄷ"+n.getBoardNo());
-		System.out.println("디에이오임누가씀"+n.getBoardWriter());
-		return (ArrayList)sqlSession.selectList("noticeMapper.selectNotice", n);
+	
+	//상세조회
+	public Notice selectNotice(SqlSessionTemplate sqlSession, Notice n) {
+
+				
+		return sqlSession.selectOne("noticeMapper.selectNotice", n);
+
 	}
+	
+	//상세조회 파일가져오기
+	public ArrayList<Attachment> selectFile(SqlSessionTemplate sqlSession, Notice n) {
+		return (ArrayList)sqlSession.selectList("noticeMapper.selectFile", n);
+	}
+	
+	
 
 	public Notice insertNotice(SqlSessionTemplate sqlSession, Notice n) {
-		sqlSession.insert("noticeMapper.insertNotice", n);
+		int result = sqlSession.insert("noticeMapper.insertNotice", n);
+		
 		return sqlSession.selectOne("noticeMapper.selectBoardNo", n);
 	}
  
+	public int deleteNoitce(SqlSessionTemplate sqlSession, Notice n) {
+
+		return sqlSession.delete("noticeMapper.deleteNotice", n);
+	}
+
+	public int updateNotice(SqlSessionTemplate sqlSession, Notice n) {
+		return sqlSession.update("noticeMapper.updateNotice", n);
+	}
+
+	public ArrayList<Notice> rangeNotice(SqlSessionTemplate sqlSession, String noticeRange, PageInfo pi) {
+		int offset = (pi.getCurrentPage() -1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		
+		return (ArrayList)sqlSession.selectList("noticeMapper.rangeNotice", noticeRange, rowBounds); 
+	}
+
+	public int selectRangeListCount(SqlSessionTemplate sqlSession, String noticeRange) {
+		return sqlSession.selectOne("noticeMapper.selectRangeListCount", noticeRange);
+	}
+
+	public ArrayList<Notice> selectTopList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("noticeMapper.selectTopList");
+	}
+
+	public int selectAttachCount(SqlSessionTemplate sqlSession, int bno) {
+		return sqlSession.selectOne("noticeMapper.selectAttachCount", bno);
+	}
+	
+
+	public int deleteFile(SqlSessionTemplate sqlSession, int fileLength, int boardNo) {
+		
+		Map<String,Object>map = new HashMap<String,Object>();
+		map.put("fileLength", fileLength);
+		map.put("boardNo", boardNo);	
+		int result = sqlSession.delete("noticeMapper.deleteFile", map);
+		return result;
+	}
+
+
+
+	//메인
+	public ArrayList<Notice> selectNoticeList(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("noticeMapper.selectMainList");
+	}
+
+
+ 
 } 
 
-
+ 
 
 

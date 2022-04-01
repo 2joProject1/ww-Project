@@ -12,10 +12,12 @@
 <link rel="stylesheet" href="resources/css/header.css">
 
 <!-- 부트스트랩관련 -->
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -174,6 +176,7 @@
             <!-- 연락처 리스트 -->
             <div class="list-group addr_ul">
             	<!-- 
+
               <li class="list-group-item justify-content-between align-items-center addr_li">
                 <i class="xi-profile xi-3x"></i>
                 <div  style="margin-left: 6px;">
@@ -355,7 +358,54 @@
         $(".modal-backdrop").css('background', 'none');
   })
 
-</script>
+		//윤희 모달 정보
+		$(document).ready(function() {
+			var dept = $('#hd_deptNo').val();
+			var rank = $('#hd_rankNo').val();
+			console.log(dept, rank);
+
+			if (dept == 0) {
+				$('#printDept').text('미배치');
+			} else if (dept == 1) {
+				$('#printDept').text('기획팀');
+			} else if (dept == 2) {
+				$('#printDept').text('운영팀');
+			} else if (dept == 3) {
+				$('#printDept').text('재무팀');
+			} else if (dept == 4) {
+				$('#printDept').text('서비스팀');
+			} else if (dept == 5) {
+				$('#printDept').text('개발팀');
+			} else {
+				$('#printDept').text('인사팀');
+			}
+
+			if (rank = 1) {
+				$('#printRank').text('사원');
+			} else if (rank == 2) {
+				$('#printRank').text('대리');
+			} else if (rank == 3) {
+				$('#printRank').text('과장');
+			} else if (rank == 4) {
+				$('#printRank').text('차장');
+			} else if (rank == 5) {
+				$('#printRank').text('부장');
+			} else {
+				$('#printRank').text('전체관리자');
+			}
+		});
+
+		$(".popup").click(function() {
+			$(".pop").toggle();
+			$(".chat_ul").show();
+			$(".addr_ul").hide();
+		})
+		$("#chat_btn").click(function() {
+			$(".chat_ul").show();
+			$(".addr_ul").hide();
+		});
+	</script>
+
 
 </body>
 </html>

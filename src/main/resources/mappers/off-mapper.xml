@@ -3,7 +3,7 @@
 <mapper namespace="offMapper">
 	<resultMap type="off" id="offResultSet">
 		<result column="OFF_NO" property="offNo" />
-		<result column="OFF_DEPT" property="offDept" />
+		<result column="DEPT_NO" property="offDept" />
 		<result column="OFF_WRITER" property="offWriter" />
 		<result column="OFF_START" property="offStart" />
 		<result column="OFF_END" property="offEnd" />
@@ -15,12 +15,12 @@
 		<result column="DEPT_NAME" property="deptName" />
 	</resultMap>
 	
+	<!-- 휴가신청 -->
 	<insert id="insertOff" parameterType="off">
 		INSERT INTO
 			DAYOFF
 				(
 				OFF_NO
-				,OFF_DEPT
 				,OFF_WRITER
 				,OFF_START
 				,OFF_END
@@ -30,7 +30,6 @@
 			VALUES
 				(
 				SEQ_ONO.NEXTVAL
-				,#{offDept}
 				,#{offWriter}
 				,#{offStart}
 				,#{offEnd}
@@ -38,47 +37,152 @@
 				,#{offDays}
 				)	
 	</insert>
-	
-	<select id="selectCountOff"  resultType="_int" parameterType="_int" >
+	<!--  오라클에서 받는 데이터의 형식 숫자이기때문에 int -->
+	<select id="selectCountOff"  resultType="_int" parameterType="String" >
 		SELECT COUNT(*)
 		FROM DAYOFF
 		WHERE OFF_WRITER = #{offWriter}
 	</select>
 	
-	
-	<select id="selectListOff" resultMap="offResultSet" parameterType="_int">
+	<!--  오라클에서 받는 데이터의 형식 복수행 복수컬럼 -->
+	<select id="selectListOff" resultMap="offResultSet" parameterType="String">
 		SELECT 
 			OFF_NO
-			, T.DEPT_NO OFF_DEPT
+			, T.DEPT_NO
 			, M.MEMBER_NO OFF_WRITER
 			, TO_CHAR(OFF_START, 'YYYY-MM-DD') OFF_START
 			, TO_CHAR(OFF_END, 'YYYY-MM-DD') OFF_END
 			, OFF_REASON
-			, TO_CHAR(REQUEST_DATE 'YYYY-MM-DD') AS REQUEST_DATE
+			, TO_CHAR(REQUEST_DATE, 'YYYY-MM-DD') AS REQUEST_DATE
 			, D.STATUS
 			, OFF_DAYS
+			, OFF_VOLUME
+			, OFF_EMPLOY
 			, M.MEMBER_NAME MEMBER_NAME
 			, T.DEPT_NAME DEPT_NAME
 		FROM DAYOFF D
-		JOIN DEPT T ON ( D.OFF_DEPT = T.DEPT_NO)
 		JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
+		JOIN DEPT T ON ( M.DEPT_NO = T.DEPT_NO)
 		WHERE OFF_WRITER = #{offWriter}
 		ORDER BY D.OFF_NO DESC
-	
 	</select>
 	
+	<select id="searchListOff" resultMap="offResultSet" parameterType="off">
+		SELECT 
+				OFF_NO, 
+				T.DEPT_NO, 
+				M.MEMBER_NO OFF_WRITER, 
+				TO_CHAR(OFF_START, 'YYYY-MM-DD') OFF_START,
+				TO_CHAR(OFF_END, 'YYYY-MM-DD') OFF_END, 
+				OFF_REASON, 
+				TO_CHAR(REQUEST_DATE, 'YYYY-MM-DD') AS REQUEST_DATE,
+				D.STATUS, 
+				OFF_DAYS,
+				M.MEMBER_NAME MEMBER_NAME, 
+				T.DEPT_NAME DEPT_NAME
+		FROM DAYOFF D
+		JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
+		JOIN DEPT T ON ( M.DEPT_NO = T.DEPT_NO)
+		WHERE REQUEST_DATE BETWEEN #{offStart} AND #{offEnd}
+		AND OFF_WRITER = #{offWriter}
+		ORDER BY D.OFF_NO DESC
+	</select>
 	
-	<select id="searchListOff">
-	SELECT OFF_NO, T.DEPT_NO OFF_DEPT, M.MEMBER_NO OFF_WRITER, 
-	OFF_START, OFF_END, OFF_REASON, REQUEST_DATE, D.STATUS, OFF_DAYS,
-	M.MEMBER_NAME MEMBER_NAME, T.DEPT_NAME DEPT_NAME
-	FROM DAYOFF D
-	JOIN DEPT T ON ( D.OFF_DEPT = T.DEPT_NO)
-	JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
-	WHERE REQUEST_DATE BETWEEN #{offStart} AND #{offEnd}
-	AND OFF_WRITER = #{offWriter}
-	ORDER BY D.OFF_NO DESC
+	<select id="searchCountOff" resultType="_int" parameterType="off">
+		SELECT COUNT(*)
+		FROM DAYOFF
+		WHERE REQUEST_DATE BETWEEN #{offStart} AND #{offEnd}
+		AND OFF_WRITER = #{offWriter}
+	</select>
 	
+	<select id="adminSelectListOff" resultMap="offResultSet" parameterType="_int">
+		SELECT 
+				OFF_NO
+				, T.DEPT_NO
+				, M.MEMBER_NO OFF_WRITER
+				, TO_CHAR(OFF_START, 'YYYY-MM-DD') OFF_START
+				, TO_CHAR(OFF_END, 'YYYY-MM-DD') OFF_END
+				, OFF_REASON
+				, TO_CHAR(REQUEST_DATE, 'YYYY-MM-DD') AS REQUEST_DATE
+				, D.STATUS
+				, OFF_DAYS
+				, M.MEMBER_NAME MEMBER_NAME
+				, T.DEPT_NAME DEPT_NAME
+			FROM DAYOFF D
+			JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
+			JOIN DEPT T ON ( M.DEPT_NO = T.DEPT_NO)
+			WHERE T.DEPT_NO = #{offDept}
+			ORDER BY D.OFF_NO DESC
 	</select>
 
+	<select id="adminSelectCountOff" resultType="_int" parameterType="_int">
+		SELECT COUNT(*)
+		FROM DAYOFF D
+		JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
+		JOIN DEPT T ON ( M.DEPT_NO = T.DEPT_NO)
+		WHERE T.DEPT_NO = #{offDept}
+	</select>
+	
+	<update id="adminApprovalOff" parameterType="off">
+		UPDATE DAYOFF
+		SET STATUS = #{status}
+		WHERE OFF_NO = #{offNo}
+	</update>
+	
+	<select id="adminSearchListOff" resultMap="offResultSet" parameterType="off">
+		SELECT 
+				OFF_NO, 
+				T.DEPT_NO, 
+				M.MEMBER_NO OFF_WRITER, 
+				TO_CHAR(OFF_START, 'YYYY-MM-DD') OFF_START,
+				TO_CHAR(OFF_END, 'YYYY-MM-DD') OFF_END, 
+				OFF_REASON, 
+				TO_CHAR(REQUEST_DATE, 'YYYY-MM-DD') AS REQUEST_DATE,
+				D.STATUS, 
+				OFF_DAYS,
+				OFF_VOLUME,
+				OFF_EMPLOY,
+				M.MEMBER_NAME MEMBER_NAME, 
+				T.DEPT_NAME DEPT_NAME
+		FROM DAYOFF D
+		JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
+		JOIN DEPT T ON ( M.DEPT_NO = T.DEPT_NO)
+		WHERE REQUEST_DATE BETWEEN #{offStart} AND #{offEnd}
+		AND T.DEPT_NO = #{offDept}
+		ORDER BY D.OFF_NO DESC
+	</select>
+	
+	<select id="adminSearchCountOff" resultType="_int" parameterType="off">
+		SELECT COUNT(*)
+		FROM DAYOFF D
+		JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
+		JOIN DEPT T ON ( M.DEPT_NO = T.DEPT_NO)
+		WHERE REQUEST_DATE BETWEEN #{offStart} AND #{offEnd}
+		AND T.DEPT_NO = #{offDept}
+	</select>
+	
+	<select id="selectDto" resultType="HashMap" parameterType="_int">
+		SELECT 
+				M.MEMBER_NO OFF_WRITER,
+				M.MEMBER_NAME MEMBER_NAME, 
+		to_char(OFF_START,'YYYY-MM-DD') as OFF_START,
+		to_char(OFF_END+1,'YYYY-MM-DD') as OFF_END,
+		D.OFF_DAYS
+		FROM DAYOFF D
+		JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
+		WHERE D.STATUS = 'Y'
+		AND M.MEMBER_NO = #{memberNo}
+	</select>
+	<select id="adminSelectDto" resultType="HashMap" parameterType="_int">
+		SELECT 
+				M.MEMBER_NO OFF_WRITER,
+				M.MEMBER_NAME MEMBER_NAME, 
+		to_char(OFF_START,'YYYY-MM-DD') as OFF_START,
+		to_char(OFF_END+1,'YYYY-MM-DD') as OFF_END,
+		D.OFF_DAYS
+		FROM DAYOFF D
+		JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
+		WHERE D.STATUS = 'Y'
+		AND M.DEPT_NO = #{deptNo}
+	</select>
 </mapper>

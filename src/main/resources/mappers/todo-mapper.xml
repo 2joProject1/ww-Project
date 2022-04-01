@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="todoMapper">
+
+	<resultMap id="todoResultSet" type="todo">
+		<result column="BOARD_NO" property="boardNo" />
+		<result column="MEMBER_NO" property="memberNo" />
+		<result column="CONTENT" property="content" />
+		<result column="CHECK" property="check" />
+	
+	</resultMap>
+
+	<select id="mainTodoList" parameterType="string" resultMap="todoResultSet">
+        <![CDATA[
+          
+          select a.*
+          from(
+          select *
+			from to_do
+			where "CHECK" =  'N'
+			AND MEMBER_NO = '22222'
+                ) a
+        where rownum <= 7
+        
+		]]>
+	
+	</select>
+	<update id="mainTodoDelete" parameterType="todo">
+		update to_do set 
+		"CHECK" = 'Y'
+		where board_no = #{boardNo}
+		and member_no = #{memberNo}
+		and "CONTENT" = #{content}
+	</update>
+
+</mapper>

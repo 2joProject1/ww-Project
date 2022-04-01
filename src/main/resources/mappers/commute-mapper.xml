@@ -9,5 +9,111 @@
 		<result column="WORK_STATUS" property="workStatus" />
 		<result column="COMMUTE_DATE" property="commuteDate" />
 	</resultMap>
+	
+	<!-- 출근 -->
+	<insert id="insertCommute" parameterType="commute">
+		INSERT INTO COMMUTE
+							(
+							MEMBER_NO
+							,COMMUTE_START
+							,COMMUTE_DATE
+							,WORK_STATUS
+							)
+					VALUES
+							(
+							#{memberNo}
+							,#{commuteStart}
+							,#{commuteDate}
+							,#{workStatus}
+							)		
+	</insert>
+	
+	<!-- 출근확인 -->
+	<select id="checkCommute" parameterType="commute" resultType="_int">
+		SELECT COUNT(*) 
+		FROM COMMUTE
+		WHERE COMMUTE_DATE = #{commuteDate}
+		AND MEMBER_NO = #{memberNo}
+	</select>
+	
+	<!-- 퇴근확인 -->
+	<select id="checkEnd" parameterType="commute" resultType="_int">
+		SELECT COUNT(*) FROM COMMUTE
+		WHERE COMMUTE_END IS NOT NULL
+		AND COMMUTE_DATE = #{commuteDate}
+		AND MEMBER_NO = #{memberNo}
+	</select>
+	
+	<!-- 지각여부확인 -->
+	<select id="checkLate" parameterType="commute" resultType="_int">
+		SELECT COUNT(*) 
+		FROM COMMUTE
+		WHERE MEMBER_NO = #{memberNo}
+		AND WORK_STATUS = 'N'
+		AND COMMUTE_DATE = #{commuteDate}
+	</select>
+	
+	<!-- 퇴근 -->
+	<update id="updateCommute" parameterType="commute">
+		UPDATE COMMUTE
+		SET COMMUTE_END = #{commuteEnd},
+			WORK_STATUS = #{workStatus}
+		WHERE MEMBER_NO = #{memberNo}
+		AND COMMUTE_DATE = #{commuteDate}				
+	</update>
+	
+	<!-- 해당사원 조회 -->
+	<select id="selectListCommute" parameterType="commute" resultMap="commuteResultSet">
+		<![CDATA[
+			SELECT 
+				MEMBER_NO,
+				COMMUTE_START,
+				COMMUTE_END,
+				COMMUTE_STATUS,
+				WORK_STATUS,
+				COMMUTE_DATE 
+			FROM COMMUTE
+			WHERE COMMUTE_DATE LIKE #{commuteDate}||'%'
+			AND MEMBER_NO = #{memberNo}
+			ORDER BY COMMUTE_DATE DESC
+		]]>
+	</select>
+	
+	<!-- 출퇴근 조회 -->
+	<select id="selectListCount" parameterType="commute" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM COMMUTE
+			WHERE COMMUTE_DATE LIKE #{commuteDate}||'%'
+			AND MEMBER_NO = #{memberNo} 
+		]]>
+	</select>
+	
+	<select id="selectMonthList" parameterType="commute" resultMap="commuteResultSet">
+		<![CDATA[
+			SELECT 
+				MEMBER_NO,
+				COMMUTE_START,
+				COMMUTE_END,
+				COMMUTE_STATUS,
+				WORK_STATUS,
+				COMMUTE_DATE  
+			FROM COMMUTE
+			WHERE COMMUTE_DATE LIKE #{commuteDate}||'%'
+			AND MEMBER_NO = #{memberNo}
+			AND COMMUTE_END IS NOT NULL	
+			ORDER BY COMMUTE_DATE DESC
+		]]>
+	</select>
+	
+	<select id="selectMonthCount" parameterType="commute" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(*)
+			FROM COMMUTE
+			WHERE COMMUTE_DATE LIKE #{commuteDate}||'%'
+			AND MEMBER_NO = #{memberNo} 
+			AND COMMUTE_END IS NOT NULL	
+		]]>
+	</select>
 
 </mapper>
