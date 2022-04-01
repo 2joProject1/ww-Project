@@ -150,7 +150,6 @@
     <i class="xi-bell-o">&nbsp;</i>
     
     <i class="xi-profile" data-bs-toggle="modal" data-bs-target="#memberModal">&nbsp;</i>
-    
     <div class="pop" style="font-size: 15px;">
         <div>
           <button class="chat-button" id="chat_btn">채팅</button>
