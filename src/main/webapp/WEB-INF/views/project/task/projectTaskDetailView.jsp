@@ -35,7 +35,6 @@
 .info-right {
 	width: calc(100% - 700px);
 	height: 400px;
-	border: 1px solid #999;
 }
 
 h2.project-title {
@@ -298,6 +297,10 @@ table.section-table {
 	line-height: 70px;
 }
 
+#taskReply > tr:nth-child(1) > td:nth-child(2){
+	width: 700px;
+}
+
 /*담당자선택*/
 #projectMemberList {
 	display: inline-block;
@@ -351,36 +354,31 @@ table.section-table {
 
 		<div id="content-layout">
 			<div class="project-info">
-				<c:forEach var="p" items="${ list }">
-					<div class="info-left">
-						<div class="project-title-area">
-							<h2 class="project-title">${ p.projectTitle }</h2>
-							&nbsp;&nbsp;&nbsp;
-							<span class="title-label">
-								<c:if test="${p.projectStatus == 0}">
-									<i>완료</i>
-								</c:if>
-								<c:if test="${p.projectStatus == 1}">
-									<i>진행중</i>
-								</c:if>
-							</span>
-							<c:if test="${p.projectStatus == 1}">
-								<button type="button" class="project-end-btn">완료</button>
+				<div class="info-left">
+					<div class="project-title-area">
+						<h2 class="project-title">${ p.projectTitle }</h2>
+						&nbsp;&nbsp;&nbsp;
+						<span class="title-label">
+							<c:if test="${p.projectStatus == 0}">
+								<i>완료</i>
 							</c:if>
-						</div>
-
-						<ul class="project-desc-list">
-							<li><b>프로젝트 기간</b>${ p.projectStartDate } - ${ p.projectEndDate }</li>
-							<li><b>프로젝트 개요</b>
-								<div class="desc-wrapper">
-									<p>${ p.projectSummary }</p>
-								</div></li>
-							<li><b>프로젝트 매니저(PM)</b> <span>${ p.projectWriter }</span></li>
-							<li><b>프로젝트 인원</b> <span class="add-team">${p.projectMemberStr}</span></li>
-						</ul>
+							<c:if test="${p.projectStatus == 1}">
+								<i>진행중</i>
+							</c:if>
+						</span>
 					</div>
-					<div class="info-right"></div>
-				</c:forEach>
+
+					<ul class="project-desc-list">
+						<li><b>프로젝트 기간</b>${ p.projectStartDate } - ${ p.projectEndDate }</li>
+						<li><b>프로젝트 개요</b>
+							<div class="desc-wrapper">
+								<p>${ p.projectSummary }</p>
+							</div></li>
+						<li><b>프로젝트 매니저(PM)</b> <span>${ p.projectWriter }</span></li>
+						<li><b>프로젝트 인원</b> <span class="add-team">${p.projectMemberStr}</span></li>
+					</ul>
+				</div>
+				<div class="info-right"></div>
 			</div>
 			<hr>
 			<div class="project-task">
@@ -416,7 +414,7 @@ table.section-table {
 								<input type="text" name="taskHandlername" value="${item.taskHandlerName }" class="project-write-field" id="projectTaskHandler" readonly>
 							</div>
 							<div>
-								<input type="hidden" name="taskHandler" id="taskHandler" value="${item.taskHandlerName }">
+								<input type="hidden" name="taskHandler" id="taskHandler" value="${item.taskHandler}">
 								<b></b>
 								<div id="projectMemberList" style="display: none;"></div>
 							</div>
@@ -434,6 +432,7 @@ table.section-table {
 						<li><textarea name="boardContent" class="project-write-field-content" placeholder="내용을 입력하세요">${item.boardContent }</textarea></li>
 					</ul>
 					<div class="button-area">
+						<button type="button" class="btn-custom" id="detailListBack">목록</button>
 						<c:if test="${ loginUser.memberNo eq item.boardWriter }">
 							<button type="submit" class="btn-custom" id="project-enroll-btn">수정</button>
 						</c:if>
@@ -445,9 +444,10 @@ table.section-table {
 				<input type="text" name="content" id="content" placeholder="댓글을 입력해주세요" required>
 				<button type="submit" style="height: auto;" id="btn-insertReply" onclick="addReply()">등록</button>
 				<br>
-				<table id="taskReply" width="100%" width="900px">
+				<table id="taskReply" width="1000px">
 					<c:forEach var="r" items="${ taskReplyList }">
 						<tr>
+							<td style="padding-right:5px;">resources/coFile/${ r.file }</td>
 							<td>${ r.memberName }</td>
 							<td>${ r.replyContent }</td>
 							<td>
@@ -485,35 +485,37 @@ table.section-table {
 		});
 
 		//업무 상세보기 및 업무 수정 폼으로 이동
+		/*
 		$('#project-enroll-btn').on("click", function() {
 			window.location.href = "project/task/projectTaskUpdateForm";
 		})
+		*/
+		
+		$('#detailListBack').on("click", function(){
+			window.location.href = "project?projectNo=" + ${item.projectNo};
+		})
 
 		//업무 작성하기 : 담당자 지정
-		$("#projectTaskHandler")
-				.on(
-						"click",
-						function() {
-							$('#projectMemberList').show();
-							$('#projectMemberList').empty();
-							$
-									.ajax({
-										url : "handler.task",
-										data : {
-											projectNo : '${item.projectNo}'
-										},
-										success : function(data) {
-											console.log(data);
-											for (var i = 0; i < data.length; i++) {
-												var html = '<li data-member-no="'+data[i].memberNo+'">'
-														+ data[i].memberName
-														+ '</li>';
-												$('#projectMemberList').append(
-														html);
-											}
-										}
-									})
-						})
+		$("#projectTaskHandler").on("click",function() {
+				$('#projectMemberList').show();
+				$('#projectMemberList').empty();
+				$.ajax({
+					url : "handler.task",
+					data : {
+						projectNo : '${item.projectNo}'
+					},
+					success : function(data) {
+						console.log(data);
+						for (var i = 0; i < data.length; i++) {
+							var html = '<li data-member-no="'+data[i].memberNo+'">'
+									+ data[i].memberName
+									+ '</li>';
+							$('#projectMemberList').append(
+									html);
+						}
+					}
+				})
+			})
 
 		//클릭해서 파일 첨부하기
 		function attachFile() {
@@ -580,10 +582,13 @@ table.section-table {
 
 					let value = "";
 					for ( let i in list) {
-						value += "<tr data-reply-no='"+list[i].replyNo+"'>"
-								+ "<td>" + list[i].memberName + "</td>"
+						value += "<tr data-reply-no='"+list[i].replyNo+"'>";
+						
+						value += "<td>";
+						value += '<img style="width: 32px; height: 32px; border-radius: 100%; margin-right: 10px;" src="resources/coFile/'+list[i].file+'" onerror="this.src=\'resources/images/person-fill.svg\'" >';
+						value += list[i].memberName + "</td>"
 								+ "<td>" + list[i].replyContent + "</td>"
-								+ "<td>" + list[i].enrollDate + "</td>"
+								+ "<td>" + list[i].enrollDateStr + "</td>"
 								+ '<td><i class="xi-close-min"></i></td>'
 								+ "</tr>";
 					}
@@ -614,6 +619,8 @@ table.section-table {
 				}
 			})
 		})
+		
+		
 	</script>
 
 </body>

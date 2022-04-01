@@ -12,5 +12,6 @@ public class Reply {
 	private String memberName;
 	private String replyContent;
 	private Date enrollDate;
+	private String enrollDateStr;
 	private String file;
 }

@@ -23,7 +23,7 @@
 	display: inline-block;
 	background-color: rgb(185, 207, 199);
 	border-radius: 50px;
-	margin-left: 10px;
+	margin-left: 20px;
 	margin-bottom: 5px;
 	text-align: center;
 	text-decoration: none;
@@ -173,6 +173,11 @@ div#addMemberArea {
 	margin-left: 38%;
 }
 
+#projectMemberBtn{
+ 	border: none;
+ 	background-color: white;
+}
+
 /* 사원검색 */
 input[type="search"] {
 	width: 409px;
@@ -216,7 +221,7 @@ input[type="search"] {
 .btn-searchMember {
 	width: 112px;
 	height: 37px;
-	background-color: rgb(102, 164, 164);
+	background-color: rgb(102, 164, 166);
 	color: white;
 	border: 1px lightgray;
 	border-radius: 10px;
@@ -242,14 +247,14 @@ input[type="search"] {
 				</c:if>
 
 				<div class="sub-menu-title">
-					<i class="fi fi-rr-menu-burger"></i>&nbsp;<b>프로젝트</b><br>
+					<i class="xi-presentation"></i>&nbsp;<b>프로젝트</b><br>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-apps"></i>&nbsp;
+					&nbsp;
 					<a href="#" class="">&nbsp;전체</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-apps"></i>&nbsp;
+					&nbsp;
 					<a href="notice.pro" class="">&nbsp;공지사항</a>
 					<br>
 				</div>
@@ -274,8 +279,16 @@ input[type="search"] {
 				</div>
 			</c:forEach>
 			<hr>
-			<h2 class="project-title">${ loginUser.deptName }</h2>
-			여기는 일단 놔둬봐
+			<h2 class="project-title">완료된 프로젝트</h2>
+			<c:forEach var="p" items="${ flist }">
+				<div class="project-list">
+					<a href="project?projectNo=${p.projectNo }">
+						<div id="projectTT">${ p.projectTitle }</div><br><br>
+						<div id="projectMM">${ p.projectMemberStr }</div>
+					</a>
+				</div>
+			</c:forEach>
+			
 		</div>
 	</div>
 	<!-- The Modal -->
@@ -316,7 +329,8 @@ input[type="search"] {
 							<tr>
 								<th>프로젝트 매니저</th>
 								<td>
-									<input type="text" name="projectWriter" class="newProject-input" value="${ loginUser.memberName }" readonly style="border: none;">
+									<input type="hidden" name="projectWriter" value="${loginUser.memberNo }">
+									<input type="text" name="projectWriterName" class="newProject-input" value="${ loginUser.memberName }" readonly style="border: none;">
 								</td>
 							</tr>
 							<tr>
@@ -328,7 +342,7 @@ input[type="search"] {
 										<span id="projectMemberCount"></span>
 										명
 									</span>
-									<button type="button" id="projectMemberBtn">아이콘</button>
+									<button type="button" id="projectMemberBtn"><i class="xi-user-plus-o"></i></button>
 							</tr>
 							<tr>
 								<th colspan="2"><div class="newProject-member" name="projectMember" id="addMemberArea"></div></th>
@@ -376,7 +390,7 @@ input[type="search"] {
 			var html = $('#searchMemberResult').html();
 			$('#addMemberArea').html(html);
 			$('#searchMemberResult').empty();
-			$('#searchMember').hide();
+			$('#searchMember').modal('hide');
 
 			for (var i = 0; i < projectAddedMembers.length; i++) {
 				var html = '<input type="hidden" name="projectMemberNo" value="' + projectAddedMembers[i] + '" >';
@@ -389,6 +403,10 @@ input[type="search"] {
 			var memberNo = $(this).attr('data-member');
 			var memberName = $(this).children().eq(1).text().trim();
 			var teamName = $(this).children().eq(2).text().trim();
+			if (projectAddedMembers.indexOf(memberNo) > -1) {
+				alert("중복된 사용자를 선택할 수 없습니다.");
+				return;
+			}
 			$('#searchMemberResult').append(
 					'<li>' + teamName + ' ' + memberName + '</li>');
 			projectAddedMembers.push(memberNo);

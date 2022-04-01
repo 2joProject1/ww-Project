@@ -45,8 +45,7 @@
 	</update>
 	
 	<!-- 업무 상세보기 -->
-	<select id="getTaskDetail" resultType="task"
-		parameterType="task">
+	<select id="getTaskDetail" resultType="task" parameterType="task">
 		SELECT A.BOARD_NO
 		,A.BOARD_WRITER
 		,A.PROJECT_NO
@@ -124,8 +123,8 @@
 		A.BOARD_NO,
 		A.MEMBER_NO,
 		A.REPLY_CONTENT,
-		A.ENROLL_DATE,
-		B.MEMBER_NAME
+		TO_CHAR(A.ENROLL_DATE, 'YYYY-MM-DD HH:mm:ss') AS ENROLL_DATE_STR,
+        B.*
 		FROM REPLY A
 		INNER JOIN MEMBER B ON A.MEMBER_NO=B.MEMBER_NO
 		WHERE BOARD_NO = #{boardNo}
@@ -146,16 +145,9 @@
 	</delete>
 
 	<!-- 업무 : 차트 -->
-	<select id="taskStateList" resultType="int" parameterType="string">
-
-	<![CDATA[
-		SELECT COUNT(TASK_STATUS) AS COUNT 
+	<select id="taskStateList" resultType="int" parameterType="task">
+		SELECT NVL(COUNT(TASK_STATUS), 0) AS COUNT 
 		FROM BOARD_ALL
-		WHERE PROJECT_NO=#{pno} and TASK_STATUS = #{taskStatus}
-		GROUP BY TASK_STATUS 
-		ORDER BY TASK_STATUS ASC
-		]]>
+		WHERE PROJECT_NO = #{projectNo} AND TASK_STATUS = #{taskStatus}
 	</select>
-
-
 </mapper>

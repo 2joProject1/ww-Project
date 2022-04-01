@@ -29,6 +29,8 @@
 		<typeAlias type="com.kh.walkwork.commute.model.vo.Commute" alias="commute" />
 		<typeAlias type="com.kh.walkwork.todo.model.vo.Todo" alias="todo" />
 		<typeAlias type="com.kh.walkwork.schedule.model.vo.Schedule" alias="schedule" />
+		<typeAlias alias="chatContent" type="com.kh.walkwork.chatContent.model.vo.ChatContent"/>
+		<typeAlias alias="chatMember" type="com.kh.walkwork.chatMember.model.vo.ChatMember"/>
 	</typeAliases>
 	
 	<!-- 원래 enviroment, dataSource 에 기술했던 DB연결정보 => 이번에는 ROOT-CONTEXT.XML에 기술할 것 
@@ -49,6 +51,9 @@
 		<mapper resource="/mappers/todo-mapper.xml" />
 		<mapper resource="/mappers/schedule-mapper.xml" />
 		<mapper resource="/mappers/ogChart-mapper.xml" />
+		<mapper resource="/mappers/chat-mapper.xml"/>
+		<mapper resource="/mappers/chatMember-mapper.xml"/>
+		<mapper resource="/mappers/chatContent-mapper.xml"/>
 	</mappers>
 		<!-- 유의사항 : 미리 등록해두려면 해당 mapper파일이 진짜 존재하고 있는 상태여야함(namespace까지) -->
 

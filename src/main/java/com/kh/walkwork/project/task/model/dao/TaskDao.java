@@ -53,8 +53,13 @@ public class TaskDao {
 	}
 	
 	//업무 차트
-	public List<Integer> taskStateList(SqlSessionTemplate sqlSession, String pno) throws Exception{
-		return sqlSession.selectList("taskMapper.taskStateList", pno);
+	public int taskStateList(SqlSessionTemplate sqlSession, Task t) throws Exception{
+		Integer value = sqlSession.selectOne("taskMapper.taskStateList", t);
+		if (value == null) {
+			return 0;
+		} else {
+			return value;
+		}
 	}
 	
 

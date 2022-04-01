@@ -187,8 +187,8 @@
 								<td>5년</td>
 							</tr>
 							<tr>
-								<th>문서번호</th>
-								<td>${documentItem.docuNo}</td>
+								<th style="padding-right:15px">문서번호</th>
+								<td style="padding-right:82px">${documentItem.docuNo}</td>
 								<th>수신부서</th>
 								<td>${dept.deptName}</td>
 							</tr>

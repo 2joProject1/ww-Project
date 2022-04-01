@@ -3,8 +3,6 @@ package com.kh.walkwork.member.model.service;
 import java.text.DecimalFormat;
 import java.text.Format;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -90,8 +88,8 @@ public class MemberServiceImpl implements MemberService {
 	
 	// ------------헤더--------------
 	@Override
-	public ArrayList<Member> selectAddrList() {
-		return memberDao.selectAddrList(sqlSession);
+	public ArrayList<Member> selectAddrList(String memberNo) {
+		return memberDao.selectAddrList(sqlSession, memberNo);
 	}
 
 	@Override
@@ -142,7 +140,8 @@ public class MemberServiceImpl implements MemberService {
 	public int changePwd(Member m) {
 		return memberDao.changePwd(sqlSession, m);
 	}
-
+	
+	
 
 
 

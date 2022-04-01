@@ -47,7 +47,8 @@
 }
 
 .pagination {
-	margin-left: 45%;
+	margin-left: 47%;
+	text-align: center;
 	color: black;
 	border: none;
 }
@@ -76,9 +77,35 @@ a.page-link {
 
 .box-radio-input input[type="radio"]:checked+span {
 	border: 1px solid #23a3a7;
-	background: #23a3a7;
+	background: rgb(102,164,166);
 	color: #fff;
 }
+
+/* 필터 검색 버튼 */
+#docuboxSearchbtn{
+	border-radius: 8px;
+	color: white;
+	border: none;
+	background-color: rgb(102,164,166);
+}
+
+/* 필터 */
+div#fDay {
+    margin-left: 33px;
+    margin-top: 10px;
+}
+
+div#fDocu {
+    margin-left: 100px;
+    margin-top: 6px;
+}
+
+div#fStatus {
+    margin-left: 192px;
+    margin-top: 6px;
+}
+
+
 </style>
 </head>
 <body>
@@ -88,7 +115,7 @@ a.page-link {
 	<div id="container">
 		<div id="sidebar-layout">
 			<div id="main-sidebar">
-				<br> <i class="fi fi-rr-menu-burger"></i>&nbsp;<b>전자결재</b>
+				<br> <i class="xi-document"></i>&nbsp;<b>전자결재</b>
 				<div class="sub-menu">
 					<i class="fi fi-rr-edit"></i>&nbsp;
 					<a href="signoffs.docu?format=1">문서작성하기</a>
@@ -141,7 +168,7 @@ a.page-link {
 					<span>결재상태</span>
 				</label>
 				
-				<button type="button" onclick="submitDocu()">검색하기</button>
+				<button type="button" onclick="submitDocu()" id="docuboxSearchbtn">검색</button>
 			<input type="search" class="docubox-search" name="q">
 			</div>
 
@@ -198,7 +225,9 @@ a.page-link {
 								</td>
 								<td>${item.docuTitle}</td>
 								<td>
-									<i class="fi fi-rr-document"></i>
+									<c:if test="${item.fileYn == 'Y' }">
+										<i class="xi-file-check-o"></i>
+									</c:if>
 								</td>
 								<td>
 									<c:choose>

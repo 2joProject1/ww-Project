@@ -346,7 +346,6 @@ ul.project-desc-list {
 
 		<div id="content-layout">
 			<div class="project-info">
-				<c:forEach var="p" items="${ list }">
 				<div class="info-left">
 					<div class="project-title-area">
 						<h2 class="project-title">${ p.projectTitle }</h2>
@@ -359,9 +358,6 @@ ul.project-desc-list {
 								<i>진행중</i>
 							</c:if>
 						</span>
-						<c:if test="${p.projectStatus == 1}">
-							<button type="button" class="project-end-btn">완료</button>
-						</c:if>
 					</div>
 
 					<ul class="project-desc-list">
@@ -374,73 +370,64 @@ ul.project-desc-list {
 						<li><b>프로젝트 인원</b> <span class="add-team">${p.projectMemberStr}</span></li>
 					</ul>
 				</div>
-				</c:forEach>
 				<div class="task-report-wrap">
 					<div class="task-report" width="400px" height="400px">
-						<canvas id="taskChart"></canvas>
+						<canvas id="taskChart" style="width: 378px; height: 400px;"></canvas>
 					</div>
 				</div>
 			</div>
 			<hr>
 	<script>
-	$(function () {
-		// 업무리포트 그래프 뿌리기 
-		var ctx = document.getElementById('taskChart').getContext('2d');
-		var pno = ${ pno };
-		report();
-		function report() {
-			$.ajax({
-				url: "${pageContext.request.contextPath}/project/tstatereport",
-				data: {
-					pno: pno
-				},
-				dataType: "json",
-				success: function (data) {
-					console.log("성공 들어옴");
-					if(data!=null||data!=''){
-						createChart(data[0], data[1], data[2], data[3]);
-						console.log(data+"데이터 null이 아닐때 값 ")
-						return false;
-					}else{
-						$(".task-report-wrap").css("display","none");
-					}
-					console.log(data+"데이터데이터");
-				},
-				error: function () {
-					console.log("update 실패");
-				}
-			});
-		};
-		function createChart(s1, s2, s3) {
-			if(s1==null||s1==''){
-				$(".task-report-wrap").css("display","none");
-				console.log("데이터 s1"+s1);
-			}
-			var myChart = new Chart(ctx, {
-				type: 'doughnut',
-				data: {
-					labels: ['요청', '진행', '완료',],
-					datasets: [{
-						label: 'Score',
-						data: [100, 200, 300],
-						backgroundColor: [
-							'#F27781',
-							'#f17a19',
-							'#50b766',
-							'#4aaefb'
-						],
-					}]
-				},
-				options: {
+	//차트
+	var ctx = document.getElementById('taskChart').getContext('2d');
+	var pno = '${projectNo}';
+	report();
 
-					legend: {
-						display: true,
-						position: 'right',
-					}
+	function report() {
+		$.ajax({
+			url : "${pageContext.request.contextPath}/project/tstatereport",
+			data : {
+				projectNo : '${ projectNo }'
+			},
+			dataType : "json",
+			success : function(data) {
+				console.log("성공 들어옴");
+				if (data != null || data != '') {
+					createChart(data[0], data[1], data[2]);
+					console.log(data + "데이터 null이 아닐때 값 ")
+					return false;
 				}
-			});
-		};
+				console.log(data + "데이터데이터");
+			},
+			error : function() {
+				console.log("update 실패");
+			}
 		});
+	}
+
+	function createChart(s1, s2, s3) {
+		if (s1 == null || s1 == '') {
+			console.log("데이터 s1" + s1);
+		}
+		var myChart = new Chart(ctx, {
+			type : 'doughnut',
+			data : {
+				labels : [ '요청', '진행', '완료', ],
+				datasets : [ {
+					label : 'Score',
+					data : [ s1, s2, s3 ],
+					backgroundColor : [ '#56B37F', '#8AB78A', '#288C28', ],
+				} ]
+			},
+			options : {
+				responsive: false,
+				legend : {
+					display : true,
+					position : 'right',
+				}
+			}
+		});
+	}
 </script>
 			<div class="project-task">
 				<div class="section-title-wrapper">

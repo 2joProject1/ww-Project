@@ -189,25 +189,25 @@ input[type="search"] {
 	<div id="container">
 		<div id="sidebar-layout">
 			<div id="main-sidebar">
-				<br> <i class="fi fi-rr-menu-burger"></i>&nbsp;<b>전자결재</b>
+				<br> <i class="xi-document"></i>&nbsp;<b>전자결재</b>
 				<div class="sub-menu">
 					<i class="fi fi-rr-edit"></i>&nbsp;
-					<a href="signoffs.docu?foramt=1">문서작성하기</a>
+					<a href="signoffs.docu?format=1">문서작성하기</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;
+					&nbsp;
 					<a href="docubox.draft">기안문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;
+					&nbsp;
 					<a href="docubox.receive">수신문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;
+					&nbsp;
 					<a href="docubox.dept">부서문서함</a>
 				</div>
 				<div class="sub-menu">
-					<i class="fi fi-rr-folder"></i>&nbsp;
+					&nbsp;
 					<a href="docubox.reject">반려문서함</a>
 				</div>
 			</div>
@@ -233,7 +233,7 @@ input[type="search"] {
 										<option value="1" <c:if test="${format == '1'}">selected</c:if> >기안문서</option>
 										<option value="2" <c:if test="${format == '2'}">selected</c:if> >품의서</option>
 								</select>&nbsp;&nbsp;</td>
-								<th>&nbsp;문서보존기간</th>
+								<th style="float: right;">&nbsp;문서보존기간</th>
 								<td>&nbsp;5년</td>
 							</tr>
 							<tr>
@@ -247,9 +247,8 @@ input[type="search"] {
 								</td>
 							</tr>
 							<tr>
-								<th>&nbsp;<c:if test="${format == '1'}">기안일자</c:if><c:if test="${format == '2'}">품의일자</c:if>
-								</th>
-								<td>&nbsp;${now}</td>
+								<th>&nbsp;<c:if test="${format == '1'}">기안일자</c:if><c:if test="${format == '2'}">품의일자</c:if></th>
+								<td width="240px;">&nbsp;${now}</td>
 								<th>&nbsp;소속</th>
 								<td>&nbsp;${writerDept.deptName}</td>
 							</tr>
@@ -269,7 +268,7 @@ input[type="search"] {
 								<c:if test="${format == '2'}">
 									<th>팀장</th>
 								</c:if>
-								<th>사원</th>
+								<th>기안자</th>
 							</tr>
 							<tr>
 								<td>대표자</td>
