@@ -5,6 +5,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+ <!-- 폰트 -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+
+
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<script src="http://malsup.github.com/min/jquery.form.min.js"></script>	
@@ -40,12 +46,6 @@ input[type=submit]:hover {
   margin: 0px auto;
 }
 
-#title {
-    width: 100%;
-    height: 35px;
-    display: inline-block;
-    font-size: 20px;
-    }
 </style>
 </head>
 <body>
@@ -69,80 +69,64 @@ input[type=submit]:hover {
 			  <h3>메일</h3>
 			   <br> <br>
 
-							   
+				 		   
 			  <form action="${pageContext.request.contextPath}/mail/mailSending" method="post">
 			    <label>제목&nbsp;&nbsp;</label>
-			    <input type="text" id="title" name="title" placeholder="제목.." style="height:30px;">
+			    <input type="text" name="title" placeholder="제목"">
 			
 				<br>
 			    <label>주소&nbsp;&nbsp;</label><br>
-			    <input type="text" id="tomail" name="tomail" placeholder="메일주소.." style="height:30px;">&nbsp;
+			    <input type="text" id="tomail" name="tomail" placeholder="메일주소">&nbsp;
 			
 			    <br>
 			
 			    <label>내용</label>
-			    <textarea id="content" name="content" placeholder="Write something.." style="height:200px"></textarea>
+			    <textarea id="content" name="content" placeholder="Write something" style="height:200px"></textarea>
 			 	<br>
 				    <label>첨부파일&nbsp;&nbsp;</label><input type="file" class="btn btn-default form-join" id="uploadfile" multiple="multiple">&nbsp;
 			    <br><br>
-			    <div id="filelist">
-			    </div>
-			    <button type="button" class="btn btn-primary" id="btn-enroll">등록</button>
 			    <br><br>
 			    <input type="submit" value="보내기">
 			   
 			    </form>
 			
-			  
+			
+			<!-- 
+			  <form action="WebSendMail" method="post" enctype="multipart/form-data">
+					<table border="1" cellpadding="0" cellspacing="0">
+					<tr>
+					   <td>Title</td>
+					   <td><input type="text" name="subject" size="40"></td>
+					</tr>
+					<tr>
+					   <td>Content</td>
+					   <td><textarea name="body" rows="10" cols="40"></textarea></td>
+					</tr>
+					<tr>
+					   <td>File</td>
+					   <td><input type="file" name="attachment"></td>
+					</tr>
+					<tr>
+					   <td colspan="2"><input type="submit" value="Submit"></td>
+					</tr>
+					</table>
+				</form>
 			  <br>
-			  
+			  -->	
 			</div>
 </div>
 </div>			
 			
 <script>
-/*
-var index = 0;
-
-$(document).ready(function () {
-	$('body').on('click', '.x-btn', function () {
-		$(this).parent().remove();
-		var fileIndex = $(this).attr('data-file-index');
-		$('#file_' + fileIndex).remove();
-	})
-
-});
-
-function attachFile() {
-	if($('#fileList').children().length === 3) {
-		alert("첨부파일은 3개까지 가능합니다.");
-		return;
-	}
-	
-	//"파일"타입 생성하고 리스트에 추가
-	var createFile = document.createElement("input");
-	createFile.id = "file_" + index;
-	createFile.name= 'attachment';
-	createFile.type = "file";
-	createFile.style.display = "none";
-	
-	//리스트에 추가 형식
-	createFile.onchange = function() {
-		var html = '<li>' + this.files[0].name + '<button type="button" class="x-btn" data-file-index="'+index+'">X</button></li>'
-		$('#fileList').append(html);
-	};
-
-	document.getElementById('enrollForm').appendChild(createFile);
-	createFile.click(); //첨부클릭할때마다
-	index++; //data-file-index 값 하나씩 올리기
-}
-*/
 //$(document).ready(function () {	
+//function uploadfile() {
+	/*
+$(function(){	
 	var files = [];
 	var filecount = 0;
 	$('[data-toggle="tooltip"]').tooltip();
 	
-	$('#uploadfile').change(function(event){
+	$("#uploadfile").change(function(event){
 		files[filecount]=event.target.files[0];
 		
 		var printHTML = "<label>첨부파일("+(filecount+1)+") " + event.target.file[0].name + "</label><br>";
@@ -152,7 +136,7 @@ function attachFile() {
 		filecount++;
 	});
 	
-	$('#btn-enroll').click(function(){
+	$("#btn-enroll").click(function(){
 		var titletext = $('#title').val();
 		var contenttext = $('#content').val();
 		var arraycount = files.length;
@@ -189,7 +173,49 @@ function attachFile() {
 			}
 		});
 	});
-//});	
+//}
+});	
+
+
+
+
+/*
+var index = 0;
+
+$(document).ready(function () {
+	$('body').on('click', '.x-btn', function () {
+		$(this).parent().remove();
+		var fileIndex = $(this).attr('data-file-index');
+		$('#file_' + fileIndex).remove();
+	})
+
+});
+
+function attachFile() {
+	if($('#fileList').children().length === 3) {
+		alert("첨부파일은 3개까지 가능합니다.");
+		return;
+	}
+	
+	//"파일"타입 생성하고 리스트에 추가
+	var createFile = document.createElement("input");
+	createFile.id = "file_" + index;
+	createFile.name= 'attachment';
+	createFile.type = "file";
+	createFile.style.display = "none";
+	
+	//리스트에 추가 형식
+	createFile.onchange = function() {
+		var html = '<li>' + this.files[0].name + '<button type="button" class="x-btn" data-file-index="'+index+'">X</button></li>'
+		$('#fileList').append(html);
+	};
+
+	document.getElementById('enrollForm').appendChild(createFile);
+	createFile.click(); //첨부클릭할때마다
+	index++; //data-file-index 값 하나씩 올리기
+}
+*/
+
 </script>		
 
 </body>
