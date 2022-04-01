@@ -18,8 +18,14 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	
+<!-- ajaxForm -->
 <script src="http://malsup.github.com/min/jquery.form.min.js"></script>	
+<!--<script type="text/javascript" src="jquery.form.min.js"></script>-->
 
+ <!-- 폰트 -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 
 <!-- jQuery EasyUi API -->
 <link rel="stylesheet" type="text/css"
@@ -659,6 +665,7 @@ function officerInsert() {
 			alert("list search fail :: error code: "
 					+ request.status + "\n" + "error message: "
 					+ error + "\n");
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	}).submit();
 	$("#officerInsert").attr("disabled");
@@ -757,6 +764,8 @@ function officerUpdate() {
 			alert("list search fail :: error code: "
 					+ request.status + "\n" + "error message: "
 					+ error + "\n");
+			console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+
 		}
 	}).submit();
 	$("#officerInsert").attr("disabled");
@@ -1002,7 +1011,7 @@ function addrSearch() {
 								<tbody>
 									<tr>
 										<th class="text-center"><img id="imgView" class="profileImg"
-											src="/resources/images/user.png"> <input type="file"
+											src="resources/images/user.png"> <input type="file"
 											id="file" name="file" class="form-control"></th>
 										<td>
 											<h5>이미지는 가로 96px, 세로 128px를 준수 해주시기 바랍니다.</h5>
@@ -1192,7 +1201,7 @@ function addrSearch() {
 								<tbody>
 									<tr>
 										<th class="text-center"><img id="imgView_up" class="profileImg"
-											src="/resources/images/user.png"> <input type="file"
+											src="resources/images/user.png"> <input type="file"
 											id="file_up" name="file" class="form-control"></th>
 										<td>
 											<h5>이미지는 가로 96px, 세로 128px를 준수 해주시기 바랍니다.</h5>
@@ -1374,7 +1383,7 @@ function addrSearch() {
 							<label>조직도</label>
 						</h2>
 						<button type="button" class="btn btn-warning pull-right" data-toggle="modal"
-								 data-backdrop="static" data-target="#departmentModal">관리</button>
+								 data-backdrop="static" data-target="#departmentModal" style="font-size:13px;">관리</button>
 					</div>
 	                    <br><br>
 	                    <div>
@@ -1405,22 +1414,22 @@ function addrSearch() {
 			    <div id="rightMenu" class="col-sm-14 col-md-9">
 					<div class="row">
 						<div class="col-sm-7 col-md-5">
-						<!-- 
-							<button type="button" id="officerInsertModal"
-								class="btn btn-success" data-toggle="modal" data-backdrop="static"
-								data-target="#insertModal">구성원 추가</button>-->
+						 
+							<!--  <button type="button" id="officerInsertModal"
+								class="btn btn-primary" data-toggle="modal" data-backdrop="static"
+								data-target="#insertModal" style="font-size:13px;">구성원 추가</button>-->
 							<button type="button" id="officerUpdateModal" class="btn btn-success"  
-								data-backdrop="static" data-toggle="modal" >구성원 수정</button>
+								data-backdrop="static" data-toggle="modal" style="font-size:13px;">구성원 수정</button>
 							<!-- <button type="button" class="btn btn-danger">구성원 삭제</button> -->
 						</div>
-						<div class="col-sm-11 col-md-7 text-right">
+						<div class="col-sm-11 col-md-7 text-right" >
 							<form id="rightTop" class="form-inline" onsubmit="return false;">
 								<!-- <button type="button" id="search" class="btn btn-primary">
 									<span class="glyphicon glyphicon-search"></span>
 								</button>
 								<input id="keyword" type="text" class="form-control"
 									placeholder="Search"> -->
-								<select id="cate" class="form-control">
+								<select id="cate" class="form-control" style="font-size:13px;">
 									<option value="1">이름</option>
 									<option value="2">직급</option>
 									<option value="3">부서</option>
@@ -1428,22 +1437,23 @@ function addrSearch() {
 
 								<div class="input-group">      <!-- 구성원 검색 -->
 									<input type="text" id="keyword" class="form-control"
-										placeholder="Search">
+										placeholder="Search" style="font-size:13px;">
 									<div class="input-group-btn">
 										<button type="button" class="btn btn-default" id="search">
-											<i class="glyphicon glyphicon-search"></i>
+											<i class="glyphicon glyphicon-search" style="font-size:13px;"></i>
 										</button>
 									</div>
 								</div>
 							</form>
 						</div>
 					</div>
+					<br>
 					<div id="rightBottom">
-						<div>
+						<div style="font-size:15px;">
 							<label>전체 : </label> <span id="userCount">${officerListCount}</span>명
 						</div>
 						<div class="table-responsive">
-							<table id="officerList" class="tableMiddle table table-hover" style="font-size:13px;">
+							<table id="officerList" class="tableMiddle table table-hover" style="font-size:12px;">
 								<colgroup>
 									<col width="5%" />
 									<col width="96px" />

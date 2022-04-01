@@ -35,7 +35,6 @@ import com.kh.walkwork.common.template.FileUpload;
 //@RequestMapping("ogChart/*")
 public class OgChartController {
 
-	
 
 	@Inject
 	private OgChartService OgChartService;
@@ -308,9 +307,7 @@ public class OgChartController {
 	@RequestMapping(value = "deptInsert.in", method = { RequestMethod.GET, RequestMethod.POST})
 	public int deptInsert(HttpServletRequest request, @RequestBody Map<String, Object> params) throws Exception {
 
-
 		int result = 0;
-
 		try {
 			result = OgChartService.deptInsert(params);
 		} catch(UncategorizedSQLException use) {
@@ -318,8 +315,6 @@ public class OgChartController {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-
-
 		return result;
 	}
 
