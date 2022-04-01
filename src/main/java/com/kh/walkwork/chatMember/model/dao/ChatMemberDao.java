@@ -6,6 +6,8 @@ import java.util.HashMap;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.kh.walkwork.chat.model.vo.Chat;
+
 @Repository
 public class ChatMemberDao {
 
@@ -17,4 +19,15 @@ public class ChatMemberDao {
 		return (ArrayList)sqlSession.selectList("chatMemberMapper.searchChatNo", map);
 	}
 
+	public int selectChatMemberCount(SqlSession sqlSession, String a) {
+		return sqlSession.selectOne("chatMemberMapper.selectChatMemberCount", a);
+	}
+
+	public ArrayList<String> selectChatMemberList(SqlSession sqlSession, String chatNo) {
+		return (ArrayList)sqlSession.selectList("chatMemberMapper.selectChatMemberList", chatNo);
+	}
+
+	public ArrayList<Chat> selectMyChatList(SqlSession sqlSession, String memberNo) {
+		return (ArrayList)sqlSession.selectList("chatMemberMapper.selectMyChatList", memberNo);
+	}
 }

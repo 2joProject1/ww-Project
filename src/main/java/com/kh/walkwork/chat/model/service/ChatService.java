@@ -9,5 +9,8 @@ public interface ChatService {
 	
 	// 채팅방 번호 가져오기
 	String selectChatNo();
+	
+	// 채팅방 이름 가져오기
+	String selectChatName(String chatNo);
 
 }

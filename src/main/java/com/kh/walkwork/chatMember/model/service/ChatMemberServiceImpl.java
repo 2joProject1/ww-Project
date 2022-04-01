@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.walkwork.chat.model.vo.Chat;
 import com.kh.walkwork.chatMember.model.dao.ChatMemberDao;
 
 @Service
@@ -27,6 +28,21 @@ public class ChatMemberServiceImpl implements ChatMemberService{
 	@Override
 	public int insertChatMember(HashMap<String, Object> map) {
 		return chatMemberDao.insertChatMember(sqlSession, map);
+	}
+
+	@Override
+	public int selectChatMemberCount(String a) {
+		return chatMemberDao.selectChatMemberCount(sqlSession, a);
+	}
+
+	@Override
+	public ArrayList<String> selectChatMemberList(String chatNo) {
+		return chatMemberDao.selectChatMemberList(sqlSession, chatNo);
+	}
+
+	@Override
+	public ArrayList<Chat> selectMyChatList(String memberNo) {
+		return chatMemberDao.selectMyChatList(sqlSession, memberNo);
 	}
 
 }

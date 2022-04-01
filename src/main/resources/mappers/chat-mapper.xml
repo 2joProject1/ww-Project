@@ -8,12 +8,19 @@
 	</insert>
 	
 	<!-- 채팅방 번호 조회 -->
-	<select id="selectChatNo" resultType="_int">
+	<select id="selectChatNo" resultType="String">
 		SELECT 
-		        LAST_NUMBER 
+		        LAST_NUMBER - 1
 		FROM 
 		        USER_SEQUENCES 
 		WHERE 
 		        SEQUENCE_NAME = 'SEQ_CNO'
+	</select>
+	
+	<!-- 채팅방 이름 조회 -->
+	<select id="selectChatName" parameterType="String" resultType="String">
+		select chat_name
+		  from chat
+		 where chat_no = #{chatNo}
 	</select>
 </mapper>

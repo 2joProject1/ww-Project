@@ -14,4 +14,8 @@ public class ChatDao {
 		return sqlSession.selectOne("chatMapper.selectChatNo");
 	}
 
+	public String selectChatName(SqlSession sqlSession, String chatNo) {
+		return sqlSession.selectOne("chatMapper.selectChatName", chatNo);
+	}
+
 }

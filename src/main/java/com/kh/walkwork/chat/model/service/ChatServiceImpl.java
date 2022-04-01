@@ -20,9 +20,9 @@ public class ChatServiceImpl implements ChatService{
 	public String insertChat(String chatName) {
 		int result = chatDao.insertChat(sqlSession, chatName);
 		System.out.println("채팅 추가 result : " + result);
-		
 		String chatNo = chatDao.selectChatNo(sqlSession);
 		
+		System.out.println(chatNo);
 		return chatNo;
 	}
 	
@@ -30,6 +30,11 @@ public class ChatServiceImpl implements ChatService{
 	@Override
 	public String selectChatNo() {
 		return chatDao.selectChatNo(sqlSession);
+	}
+
+	@Override
+	public String selectChatName(String chatNo) {
+		return chatDao.selectChatName(sqlSession, chatNo);
 	}
 	
 
