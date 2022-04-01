@@ -171,7 +171,7 @@
 		FROM DAYOFF D
 		JOIN MEMBER M ON (D.OFF_WRITER = M.MEMBER_NO )
 		WHERE D.STATUS = 'Y'
-		AND M.MEMBER_NO = #{memberNo}
+		AND M.DEPT_NO = #{deptNo}
 	</select>
 	<select id="adminSelectDto" resultType="HashMap" parameterType="_int">
 		SELECT 

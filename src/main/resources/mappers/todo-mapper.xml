@@ -14,13 +14,13 @@
         <![CDATA[
           
           select a.*
-          from(
-          select *
-			from to_do
-			where "CHECK" =  'N'
-			AND MEMBER_NO = '22222'
-                ) a
-        where rownum <= 7
+	          from(
+	          select *
+				from to_do
+				where "CHECK" =  'N'
+				AND MEMBER_NO = #{memberNo}
+	                ) a
+	        where rownum <= 7
         
 		]]>
 	

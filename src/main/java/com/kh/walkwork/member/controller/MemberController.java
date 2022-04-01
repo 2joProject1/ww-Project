@@ -73,12 +73,11 @@ public class MemberController {
 
 		if (result > 0) { // 성공=>메인페이지url 재요청
 
-			request.setAttribute("alertMsg", "성공적으로 회원가입이 되었습니다");
+			session.setAttribute("alertMsg", "성공적으로 회원가입이 되었습니다");
 			return "redirect:/";
 
 		} else { // 실패=> 에러문구를 담아서 에러페이지로 포워딩
-			model.addAttribute("alertMsg", "회원가입 실패");
-			// /WEB-INF/views common/errorPage .jsp
+			session.setAttribute("alertMsg", "회원가입 실패");
 			return "index";
 		}
 
@@ -94,7 +93,7 @@ public class MemberController {
 		MimeMessage message = sender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 		helper.setTo(email);
-		helper.setSubject("인증하섿요");
+		helper.setSubject("WALK-WORK 인증번호입니다.");
 		helper.setText("인증번호 : " + secret);
 
 		sender.send(message);
@@ -142,8 +141,6 @@ public class MemberController {
 	                                                //입력받은         //암호화된
 	         //로그인 성공
 	         session.setAttribute("loginUser", loginUser);
-	         mv.addObject("alertMsg", "로그인성공");
-//	         mv.setViewName("common/main");
 	         mv.setViewName("redirect:main");
 	         if(loginUser.getTmpPwd()!=null) {            
 	            int pwdResult = memberService.deleteTmpPwd(loginUser);
@@ -158,7 +155,6 @@ public class MemberController {
 	      // 아이디 존재 + 임시비밀번호 일치
 	      else if(loginUser != null && m.getMemberPwd().equals(loginUser.getTmpPwd())) {
 	         session.setAttribute("loginUser", loginUser);
-	         mv.addObject("alertMsg", "로그인성공");
 	         mv.setViewName("redirect:main");
 	         
 	         //로그인 성공 시 임시비밀번호 삭제(일회용, 더이상 사용할 수 없도록)
@@ -189,9 +185,7 @@ public class MemberController {
 	         } 
 	         
 	         mv.addObject("loginFail", loginFail);
-	         //jsp로이동
 	         mv.setViewName("member/loginFail");
-	         //알림메시지
 	         request.setAttribute("errorMsg", "잘못된 비밀번호입니다.");
 	         request.setAttribute("loginFailMsg", "로그인 실패 횟수"+loginFail+"회");
 	         return mv;

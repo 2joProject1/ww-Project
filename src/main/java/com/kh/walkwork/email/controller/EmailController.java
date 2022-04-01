@@ -10,6 +10,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,6 @@ public class EmailController {
 	@Autowired
 	private JavaMailSender mailSender;
  
-
 	@RequestMapping("email.form")
 	public String emailForm() {
 		return "email/emailForm";
@@ -41,6 +41,7 @@ public class EmailController {
 	    String tomail  = request.getParameter("tomail");     // 받는 사람 이메일
 	    String title   = request.getParameter("title");      // 제목
 	    String content = request.getParameter("content");    // 내용
+	    String filename = "C:\\Users\\JeongUk\\Documents\\test\\test.txt"; 
 	   
 	    try {
 	      MimeMessage message = mailSender.createMimeMessage();
@@ -52,6 +53,9 @@ public class EmailController {
 	      messageHelper.setSubject(title); 
 	      messageHelper.setText(content);  
 	     
+	      FileSystemResource fsr = new FileSystemResource(filename);
+	      messageHelper.addAttachment("test2.txt", fsr);
+	      
 	      mailSender.send(message);
 	    } catch(Exception e){
 	      System.out.println(e);
@@ -60,39 +64,5 @@ public class EmailController {
 	    return "redirect:/";
 	  }
 
-	
-	@RequestMapping(value = "enrollajax", method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> enrollStudent(MultipartHttpServletRequest multi) {
-		Map<String, Object> retVal = new HashMap<String, Object>();
-		
-		String root = multi.getSession().getServletContext().getRealPath("/");
-		String path = root + "resources/uploadFiles/";
-		
-		File dir = new File(path);
-		if(!dir.isDirectory()) {
-			dir.mkdir();
-		}
-		
-		Iterator<String> files = multi.getFileNames();
-		
-		while(files.hasNext()) {
-			String uploadFile = files.next();
-			
-			MultipartFile mFile = multi.getFile(uploadFile);
-			
-			String fileName_original = mFile.getOriginalFilename();
-			
-			String file_save_path = "Users/JeongUk/Documents/ww-Project/src/main/webapp/resources/uploadFiles/";
-			
-			try {
-				mFile.transferTo(new File(file_save_path+fileName_original));
-			
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-		}
-		return retVal;
-	}
+
 }

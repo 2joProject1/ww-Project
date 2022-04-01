@@ -127,7 +127,7 @@
     	}else{
     		$.ajax({
         		url : "selectDto.of",
-        		data : {memberNo : ${loginUser.memberNo} },
+        		data : {memberNo : ${loginUser.deptNo} },
         		success : function(e){
         			var myOff = 0;
         			for(var i=0; i< e.length;i++){

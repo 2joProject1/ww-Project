@@ -166,12 +166,12 @@
 	                        <tr>
 	                            <td>주소</td>
 	                            <td class="enroll_td2" id="address_input">
-									<input type="text" id="sample6_postcode" placeholder="우편번호" style="width:305px; ">
+									<input type="text" id="sample6_postcode" placeholder="우편번호" style="width:305px;" readonly>
 									<button type="button" onclick="execDaumPostcode()" value="우편번호 찾기" style="width:100px;">우편번호 찾기</button>
 									<!-- <input type="button" onclick="execDaumPostcode()" value="우편번호 찾기" style="width:100px;"><br> -->
-									<input type="text" id="sample6_address" placeholder="주소" name="address"><br>
+									<input type="text" id="sample6_address" placeholder="주소" name="address" readonly><br>
 									<input type="text" id="sample6_detailAddress" placeholder="상세주소"  name="address" required>
-									<input type="text" id="sample6_extraAddress" placeholder="참고항목"  name="address">
+									<input type="text" id="sample6_extraAddress" placeholder="참고항목"  name="address" readonly>
 	                            </td>
 	                        </tr>
 	                        <tr>
@@ -193,7 +193,7 @@
 	                        <tr id="email_vali">
 	                            <td>이메일인증번호</td>
 	                            <td class="enroll_td3">
-	                            	<input type="text" name="email_vali_input" id="email_vali_input" required>
+	                            	<input type="text" name="email_vali_input" id="email_vali_input" style="width: 410px;" required>
 	                            </td>
 	                        </tr>
 	                       	<tr>
@@ -216,7 +216,7 @@
 	                        <tr class="phone_vali">
 	                            <td>인증번호</td>
 	                            <td class="enroll_td2">
-	                                <input type="text" style="width: 260px;"><button type="button" >확인</button><br>
+	                                <input type="text" style="width: 410px;"><button type="button" >확인</button><br>
 	                            </td>
 	                        </tr>
 	                        <tr class="phone_vali">
@@ -318,7 +318,6 @@ $(function(){
 			return false;
 		} 
 		else if(regExp.test($id)){
-//			$('#id_chk').text("굿").css("color","gray"); 이거필요한가
  			$.ajax({
  				url : "idDupl.chk",
  				data : {id : $id},
@@ -402,7 +401,6 @@ $(function(){
 			return false;
 		}
 		if(regExp.test($birth)){
-/* 			$('#birth_chk').text("굿").css("color","gray");... 생각해보니까이거 필요함?ㅠㅠ?...아왜햇지 */ 
  			$('#birth_chk').text("굿").css("color","gray");
 		}
 	})
@@ -413,10 +411,6 @@ $(function(){
 
 		var $emailDupl = $('#email').val();
 		var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
-		/* 
-		만약, 구글메일로 변경할거라면! 여기 정규식 @뒤에 google.com만 올 수 있도록 설정
-		OR 
-		@부터 완전 제거 후 아이디만 입력받고 @google.com 붙여주는 방식으로 넘기기 */
 	
 		if(!regExp.test($emailDupl)){
 			$('#email_chk').text("잘못 입력하셨습니다. 올바른 이메일 형식으로 입력하세요").css("color","red");
@@ -491,20 +485,6 @@ $(function(){
 		}
 		if(regExp.test($phoneDupl)){
  			$('#phone_chk').text("굿").css("color","gray");
-/*  			$.ajax({
- 				url : "emailDupl.chk",
- 				data : {emailDupl : $emailDupl},
- 				type : "post",
- 				success : function(result){
- 					if(result>0){
-	 					$('#email_chk').html($emailDupl + "은(는) 이미 사용중인 이메일입니다. <br>다른 이메일 주소를 입력하세요.").css("color","red");
- 						$('#email').val('');
- 					} else {
- 						$("#email_btn").attr("disabled",false); //이메일형식에 맞고, 중복 X 시 인증번호 전송 버튼 활성화
- 					}
- 				}
-
- 			}) */
 		}
 	})
 	

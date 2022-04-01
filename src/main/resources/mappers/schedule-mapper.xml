@@ -12,10 +12,17 @@
 	
 	</resultMap>
 	<select id="mainScheduleList" parameterType="string" resultMap="scheduleResultSet">
-		select * from schedule
-		where member_no = #{memberNo}
-		order by start_date asc
-
+	
+	<![CDATA[
+        select a.*
+          from(
+        select * from schedule
+        where start_date > to_char(sysdate, 'YYYY-MM-DD')
+        AND MEMBER_NO = #{memberNo}
+        ORDER BY START_DATE ASC
+                ) a
+        where rownum <= 7
+	]]>
 	</select>
 
 </mapper>

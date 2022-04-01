@@ -152,7 +152,7 @@
 				</table>
 				<div id="footer">
 					<button type="submit" id="change_btn" disabled="disabled">등록</button>
-					<button type="button" data-dismiss="modal">취소</button>
+					<button type="button"><a href="javascript:history.back();">취소</a></button>
 				</div>
 			</div>
 		</form>

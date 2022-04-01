@@ -29,11 +29,13 @@
 
 <!-- ajax -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  
 
 <!-- 폰트 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">  
+  
 
 <title>Document</title>
 
@@ -41,7 +43,7 @@
 	*{
 	font-family: 'Nanum Gothic', sans-serif;
 	}
-	
+  
   .pop{
     background-color: rgba(203, 212, 212, 0.918);
     width: 350px;
@@ -160,7 +162,6 @@
     <i class="xi-bell-o">&nbsp;</i>
     
     <i class="xi-profile" data-bs-toggle="modal" data-bs-target="#memberModal">&nbsp;</i>
-    
     <div class="pop" style="font-size: 15px;">
         <div>
           <button class="chat-button" id="chat_btn">채팅</button>
@@ -283,16 +284,14 @@
 	<div class="dim" style="display: none;"></div>
 
 	<script>
-      $(".popup").click(function(){
-          console.log("zzzzz");
-          // $(".pop").show();
-          $(".pop").toggle();
-          $(".chat_ul").show();
-          $("#chat_btn").click();
-          $(".addr_ul").hide();
-          
-        })
-
+	$(".popup").click(function(){
+	    console.log("zzzzz");
+	    $(".pop").toggle();
+	    $(".chat_ul").show();
+	    $("#chat_btn").click();
+	    $(".addr_ul").hide();
+	    
+	  })
 	  $("#chat_btn").click(function(){
 	    $(".chat_ul").show();
 	    $(".addr_ul").hide();
