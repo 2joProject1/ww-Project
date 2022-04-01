@@ -29,9 +29,21 @@
 
 <!-- ajax -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  
+
+<!-- 폰트 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">  
+  
+
 <title>Document</title>
 
 <style>
+	*{
+	font-family: 'Nanum Gothic', sans-serif;
+	}
+  
   .pop{
     background-color: rgba(203, 212, 212, 0.918);
     width: 350px;
@@ -435,16 +447,6 @@
 			} else {
 				$('#printRank').text('전체관리자');
 			}
-		});
-
-		$(".popup").click(function() {
-			$(".pop").toggle();
-			$(".chat_ul").show();
-			$(".addr_ul").hide();
-		})
-		$("#chat_btn").click(function() {
-			$(".chat_ul").show();
-			$(".addr_ul").hide();
 		});
 	</script>
 
