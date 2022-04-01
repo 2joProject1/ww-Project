@@ -26,4 +26,5 @@ public class Document {
 	
 	private String docuWriteStartDate;
 	private String docuWriteEndDate;
+	private String fileYn;
 }

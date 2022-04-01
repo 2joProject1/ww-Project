@@ -42,9 +42,9 @@ public class ProjectDao {
 		return sqlSession.selectList("projectMapper.selectProjectList", p);
 	}
 	
-	//프로젝트 메인 : 프로젝트 리스트(부서별)
-	public List<Project> selectProjectListDept(SqlSessionTemplate sqlSession, Project p) {
-		return sqlSession.selectList("projectMapper.selectProjectListDept", p);
+	//프로젝트 메인 : 프로젝트 리스트(완료)
+	public List<Project> selectProjectListFinish(SqlSessionTemplate sqlSession, Project p) {
+		return sqlSession.selectList("projectMapper.selectProjectListFinish", p);
 	}
 	
 	//프로젝트 상세보기 : 진행중, 완료여부
@@ -53,8 +53,8 @@ public class ProjectDao {
 	}
 
 	//프로젝트 상세보기 : 프로젝트 내용
-	public List<Project> selectProjectDetailList(SqlSessionTemplate sqlSession, Project p) {
-		return sqlSession.selectList("projectMapper.selectProjectDetailList", p);
+	public Project selectProjectDetailList(SqlSessionTemplate sqlSession, Project p) {
+		return sqlSession.selectOne("projectMapper.selectProjectDetailList", p);
 	}
 
 	public List<ProjectMember> getProjectMemberList(SqlSessionTemplate sqlSession, Project p) {

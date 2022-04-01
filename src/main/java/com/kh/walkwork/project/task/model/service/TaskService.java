@@ -52,8 +52,14 @@ public class TaskService {
 	}
 	
 	//업무 : 차트
-	public List<Integer> taskStateList(String pno) throws Exception {
-		return taskDao.taskStateList(sqlSession, pno);
+	@SuppressWarnings("unused")
+	public int taskStateList(Task t) throws Exception {
+		Integer value = taskDao.taskStateList(sqlSession, t);
+		if (value != null) {
+			return value;
+		} else {
+			return 0;
+		}
 	}
 	
 	//업무 : 댓글 삭제하기

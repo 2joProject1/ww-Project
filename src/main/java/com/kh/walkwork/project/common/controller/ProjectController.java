@@ -1,6 +1,5 @@
 package com.kh.walkwork.project.common.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,19 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kh.walkwork.common.model.vo.Attachment;
-import com.kh.walkwork.common.model.vo.PageInfo;
-import com.kh.walkwork.common.template.Pagination;
-import com.kh.walkwork.community.model.vo.Community;
 import com.kh.walkwork.dept.model.vo.Dept;
 import com.kh.walkwork.member.model.vo.Member;
 import com.kh.walkwork.project.common.model.service.ProjectService;
 import com.kh.walkwork.project.common.model.vo.Project;
 import com.kh.walkwork.project.common.model.vo.ProjectMember;
+import com.kh.walkwork.project.common.model.vo.ProjectNotice;
 import com.kh.walkwork.project.task.model.service.TaskService;
 import com.kh.walkwork.project.task.model.vo.Task;
 
@@ -37,12 +32,6 @@ public class ProjectController {
 	private TaskService taskService;
 	
 	
-	//프로젝트 메인 : 읽지않음
-	@RequestMapping("project.no-read")
-	public String projectNoRead() {
-		return "project/common/projectMainNoRead";
-	}
-	
 	//프로젝트 메인 : 프로젝트 리스트 가져오기(내프로젝트)
 	@RequestMapping("project.main")
 	public String main(Project p, Model model, HttpSession session) {
@@ -54,48 +43,27 @@ public class ProjectController {
 		Member loginUser = (Member) session.getAttribute("loginUser");
 		p.setProjectMemberNo(loginUser.getMemberNo());
 		List<Project> list = projectService.selectProjectList(p);
+		List<Project> flist = projectService.selectProjectListFinish(p);
 		
 		model.addAttribute("list", list);
+		model.addAttribute("flist", flist);
 
 		return "project/common/projectMain";
 	}
-	
-	
-	
-	//프로젝트 메인 : 프로젝트 리스트 가져오기(부서별)
-	@RequestMapping("projectDept.main")
-	public String mainDept(Project p, Model model, HttpSession session) {
-		if (session.getAttribute("loginUser") == null) {
-			// 로그인이 안되어있을 경우 로그인페이지로 이동
-			return "redirect:/";
-		}
-		// 로그인 세션에서 로그인 유저 GET
-		Member loginUser = (Member) session.getAttribute("loginUser");
-		p.setProjectMemberNo(loginUser.getMemberNo());
-		List<Project> list = projectService.selectProjectListDept(p);
-		
-		model.addAttribute("list", list);
-
-		return "project/common/projectMain";
-	}
-	
-	
-	
-	
 	
 	//프로젝트메인 : 개별프로젝트 클릭시 이동
 	@RequestMapping("project")
-	public ModelAndView projectDetailView(Project p, ModelAndView mv, HttpSession session) {
+	public ModelAndView projectDetailView(Project param, ModelAndView mv, HttpSession session) {
 		if (session.getAttribute("loginUser") == null) {
 			// 로그인이 안되어있을 경우 로그인페이지로 이동
 			return new ModelAndView("redirect:/");
 		}
 		mv.setViewName("project/common/projectDetailView"); // projectDetailView.jsp 안에서 쓸수 있는게 "projectNo"
 
-		List<Project> list = projectService.selectProjectDetailList(p);
-		List<Task> taskList = taskService.getTaskList(p);
-		mv.addObject("projectNo", p.getProjectNo());
-		mv.addObject("list", list);
+		Project p = projectService.selectProjectDetailList(param);
+		List<Task> taskList = taskService.getTaskList(param);
+		mv.addObject("projectNo", param.getProjectNo());
+		mv.addObject("p", p);
 		mv.addObject("taskList", taskList);
 		
 		return mv;
@@ -105,19 +73,19 @@ public class ProjectController {
 
 	//프로젝트: 업무작성하기 버튼 클릭시 이동
 	@RequestMapping("project.taskWrite")
-	public ModelAndView projectTaskWrite(Project p, HttpSession session) {
+	public ModelAndView projectTaskWrite(Project param, HttpSession session) {
 		if (session.getAttribute("loginUser") == null) {
 			// 로그인이 안되어있을 경우 로그인페이지로 이동
 			return new ModelAndView("redirect:/");
 		}
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("project/task/projectTaskWrite");
-		List<Project> list = projectService.selectProjectDetailList(p);
-		List<ProjectMember> projectMemberList = projectService.getProjectMemberList(p);
+		Project p = projectService.selectProjectDetailList(param);
+		List<ProjectMember> projectMemberList = projectService.getProjectMemberList(param);
 
-		mv.addObject("list", list);
+		mv.addObject("p", p);
 		mv.addObject("projectMemberList", projectMemberList);
-		mv.addObject("projectNo", p.getProjectNo());
+		mv.addObject("projectNo", param.getProjectNo());
 		return mv;
 	}
 	
@@ -179,18 +147,4 @@ public class ProjectController {
 			return "common/errorPage";
 		}
 	}
-	
-	//프로젝트 상세보기 
-	@RequestMapping("project.det")
-	public ModelAndView selectProjectDetailList(Project p, ModelAndView mv) {
-		
-		List<Project> list = projectService.selectProjectDetailList(p);
-		mv.addObject("list", list).setViewName("project/common/projectInfo");
-
-		return mv;
-	}
-	
-	
-
-
 }

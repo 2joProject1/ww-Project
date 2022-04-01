@@ -77,9 +77,9 @@ public class ProjectService {
 		return projectDao.selectProjectList(sqlSession, p);
 	}
 	
-	//프로젝트 메인 : 부서별보기
-	public List<Project> selectProjectListDept(Project p) {
-		return projectDao.selectProjectListDept(sqlSession, p);
+	//프로젝트 메인 : 완료된 프로젝트
+	public List<Project> selectProjectListFinish(Project p) {
+		return projectDao.selectProjectListFinish(sqlSession, p);
 	}
 	
 	//프로젝트 상세보기: 진행중,완료 여부
@@ -88,7 +88,7 @@ public class ProjectService {
 	}
 	
 	//프로젝트 상세보기:  
-	public List<Project> selectProjectDetailList(Project p) {
+	public Project selectProjectDetailList(Project p) {
 		return projectDao.selectProjectDetailList(sqlSession, p);
 	}
 	

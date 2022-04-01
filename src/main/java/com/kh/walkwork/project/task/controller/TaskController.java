@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -208,17 +209,17 @@ public class TaskController {
 		m.setMemberNo(item.getBoardWriter()); 
 		Member writerInfo = memberService.loginMember(m); 
 		
-		Project p = new Project(); //해당 프로젝트번호 세팅
-		p.setProjectNo(item.getProjectNo());
+		Project param = new Project(); //해당 프로젝트번호 세팅
+		param.setProjectNo(item.getProjectNo());
 		
 		//프로젝트 상세내용 가져오기
-		List<Project> list = projectService.selectProjectDetailList(p);
+		Project p = projectService.selectProjectDetailList(param);
 		
 		//업무댓글리스트 가져오기
 		List<Reply> taskReplyList = taskService.getTaskReplyList(t);
 		
 		//전부 다 넘기기
-		model.addAttribute("list", list);
+		model.addAttribute("p", p);
 		model.addAttribute("item", item);
 		model.addAttribute("fileList", fileList);
 		model.addAttribute("writerInfo", writerInfo);
@@ -251,15 +252,25 @@ public class TaskController {
 	}
 	
 	//프로젝트 업무 차트
-		@ResponseBody
-		@RequestMapping(value="/project/tstatereport")
-		public List<Integer> tstateReport(ModelAndView mv, @RequestParam(name = "pno") String pno) {
-			List<Integer> slist = new ArrayList<Integer>();
-			try {
-				slist=taskService.taskStateList(pno);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			return slist;
+	@ResponseBody
+	@RequestMapping(value="/project/tstatereport")
+	public List<Integer> tstateReport(ModelAndView mv, @RequestParam(name = "projectNo") int projectNo) {
+		List<Integer> slist = new ArrayList<Integer>();
+		try {
+			Task t = new Task();
+			t.setProjectNo(projectNo);
+			t.setTaskStatus(1);
+			int value = taskService.taskStateList(t);
+			t.setTaskStatus(2);
+			int value2 = taskService.taskStateList(t);
+			t.setTaskStatus(3);
+			int value3 = taskService.taskStateList(t);
+			slist.add(value);
+			slist.add(value2);
+			slist.add(value3);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		return slist;
+	}
 }

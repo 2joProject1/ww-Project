@@ -6,6 +6,7 @@ import lombok.Data;
 public class Project {
 	private int projectNo;
 	private String projectWriter;
+	private String projectWriterName;
 	private String projectTitle;
 	private String projectMemberNo;
 	private String projectSummary;

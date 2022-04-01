@@ -155,7 +155,9 @@
         <div>
           <button class="chat-button" id="chat_btn">채팅</button>
           <button class="chat-button" id="addr_btn">연락처</button>
-          <div style="display: inline; float: right; margin: 10px 15px 0 0;"><i class="xi-plus-circle-o xi-2x"></i></div>
+          <div style="display: inline; float: right; margin: 10px 15px 0 0;" onclick="chatInvite();">
+            <i class="xi-plus-circle-o xi-2x"></i>
+          </div>
         </div>
         <hr style="height: 2px; margin-bottom: 5px;">
         <div>
@@ -176,7 +178,6 @@
             <!-- 연락처 리스트 -->
             <div class="list-group addr_ul">
             	<!-- 
-
               <li class="list-group-item justify-content-between align-items-center addr_li">
                 <i class="xi-profile xi-3x"></i>
                 <div  style="margin-left: 6px;">
@@ -185,178 +186,220 @@
                 </div>
               </li>
             -->
-          </div>
-          </div>
-      </div>
-    </div>
-  </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- 윤희 계정정보 Modal -->
+		<div class="modal" id="memberModal" tabindex="-1"
+			aria-labelledby="exampleModalLabel" aria-hidden="true"
+			style="top: 55px; left: 18%;">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="container">
+							<div class="row memberModalFont">
+								<div class="col-4" style="margin-bottom: 10px">
+									<img src="resources/coFile/${loginUser.file }" alt="person"
+										class="img-circle" width="100%"
+										onerror='this.src="resources/images/person-fill.svg"'>
+								</div>
+								<div class="col-8">
+									<div>
+										<span id="printDept"></span> <span id="printRank"></span>
+									</div>
+									<br>
+									<div>${loginUser.memberName}</div>
+									<input type="hidden" value="${loginUser.deptNo}" id="hd_deptNo">
+									<input type="hidden" value="${loginUser.rankNo}" id="hd_rankNo">
+								</div>
+								<br> <br>
+								<hr>
+								<div class="col-12 memModal_end"
+									onclick="location.href='information.me'">
+									<img src="resources/images/gear-fill.svg" alt="setting"
+										width="30px;"> 계정정보
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
-  
-  <!-- 윤희 계정정보 Modal -->
-  <div class="modal" id="memberModal" tabindex="-1"
-  aria-labelledby="exampleModalLabel" aria-hidden="true" style="top:55px;left:18%;">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-body">
-          <div class="container">
-            <div class="row memberModalFont" >
-              <div class="col-4">
-                  <img src="resources/images/person-fill.svg" alt="person" class="img-circle" width="100%">
-              </div>
-              <div class="col-8">
-                <div>
-                <!-- ${memerInfo.deptNo} ${memerInfo.rankNo} -->
-                개발팀 본부장
-                </div>
-                <div>
-                <!-- ${memberInfo.memberNo}-->
-                우윤희
-                </div>
-              </div>
-              <br><br>
-              <hr>
-              <div class="col-12 memModal_end" onclick="location.href='information.me'">
-                <img src="resources/images/gear-fill.svg" alt="setting" width="30px;">
-                계정정보
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+	<!-- 연락처 레이어팝업 -->
+	<div class="prof-info-wrap" id="prof-info-wrap" style="display: none;">
+		<div style="float: right;">
+			<i class="xi-close-thin xi-x addr_x"></i>
+		</div>
+		<br>
+		<div class="prof-img">
+			이미지 <img src="" alt="" width="300" height="150">
+		</div>
+		<input type="hidden" id="memberNo">
+  		<input type="hidden" id="memberName">
+		<div class="prof-info">
+			<div class="prof-top">
+				<span class="prof-name">고려진</span>
+			</div>
+			<div class="prof-bottom">
+				<div class="pElement">
+					<p class="prof-content">
+						<i class="xi-at"></i> 
+						<span class="prof-email">이메일</span>
+					</p>
+				</div>
+				<div class="pElement">
+					<p class="prof-content">
+						<i class="xi-flickr"></i> 
+						<span class="prof-dept">부서</span>
+					</p>
+				</div>
+				<div class="pElement">
+					<p class="prof-content">
+						<i class="xi-sitemap-o"></i> 
+						<span class="prof-rank">직급</span>
+					</p>
+				</div>
+				 <button class="primary" onclick="showPopup(memberNo.value, memberName.value);">채팅하기</button>
+			</div>
+		</div>
+	</div>
 
+	<div class="dim" style="display: none;"></div>
 
-<!-- 연락처 레이어팝업 -->
-<div class="prof-info-wrap" id="prof-info-wrap" style="display: none;">
-  <div style="float: right;"><i class="xi-close-thin xi-x addr_x"></i></div><br>
-  <div class="prof-img">
-    이미지
-    <img src="" alt="" width="300" height="150">
-  </div>
-  <div class="prof-info">
-    <div class="prof-top">
-      <span class="prof-name">고려진</span>
-    </div>
-    <div class="prof-bottom">
-      <div class="pElement">
-        <p class="prof-content">
-          <i class="xi-at"></i>
-          <span class="prof-email">이메일</span>
-        </p>
-      </div>
-      <div class="pElement">
-        <p class="prof-content">
-          <i class="xi-flickr"></i>
-          <span class="prof-dept">부서</span>
-        </p>
-      </div>
-      <div class="pElement">
-        <p class="prof-content">
-          <i class="xi-sitemap-o"></i>
-          <span class="prof-rank">직급</span>
-        </p>
-      </div>
-      <button class="primary" onclick="showPopup();">채팅하기</button>
-    </div>
-  </div>
-</div>
+	<script>
+	$(".popup").click(function(){
+	    console.log("zzzzz");
+	    $(".pop").toggle();
+	    $(".chat_ul").show();
+	    $("#chat_btn").click();
+	    $(".addr_ul").hide();
+	    
+	  })
+	  $("#chat_btn").click(function(){
+	    $(".chat_ul").show();
+	    $(".addr_ul").hide();
+	    
+	    $.ajax({
+	    	url: "chatList",
+	    	success: function(object){
+	    		console.log(object);
+	    		$(".chat_ul").html("");
+	    		var html = "";
+	    			for(var i in object){
+	    				html += "<li class='list-group-item justify-content-between align-items-center chat_li'>";
+	    				html += "<input type='hidden' class='chatNo' value='" + object[i].chatNo + "'>";
+	    				console.log(object[i].chatNo);
+	    				html += "<i class='xi-group xi-3x'></i>";
+	    				html += "<div style='margin-left: 6px;'>";
+	    				html += "<div>"+ object[i].chatName +"</div>";
+	    				html += "<div>"+ object[i].chatContent +"</div>";
+	    				html += "</div>";
+	    				html += "</li>";
+	    			}
+	    			$('.chat_ul').append(html);
+	    	},
+	    	error: function(request,status,error){
+	    		console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	    	}
+	    })
+	  });
 
-<div class="dim" style="display: none;"></div>
+	 // 연락처 부분 모달
+	  $("#addr_btn").on('click', function(){
+	    $(".addr_ul").show();
+	    $(".chat_ul").hide();
+	    
+	    $.ajax({
+	      url: "addrList",
+	      success: function(object){
+	        console.log(object);
+	        $(".addr_ul").html("");
+	        var html = "<ul class='list-group addr_ul'>";
+	        	for(var i in object){
+	              html += "<li class='list-group-item justify-content-between align-items-center addr_li'>";
+	              /* input hidden 으로 정보 가져오깅 */
+	              html += "<input type='hidden' class='memberNo' value='"+ object[i].memberNo + "'>";
+	              html += "<input type='hidden' class='memberName' value='"+ object[i].memberName + "'>";
+	              html += "<input type='hidden' class='rankName' value='"+ object[i].rankName + "'>";
+	              html += "<input type='hidden' class='deptName' value='"+ object[i].deptName + "'>";
+	              html += "<input type='hidden' class='email' value='"+ object[i].email + "'>";
+	              html += "<input type='hidden' class='phone' value='"+ object[i].phone + "'>";
+	              html += "<input type='hidden' class='filepath' value='"+ object[i].filepath + "'>";
+	              /* 프로필 이미지 없을 때 있을 때 if 달아주깅 */
+	              html += "<i class='xi-profile xi-3x'></i>";
+	              html += "<div  style='margin-left: 6px;'>";
+	                html += "<div>" + object[i].memberName + "</div>";
+	                html += "<div>" + object[i].phone +"</div>";
+	                html += "</div>";
+	                html += "</li>";
+	                console.log(i);
+	              console.log(html);
+	        	}
+	        	html += "</ul>";
+	        	$(".addr_ul").append(html);
+	      	},
+	      	error: function(){
+	      		console.log("연락처 ajax 통신 실패");
+	      	}
+	    })
+	  })
+	  
+	$(document).on('click', '.addr_li', function(){
+	    /* memberNo, memberName, deptNo, rankNo, filepath */
+		 var memberNo = $(this).find('.memberNo').val();
+	    var memberName = $(this).find('.memberName').val();
+	    var deptName = $(this).find('.deptName').val();
+	    var rankName = $(this).find('.rankName').val();
+	    var email = $(this).find('.email').val();
+	    var phone = $(this).find('.phone').val();
+	    var filepath = $(this).find('.filepath').val();
+	
+	    $('.prof-name').text(memberName);
+	    $('.prof-email').text(email);
+	    $('.prof-dept').text(deptName);
+	    $('.prof-rank').text(rankName);
+	    $(".prof-info-wrap").show();
+	    $('#memberNo').val(memberNo);
+	    $('#memberName').val(memberName);
+	    $(".dim").show();
+  	})
 
-<script>
-  $(".popup").click(function(){
-    $(".pop").toggle();
-    $(".chat_ul").show();
-    $(".addr_ul").hide();
-  })
-  $("#chat_btn").click(function(){
-    $(".chat_ul").show();
-    $(".addr_ul").hide();
-  });
-  
-  // 연락처 부분 모달
-  $("#addr_btn").on('click', function(){
-    $(".addr_ul").show();
-    $(".chat_ul").hide();
-    
-    $.ajax({
-      url: "addrList",
-      success: function(object){
-        console.log(object);
-        $(".addr_ul").html("");
-        var html = "<ul class='list-group addr_ul'>";
-        	for(var i in object){
-            if('${loginUser.memberName}' != object[i].memberName){
-              html += "<li class='list-group-item justify-content-between align-items-center addr_li'>";
-              /* input hidden 으로 정보 가져오깅 */
-              html += "<input type='hidden' class='memberNo' value='"+ object[i].memberNo + "'>";
-              html += "<input type='hidden' class='memberName' value='"+ object[i].memberName + "'>";
-              html += "<input type='hidden' class='rankNo' value='"+ object[i].rankNo + "'>";
-              html += "<input type='hidden' class='deptNo' value='"+ object[i].deptNo + "'>";
-              html += "<input type='hidden' class='email' value='"+ object[i].email + "'>";
-              html += "<input type='hidden' class='phone' value='"+ object[i].phone + "'>";
-              html += "<input type='hidden' class='filepath' value='"+ object[i].filepath + "'>";
-              /* 프로필 이미지 없을 때 있을 때 if 달아주깅 */
-              html += "<i class='xi-profile xi-3x'></i>";
-              html += "<div  style='margin-left: 6px;'>";
-                html += "<div>" + object[i].memberName + "</div>";
-                html += "<div>" + object[i].phone +"</div>";
-                html += "</div>";
-                html += "</li>";
-                console.log(i);
-              console.log(html);
+		$(".addr_x").click(function() {
+			$(".prof-info-wrap").hide();
+			$(".dim").hide();
+		})
 
-            }
-        	}
-        	html += "</ul>";
-        	$(".addr_ul").append(html);
-      	},
-      	error: function(){
-      		console.log("연락처 ajax 통신 실패");
-      	}
-    })
-  })
-  
-  $(document).on('click', '.addr_li', function(){
-    /* memberNo, memberName, deptNo, rankNo, filepath */
-	  var memberNo = $(this).find('.memberNo').val();
-    var memberName = $(this).find('.memberName').val();
-    var deptNo = $(this).find('.deptNo').val();
-    var rankNo = $(this).find('.rankNo').val();
-    var email = $(this).find('.email').val();
-    var phone = $(this).find('.phone').val();
-    var filepath = $(this).find('.filepath').val();
+		/* 채팅창 팝업 */
+		function showPopup($memberNo, $memnberName){
+    		console.log($memberNo);
+    		console.log($memnberName);
+    	var win = window.open("/ww/chat/chatRoom?chatMemberNo="+$memberNo+"&chatMemberName="+$memnberName, 
+                          "chatting_room", "width=470, height=650, left=300, top=50, scrollbars=no, status=no, resizable=no");
+  		}
+	 
+		  $(document).on('click', '.chat_li', function(){
+			  var chatNo = $(this).find('.chatNo').val();
+			  console.log(chatNo);
+			  console.log(this);
+			  var win = window.open("/ww/chat/chatRoomDetail?chatNo="+chatNo, 
+		                          "chatting_room", "width=470, height=650, left=300, top=50, scrollbars=no, status=no, resizable=no");
+		  })
+		  
+		  function chatInvite(){
+			  console.log('채팅 초대하러 가봅세다.');
+			  window.open("/ww/chat/chatInvite", "chatting_room", "width=500, height=610, left=300, top=50");
+		  }
 
-    $('.prof-name').text(memberName);
-    $('.prof-email').text(email);
-    $('.prof-dept').text(deptNo);
-    $('.prof-rank').text(rankNo);
-    $(".prof-info-wrap").show();
-    $(".dim").show();
-  })
-
-
-  $(".addr_x").click(function(){
-    $(".prof-info-wrap").hide();
-    $(".dim").hide();
-  })
-
-  /* 채팅창 팝업 */
-  function showPopup(){
-    var chatMemberNo = $('.addr_li').find('.memberNo').val();
-    var chatMemberName = $('.addr_li').find('.memberName').val();
-    console.log(chatMemberNo);
-    console.log(chatMemberName);
-    window.open("/ww/chat/chatRoom?chatMemberNo="+chatMemberNo+"?chatMemberName="+chatMemberName, "chatting_room", "width=400, height=600, left=100, top=50");
-  }
-  
-  /* 나는 윤희쓰 */
-  $('#memberModal').on('shown.bs.modal', function () {
-        $(".modal-backdrop").css('background', 'none');
-  })
+		/* 나는 윤희쓰 */
+		$('#memberModal').on('shown.bs.modal', function() {
+			$(".modal-backdrop").css('background', 'none');
+		})
 
 		//윤희 모달 정보
 		$(document).ready(function() {
