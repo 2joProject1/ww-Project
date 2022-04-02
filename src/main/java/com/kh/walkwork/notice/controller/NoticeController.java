@@ -35,7 +35,7 @@ public class NoticeController {
 			ModelAndView mv) {
 		
 		int listCount = noticeService.selectNoticeListCount();
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 15);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 12);
 		ArrayList<Notice> list = noticeService.selectNoticeList(pi);
 		mv.addObject("pi", pi).addObject("list", list);
 		
@@ -98,11 +98,11 @@ public class NoticeController {
 					MultipartFile file = upfile[i];
 
 					String originName = upfile[i].getOriginalFilename();
-					String changeName = saveFile(file, session);	// 얘가 이해가 안됨??
+					String changeName = saveFile(file, session);
 					
 					long fileSize = file.getSize();
 					
-					Attachment a = new Attachment(); //아 뉴 쓰지 ㅁ라랬는데 ㅠㅠ... 
+					Attachment a = new Attachment();
 
 					a.setFileName(changeName);
 					a.setBoardNo(b.getBoardNo());
@@ -129,7 +129,7 @@ public class NoticeController {
 		Notice b = noticeService.selectNotice(n);
 		ArrayList<Attachment> a = noticeService.selectFile(b);
 		
-				
+		
 		mv.addObject("b", b).addObject("a", a).setViewName("notice/noticeUpdateView");
 		
 
@@ -191,7 +191,7 @@ public class NoticeController {
 	@RequestMapping("range.no")
 	public ModelAndView rangeNotice(@RequestParam(value = "cpage", defaultValue = "1")int currentPage, ModelAndView mv, String noticeRange) {
 		int listCount = noticeService.selectRangeListCount(noticeRange);
-		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 15);
+		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 12);
 		ArrayList<Notice> list = noticeService.rangeNotice(noticeRange, pi);
 		mv.addObject("pi", pi).addObject("list", list).addObject("noticeRange", noticeRange);
 		mv.setViewName("notice/noticeRangeView");

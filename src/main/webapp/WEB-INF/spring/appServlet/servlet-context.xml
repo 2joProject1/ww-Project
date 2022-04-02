@@ -40,12 +40,132 @@
 		 
 	 <interceptors>
 	 	<interceptor>
+	 		<!-- main -->
 	 		<mapping path="/main"/>
+	 		
+	 		<!-- notice -->
 	 		<mapping path="/notice.no"/>
 	 		<mapping path="/range.no"/>
 	 		<mapping path="/enrollForm.no"/>
 	 		<mapping path="/detail.no"/>
 	 		<mapping path="/updateForm.no"/>
+	 		
+	 		<!-- chat -->
+	 		<mapping path="/chatRoom"/>
+	 		<mapping path="/otherChatAdd"/>
+	 		<mapping path="/chatRoomDetail"/>
+	 		<mapping path="/contentAdd"/>
+	 		<mapping path="/chatInvite"/>
+	 		<mapping path="/chatInviteAdd"/>
+	 		
+	 		<!-- community -->
+	 		<mapping path="/write.co"/>
+	 		<mapping path="/modifyPage.co"/>
+	 		<mapping path="/modify.co"/>
+	 		<mapping path="/delete.co"/>
+	 		<mapping path="/list.co"/>
+	 		<mapping path="/mylist.co"/>
+	 		<mapping path="/detail.co"/>
+	 		<mapping path="/insert.co"/>
+	 		<mapping path="/insert.ac"/>
+	 		<mapping path="/delete.ac"/>
+	 		<mapping path="/modify.ac"/>
+	 		<mapping path="/insertReply.co"/>
+	 		<mapping path="/deleteReply.co"/>
+	 		<mapping path="/thumbsPlus.co"/>
+	 		<mapping path="/thumbsMinus.co"/>
+	 		
+	 		<!-- commute -->
+	 		<mapping path="/main.cm"/>
+	 		<mapping path="/month.cm"/>
+	 		<mapping path="/on.cm"/>
+	 		<mapping path="/off.cm"/>
+	 		
+	 		<!-- dayoff -->
+	 		<mapping path="/insert.of"/>
+	 		<mapping path="/list.of"/>
+	 		<mapping path="/searchList.of"/>
+	 		<mapping path="/status.of"/>
+	 		<mapping path="/approval.of"/>
+	 		<mapping path="/yesOrNo.of"/>
+	 		<mapping path="/searchApproval.of"/>
+	 		<mapping path="/selectDto.of"/>
+	 		<mapping path="/adminSelectDto.of"/>
+	 		
+	 		<!-- email -->
+	 		<mapping path="/email.form"/>
+	 		<mapping path="/mail/mailSending"/>
+	 		
+	 		<!-- header -->
+	 		<mapping path="/addrList"/>
+	 		<mapping path="/chatList"/>
+	 		
+	 		<!-- member -->
+	 		<mapping path="/logout.me"/>
+	 		<mapping path="/changePwd2.me"/>
+	 		<mapping path="/information.me"/>
+	 		<mapping path="/informationMdf.me"/>
+	 		<mapping path="/informationpwd.me"/>
+	 		<mapping path="/modifyPwd.me"/>
+	 		<mapping path="/addProfileImg.me"/>
+	 		
+	 		<!-- ogChart -->
+	 		<mapping path="/officerList.li"/>
+	 		<mapping path="/officerListSearch.se"/>
+	 		<mapping path="/selectMemberNo.me"/>
+	 		<mapping path="/officerInsert.in"/>
+	 		<mapping path="/selectUpdateOfficer.up"/>
+	 		<mapping path="/officerUpdate.up"/>
+	 		<mapping path="/deptInsert.in"/>
+	 		<mapping path="/selectDept.se"/>
+	 		<mapping path="/selectDeptName.se"/>
+	 		<mapping path="/deptUpdate.up"/>
+	 		<mapping path="/deptDelete.de"/>
+	 		
+	 		<!-- project -->
+	 		<!-- project/common/calendar -->
+	 		<mapping path="/calendar.pj"/>
+	 		
+	 		<!-- project/common/project -->
+	 		<mapping path="/project.main"/>
+	 		<mapping path="/project"/>
+	 		<mapping path="/project.taskWrite"/>
+	 		<mapping path="/insert.pro"/>
+	 		<mapping path="/search.member"/>
+	 		<mapping path="/docubox.searchDept"/>
+	 		<mapping path="/project.end"/>
+	 		
+	 		<!-- project/task -->
+	 		<mapping path="/insert.task"/>
+	 		<mapping path="/update.task"/>
+	 		<mapping path="/handler.task"/>
+	 		<mapping path="/project.taskList"/>
+	 		<mapping path="/project.taskDetail"/>
+	 		<mapping path="/insert.reply"/>
+	 		<mapping path="/selectReply.task"/>
+	 		<mapping path="/deleteReply.task"/>
+	 		<mapping path="/project/tstatereport"/>
+	 		
+	 		<!-- signOff -->
+	 		<mapping path="/docubox.detail"/>
+	 		<mapping path="/signoffs.docu"/>
+	 		<mapping path="/docubox.draft"/>
+	 		<mapping path="/docubox.receive"/>
+	 		<mapping path="/docubox.dept"/>
+	 		<mapping path="/docubox.approve"/>
+	 		<mapping path="/docubox.reject"/>
+	 		<mapping path="/docubox.deny"/>
+	 		<mapping path="/docubox.insert"/>
+	 		
+	 		<!-- todo -> 완성 후 다시 수정해야함 -->
+	 		<mapping path="/complete.to"/>
+	 		<mapping path="/test.main"/>
+
+	 		
+	 		
+	 		
+	 		
+	 		
 	 		<beans:bean class="com.kh.walkwork.common.interceptor.LoginIntercepter" id="loginIntercepter" />
  		</interceptor>
 	 </interceptors>

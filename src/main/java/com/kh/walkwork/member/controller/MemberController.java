@@ -138,7 +138,7 @@ public class MemberController {
 
 	      //아이디 존재 + 비밀번호 일치
 	      if(loginUser != null && bcryptPasswordEncoder.matches(m.getMemberPwd(), loginUser.getMemberPwd())) {
-	                                                //입력받은         //암호화된
+	                                                				//입력받은         //암호화된
 	         //로그인 성공
 	         session.setAttribute("loginUser", loginUser);
 	         mv.setViewName("redirect:main");
@@ -147,15 +147,14 @@ public class MemberController {
 	         }
 	         //로그인 성공 시 실패 횟수 초기화
 	         int result = memberService.loginFailReset(loginUser);
-	         
-	         
-	         
+
 	         return mv;
 	      } 
 	      // 아이디 존재 + 임시비밀번호 일치
 	      else if(loginUser != null && m.getMemberPwd().equals(loginUser.getTmpPwd())) {
 	         session.setAttribute("loginUser", loginUser);
-	         mv.setViewName("redirect:main");
+				/* mv.setViewName("redirect:main"); */
+	         mv.setViewName("member/changePwd2");
 	         
 	         //로그인 성공 시 임시비밀번호 삭제(일회용, 더이상 사용할 수 없도록)
 	         int pwdResult = memberService.deleteTmpPwd(loginUser);
@@ -242,6 +241,29 @@ public class MemberController {
 			mv.setViewName("member/changePwd");
 		}
 
+		return mv;
+	}
+	
+	
+	// 임시비밀번호 로그인 후 비밀번호변경
+	@ResponseBody
+	@RequestMapping("changePwd2.me")
+	public ModelAndView changePwdAfterLogin(Member m, ModelAndView mv, HttpSession session) {
+		
+		String encPwd = bcryptPasswordEncoder.encode(m.getMemberPwd());
+		
+		m.setMemberPwd(encPwd);
+		
+		int result = memberService.changePwdLogin(m);
+		
+		if (result > 0) {
+			session.setAttribute("changeResult", "비밀번호 변경 성공.");
+			mv.setViewName("redirect:main");
+		} else {
+			session.setAttribute("changeResult", "비밀번호 변경 실패. 잘못된 정보입니다. 다시 입력하세요.");
+			mv.setViewName("member/changePwd2");
+		}
+		
 		return mv;
 	}
 
