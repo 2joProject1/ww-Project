@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,9 +23,25 @@
     left: 300px;
     bottom: 190px;
 }
+#mem_btn1{
+    width: 100px;
+    height: 45px;
+    background-color: rgb(30,137,140);
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    border: none;
+    border-radius: 16px;
+}
 </style>
 </head>
 <body>
+<c:if test="${ not empty changeResult }">
+		<script>
+			alert("${ changeResult }");
+		</script>
+		<c:remove var="changeResult" scope="session" />
+</c:if>
 
 <div class="container" style="min-width : 1500px;">
 	<div id="header-layout">
@@ -36,7 +53,7 @@
 			<h1>계정 정보</h1>
 			<hr>
 				<div>
-					<h5>내 프로필</h5>
+					<h3>내 프로필</h3>
 				</div>
 			</div>
 		<br><br><br><br><br><br><br>
@@ -45,8 +62,8 @@
 				<img id="mem_img" src="resources/coFile/${memberInfo.file }" onerror='this.src="resources/images/person-fill.svg"' alt="profileImg">
 
 				<div id="ImghiddenBtn">
-					<button onclick="mem_submitFiles()">이대로 저장</button>
-					<button onclick="undoBtn()">되돌리기</button>
+					<button onclick="mem_submitFiles()" id="mem_btn1">이대로 저장</button>
+					<button onclick="undoBtn()" id="mem_btn1">되돌리기</button>
 				</div>
 				
 			</div>

@@ -17,6 +17,7 @@
 }
 .topCol img:hover{
 	width: 200px;
+	height: 200px;
 }
 
 .top5Row{
@@ -35,16 +36,13 @@
     border-radius: 16px;
 }
 .cm_row{
-	border-bottom: 1px solid #B6B6B6;
-	margin-top : 6px;
-	height:145px;
-
+	border-bottom: 3px solid #B6B6B6;
 }
 
-.cm_imgs{
+/* .cm_imgs{
 	position :relative;
 	bottom : 40px;
-}
+} */
 .cm_row:hover {
 	cursor: pointer;
 }
@@ -57,9 +55,8 @@
 
 .cm_end{
 	text-align: right;
-    align-self: end;
-    max-height: 60px;
-    bottom : 10px;
+    align-self: center;
+
 }
 
 .cm_ends{

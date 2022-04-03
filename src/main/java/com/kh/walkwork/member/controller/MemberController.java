@@ -324,21 +324,22 @@ public class MemberController {
 		String result = "";
 		Member userInfo = (Member) session.getAttribute("loginUser");
 		Member loginUser = memberService.loginMember(userInfo); // 흠
-
-		String encodePassword = bcryptPasswordEncoder.encode(loginUser.getMemberPwd());
-
-		if (loginUser != null && bcryptPasswordEncoder.matches(m.getMemberPwd(), encodePassword)) {
+		
+		String encodePassword = bcryptPasswordEncoder.encode(m.getTmpPwd());
+		
+		if (loginUser != null && bcryptPasswordEncoder.matches(m.getMemberPwd(), userInfo.getMemberPwd())) {
 			// modify
 			Member nMember = new Member();
 			nMember.setMemberNo(loginUser.getMemberNo());
-			nMember.setMemberPwd(m.getTmpPwd());
+			nMember.setMemberPwd(encodePassword);
 			memberService.changePwd(nMember);
-
+			session.setAttribute("changeResult", "비밀번호 변경 성공.");
 			result = "redirect:information.me";
 			System.out.println("성공");
 		} else {
 			// 비밀번호 불일치
 			result = "redirect:informationpwd.me";
+			session.setAttribute("changeResult", "비밀번호 변경 실패. 잘못된 정보입니다. 다시 입력하세요.");
 			System.out.println("실패");
 		}
 

@@ -195,8 +195,8 @@
 		<!-- 윤희 계정정보 Modal -->
 		<div class="modal" id="memberModal" tabindex="-1"
 			aria-labelledby="exampleModalLabel" aria-hidden="true"
-			style="top: 55px; left: 18%;">
-			<div class="modal-dialog modal-lg">
+			style="top: 55px; left: 25%;">
+			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-body">
 						<div class="container">

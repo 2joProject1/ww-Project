@@ -107,7 +107,8 @@ public class CommunityController {
 
 	// 글 가져오기
 	@RequestMapping("list.co")
-	public ModelAndView selectList(@RequestParam(value = "cpage", defaultValue="1") int currentPage, ModelAndView mv, @RequestParam(value = "search", required = false, defaultValue = "") String search) {
+	public ModelAndView selectList(@RequestParam(value = "cpage", defaultValue="1") int currentPage, 
+			ModelAndView mv, @RequestParam(value = "search", required = false, defaultValue = "") String search) {
 		
 		int listCount = communityService.selectListCount(search);
 		
@@ -121,7 +122,8 @@ public class CommunityController {
 		ArrayList<Attachment> topImages = communityService.selectViewAtt();
 		
 		
-		mv.addObject("search", search).addObject("pi", pi).addObject("list", list).addObject("top", top).addObject("topImages",topImages).setViewName("community/communityView");
+		mv.addObject("search", search).addObject("pi", pi).addObject("list", list).addObject("top", top)
+		.addObject("topImages",topImages).setViewName("community/communityView");
 
 		return mv;
 		
@@ -210,18 +212,10 @@ public class CommunityController {
 	// 파일 삽입하기 
 	@ResponseBody
 	@RequestMapping("insert.ac")
-	public List<Attachment> insertAttachment(HttpServletRequest req, HttpSession session,@RequestPart(value="file1", required=false) List<MultipartFile> multi ,Attachment a, Model model)  {
-//		String path = "C:\\walkworkFiles";
-//			ServletContext context = req.getSession().getServletContext();
-//			ClassPathResource cpr = new ClassPathResource("coFile/20222163452665.png");
-//			try {
-//				InputStream is = cpr.getInputStream();
-//				File file1 = File.createTempFile("asdf", ".png");
-//				FileUtils.copyInputStreamToFile(is, file1);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}		
-			String path = session.getServletContext().getRealPath("/resources/coFile/");
+	public List<Attachment> insertAttachment(HttpServletRequest req, HttpSession session,
+			@RequestPart(value="file1", required=false) List<MultipartFile> multi ,Attachment a, Model model)  {
+	
+		String path = session.getServletContext().getRealPath("/resources/coFile/");
 		
 		List<Attachment> result = new ArrayList<Attachment>();
 		try {
@@ -271,6 +265,7 @@ public class CommunityController {
 		
 		return result;
 	}
+	
 	
 	// 파일 수정
 	@ResponseBody
