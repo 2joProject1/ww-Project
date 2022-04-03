@@ -19,7 +19,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
     
-<title>휴가관리 메인</title>
+<title>휴가 신청/조회</title>
 
 <style>
 #result {
@@ -125,6 +125,22 @@
     border-radius: 10px;
     cursor: pointer;
 }
+
+#applyOff, #inq{
+	font-size: 14px;
+    background: none;
+    color: white;
+    border: 0;
+    background-color:#66a4a6;
+    border-radius: 4px;
+    cursor: pointer;
+}
+#applyOff:hover{
+background-color: #87cacc;
+}
+#inq:hover{
+background-color: #87cacc;
+}
   
 </style>
  	<link rel="stylesheet" href="resources/css/layout.css">
@@ -176,7 +192,7 @@
 							<a href="status.of" class="">휴가현황</a>
 							<br>
 						</div>
-						<c:if test="${loginUser.rankNo eq '5' }">
+						<c:if test="${loginUser.rankNo ge '5' }">
 		                <div class="sub-menu">
 							&nbsp;
 							<a href="approval.of" class="">휴가신청승인</a>
@@ -196,10 +212,10 @@
 	                <form action="insert.of" method="post" onsubmit='return insert()' name="insert">
 			        	<input type="hidden" value="${loginUser.memberNo }" name="offWriter">
 			            	<div id="date">
-					          &nbsp;기간선택 <input type="date" name = "offStart" onchange="dateresult();" required> - <input type="date" name = "offEnd" onchange="dateresult();"required> <br><br>
+					          &nbsp;&nbsp;&nbsp;기간선택&nbsp; <input type="date" name = "offStart" onchange="dateresult();" required> - <input type="date" name = "offEnd" onchange="dateresult();"required> <br><br>
 				            </div>
-				              &nbsp;휴가일수 <input type="number" name="offDays" id="days-t" readonly>   <br><br>  
-				        &nbsp; &nbsp;사유&nbsp;&nbsp;&nbsp;&nbsp; 
+				              &nbsp;&nbsp;&nbsp;휴가일수&nbsp; <input type="number" name="offDays" id="days-t" readonly>   <br><br>  
+				        &nbsp;&nbsp; &nbsp;&nbsp;사유&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 					        <input type="text-area" name="offReason" placeholder="20자 이하" id="reason-t" required>  &nbsp;
 				            <input type="submit" name="신청" value="신청" id="applyOff">
 					<hr>
@@ -209,8 +225,8 @@
             <div id="result-area">
             	<form action="searchList.of" method="post">
             	<input type="hidden" value="${loginUser.memberNo }" name="offWriter"> 
-              	&nbsp; 기간조회  <input type="date" name = "offStart" required> - <input type="date" name = "offEnd" required> 
-              	<input type="submit" name="조회" value="조회">
+              	&nbsp;&nbsp; 기간조회 &nbsp; <input type="date" name = "offStart" required> - <input type="date" name = "offEnd" required> 
+              	&nbsp;<input type="submit" name="조회" value="조회" id="inq">
             	</form>
 				<hr>
             </div>
@@ -254,33 +270,6 @@
             
 	        </div>
 	    </div>
-	    
-	    <div id="pagingArea">
-                <ul class="pagination">
-                <c:choose>
-                	<c:when test="${ pi.currentPage eq 1 }">
-                    	<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li><!-- 1번페이지일 경우 -->
-                	</c:when>
-                	<c:otherwise>
-                		<li class="page-item"><a class="page-link" href="list.of?cpage=${ pi.currentPage - 1 }">Previous</a></li>
-                	</c:otherwise>
-                </c:choose>
-                    
-                    <c:forEach var="p" begin="${ pi.startPage }" end="${ pi.endPage }">
-                    <li class="page-item"><a class="page-link" href="list.of?cpage=${ p }">${ p }</a></li>
-                    </c:forEach>
-
-					<c:choose>
-						<c:when test="${ pi.currentPage eq pi.maxPage }">
-                    	<li class="page-item disabled"><a class="page-link" href="#">Next</a></li><!-- 마지막 페이지 일 경우 -->
-						</c:when>
-						
-						<c:otherwise>
-                    	<li class="page-item"><a class="page-link" href="list.of?cpage=${ pi.currentPage + 1 }">Next</a></li><!-- 마지막 페이지 일 경우 -->
-						</c:otherwise>
-					</c:choose>
-                </ul>
-            </div>
-
+	 
 </body>
 </html>

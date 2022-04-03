@@ -117,6 +117,10 @@
   	font-family: 'Nanum Gothic', sans-serif;
   }
   
+  #full{
+  	height : 1450px;
+  }
+  
 
 </style>
   
@@ -126,6 +130,8 @@
 <script src="https://github.com/chartjs/Chart.js/blob/master/docs/scripts/utils.js"></script>
 </head>
 <body>
+
+<div id="full">
         <div id="header-layout">
         	<jsp:include page="../common/header.jsp" />
 
@@ -149,8 +155,7 @@
 							<br><br>
 						</div>
 		                
-		                &nbsp;
-		                <i class="xi-cafe"></i>
+		                <i class="xi-cafe"></i>&nbsp;
 		                <a href="list.of"><b>휴가관리</b></a>
 		                <br><br>
 		            </ul>
@@ -202,6 +207,7 @@
             
 	        </div>
 	    </div>
+</div>
 	    
 	<script type="text/javascript">
 	
@@ -297,7 +303,7 @@
 		    }
 		  }
 		];
-		// </block:actions>
+		// </block:actions> // 차트 요소
 		var ctx = $("#lineCanvas");
 		
 		// <block:setup:1>
@@ -317,7 +323,7 @@
 			  ],
 		  datasets: [
 		    {
-		      label: 'Dataset',
+		      label: '근무시간',
 		      data: [
 		    	  	<c:set var="size" value="${listCount}" />
 					<c:forEach var="i" begin="1" end="${size}">
@@ -335,7 +341,7 @@
 		};
 		// </block:setup>
 
-		// <block:config:0>
+		// <block:config:0>  // 차트모양
 		const config = {
 		  type: 'line',
 		  data: data,
@@ -351,11 +357,8 @@
 		};
 		// </block:config>
 		new Chart(ctx, config, data);
-	
-	
-	
-	
-	
+		// chart api를 이용해서 data 속성에 근무리스트를 월별로 담아서 차트객체를 생성 해준다
+		// 차트 api가  차트를 만들어준다
 	
 	
     var today = null;
@@ -374,10 +377,6 @@
         $("#movePrevMonth").on("click", function(){movePrevMonth();});
         $("#moveNextMonth").on("click", function(){moveNextMonth();});
     });
-    
-  //  $('#month').change(function(){
-   // 	location.href="asd./me?day=" + day;
-   // })
     
     //Calendar 그리기
     function drawCalendar(){
@@ -450,7 +449,7 @@
         }
        
         		
-        location.href = "month.cm?commuteDate=" + year + "-" + month;
+        location.href = "month.cm?commuteDate=" + year + "&month=" + month;
     }
     
     //정보갱신
@@ -465,8 +464,6 @@
         drawDays();
         drawSche();
     }
-    
-    //2019-08-27 추가본
     
     //데이터 등록
     function setData(){

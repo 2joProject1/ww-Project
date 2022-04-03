@@ -103,7 +103,7 @@ public class DayOffController {
 		if(searchPage == 1) {
 			
 			int listCount = dayOffService.adminSelectCountOff(offDept);
-			//(총게시물, 페이지넘버, 페이지당개수, 페이징개수) 기억하시고 나중에 수정 ㅇㅋ??
+			//(총게시물, 페이지넘버, 페이지당개수, 페이징개수)
 			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 10); 
 			ArrayList<DayOff> list = dayOffService.adminSelectListOff(offDept, pi);
 			mv.addObject("list", list);
@@ -162,14 +162,14 @@ public class DayOffController {
 	
 	}
 	@ResponseBody
-	@RequestMapping("selectDto.of")
+	@RequestMapping(value="selectDto.of", produces="application/json; charset=UTF-8" )
 	public List<Object> selectDto(int memberNo){
 		
 		List<Object> list = dayOffService.selectDto(memberNo);		
 		return list;
 	}
 	@ResponseBody
-	@RequestMapping("adminSelectDto.of")
+	@RequestMapping(value="adminSelectDto.of",  produces="application/json; charset=UTF-8")
 	public List<Object> adminSelectDto(int deptNo){
 		
 		List<Object> list = dayOffService.adminSelectDto(deptNo);		

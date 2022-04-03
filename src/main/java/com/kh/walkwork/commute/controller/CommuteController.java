@@ -100,18 +100,11 @@ public class CommuteController {
 			//퇴근시간에서 분 구하기
 			int endMM = Integer.parseInt(commuteEnd.substring(3,5));
 			
-			System.out.println("startHH ::: " + startHH);
-			System.out.println("endHH ::: " + endHH);
-			System.out.println("startMM ::: " + startMM);
-			System.out.println("endMM ::: " + endMM);
-			
 			// .00 식으로 사용해야 하니까 더블형으로 바꿔 줌
 			// 퇴근시간에서 출근시간 빼기 = 근무 시간
 			double hh = endHH - startHH;
 			// 퇴근 분 에서 출근 분 빼기 = 근무 분 
 			double mm = endMM - startMM;
-			System.out.println("hh ::: " + hh);
-			System.out.println("mm ::: " + mm);
 			// 5 - 50 = -45
 			// 분 끼리 계산 했을 때 마이너스 인 경우는 시간에서 한시간 빼준다
 			if(mm < 0) {
@@ -124,6 +117,7 @@ public class CommuteController {
 			
 			// BigDecimal 를 쓴 이유 -> 
 			// double 형 끼리 계산 할 경우 컴퓨터가 멍청(0,1 밖에 모르기때문에) 해서 소수점 계산을 오류가 날 경우가 생김
+			// 그래서 BigDecimal을 사용 => 오류가 나니까 자바에서 제공하는 얘를 사용해서 오류를 고쳤다 원인을 찾는데에 굉장히 힘든시간이었음
 			BigDecimal bighh = new BigDecimal(String.valueOf(hh));
 			BigDecimal bigmm = new BigDecimal(String.valueOf(mm));
 			// 근무시간 + 근무분(백분율) 더해줌 
@@ -131,18 +125,14 @@ public class CommuteController {
 			// 다시 더블형으로 바꾼다 doubleValue();
 			double dayWorkTime = bigdayWorkTime.doubleValue();
 			
-			System.out.println("dayWorkTime ::: hh + mm :::" + dayWorkTime);
-			
 			// 소수점 2번째 자리까지 반올림 round 함수 이용
 			dayWorkTime = (Math.round(dayWorkTime * 100) / 100.0);
-			System.out.println("dayWorkTime ::: " + dayWorkTime);
 			
 			list.get(i).setDayWorkTime(dayWorkTime);
 			// 첫번째 인덱스는 누적시간이 없기때문에 당일 시간을 누적시간에 바로 넣어줌 
 			if(i==(list.size()-1)) {
 				list.get(i).setAccureMonth(list.get(i).getDayWorkTime());
 			}else {
-				
 				//현재 까지 누적된 근무시간
 				BigDecimal bigaccureMonthA = new BigDecimal(String.valueOf(list.get(i+1).getAccureMonth()));
 				// 당일 근무 시간
@@ -150,10 +140,6 @@ public class CommuteController {
 				BigDecimal bigaccureMonth = bigaccureMonthA.add(bigaccureMonthB);
 				list.get(i).setAccureMonth(bigaccureMonth.doubleValue());
 			}
-			
-			System.out.println("월 누적 시간 ::: "+list.get(i).getAccureMonth());
-			System.out.println();
-			
 		}
 		
 		mv.addObject("list", list);
@@ -184,7 +170,7 @@ public class CommuteController {
 		if(check > 0) {
 			mv.addObject("alertMsg", "이미 출근하였습니다.");
 		}else {
-			int commuteTime  = 9;
+			int commuteTime  = 9; //지정한 출근시간
 			int realTime = Integer.parseInt(commuteStart.substring(0,2));
 			
 			if(commuteTime > realTime) {
@@ -219,6 +205,7 @@ public class CommuteController {
 		// 포맷 정의
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm:ss");
+		
 		// 포맷 적용
 		String commuteDate = now.format(formatter);
 		String commuteEnd = now.format(time);
@@ -228,12 +215,12 @@ public class CommuteController {
 		if(check > 0) {
 			mv.addObject("alertMsg", "이미 퇴근했습니다");
 		}else {
-			int commuteTime = 18;
+			int commuteTime = 18; // 지정해둔 퇴근시간
 			int realTime = Integer.parseInt(commuteEnd.substring(0,2));
 			int checkLate = commuteService.checkLate(commute);
 			// checkDate = 1 지각
 			if(commuteTime <= realTime && checkLate == 0) {
-				// 정상출근 지각이아니면서 퇴근시간보다 현재시간이 같거나 크다
+				// 정상출근 - 지각이아니면서 퇴근시간보다 현재시간이 같거나 크다
 				commute.setWorkStatus("Y");
 			}else if(checkLate == 1 && commuteTime > realTime ){
 				// 근무태만 - 지각이면서 퇴근시간보다 현재시간이 작을때
