@@ -257,10 +257,10 @@ public class MemberController {
 		int result = memberService.changePwdLogin(m);
 		
 		if (result > 0) {
-			session.setAttribute("changeResult", "비밀번호 변경 성공.");
+			session.setAttribute("alertMsg", "비밀번호 변경 성공.");
 			mv.setViewName("redirect:main");
 		} else {
-			session.setAttribute("changeResult", "비밀번호 변경 실패. 잘못된 정보입니다. 다시 입력하세요.");
+			session.setAttribute("alertMsg", "비밀번호 변경 실패. 잘못된 정보입니다. 다시 입력하세요.");
 			mv.setViewName("member/changePwd2");
 		}
 		
