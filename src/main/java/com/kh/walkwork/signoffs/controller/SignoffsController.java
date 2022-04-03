@@ -170,6 +170,12 @@ public class SignoffsController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		
 		List<Document> documentList = documentService.getDocumentList(d, pi);
+		for (int i=0; i<documentList.size(); i++) {
+			Attachment a = new Attachment();
+			a.setDocuNo(documentList.get(i).getDocuNo());
+			List<Attachment> fileList = attachmentService.selectAttachmentList(a);
+			documentList.get(i).setFileYn(fileList.size() > 0 ? "Y" : "N");
+		}
 		
 		model.addAttribute("documentList", documentList);
 		model.addAttribute("pi", pi);
@@ -193,6 +199,12 @@ public class SignoffsController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		
 		List<Document> documentList = documentService.getDocumentList(d, pi);
+		for (int i=0; i<documentList.size(); i++) {
+			Attachment a = new Attachment();
+			a.setDocuNo(documentList.get(i).getDocuNo());
+			List<Attachment> fileList = attachmentService.selectAttachmentList(a);
+			documentList.get(i).setFileYn(fileList.size() > 0 ? "Y" : "N");
+		}
 		
 		model.addAttribute("documentList", documentList);
 		model.addAttribute("pi", pi);
@@ -259,6 +271,12 @@ public class SignoffsController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, 10, 5);
 		
 		List<Document> documentList = documentService.getDocumentList(d, pi);
+		for (int i=0; i<documentList.size(); i++) {
+			Attachment a = new Attachment();
+			a.setDocuNo(documentList.get(i).getDocuNo());
+			List<Attachment> fileList = attachmentService.selectAttachmentList(a);
+			documentList.get(i).setFileYn(fileList.size() > 0 ? "Y" : "N");
+		}
 
 		model.addAttribute("documentList", documentList);
 		model.addAttribute("pi", pi);

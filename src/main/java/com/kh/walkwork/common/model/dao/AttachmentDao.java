@@ -31,4 +31,8 @@ public class AttachmentDao {
 	public List<Attachment> selectAttachmentList(Attachment a) {
 		return sqlSession.selectList("attachmentMapper.selectAttachmentList", a);
 	}
+
+	public Object removeAttachment(String fileName) {
+		return sqlSession.insert("attachmentMapper.removeAttachment", fileName);
+	}
 }

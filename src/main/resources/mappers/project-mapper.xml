@@ -62,10 +62,12 @@
 		FROM PROJECT P
 		JOIN PROJECT_MEMBER PM ON (P.PROJECT_NO = PM.PROJECT_NO)
 		WHERE PROJECT_STATUS = '1' 
+        <if test="!projectMemberNo.equals('99999')">
 		AND (PM.MEMBER_NO LIKE '%'||#{projectMemberNo}||'%'
 			OR
 			P.PROJECT_WRITER = #{projectMemberNo}
 		)
+        </if>
 	</select>
 	
 	<!-- 프로젝트 메인 : 프로젝트 리스트(진행중) -->
@@ -79,11 +81,14 @@
 			) C WHERE ROWNUM = 1 AND P.PROJECT_NO = C.PROJECT_NO
 		) AS projectMemberStr
 		FROM PROJECT P
-        WHERE (PROJECT_NO IN (SELECT PROJECT_NO FROM PROJECT_MEMBER D WHERE #{projectMemberNo} = D.MEMBER_NO)
+        WHERE 
+        PROJECT_STATUS = 1 
+        <if test="!projectMemberNo.equals('99999')">
+        AND (PROJECT_NO IN (SELECT PROJECT_NO FROM PROJECT_MEMBER D WHERE #{projectMemberNo} = D.MEMBER_NO)
         	OR
 			P.PROJECT_WRITER = #{projectMemberNo}
         )
-        AND PROJECT_STATUS = 1 
+        </if>
 		ORDER BY PROJECT_ENDDATE DESC
 	</select>
 	
@@ -110,8 +115,11 @@
 			) C WHERE ROWNUM = 1 AND P.PROJECT_NO = C.PROJECT_NO
 		) AS projectMemberStr
 		FROM PROJECT P
-        WHERE PROJECT_NO IN (SELECT PROJECT_NO FROM PROJECT_MEMBER D WHERE #{projectMemberNo} = D.MEMBER_NO)
-        AND PROJECT_STATUS = 0
+        WHERE 
+        PROJECT_STATUS = 0
+        <if test="!projectMemberNo.equals('99999')">
+        AND PROJECT_NO IN (SELECT PROJECT_NO FROM PROJECT_MEMBER D WHERE #{projectMemberNo} = D.MEMBER_NO)
+        </if>
 		ORDER BY PROJECT_ENDDATE DESC
 	</select>
 	
@@ -159,4 +167,17 @@
 		INNER JOIN MEMBER B ON A.MEMBER_NO = B.MEMBER_NO
 		WHERE A.PROJECT_NO = #{projectNo}
 	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

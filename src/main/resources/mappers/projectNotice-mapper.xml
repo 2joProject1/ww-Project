@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+ <mapper namespace="projectNoticeMapper">
+ 	
+ 	
+	<!-- 프로젝트 공지 리스트 가져오기 -->
+	<select id="selectProjectNoticeList" parameterType="projectNotice" resultType="projectNotice">
+		 select 
+			BOARD_NO,
+			b.BOARD_WRITER, 
+			BOARD_TITLE,
+			b.ENROLL_DATE,
+			COUNT,
+			b.STATUS,
+            m.member_name
+		from board_all b
+        join member m on(b.board_Writer = m.member_no)
+		where b.status = 'Y'
+        and board_type=2
+		order by board_no desc
+	</select>
+	
+	<!-- 프로젝트 공지 조회수 -->
+	<update id="increasePrjectNoticeCount" >
+			update board_all
+			set count = count + 1
+			where board_no = #{boardNo}
+			and status = 'Y'
+	</update>
+	
+	<!-- 프로젝트 공지 작성 -->
+	<insert id="insertProjectNotice" parameterType="projectNotice">
+		INSERT INTO BOARD_ALL(
+		 BOARD_NO
+		,BOARD_WRITER
+		,PROJECT_NO
+		,BOARD_TYPE
+		,BOARD_TITLE
+		,BOARD_CONTENT
+		,ENROLL_DATE
+		) VALUES(
+		SEQ_BNO.NEXTVAL
+		,#{boardWriter}
+		,#{projectNo}
+		,2
+		,#{boardTitle}
+		,#{boardContent}
+		,DEFAULT
+		)
+		<selectKey resultType="int" keyProperty="boardNo"
+			order="AFTER">
+			SELECT SEQ_BNO.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<!-- 프로젝트 공지 삭제  -->
+	<delete id="deleteProjectNotice" parameterType="projectNotice">
+		delete 
+	        from board_all 
+	        where board_no = #{boardNo}
+	</delete>
+	
+	<!-- 프로젝트 공지 수정  -->
+	<update id="updateProjectNotice" parameterType="projectNotice">
+		update board_all 
+        set
+			board_title = #{boardTitle},
+			board_content = #{boardContent}
+			<if test="count != 0">
+				,count = #{count}
+			</if>
+        where board_no = #{boardNo}
+	</update>
+	
+	<select id="selectProjectNoticeOne" parameterType="projectNotice" resultType="projectNotice">
+		select 
+					board_no, 
+					(select MEMBER_NAME from MEMBER where MEMBER_NO=board_writer ) as board_writer, 
+					enroll_Date, 
+					board_title, 
+					board_content,
+					count,
+					project_no
+		from 
+					board_all
+		where 
+					status='Y' 			and 
+					board_type=2 		and 
+					board_no = #{boardNo}
+	</select>
+  
+ 
+ 
+ 
+ 
+ 
+</mapper>

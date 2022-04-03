@@ -2,7 +2,6 @@ package com.kh.walkwork.common.model.service;
 
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +29,10 @@ public class AttachmentService {
 	
 	public int insertNoticeAttachment(Attachment a) {
 		return attachmentDao.insertNoticeAttachment(sqlSession, a);
+	}
+
+	public void removeAttachment(String fileName) {
+		attachmentDao.removeAttachment(fileName);
 	}
 	
 }

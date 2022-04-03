@@ -35,18 +35,23 @@ public class TaskService {
 	public int insertReplyList(Reply r) {
 		return taskDao.insertReplyList(sqlSession, r);
 	}
+	
+	//업무 : 상세보기
 	public Task getTaskDetail(Task t) {
 		return taskDao.getTaskDetail(sqlSession, t);
 	}
 
+	//업무 : 업무목록
 	public List<Task> getTaskList(Project p) {
 		return taskDao.getTaskList(sqlSession, p);
 	}
 
+	//업무: 필터별 보기
 	public List<Task> getTaskListByFilter(Task t) {
 		return taskDao.getTaskListByFilter(sqlSession, t);
 	}
-
+	
+	//업무: 수정
 	public int updateTask(Task t) {
 		return taskDao.updateTask(sqlSession, t);
 	}

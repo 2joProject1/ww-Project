@@ -149,5 +149,6 @@
 		SELECT NVL(COUNT(TASK_STATUS), 0) AS COUNT 
 		FROM BOARD_ALL
 		WHERE PROJECT_NO = #{projectNo} AND TASK_STATUS = #{taskStatus}
+        and board_type=3
 	</select>
 </mapper>

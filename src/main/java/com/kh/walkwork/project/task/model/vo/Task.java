@@ -28,5 +28,6 @@ public class Task {
 	private int taskFilter2;
 	
 	private String taskHandlerName;
+	private String[] originFileName;
 	
 }
