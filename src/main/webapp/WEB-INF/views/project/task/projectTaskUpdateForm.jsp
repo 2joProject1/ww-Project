@@ -305,51 +305,22 @@ button.x-btn:hover {
 				</div>
 				<div class="sub-menu">
 					<i class="fi fi-rr-apps"></i>&nbsp;
-					<a href="notice.pro" class="">&nbsp;공지사항</a>
+					<a href="noticeList.pro" class="">&nbsp;공지사항</a>
 					<br>
 				</div>
 				<hr>
 				<div class="sub-menu">
 					&nbsp;
-					<a href="" class="">&nbsp;내 일정</a>
+					<a href="calendar.pj" class="">&nbsp;내 일정</a>
 					<br>
 				</div>
 			</div>
 		</div>
 
 		<div id="content-layout">
-			<div class="project-info">
-				<c:forEach var="p" items="${ list }">
-					<div class="info-left">
-						<div class="project-title-area">
-							<h2 class="project-title">${ p.projectTitle }</h2>
-							&nbsp;&nbsp;&nbsp;
-							<span class="title-label">
-								<c:if test="${p.projectStatus == 0}">
-									<i>완료</i>
-								</c:if>
-								<c:if test="${p.projectStatus == 1}">
-									<i>진행중</i>
-								</c:if>
-							</span>
-							<c:if test="${p.projectStatus == 1}">
-								<button type="button" class="project-end-btn">완료</button>
-							</c:if>
-						</div>
-
-						<ul class="project-desc-list">
-							<li><b>프로젝트 기간</b>${ p.projectStartDate } - ${ p.projectEndDate }</li>
-							<li><b>프로젝트 개요</b>
-								<div class="desc-wrapper">
-									<p>${ p.projectSummary }</p>
-								</div></li>
-							<li><b>프로젝트 매니저(PM)</b> <span>${ p.projectWriter }</span></li>
-							<li><b>프로젝트 인원</b> <span class="add-team">${p.projectMemberStr}</span></li>
-						</ul>
-					</div>
-					<div class="info-right"></div>
-				</c:forEach>
-			</div>
+			<jsp:include page="/WEB-INF/views/project/common/projectInfo.jsp">
+				<jsp:param value="${p}" name="p"/>
+			</jsp:include>
 			<hr>
 			<div class="project-task">
 				<div class="section-title-wrapper">
@@ -389,7 +360,7 @@ button.x-btn:hover {
 						<hr>
 					</ul>
 					<div class="button-area">
-						<button type="reset" class="btn-custom">취소</button>
+						<button type="button" class="btn-custom" onclick="history.back()">취소</button>
 						<button type="submit" class="btn-custom" id="project-enroll-btn">수정</button>
 					</div>
 				</form>

@@ -1,7 +1,6 @@
 package com.kh.walkwork.project.common.model.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -14,6 +13,7 @@ import com.kh.walkwork.member.model.vo.Member;
 import com.kh.walkwork.project.common.model.dao.ProjectDao;
 import com.kh.walkwork.project.common.model.vo.Project;
 import com.kh.walkwork.project.common.model.vo.ProjectMember;
+import com.kh.walkwork.project.common.model.vo.ProjectNotice;
 
 @Service
 public class ProjectService {
@@ -96,13 +96,37 @@ public class ProjectService {
 	public List<ProjectMember> getProjectMemberList(Project p) {
 		return projectDao.getProjectMemberList(sqlSession, p);
 	}
+
+	//프로젝트 공지 작성하기
+	public int insertProjectNotice(ProjectNotice pn) {
+		return projectDao.insertProjectNotice(sqlSession, pn);
+	}
 	
+	//프로젝트 공지 리스트 불러오기
+	public List<ProjectNotice> selectProjectNoticeList(ProjectNotice pn) {
+		return projectDao.selectProjectNoticeList(sqlSession, pn);
+	}
 	
+	//프로젝트 공지 조회수 업데이트
+	public int increasePrjectNoticeCount() {
+		return projectDao.increasePrjectNoticeCount(sqlSession);
+	}
 	
-	//프로젝트 읽음, 읽지않음 여부
+	//프로젝트 공지 수정하기
+	public int updateProjectNotice(ProjectNotice pn) {
+		return projectDao.updateProjectNotice(sqlSession, pn);
+	}
 	
+	//프로젝트 공지 삭제하기
+	public int deleteProjectNotice(ProjectNotice pn) {
+		return projectDao.deleteProjectNoitce(sqlSession, pn);
+	}
 	
 
-	
-	
+
+	public ProjectNotice selectProjectNoticeOne(ProjectNotice pn) {
+		return projectDao.selectProjectNoticeOne(sqlSession, pn);
+	}
+
+
 }

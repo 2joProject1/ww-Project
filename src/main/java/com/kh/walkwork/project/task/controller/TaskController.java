@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -80,10 +81,8 @@ public class TaskController {
 					a.setFilePath("resources/uploadFiles/");
 					a.setFileSize(String.valueOf(fileSize));
 					int success = attachmentService.insertNoticeAttachment(a);
-
 				}
 			}
-
 		}
 
 		if (result > 0) {
@@ -107,6 +106,14 @@ public class TaskController {
 		int result = taskService.updateTask(t);
 		List<MultipartFile> upfile = mhsr.getFiles("attachment");
 		
+		System.out.println("[삭제할파일이름명단 >_<ㅋ ] " + Arrays.toString(t.getOriginFileName()));
+		
+		if (t.getOriginFileName() != null) {
+			for (String fileName : t.getOriginFileName()) {
+				attachmentService.removeAttachment(fileName);
+			}
+		}
+		
 		//파일 수정
 		if (upfile != null) {
 
@@ -128,10 +135,8 @@ public class TaskController {
 					a.setFileSize(String.valueOf(fileSize));
 					
 					int success = attachmentService.insertNoticeAttachment(a);
-
 				}
 			}
-
 		}
 
 		if (result > 0) {
@@ -173,7 +178,7 @@ public class TaskController {
 		return projectMemberList;
 	}
 
-	// 업무 작성 : 담당 대상자 리스트
+	// 프로젝트 메인 : 업무 리스트
 	@ResponseBody
 	@RequestMapping("project.taskList")
 	public List<Task> taskList(Task t, HttpSession session) {
@@ -197,6 +202,7 @@ public class TaskController {
 		if (session.getAttribute("loginUser") == null) {
 			return "redirect:/";
 		}
+		Member loginUser = (Member) session.getAttribute("loginUser");
 		
 		Task item = taskService.getTaskDetail(t); //업무 상세 내용 가지고오기
 		Attachment a = new Attachment(); //첨부파일
@@ -218,12 +224,19 @@ public class TaskController {
 		//업무댓글리스트 가져오기
 		List<Reply> taskReplyList = taskService.getTaskReplyList(t);
 		
+		boolean isWriter = false; // 글쓴이여부
+		if (loginUser.getMemberNo().equals(item.getBoardWriter())) {
+			isWriter = true;
+		}
+		
 		//전부 다 넘기기
 		model.addAttribute("p", p);
 		model.addAttribute("item", item);
 		model.addAttribute("fileList", fileList);
 		model.addAttribute("writerInfo", writerInfo);
 		model.addAttribute("taskReplyList", taskReplyList);
+		model.addAttribute("isWriter", isWriter);
+		
 		return "project/task/projectTaskDetailView";
 	}
 

@@ -241,7 +241,7 @@ input[type="search"] {
 								<td></td>
 								<th>&nbsp;수신부서</th>
 								<td id="signoffsDept" 
-									style="cursor: pointer; border: 1px solid black; 
+									style="cursor: pointer; border: 1px solid lightgray; 
 										text-align: center" onclick="selectDeptModal()">
 									선택
 								</td>
@@ -257,40 +257,40 @@ input[type="search"] {
 
 					<br>
 					<div id="docu-signoff-area">
-						<table class="signoff-table-area" border="1">
+						<table class="signoff-table-area" style="border:1px solid lightgray">
 							<tr>
-								<th rowspan="3">결재</th>
-								<th>대표이사</th>
+								<th rowspan="3" style="background-color:#edf1f1; border=none;">결재</th>
+								<th style="border:1px solid lightgray">대표이사</th>
 								<c:if test="${format == '1'}">
-									<th>팀장</th>
-									<th>차장</th>
+									<th style="border:1px solid lightgray">팀장</th>
+									<th style="border:1px solid lightgray">차장</th>
 								</c:if>
 								<c:if test="${format == '2'}">
-									<th>팀장</th>
+									<th style="border:1px solid lightgray">팀장</th>
 								</c:if>
-								<th>기안자</th>
+								<th style="border:1px solid lightgray">기안자</th>
 							</tr>
 							<tr>
-								<td>대표자</td>
+								<td style="border:1px solid lightgray">대표자</td>
 								<c:if test="${format == '1'}">
-									<td style="cursor: pointer; border: 1px solid black;" onclick="selectMemberModal(1)" data-index="1">서명</td>
-									<td style="cursor: pointer; border: 1px solid black;" onclick="selectMemberModal(2)" data-index="2">서명</td>
+									<td style="cursor: pointer; border: 1px solid lightgray;" onclick="selectMemberModal(1)" data-index="1">서명</td>
+									<td style="cursor: pointer; border: 1px solid lightgray;" onclick="selectMemberModal(2)" data-index="2">서명</td>
 								</c:if>
 								<c:if test="${format == '2'}">
-									<td style="cursor: pointer; border: 1px solid black;" onclick="selectMemberModal(1)" data-index="1">서명</td>
+									<td style="cursor: pointer; border: 1px solid lightgray;" onclick="selectMemberModal(1)" data-index="1">서명</td>
 								</c:if>
-								<td>서명</td>
+								<td style="border:1px solid lightgray">서명</td>
 							</tr>
 							<tr>
-								<td>결재일</td>
+								<td style="border:1px solid lightgray">결재일</td>
 								<c:if test="${format == '1'}">
-									<td>결재일</td>
-									<td>결재일</td>
+									<td style="border:1px solid lightgray">결재일</td>
+									<td style="border:1px solid lightgray">결재일</td>
 								</c:if>
 								<c:if test="${format == '2'}">
-									<td>결재일</td>
+									<td style="border:1px solid lightgray">결재일</td>
 								</c:if>
-								<td>결재일</td>
+								<td style="border:1px solid lightgray">결재일</td>
 							</tr>
 						</table>
 					</div>

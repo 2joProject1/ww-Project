@@ -340,46 +340,22 @@ table.section-table {
 				</div>
 				<div class="sub-menu">
 					<i class="fi fi-rr-apps"></i>&nbsp;
-					<a href="notice.pro" class="">&nbsp;공지사항</a>
+					<a href="noticeList.pro" class="">&nbsp;공지사항</a>
 					<br>
 				</div>
 				<hr>
 				<div class="sub-menu">
 					&nbsp;
-					<a href="" class="">&nbsp;내 일정</a>
+					<a href="calendar.pj" class="">&nbsp;내 일정</a>
 					<br>
 				</div>
 			</div>
 		</div>
 
 		<div id="content-layout">
-			<div class="project-info">
-				<div class="info-left">
-					<div class="project-title-area">
-						<h2 class="project-title">${ p.projectTitle }</h2>
-						&nbsp;&nbsp;&nbsp;
-						<span class="title-label">
-							<c:if test="${p.projectStatus == 0}">
-								<i>완료</i>
-							</c:if>
-							<c:if test="${p.projectStatus == 1}">
-								<i>진행중</i>
-							</c:if>
-						</span>
-					</div>
-
-					<ul class="project-desc-list">
-						<li><b>프로젝트 기간</b>${ p.projectStartDate } - ${ p.projectEndDate }</li>
-						<li><b>프로젝트 개요</b>
-							<div class="desc-wrapper">
-								<p>${ p.projectSummary }</p>
-							</div></li>
-						<li><b>프로젝트 매니저(PM)</b> <span>${ p.projectWriter }</span></li>
-						<li><b>프로젝트 인원</b> <span class="add-team">${p.projectMemberStr}</span></li>
-					</ul>
-				</div>
-				<div class="info-right"></div>
-			</div>
+			<jsp:include page="/WEB-INF/views/project/common/projectInfo.jsp">
+				<jsp:param value="${p}" name="p"/>
+			</jsp:include>
 			<hr>
 			<div class="project-task">
 				<form action="update.task" enctype="multipart/form-data" method="post" id="taskWriteForm">
@@ -392,7 +368,11 @@ table.section-table {
 					<input type="hidden" name="boardNo" value="${ item.boardNo }">
 
 					<ul class="project-desc-list">
-						<li><b><input type="text" name="boardTitle" class="project-write-field-title" placeholder="제목을 입력해주세요" value="${item.boardTitle}" <c:if test="${item.boardWriter != writerInfo.memberNo}">readonly</c:if>></b></li>
+						<li>
+							<b>
+								<input type="text" name="boardTitle" class="project-write-field-title" placeholder="제목을 입력해주세요" value="${item.boardTitle}" <c:if test="${item.boardWriter != writerInfo.memberNo}">readonly</c:if>>
+							</b>
+						</li>
 						<li><b>진행상태</b>
 							<div class="task-search-area">
 								<label class="box-radio-input">
@@ -422,11 +402,16 @@ table.section-table {
 						<li><b>요청일자</b> <span>
 								<fmt:formatDate value="${item.enrollDate}" pattern="yyyy-MM-dd" />
 							</span></li>
-						<li><b>요청기한</b> <input type="date" name="taskEndDate" class="project-write-date" value="<fmt:formatDate value="${item.taskEndDate}" pattern="yyyy-MM-dd"/>" <c:if test="${item.boardWriter != writerInfo.memberNo}">readonly</c:if>></li>
-						<li><b onclick="attachFile()">파일첨부</b>
+						<li><b>요청기한</b> <input type="date" name="taskEndDate" class="project-write-date" value="<fmt:formatDate value="${item.taskEndDate}" pattern="yyyy-MM-dd"/>" <c:if test="${item.boardWriter != writerInfo.memberNo}"> readonly</c:if>></li>
+						<li><b <c:if test="${isWriter}">onclick="attachFile()"</c:if> >파일첨부</b>
 							<ul id="fileList">
 								<c:forEach var="item" items="${fileList}">
-									<li><a href="${pageContext.request.contextPath}/resources/uploadFiles/${item.fileName}" target="_blank">${item.fileOriginName}</a></li>
+									<li>
+										<a href="${pageContext.request.contextPath}/resources/uploadFiles/${item.fileName}" target="_blank">
+											${item.fileOriginName}
+										</a>
+										<button type="button" class="x-btn" data-origin-file-name="${item.fileName}">X</button></li>
+									</li>
 								</c:forEach>
 							</ul></li>
 						<li><textarea name="boardContent" class="project-write-field-content" placeholder="내용을 입력하세요">${item.boardContent }</textarea></li>
@@ -465,13 +450,16 @@ table.section-table {
 	</div>
 
 	<script>
+		var originFileNameArr = [];
 		var index = 0; //인덱스 세팅
 		$(document).ready(function() {
 			//첨부파일 개별삭제
 			$('body').on('click', '.x-btn', function() {
-				$(this).parent().remove();
 				var fileIndex = $(this).attr('data-file-index');
+				var originFileName = $(this).attr('data-origin-file-name');
+				$(this).parent().remove();
 				$('#file_' + fileIndex).remove();
+				if (originFileName) $('#taskWriteForm').append('<input type="hidden" name="originFileName" value="' + originFileName +'">');
 			})
 
 			//프로젝트멤버 리스트

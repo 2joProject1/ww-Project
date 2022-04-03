@@ -131,6 +131,7 @@ div#addMemberArea {
 	margin-left: 14px;
 	border-radius: 10px;
 	overflow: auto;
+	list-style: none;
 }
 
 .newProject-member {
@@ -204,6 +205,7 @@ input[type="search"] {
 	border: 1px solid lightgray;
 	margin-left: 10px;
 	overflow: auto;
+	list-style: none;
 }
 
 #searchMember>div>div>div.modal-body>div.search-area>table>tbody>tr:hover
@@ -251,17 +253,17 @@ input[type="search"] {
 				</div>
 				<div class="sub-menu">
 					&nbsp;
-					<a href="#" class="">&nbsp;전체</a>
+					<a href="#">&nbsp;전체</a>
 				</div>
 				<div class="sub-menu">
 					&nbsp;
-					<a href="notice.pro" class="">&nbsp;공지사항</a>
+					<a href="noticeList.pro">&nbsp;공지사항</a>
 					<br>
 				</div>
 				<hr>
 				<div class="sub-menu">
 					&nbsp;
-					<a href="" class="">&nbsp;내 일정</a>
+					<a href="calendar.pj" class="">&nbsp;내 일정</a>
 				</div>
 			</div>
 		</div>

@@ -6,7 +6,6 @@
 <head>
 <meta charset="UTF-8">
 <title>프로젝트 상세보기</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
 <style>
 #content-layout {
 	border: 1px solid lightgray;
@@ -165,9 +164,11 @@ button.btn-write {
 	font-size: 16px;
 	padding: 7px 30px;
 	border: 1px solid #AAA;
-	border-radius: 10px;
+	border-radius: 10px;D
 	width: 130px;
 	height: 40px;
+	background-color: rgb(102, 164, 166);
+	color: white;
 }
 
 button.btn-write:hover {
@@ -209,6 +210,7 @@ button.btn-write:hover {
 	margin-left: 60px;
 	line-height: 40px;
 }
+
 </style>
 </head>
 <body>
@@ -227,92 +229,47 @@ button.btn-write:hover {
 				</div>
 				<div class="sub-menu">
 					&nbsp;
-					<a href="notice.pro" class="">&nbsp;공지사항</a>
+					<a href="noticeList.pro" class="">&nbsp;공지사항</a>
 					<br>
 				</div>
 				<hr>
 				<div class="sub-menu">
 					&nbsp;
-					<a href="" class="">&nbsp;내 일정</a>
+					<a href="calendar.pj" class="">&nbsp;내 일정</a>
 				</div>
 			</div>
 		</div>
 
 		<div id="content-layout">
-			<div class="project-info">
-				<div class="info-left">
-					<div class="project-title-area">
-						<h2 class="project-title">${ p.projectTitle }</h2>
-						&nbsp;&nbsp;&nbsp;
-						<span class="title-label">
-							<c:if test="${p.projectStatus == 0}">
-								<i>완료</i>
-							</c:if>
-							<c:if test="${p.projectStatus == 1}">
-								<i>진행중</i>
-							</c:if>
-						</span>
-							<c:if test="${p.projectStatus == 1 && loginUser.rankNo ge  5 }">
-								<button type="button" class="project-end-btn">완료</button>
-							</c:if>
-					</div>
-
-					<ul class="project-desc-list">
-						<li><b>프로젝트 기간</b>${ p.projectStartDate } - ${ p.projectEndDate }</li>
-						<li><b>프로젝트 개요</b>
-							<div class="desc-wrapper">
-								<p>${ p.projectSummary }</p>
-							</div></li>
-						<li><b>프로젝트 매니저(PM)</b> <span>${ p.projectWriterName }</span></li>
-						<li><b>프로젝트 인원</b> <span class="add-team">${p.projectMemberStr}</span></li>
-					</ul>
-				</div>
-				<div class="task-report-wrap">
-					<div class="task-report" width="400px" height="400px">
-						<canvas id="taskChart" style="width: 378px; height: 400px;"></canvas>
-					</div>
-				</div>
-			</div>
-
+			<jsp:include page="/WEB-INF/views/project/common/projectInfo.jsp">
+				<jsp:param value="${p}" name="p"/>
+			</jsp:include>
 			<hr>
 
 			<div class="project-notice">
 				<div class="section-title-wrapper">
 					<h3 class="section-title">공지사항</h3>
+				<c:if test="${isAdmin}">
+					<button class="btn-write" type="button" onclick="onClickNoticeWrite()">작성하기</button>
+				</c:if>
 				</div>
 
-				<table class="section-table">
+				<table class="section-table" id="noticeProBoard">
 					<thead>
 						<tr>
-							<th>글번호</th>
-							<th>상태</th>
-							<th>업무</th>
-							<th>담당자</th>
-							<th>수정일자</th>
+							<th width="700px">글 제목</th>
+							<th width="300px">작성자</th>
+							<th width="250px">작성일자</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td>1</td>
-							<td>1</td>
-							<td>1</td>
-							<td>1</td>
+					<c:forEach var="pn" items="${ pnList }">
+						<tr data-notice-no="${ pn.boardNo }">
+							<td>${ pn.boardTitle }</td>
+							<td>${ pn.memberName }</td>
+							<td>${ pn.enrollDate }</td>
 						</tr>
-						<tr>
-							<td>1</td>
-							<td>1</td>
-							<td>1</td>
-							<td>1</td>
-							<td>1</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>1</td>
-							<td>1</td>
-							<td>1</td>
-							<td>1</td>
-						</tr>
+					</c:forEach>
 					</tbody>
 				</table>
 			</div>
@@ -341,7 +298,6 @@ button.btn-write:hover {
 				<table id="taskTable" class="section-table">
 					<thead>
 						<tr>
-							<th>글번호</th>
 							<th>상태</th>
 							<th>업무</th>
 							<th>담당자</th>
@@ -350,8 +306,7 @@ button.btn-write:hover {
 					</thead>
 					<tbody id="taskListArea">
 						<c:forEach var="p" items="${ taskList }">
-							<tr data-board-no="${ p.boardNo }">
-								<td>${p.boardNo }</td>
+							<tr style="display:hidden;" data-board-no="${ p.boardNo }" >
 								<td>
 									<c:if test="${p.taskStatus == 1}">
 									요청
@@ -398,7 +353,7 @@ button.btn-write:hover {
 	</div>
 	<script>
 		$(document).ready(function() {
-			//필터별로 나누기(필터1: 내업무/요청한업무, 필터2: 요청, 진행, 완료)
+			//필터별로 나누기(필터1: 내업무, 필터2: 내가 요청한 업무)
 			$('#taskFilter1, #taskFilter2').on('change', function() {
 				var taskFilter1 = $('#taskFilter1').val();
 				var taskFilter2 = $('#taskFilter2').val();
@@ -417,28 +372,15 @@ button.btn-write:hover {
 						console.log(data);
 						for (var i = 0; i < data.length; i++) {
 							var html = '<tr data-board-no="'+data[i].boardNo+'">';
-							html += '<td>'
-								+ data[i].boardNo
-								+ '</td>';
-							html += '	<td>';
-
-							if (data[i].taskStatus == 1)
-								html += '요청';
-							if (data[i].taskStatus == 2)
-								html += '진행';
-							if (data[i].taskStatus == 3)
-								html += '완료';
-							html += '	</td>';
-							html += '	<td>'
-									+ data[i].boardTitle
-									+ '</td>';
-							html += '	<td>'
-									+ data[i].taskHandlerName
-									+ '</td>';
-							html += '	<td>'
-									+ data[i].taskModifyDate
-									+ '</td>';
-							html += '</tr>';
+								html += '<td>';
+										if (data[i].taskStatus == 1){ html += '요청'; }
+										if (data[i].taskStatus == 2){ html += '진행'; }
+										if (data[i].taskStatus == 3){ html += '완료'; }
+								html += '</td>';
+								html += '<td>' + data[i].boardTitle + '</td>';
+								html += '<td>' + data[i].taskHandlerName + '</td>';
+								html += '<td>' + data[i].taskModifyDate + '</td>';
+								html += '</tr>';
 							$('#taskListArea').append(html);
 						}
 					}
@@ -448,10 +390,21 @@ button.btn-write:hover {
 
 		//프로젝트 상세보기에서 업무작성하기
 		function onClickWrite() {
-			window.location.href = 'project.taskWrite?projectNo='
-					+ '${ projectNo }';
+			window.location.href = 'project.taskWrite?projectNo='+ '${ projectNo }';
 		}
-
+		
+		//프로젝트 상세보기에서 공지작성하기
+		function onClickNoticeWrite() {
+			window.location.href = 'project.noticeWrite?projectNo='+ '${ projectNo }';
+		}
+		
+		//프로젝트 상세보기에서 공지로 이동하기
+		$(function() {
+			$('body').on("click", '#noticeProBoard tbody tr', function() {
+				location.href = 'project.noticeDetail?boardNo=' + $(this).attr('data-notice-no');
+			})
+		})
+		
 		//프로젝트 상세보기에서 업무 상세로 이동
 		$(function() {
 			$('body').on("click", '#taskTable tbody tr', function() {
@@ -483,57 +436,6 @@ button.btn-write:hover {
 				})
 			}
 		})
-
-		//차트
-		var ctx = document.getElementById('taskChart').getContext('2d');
-		var pno = '${projectNo}';
-		report();
-
-		function report() {
-			$.ajax({
-				url : "${pageContext.request.contextPath}/project/tstatereport",
-				data : {
-					projectNo : '${ projectNo }'
-				},
-				dataType : "json",
-				success : function(data) {
-					console.log("성공 들어옴");
-					if (data != null || data != '') {
-						createChart(data[0], data[1], data[2]);
-						console.log(data + "데이터 null이 아닐때 값 ")
-						return false;
-					}
-					console.log(data + "데이터데이터");
-				},
-				error : function() {
-					console.log("update 실패");
-				}
-			});
-		}
-
-		function createChart(s1, s2, s3) {
-			if (s1 == null || s1 == '') {
-				console.log("데이터 s1" + s1);
-			}
-			var myChart = new Chart(ctx, {
-				type : 'doughnut',
-				data : {
-					labels : [ '요청', '진행', '완료', ],
-					datasets : [ {
-						label : 'Score',
-						data : [ s1, s2, s3 ],
-						backgroundColor : [ '#56B37F', '#8AB78A', '#288C28', ],
-					} ]
-				},
-				options : {
-					responsive: false,
-					legend : {
-						display : true,
-						position : 'right',
-					}
-				}
-			});
-		}
 	</script>
 
 </body>
