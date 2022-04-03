@@ -37,15 +37,14 @@
 	}
 	#noticeList>tbody>tr:hover{
 		background-color:rgb(237, 241, 241);
+		cursor: pointer;
 	}
 	#noticeList>thead>tr{
-        
-        	BORDER-BOTTOM: solid 1px grey;
-			BORDER-LEFT: medium none;
-			BORDER-RIGHT: medium none;
-			BORDER-TOP: medium none;
-			outline: none;
-        
+       	BORDER-BOTTOM: solid 1px grey;
+		BORDER-LEFT: medium none;
+		BORDER-RIGHT: medium none;
+		BORDER-TOP: medium none;
+		outline: none;
 	}
 
 	
