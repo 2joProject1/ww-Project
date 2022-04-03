@@ -144,7 +144,10 @@ input:checked + .slider:before {
 	text-decoration:none;
 	color:black;
 }
-
+#back_btn{
+	margin-left:500px;
+	
+}
 </style>
 </head>
 <body>
@@ -227,7 +230,7 @@ input:checked + .slider:before {
 				</c:if>
 				<c:if test="${ loginUser.memberNo != rn.boardWriter }">            
                    <div class="notice_submit_btn">
-                       <button type="button"><a href="javascript:history.back();" class="atag">돌아가기</a></button>
+                       <button type="button" id="back_btn"><a href="notice.no" class="atag backbtn">돌아가기</a></button>
                    </div>
 				</c:if>
                </form>
@@ -244,23 +247,14 @@ $(function(){
 
 		}
 	})
-	
-	
-	
-	
-	
-	
-	
+
 	
 	$("#update_btn").click(function(){
 		if(confirm("수정하시겠습니까?")){
 			window.location = 'updateForm.no?bno='+${rn.boardNo}+'&&mno='+$('#boardWriter').val();			
 		}
 	})
-	
-	
-	
-	
+		
 })
 
 
