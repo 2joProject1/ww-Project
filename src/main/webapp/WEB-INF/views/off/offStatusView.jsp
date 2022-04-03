@@ -39,14 +39,11 @@
             var calendarEl = document.getElementById('calendar');
             	calendar = new FullCalendar.Calendar(calendarEl, {
                 timeZone: 'KST',
-            //    locale: "ko",
-                initialView: 'dayGridMonth', // 홈페이지에서 다른 형태의 view를 확인할  수 있다.
+            //  locale: "ko",
+                initialView: 'dayGridMonth', 
                 events:[ // 일정 데이터 추가 , DB의 event를 가져오려면 JSON 형식으로 변환해 events에 넣어주면된다.
                     {
-                     //   title:'일정',
-                    //    start:'2022-03-25 00:00:00',
-                      //  end:'2022-03-27 24:00:00' 
-                        // color 값을 추가해 색상도 변경 가능 자세한 내용은 하단의 사이트 참조
+                
                     }
                 ], headerToolbar: {
                     center: 'addEventButton' // headerToolbar에 버튼을 추가
@@ -81,7 +78,7 @@
                         } 
                     }
                 },
-                editable: true, // false로 변경 시 draggable 작동 x 
+                editable: false, // false로 변경 시 draggable 작동 x 
                 displayEventTime: false // 시간 표시 x
             });
             calendar.render();
@@ -105,7 +102,7 @@
     $(function(){
     	var rank = ${loginUser.rankNo}
     	console.log('rank:::'+rank);
-    	if(rank == 5){
+    	if(rank >= 5){
     		$.ajax({
         		url : "adminSelectDto.of",
         		data : {deptNo : ${loginUser.deptNo} },
@@ -131,7 +128,9 @@
         		success : function(e){
         			var myOff = 0;
         			for(var i=0; i< e.length;i++){
-        				myOff = myOff + e[i].OFF_DAYS+1;
+        				if(e[i].OFF_WRITER == ${loginUser.memberNo}){
+        					myOff = myOff + e[i].OFF_DAYS
+        				}
         			calendar.addEvent({
         				title:e[i].MEMBER_NAME,
         				start:e[i].OFF_START,
@@ -140,7 +139,6 @@
         			}
         			console.log(e);
         			$('.myOff').text(myOff);
-        			
         		},
         		error : function(){
         			console.log("휴가신청인원 불러오기실패");
@@ -293,7 +291,7 @@ table.calendar td{
 							<a href="status.of" class="">휴가현황</a>
 							<br>
 						</div>
-		                <c:if test="${loginUser.rankNo eq '5' }">
+		                <c:if test="${loginUser.rankNo ge '5' }">
 		                <div class="sub-menu">
 							&nbsp;
 							<a href="approval.of" class="">휴가신청승인</a>

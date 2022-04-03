@@ -19,8 +19,11 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 
-<title>근태관리 메인</title>
+<title>출/퇴근 조회</title>
 <style>
+#full{
+	height: 1200px;
+}
 #result {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -121,6 +124,8 @@
  	<link rel="stylesheet" href="resources/css/commute.css">
 </head>
 <body>
+<div id="full">
+
 	<div id="header-layout">
 		<jsp:include page="../common/header.jsp" />
 	</div>
@@ -203,6 +208,7 @@
 	        </div>
 	    </div>
 	</div>
+</div>
 	
 <script type="text/javascript">
     var today = null;
@@ -297,7 +303,7 @@
         }
        
         		
-        location.href = "main.cm?commuteDate=" + year + "-" + month;
+        location.href = "main.cm?commuteDate=" + year + "&month=" + month;
     }
     
     //정보갱신
