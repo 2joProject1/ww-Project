@@ -71,9 +71,7 @@
 
 	<select id="officerListCount" parameterType="Map" resultType="int">
 		SELECT COUNT(*) AS CNT
-		<!-- FROM MEMBER M, ADMN_TB ADMN, RANK R, DEPT D -->
 		FROM MEMBER M,  RANK R, DEPT D
-		<!-- WHERE ADMN.ADMN_SQ = M.ADMN_SQ -->
 		WHERE R.RANK_NO = M.RANK_NO
 		AND D.DEPT_NO = M.DEPT_NO
 		
@@ -188,7 +186,7 @@
 	</update>
 	
 	<insert id="deptInsert" parameterType="Map">
-		INSERT INTO DEPT(DEPT_NO, DEPT_NAME) VALUES(#{deptNo}, #{deptName})
+		INSERT INTO DEPT(dept_no, dept_name) VALUES((SELECT COUNT(DEPT_NO) + 1 from DEPT), #{deptName})
 	</insert>
 	
 	<select id="selectDeptName" parameterType="Map" resultType="int">

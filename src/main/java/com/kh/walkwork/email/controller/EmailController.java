@@ -41,7 +41,6 @@ public class EmailController {
 	    String tomail  = request.getParameter("tomail");     // 받는 사람 이메일
 	    String title   = request.getParameter("title");      // 제목
 	    String content = request.getParameter("content");    // 내용
-	    String filename = "C:\\Users\\JeongUk\\Documents\\test\\test.txt"; 
 	   
 	    try {
 	      MimeMessage message = mailSender.createMimeMessage();
@@ -53,8 +52,6 @@ public class EmailController {
 	      messageHelper.setSubject(title); 
 	      messageHelper.setText(content);  
 	     
-	      FileSystemResource fsr = new FileSystemResource(filename);
-	      messageHelper.addAttachment("test2.txt", fsr);
 	      
 	      mailSender.send(message);
 	    } catch(Exception e){
