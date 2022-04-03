@@ -221,6 +221,7 @@
 					   ,file_path
 					   ,file_size
 					   ,file_upload_date
+					   ,DOCU_NO
 					   )
 					   values
 					   (
@@ -231,6 +232,7 @@
 						,#{filePath}
 						,#{fileSize}
 						,default
+						,#{docuNo}
 						)
 	</insert>
 	
@@ -251,11 +253,13 @@
 	
 	<select id="selectAttachmentDetail" resultMap="AttachmentResultSet">
 		select file_name, board_no, member_no, file_origin_name, 
-			file_path, file_size, file_upload_date
+			file_path, file_size, file_upload_date, docu_no
 			
 			from attachment
 			
 			where board_no = #{pageNo}
+			
+			order by docu_no asc
 	</select>
 	
 	<select id="selectAttachmentTop" resultMap="AttachmentResultSet">

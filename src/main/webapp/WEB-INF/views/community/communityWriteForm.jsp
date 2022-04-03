@@ -148,16 +148,19 @@
 			<input type="hidden" id="fileOriginName" name="fileOriginName"/>
 			<input type="hidden" id="filePath" name="filePath"/>
 			<input type="hidden" id="fileSize" name="fileSize"/>
+			<input type="hidden" name="docuNo" value="1"/>
 			
 			<input type="hidden" id="fileName2"  name="fileName"/>
 			<input type="hidden" id="fileOriginName2" name="fileOriginName"/>
 			<input type="hidden" id="filePath2" name="filePath"/>
 			<input type="hidden" id="fileSize2" name="fileSize"/>
+			<input type="hidden" name="docuNo" value="2"/>
 			
 			<input type="hidden" id="fileName3"  name="fileName"/>
 			<input type="hidden" id="fileOriginName3" name="fileOriginName"/>
 			<input type="hidden" id="filePath3" name="filePath"/>
 			<input type="hidden" id="fileSize3" name="fileSize"/>
+			<input type="hidden" name="docuNo" value="3"/>
 				
 		<!-- 	<input type="button" onclick="cm_submitFiles()"/> -->
 		</div>
