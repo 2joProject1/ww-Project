@@ -58,9 +58,50 @@ input[type=submit]:hover {
     <div id="container">
 	     <div id="sidebar-layout">
 	        <div id="main-sidebar">
-	        <br>
+				<br>
+				<div id="sidebar-area">
+					<i class="xi-at"></i>&nbsp;
+					<a href="">
+						<b>Mail</b>
+					</a>
+					<br>
 
-	        </div>
+					<a href="email.form" class="side_subtitle side_subtitle">메일</a>
+
+					<br> <br> <i class="fi fi-rr-time-check"></i>&nbsp;
+					<a href="main.cm">
+						<b>근태관리</b>
+					</a>
+
+					<br> <br> <i class="xi-sitemap-o"></i>&nbsp;
+					<a href="officerList.li">
+						<b>조직도</b>
+					</a>
+					<br> <br> <i class="xi-document"></i>&nbsp;
+					<a href="signoffs.docu?format=1">
+						<b>전자결재</b>
+					</a>
+
+					<br> <br> <i class="xi-presentation"></i>&nbsp;
+					<a href="project.main">
+						<b>프로젝트</b>
+					</a>
+					<br> <br> <i class="xi-comment"></i>
+					<a href="list.co">
+						<b>커뮤니티</b>
+					</a>
+
+					<br>
+					<a href="mylist.co" class="side_subtitle">내 게시글</a>
+					<br> <br> <i class="xi-lightbulb-o"></i>&nbsp;
+					<a href="notice.no">
+						<b>공지사항</b>
+					</a>
+					<br> <br>
+					<br><br><br><br><br><br><br>
+					<a href="logout.me" style="font-size:18px;">로그아웃</a>
+				</div>
+			</div>
 	      </div>
 	
 	      <div id="content-layout">
@@ -83,8 +124,6 @@ input[type=submit]:hover {
 			    <label>내용</label>
 			    <textarea id="content" name="content" placeholder="Write something" style="height:200px"></textarea>
 			 	<br>
-				    <label>첨부파일&nbsp;&nbsp;</label><input type="file" class="btn btn-default form-join" id="uploadfile" multiple="multiple">&nbsp;
-			    <br><br>
 			    <br><br>
 			    <input type="submit" value="보내기">
 			   

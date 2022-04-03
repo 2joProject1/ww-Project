@@ -28,13 +28,10 @@
 	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
 
 <!-- jQuery EasyUi API -->
-<link rel="stylesheet" type="text/css"
-	href="resources/easyui/themes/default/easyui.css">
-<link rel="stylesheet" type="text/css"
-	href="resources/easyui/themes/icon.css">
-	<script type="text/javascript" src="resources/easyui/jquery.min.js"></script>
-<script type="text/javascript"
-	src="resources/easyui/jquery.easyui.min.js"></script>
+<link rel="stylesheet" type="text/css" href="resources/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="resources/easyui/themes/icon.css">
+<script type="text/javascript" src="resources/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="resources/easyui/jquery.easyui.min.js"></script>
 
 
 <style  type="text/css">
@@ -574,7 +571,6 @@ function officerListSearch(params) {
 									  .append($('<td>',	{text : val.MEMBER_NAME}))
 									  .append($('<td>',	{text : val.RANK_NAME}))
 									  .append($('<td>',	{text : val.DEPT_NAME}))
-									  //.append($('<td>',	{text : val.ADMN_PW}))
 									  .append($('<td>',	{text : val.PHONE}))
 									  .append($('<td>',	{text : val.TELEPHONE}))
 									  .append($('<td>',	{text : val.EMAIL})));
@@ -705,7 +701,7 @@ function selectUpdateOfficer() {
 			$("#phoneNum1_up").val(arrPhoneNum[0]);
 			$("#phoneNum2_up").val(arrPhoneNum[1]);
 			$("#phoneNum3_up").val(arrPhoneNum[2]);
-			$("#phone_up").val(data.PHONE	);
+			$("#phone_up").val(data.PHONE);
 			
 			var arrTelNum = data.TELEPHONE.split("-");
 			
@@ -774,7 +770,6 @@ function officerUpdate() {
 // 부서명 등록
 function deptInsert() {
 	var params = {
-			//deptNo : $("#addDeptNo").val(),
 			deptName : $("#addDept").val()
 		};
 	$.ajax({
@@ -843,7 +838,7 @@ function deptList(deptNo, deptName) {
 // 동일한 부서명 체크
 function selectDeptName() {
 	var params = {
-			dpt_nm : $("#deptNameUp").val()
+			deptName : $("#deptNameUp").val()
 		};
 	$.ajax({
 		url : "selectDeptName.se",
@@ -977,7 +972,7 @@ function addrSearch() {
 						</div>
 						<div class="form-group overError">
 							<div class="col-xs-10 col-md-10 leftNoPadding">
-							    <!-- <input type="hidden" id="addDeptNo" name="deptNo"> -->
+							    <!--  <input type="hidden" id="addDeptNo" name="deptNo"> -->
 								<input type="text" id="addDept" class="form-control" placeholder="부서명">
 							</div>
 	
