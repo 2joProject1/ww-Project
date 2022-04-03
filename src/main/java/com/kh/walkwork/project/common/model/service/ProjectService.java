@@ -128,5 +128,10 @@ public class ProjectService {
 		return projectDao.selectProjectNoticeOne(sqlSession, pn);
 	}
 
+	
+	
+	public List<Project> selectMainProjectList(Project p) {
+		return projectDao.selectProjectMainList(sqlSession, p);
+	}
 
 }
