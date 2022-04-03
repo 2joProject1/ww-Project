@@ -35,6 +35,18 @@
 	.main_pj_div div{
 		color:black;
 	}
+	#noticeList>tbody>tr:hover{
+		background-color:rgb(237, 241, 241);
+	}
+	#noticeList>thead>tr{
+        
+        	BORDER-BOTTOM: solid 1px grey;
+			BORDER-LEFT: medium none;
+			BORDER-RIGHT: medium none;
+			BORDER-TOP: medium none;
+			outline: none;
+        
+	}
 
 	
 
@@ -143,11 +155,11 @@
 		<div id="notice-area">
 			<span class="main_title_text">공지사항</span>
 			<br> <br>
-			<table id="noticeList" border="1">
+			<table id="noticeList">
 				<thead style="text-align: center">
 					<tr>
-						<th style="width: 400px; height:40px;">제목</th>
-						<th style="width: 90px;">작성일</th>
+						<th style="width: 390px; height:40px;">제목</th>
+						<th style="width: 100px;">작성일</th>
 						<th style="width: 80px;"">작성자</th>
 						<th style="width: 80px;">조회수</th>
 					</tr>
@@ -155,7 +167,7 @@
 				<tbody>
 					<c:forEach var="n" items="${ notice }">
 						<tr>
-							<td style="height:40px">&nbsp&nbsp ${ n.boardTitle }</td>
+							<td style="height:40px">&nbsp;&nbsp; ${ n.boardTitle }</td>
 							<td style="text-align: center">${ n.enrollDate }</td>
 							<td class="writer" style="text-align: center">${ n.memberName }</td>
 							<td style="text-align: center">${ n.count }</td>

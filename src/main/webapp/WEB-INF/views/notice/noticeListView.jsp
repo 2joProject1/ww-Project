@@ -32,12 +32,18 @@
 		text-align:center;
 	}
 	#pagingArea{
-		padding-left:350px;
+		padding-left:480px;
 		padding-top:30px;
 
 	}
 	.page-link{
 
+	}
+	#noticeList>tbody>tr:hover{
+		background-color:rgb(237, 241, 241);
+	}
+	.td_center{
+		height:50px;
 	}
 	
 </style>
@@ -71,7 +77,7 @@
 				<tr style="text-align:center;">
 					<th></th>
 					<th style="width:100px;">대상</th>
-					<th style="width:250px;">카테고리</th>
+					<th style="width:250px; height:35px;">카테고리</th>
 					<th style="width:1000px;">제목</th>
 					<th style="width:300px;">작성일</th> 
 					<th style="width:100px;">작성자</th>
@@ -89,10 +95,7 @@
 						<td>${ n.boardTitle }</td>
 						<td class="td_center">${ n.enrollDate }</td>
 						<td class="writer td_center">${ n.memberName }</td>
-						<td class="td_center">${ n.count }</td>
-<!-- 						<td>
-						파일자리?
-						</td>     -->          
+						<td class="td_center">${ n.count }</td>        
 					</tr>
 				</c:forEach>
 				<c:forEach var="n" items="${ list }">
@@ -138,10 +141,10 @@ window.onload = $(function(){
 		<ul class="pagination">
 			<c:choose>
 				<c:when test="${ pi.currentPage eq 1}">
-					<li class="page-item disabled"><a class="page-link" href="#" style="color:grey;">Previous</a></li><!-- 1번 페이지일 경우 디스에이블넣어줘야 -->
+					<li class="page-item disabled"><a class="page-link" href="#" style="color:grey;">이전</a></li><!-- 1번 페이지일 경우 디스에이블넣어줘야 -->
 				</c:when>
 				<c:otherwise>
-					<li class="page-item"><a class="page-link" href="notice.no?cpage=${ pi.currentPage -1 }" style="color:rgb(102, 164, 166);">Previous</a></li>
+					<li class="page-item"><a class="page-link" href="notice.no?cpage=${ pi.currentPage -1 }" style="color:rgb(102, 164, 166);">이전</a></li>
 				</c:otherwise>
 			</c:choose>
 			
@@ -152,10 +155,10 @@ window.onload = $(function(){
 			
 			<c:choose>
 				<c:when test="${ pi.currentPage eq pi.maxPage }">
-					<li class="page-item disabled"><a class="page-link" href="#" style="color:grey;">Next</a></li><!-- 마지막페이지일경우 디스에이블넣어줘야 -->
+					<li class="page-item disabled"><a class="page-link" href="#" style="color:grey;">다음</a></li><!-- 마지막페이지일경우 디스에이블넣어줘야 -->
 				</c:when>
 				<c:otherwise>
-					<li class="page-item"><a class="page-link" href="notice.no?cpage=${ pi.currentPage +1 }" style="color:rgb(102, 164, 166);">Next</a></li><!-- 마지막페이지일경우 디스에이블넣어줘야 -->                    	
+					<li class="page-item"><a class="page-link" href="notice.no?cpage=${ pi.currentPage +1 }" style="color:rgb(102, 164, 166);">다음</a></li><!-- 마지막페이지일경우 디스에이블넣어줘야 -->                    	
 				</c:otherwise>
 			</c:choose>
 		</ul>

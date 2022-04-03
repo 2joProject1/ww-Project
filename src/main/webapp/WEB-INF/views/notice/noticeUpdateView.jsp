@@ -119,7 +119,7 @@ input:checked + .slider:before {
     margin-right: 50px;
 }
 input:checked + .slider {
-  background-color: red;
+  background-color: rgb(102, 164, 166);
 }
 .addFile{
 	font-size:14px;
@@ -164,7 +164,7 @@ input:checked + .slider {
 		    		$("#noticeCategory option[value=${b.noticeCategory }]").attr("selected", true);
 		    		
 		    		var topFix = "${b.topFix}";
-		    		if(topFix!=""){
+		    		if(topFix!=""&&topFix!="N"){
 		    			$("#topFix").attr("checked", true);
 		    			
 		    		}
@@ -272,7 +272,7 @@ input:checked + .slider {
 
 window.onload = $(function(){
 	$('#reupfile').hide();
-	
+
 })
 
 function onFileUpload(event){

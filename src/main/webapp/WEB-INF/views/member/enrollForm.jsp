@@ -210,7 +210,7 @@
 	                        </tr>
 	                       	<tr>
 	                            <td></td>
-	                            <td class="enroll_td3" id="phone_chk"></td>
+	                            <td class="enroll_td3" id="phone_chk">010-1234-5678 형식으로 작성하세요.</td>
 	                        </tr>
 	                    
 	                        <tr class="phone_vali">
@@ -327,7 +327,7 @@ $(function(){
  						$('#id_chk').text($id + "은(는) 이미 사용중인 아이디입니다. 다시 입력하세요.").css("color","red");
 	 					$('#id').val('');				
  					} else{
- 						$('#id_chk').text("굿").css("color","gray");
+ 						$('#id_chk').text("").css("color","gray");
 	 					
  					}
  				}
@@ -348,7 +348,7 @@ $(function(){
 			return false;
 		}
 		else if(regExp.test($name)){
-			$('#name_chk').text("굿").css("color","gray");
+			$('#name_chk').text("").css("color","gray");
 			return true;
 		}
 		
@@ -366,7 +366,7 @@ $(function(){
 			return false;
 		}
 		else if(regExp.test($pwd)){
-			$('#pwd_chk').text("굿").css("color","gray");
+			$('#pwd_chk').text("").css("color","gray");
 			return true;
 		}
 		
@@ -382,7 +382,7 @@ $(function(){
 			$('#pwd_double').val('');
 		}
 		else {
-			$('#pwd_double_chk').text("굿").css("color","gray");
+			$('#pwd_double_chk').text("비밀번호가 일치합니다.").css("color","gray");
 			return true;
 		}
 		
@@ -401,7 +401,7 @@ $(function(){
 			return false;
 		}
 		if(regExp.test($birth)){
- 			$('#birth_chk').text("굿").css("color","gray");
+ 			$('#birth_chk').text("").css("color","gray");
 		}
 	})
 	
@@ -462,7 +462,7 @@ $(function(){
 			type : "post",
 			success : function(result){
 				if(result>0){ //result 1이상 == 일치결과있음
-					$('#email_vali_chk').text("굿").css("color","gray");
+					$('#email_vali_chk').text("인증이 완료되었습니다.").css("color","gray");
 					
 				} else{
 					$('#email_vali_chk').text($emailVali + "은(는) 잘못된 인증번호입니다. 다시 입력하세요.").css("color","red");
@@ -477,14 +477,15 @@ $(function(){
 	$('#phone').blur(function(){
 
 		var $phoneDupl = $('#phone').val();
-		var regExp = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
+/* 		var regExp = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/; */
+		var regExp = /^\d{3}-\d{3,4}-\d{4}$/;
 	
 		if(!regExp.test($phoneDupl)){
-			$('#phone_chk').text("잘못 입력하셨습니다. 올바른 핸드폰번호를 입력하세요").css("color","red");
+			$('#phone_chk').text("잘못 입력하셨습니다. 010-1234-5678 형식으로 입력하세요.").css("color","red");
 			$('#phone').val('');
 		}
 		if(regExp.test($phoneDupl)){
- 			$('#phone_chk').text("굿").css("color","gray");
+ 			$('#phone_chk').text("").css("color","gray");
 		}
 	})
 	

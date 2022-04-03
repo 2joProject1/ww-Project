@@ -3,9 +3,10 @@
 /* ------------헤더----------- */
 #header {
 	width: 1500px;
-	height: 80px;
+	height: 78px;
 	margin-bottom: 10px;
 	display: flex;
+
 }
 
 #title {
