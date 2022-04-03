@@ -69,6 +69,7 @@ public class CommunityController {
 		String[] originArr = a.getFileOriginName().split(",");
 		String[] pathArr = a.getFilePath().split(",");
 		String[] sizeArr = a.getFileSize().split(",");
+		String[] docuArr = a.getDocuNo().split(",");
 
 		int num = communityService.updateCommunity(c); 
 		Member userInfo = (Member)session.getAttribute("loginUser");
@@ -86,6 +87,7 @@ public class CommunityController {
 				attachment.setFileOriginName(originArr[i].trim());
 				attachment.setFilePath(pathArr[i].trim());
 				attachment.setFileSize(sizeArr[i].trim());
+				attachment.setDocuNo(docuArr[i].trim());
 				int num2 = communityService.insertAttachment(attachment);
 				
 			}
@@ -179,6 +181,7 @@ public class CommunityController {
 		String[] originArr = a.getFileOriginName().split(",");
 		String[] pathArr = a.getFilePath().split(",");
 		String[] sizeArr = a.getFileSize().split(",");
+		String[] docuNo = a.getDocuNo().split(",");
 		
 		Member userInfo = (Member)session.getAttribute("loginUser");
 		String memberNo = userInfo.getMemberNo();
@@ -200,6 +203,7 @@ public class CommunityController {
 				attachment.setFileOriginName(originArr[i].trim());
 				attachment.setFilePath(pathArr[i].trim());
 				attachment.setFileSize(sizeArr[i].trim());
+				attachment.setDocuNo(docuNo[i].trim());
 				int num2 = communityService.insertAttachment(attachment);
 				
 			}
