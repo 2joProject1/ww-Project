@@ -14,7 +14,7 @@
 	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-	
+<script src="resources/ckeditor5/build/ckeditor.js"></script>
 <link rel='stylesheet'
 	href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <!-- <link rel="stylesheet" href="resources/css/communityWriteForm.css"> -->
@@ -33,7 +33,7 @@
 .community_write_content{
 	border: none;
     width: 100%;
-    height:300px;
+    height:500px;
     font-size: 12px;
     resize : none;
 }
@@ -70,6 +70,10 @@
     font-size: 19px;
     border: none;
     border-radius: 16px;
+}
+
+.ck-content {
+	height: 400px;
 }
 </style>
 </head>
@@ -109,16 +113,16 @@
 
 		<div>
 			<textarea placeholder="내용을 입력하세요" class="community_write_content"
-				name="boardContent" required></textarea>
-
+				name="boardContent" id="cm_writeCK"></textarea>
+			<br><br><br>
 			<div class="row">
-				<div style="border: 1px solid #CCCCCC; width: 200px; height: 135px" class="col-2">
+				<div id="cm_imgDiv1" style="border: 1px solid #CCCCCC; display:none; width: 200px; height: 135px; margin-left:10px" class="col-2">
 					<img alt="img1" src="" id="cm_img1" class="cm_images" onerror="this.style.display='none';">
 				</div>
-				<div style="border: 1px solid #CCCCCC; width: 200px; height: 135px" class="col-2">
+				<div id="cm_imgDiv2" style="border: 1px solid #CCCCCC; display:none; width: 200px; height: 135px" class="col-2">
 					<img alt="img2" src="" id="cm_img2" class="cm_images" onerror="this.style.display='none';">
 				</div>
-				<div style="border: 1px solid #CCCCCC; width: 200px; height: 135px" class="col-2">
+				<div id="cm_imgDiv3" style="border: 1px solid #CCCCCC; display:none; width: 200px; height: 135px" class="col-2">
 					<img alt="img3" src="" id="cm_img3" class="cm_images" onerror="this.style.display='none';">
 				</div>
 				<div class="col-6">
@@ -127,13 +131,13 @@
 							accept="image/gif, image/jpeg, image/jpg, image/png"
 						multiple/>
 						<label for="cm_file">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">
+							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">
 							  <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
 							  <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
 							</svg>
 						</label>
 						<span id="cm_file_name"></span>
-							<div onclick="cancelFileBtn()">X</div>
+							<div onclick="cancelFileBtn()"><button>X</button></div>
 					</div>
 				</div>
 			</div>
@@ -174,6 +178,16 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$('#cm_file').on("change", cm_filefunc);
+			
+			
+			ClassicEditor
+			.create( document.querySelector( '#cm_writeCK' ) )
+		    .then( editor => {
+		        console.log( editor );
+		    } )
+		    .catch( error => {
+		        console.error( error );
+		    } );
 		});
 		
 		
@@ -195,12 +209,15 @@
 			
 			$('#cm_img1').attr("src", '');
 			$('#cm_img1').css('display', 'none');
+			$('#cm_imgDiv1').css('display', 'none');
 			
 			$('#cm_img2').attr("src", '');
 			$('#cm_img2').css('display', 'none');
+			$('#cm_imgDiv2').css('display', 'none');
 			
 			$('#cm_img3').attr("src", '');
 			$('#cm_img3').css('display', 'none');
+			$('#cm_imgDiv3').css('display', 'none');
 			
 			$('#cm_file').val('');
 			
@@ -271,12 +288,15 @@
 					if(index === 0){
 						$('#cm_img1').attr("src", e.target.result);
 						$('#cm_img1').css('display', '');
+						$('#cm_imgDiv1').css('display', '');
 					}else if(index === 1){
 						$('#cm_img2').attr("src", e.target.result);
 						$('#cm_img2').css('display', '');
+						$('#cm_imgDiv2').css('display', '');
 					}else {
 						$('#cm_img3').attr("src", e.target.result);
 						$('#cm_img3').css('display', '');
+						$('#cm_imgDiv3').css('display', '');
 					}
 				}
 				reader.readAsDataURL(f);

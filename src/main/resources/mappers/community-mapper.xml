@@ -172,7 +172,7 @@
 			board_all
 			where
 			board_type = '4' and status = 'Y'
-			order by community_good desc) B
+			order by community_good desc, board_no desc) B
 		<![CDATA[
 			where rownum <= 5
 		]]>
