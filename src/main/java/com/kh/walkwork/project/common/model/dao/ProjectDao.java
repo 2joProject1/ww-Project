@@ -92,4 +92,8 @@ public class ProjectDao {
 		return sqlSession.selectOne("projectNoticeMapper.selectProjectNoticeOne", pn);
 	}
 
+	public List<Project> selectProjectMainList(SqlSessionTemplate sqlSession, Project p) {
+		return sqlSession.selectList("projectMapper.selectMainProjectList", p);
+	}
+
 }

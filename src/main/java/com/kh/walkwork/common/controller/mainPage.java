@@ -39,7 +39,8 @@ public class mainPage {
 		mv.addObject("notice", noticeService.selectNoticeList());
 //		mv.addObject("todo", todoService.mainTodoList(memberNo));
 //		mv.addObject("schedule", scheduleService.mainScheduleList(memberNo));
-		mv.addObject("project",  projectService.selectProjectList(p));
+//		mv.addObject("project",  projectService.selectProjectList(p));
+		mv.addObject("project",  projectService.selectMainProjectList(p));
 		
 		
 		mv.setViewName("common/main");

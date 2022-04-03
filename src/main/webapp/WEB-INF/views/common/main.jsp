@@ -11,7 +11,7 @@
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css'>
 <style>
-/* div{
+/*  div{
 	border:1px solid red;
 } */
 	#comming-sc-area li{
@@ -27,7 +27,7 @@
 	}
 	.main_pj_div{
 		text-align:center;
-		padding-top:32px;
+		padding-top:40px;
 		color:white;
 		margin-bottom:5px;
 		margin-left:4px;
@@ -46,7 +46,14 @@
 		BORDER-TOP: medium none;
 		outline: none;
 	}
-
+	.ptitle{
+		width:145px;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+	#pj_wrap{
+		display:inline-block;
+	}
 	
 
 
@@ -109,18 +116,18 @@
 
 		<div id="content-layout">
 			<div id="myproject-area">
-				<span class="main_title_text">내 프로젝트</span>
+				<span class="main_title_text">내 프로젝트 </span>
 				<br> <br>
+				<div id="pj_wrap">
 					<c:forEach var="n" items="${ project }">
 						<a href="project?projectNo=${n.projectNo }" class="atag"> 
 							<div class="main_pj_div">
-								<div class="ptitle" style="font-size: 13pt; ">${ n.projectTitle }</div><br>
+								<div class="ptitle" style="font-size: 10pt; ">${ n.projectTitle }</div><br>
 								<div class="pmember" style="font-size: 13px; color:gray;">${ n.projectMemberStr }</div>
 							</div>
 						</a>
-
 					</c:forEach>
-
+				</div>
 			</div>
 
 			<div id="commute-area">

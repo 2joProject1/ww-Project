@@ -170,7 +170,35 @@
 	
 	
 	
-	
+	<select id="selectMainProjectList" parameterType="project" resultType="project">
+		
+		
+        select a.*
+        from (
+			SELECT
+			P.PROJECT_NO,
+			PROJECT_TITLE,
+			PROJECT_STATUS,
+			(SELECT MEMBER_NAME || ' 등 '|| (SELECT COUNT(*) FROM PROJECT_MEMBER D WHERE P.PROJECT_NO = D.PROJECT_NO) || '명' FROM (
+				SELECT MEMBER_NAME, PROJECT_NO FROM MEMBER A INNER JOIN PROJECT_MEMBER B ON A.MEMBER_NO = B.MEMBER_NO
+				) C WHERE ROWNUM = 1 AND P.PROJECT_NO = C.PROJECT_NO
+			) AS projectMemberStr
+			FROM PROJECT P
+	        WHERE 
+	        PROJECT_STATUS = 1 
+	        <if test="!projectMemberNo.equals('99999')">
+	        AND (PROJECT_NO IN (SELECT PROJECT_NO FROM PROJECT_MEMBER D WHERE #{projectMemberNo} = D.MEMBER_NO)
+	        	OR
+				P.PROJECT_WRITER = #{projectMemberNo}
+	        )
+	        </if>
+			ORDER BY PROJECT_ENDDATE DESC
+	        )a
+       <![CDATA[ where rownum <= 8]]>
+		
+		
+		
+	</select>
 	
 	
 	
