@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>WALK-WORK</title>
 <link rel="stylesheet" href="resources/css/layout.css">
 <link rel="stylesheet" href="resources/css/header.css">
 <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-regular-rounded/css/uicons-regular-rounded.css'>

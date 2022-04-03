@@ -16,7 +16,7 @@
 	<!-- 자바스크립트 -->
 	<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
  
-<title>Insert title here</title>
+<title>회원가입</title>
     <style>
         #enroll_green_bg{
             width: 700px;
