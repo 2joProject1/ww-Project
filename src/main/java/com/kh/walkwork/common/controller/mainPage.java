@@ -37,8 +37,8 @@ public class mainPage {
 
 		String memberNo = loginUser.getMemberNo();
 		mv.addObject("notice", noticeService.selectNoticeList());
-		mv.addObject("todo", todoService.mainTodoList(memberNo));
-		mv.addObject("schedule", scheduleService.mainScheduleList(memberNo));
+//		mv.addObject("todo", todoService.mainTodoList(memberNo));
+//		mv.addObject("schedule", scheduleService.mainScheduleList(memberNo));
 		mv.addObject("project",  projectService.selectProjectList(p));
 		
 		

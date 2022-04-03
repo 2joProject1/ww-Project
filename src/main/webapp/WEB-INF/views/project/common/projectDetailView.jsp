@@ -233,7 +233,7 @@ button.btn-write:hover {
 				<hr>
 				<div class="sub-menu">
 					&nbsp;
-					<a href="" class="">&nbsp;내 일정</a>
+					<a href="calendar.pj" class="">&nbsp;내 일정</a>
 				</div>
 			</div>
 		</div>

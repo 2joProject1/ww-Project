@@ -11,14 +11,26 @@ import com.kh.walkwork.schedule.model.vo.Schedule;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
+	
 	@Autowired
 	private ScheduleDao scheduleDao;
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-
-
+//
+//
+//	@Override
+//	public ArrayList<Schedule> mainScheduleList(String memberNo) {
+//		return scheduleDao.mainScheduleList(sqlSession, memberNo);
+//	}
+	
 	@Override
-	public ArrayList<Schedule> mainScheduleList(String memberNo) {
-		return scheduleDao.mainScheduleList(sqlSession, memberNo);
+	public ArrayList<Schedule> selectScheduleList(String memberNo) {
+		return scheduleDao.selectScheduleList(sqlSession, memberNo);
 	}
+	
+	@Override
+	public int insertSchedule(Schedule schedule) {
+		return scheduleDao.insertSchedule(sqlSession, schedule);
+	}
+	
 }

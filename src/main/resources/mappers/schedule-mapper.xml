@@ -2,14 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="scheduleMapper">
 	<resultMap id="scheduleResultSet" type="schedule">
-		<result column="BOARD_NO" property="boardNo" />
+		<result column="SCHEDULE_NO" property="scheduleNo" />
 		<result column="MEMBER_NO" property="memberNo" />
 		<result column="START_DATE" property="startDate" />
 		<result column="END_DATE" property="endDate" />
-		<result column="PLACE" property="place" />
 		<result column="TITLE" property="title" />
 		<result column="CONTENT" property="content" />
-	
 	</resultMap>
 	<select id="mainScheduleList" parameterType="string" resultMap="scheduleResultSet">
 	
@@ -24,7 +22,17 @@
         where rownum <= 7
 	]]>
 	</select>
+	
+	<select id="selectScheduleList" resultMap="scheduleResultSet">
+		select start_date, end_date, title, content
+		  from schedule
+		 where member_no = #{memberNo}
+	</select>
 
+	<insert id="insertSchedule" parameterType="schedule">
+		insert into schedule (schedule_no, member_no, start_date, end_date, title, content)
+		values (seq_scno.nextval, #{memberNo}, #{startDate}, #{endDate}, #{title}, #{content})
+	</insert>	
 </mapper>
 
 

@@ -6,6 +6,9 @@ import com.kh.walkwork.schedule.model.vo.Schedule;
 
 public interface ScheduleService {
 
-	ArrayList<Schedule> mainScheduleList(String memberNo);
-
+//	ArrayList<Schedule> mainScheduleList(String memberNo);
+	
+	ArrayList<Schedule> selectScheduleList(String memberNo);
+	
+	int insertSchedule(Schedule schedule);
 }
