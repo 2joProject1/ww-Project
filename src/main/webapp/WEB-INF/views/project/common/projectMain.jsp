@@ -208,6 +208,14 @@ input[type="search"] {
 	list-style: none;
 }
 
+.modal-body {
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+
 #searchMember>div>div>div.modal-body>div.search-area>table>tbody>tr:hover
 	{
 	cursor: pointer;

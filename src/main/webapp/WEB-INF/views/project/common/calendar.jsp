@@ -439,7 +439,7 @@ input[type="search"] {
             </div>
             <div class="sub-menu">
                <i class="fi fi-rr-apps"></i>&nbsp;
-               <a href="noticelist.pro" class="">&nbsp;공지사항</a>
+               <a href="noticeList.pro" class="">&nbsp;공지사항</a>
                <br>
             </div>
             <hr>
