@@ -16,17 +16,25 @@ public class TodoServiceImpl implements TodoService{
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+//
+//	
+//	
+//	@Override
+//	public ArrayList<Todo> mainTodoList(String memberNo) {
+//		return todoDao.mainTodoList(sqlSession, memberNo);
+//	}
+//
+//
+//	@Override
+//	public int mainTodoDelete(Todo todo) {
+//		return todoDao.mainTodoDelete(sqlSession, todo);
+//	}
 
+	@Override
+	public ArrayList<Todo> selectTodoList(String memberNo) {
+		return todoDao.selectTodoList(sqlSession, memberNo);
+	}
 	
 	
-	@Override
-	public ArrayList<Todo> mainTodoList(String memberNo) {
-		return todoDao.mainTodoList(sqlSession, memberNo);
-	}
-
-
-	@Override
-	public int mainTodoDelete(Todo todo) {
-		return todoDao.mainTodoDelete(sqlSession, todo);
-	}
+	
 }

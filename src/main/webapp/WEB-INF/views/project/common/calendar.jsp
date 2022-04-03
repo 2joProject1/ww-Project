@@ -5,83 +5,187 @@
 <head>
 <meta charset="UTF-8">
 <title>프로젝트 메인</title>
-<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
 <meta name='viewport' content='width=device-width, initial-scale=1'>
+<!-- ajax CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- jquery CDN -->
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<!-- fullCclendar CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.css">
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- fullcalendar 언어 CDN -->
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
+
 <script>
     $(function(){
         $('.btn-plan').click(function(){
             console.log('ㅎㅇ');
             $('.plan').show();
             $('.cal-type').val('1');
+            console.log($('.cal-type').val());
             $('.toDo').hide();
         });
         $('.btn-toDo').click(function(){
             $('.toDo').show();
             $('.cal-type').val('2');
+            console.log($('.cal-type').val());
             $('.plan').hide();
         });
 
     })
 
-    var calFunc = {
-        getFormValue :function(){
-
-        }
-    }
-
-       document.addEventListener('DOMContentLoaded', function () {
+      document.addEventListener('DOMContentLoaded', function () {
+            // 캘린더 요소 갖고 오기   
             var calendarEl = document.getElementById('calendar');
+            // 캘린더 생성
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                timeZone: 'UTC',
-                // locale: 'ko',
-                initialView: 'dayGridMonth', // 홈페이지에서 다른 형태의 view를 확인할  수 있다.
-                events:[ // 일정 데이터 추가 , DB의 event를 가져오려면 JSON 형식으로 변환해 events에 넣어주면된다.
-                    {
-                        title:'일정',
-                        start:'2022-03-30 00:00:00',
-                        end:'2022-03-31 24:00:00' 
-                        // color 값을 추가해 색상도 변경 가능 자세한 내용은 하단의 사이트 참조
-                    }
-                ], headerToolbar: {
-                    right: 'today prev,next',
-                    left: 'addEventButton', // headerToolbar에 버튼을 추가
-                    center: 'title'
-                }, customButtons: {
-                    addEventButton: { // 추가한 버튼 설정
+               timeZone: 'UTC',
+
+               // locale: 'ko',
+
+               // 달력 모양
+               initialView: 'dayGridMonth', // 홈페이지에서 다른 형태의 view를 확인할  수 있다.
+
+               // 클릭, 드래그, 이벤트 감지
+               // plugins: ['interaction', 'dayGrid'],
+
+               // 드래그 설정 가능
+               selectable: true,
+
+               // 이벤트 오버 시 높이 제한
+               dayMaxEvents: true,
+
+               eventClick: function(info) { // 캘린더에서 이벤트 클릭으로 이벤트를 생성할 수 있다.
+                  // console.log(arg.startStr);
+                  // console.log(arg.range);
+                  console.log(info.event.title);
+                  console.log(info.event._def.title);
+                  console.log(info.event._instance.range.start);
+                  console.log(info.event._instance.range.end);
+                  $("#calendarModal").modal("show");
+                  // $(".calendar_start_date").val(arg.startStr);
+                  // $(".calendar_end_date").val(arg.endStr);
+                  console.log($(".calendar_end_date").val());
+                  // console.log(arg);
+                  calendar.unselect();
+                  
+                  var btn = '<button type="button" class="btn btn-warning" id="deleteCalendar">삭제</button><button type="button" class="btn btn-warning" id="updateCalendar">수정</button>';
+                  $('.modal-footer').html(btn);
+                  
+               },
+
+               select: function(arg) { // 드래그로 이벤트 생성 가능
+                  var title = prompt('Event Title:');
+                  if (title) {
+                     calendar.addEvent({
+                        title: title,
+                        start: arg.start,
+                        end: arg.end,
+                        allDay: arg.allDay
+                     })
+                  }
+                  
+                  calendar.unselect();
+               },
+               // 이벤트(일정)에 대한 속성 저장
+               events: function(info, successCallback, failureCallnack){
+                  $.ajax({
+                     url: "selectCalendar.pj",
+                     data: {memberNo: '${loginUser.memberNo}'},
+                     success: function(param){
+                        var events = [];
+                        console.log(param);
+                        $.each(param, function(index, data){
+                           console.log(data);
+                           if(data.type == '1'){
+                              events.push({
+                                 title: data.title,
+                                 start: data.start,
+                                 end: data.end,
+                                 color: 'red'
+                              });
+                           } 
+                           else{
+                              events.push({
+                                 title: data.content,
+                                 start: data.start,
+                                 end: data.start,
+                                 color: 'green'
+                              })
+                           }
+                        })
+                        successCallback(events);
+                     }
+                  })
+                  // 헤더 툴바 위치
+               },headerToolbar : {
+                     right: 'today prev,next',
+                     left: 'listWeek addEventButton', // headerToolbar에 버튼을 추가
+                     center: 'title'
+               }, customButtons: {
+                     addEventButton: { // 추가한 버튼 설정
                         text : "일정 추가",  // 버튼 내용
                         click : function(){ // 버튼 클릭 시 이벤트 추가
-                            $("#calendarModal").modal("show"); // modal 나타내기
+                              $("#calendarModal").modal("show"); // modal 나타내기
 
-                            $("#addCalendar").on("click",function(){  // modal의 추가 버튼 클릭 시
-                                var content = $("#calendar_content").val();
-                                var start_date = $("#calendar_start_date").val();
-                                var end_date = $("#calendar_end_date").val();
-                                
-                                //내용 입력 여부 확인
-                                if(content == null || content == ""){
-                                    alert("내용을 입력하세요.");
-                                }else if(start_date == "" || end_date ==""){
-                                    alert("날짜를 입력하세요.");
-                                }else if(new Date(end_date)- new Date(start_date) < 0){ // date 타입으로 변경 후 확인
-                                    alert("종료일이 시작일보다 먼저입니다.");
-                                }else{ // 정상적인 입력 시
-                                    var obj = {
-                                        "title" : content,
-                                        "start" : start_date,
-                                        "end" : end_date
-                                    }//전송할 객체 생성
+                              $("#addCalendar").on("click",function(){  // modal의 추가 버튼 클릭 시
+                                 console.log('12');
+                                 console.log($('.cal-type').val());
+                                 if($('.cal-type').val() == '1'){ // 일정 추가 시
 
-                                    console.log(obj); //서버로 해당 객체를 전달해서 DB 연동 가능
-                                }
-                            });
+                                    var title = $(".calendar_title").val();
+                                    var content = $(".calendar_content").val();
+                                    var start_date = $(".calendar_start_date").val();
+                                    var end_date = $(".calendar_end_date").val();
+                                    
+                                    $.ajax({
+                                       url: "insertSchedule.pj",
+                                       data: {
+                                          memberNo: '${loginUser.memberNo}',
+                                          title: $(".calendar_title").val(),
+                                          content : $('.calendar_content').val(),
+                                          startDate : $('.calendar_start_date').val(),
+                                          endDate: $('.calendar_end_date').val()
+                                       },
+                                       success: function(e){
+                                          console.log(e);
+                                       }
+
+                                       
+                                    })
+
+                                 }
+                                 else{ // 체크리스트 추가 시
+                                    
+                                 }
+                                 $("#calendarModal").modal("hide");
+                                 successCallback(events);
+                                 // var content = $(".calendar_content").val();
+                                 // var start_date = $(".calendar_start_date").val();
+                                 // var end_date = $(".calendar_end_date").val();
+                                 
+                                 // //내용 입력 여부 확인
+                                 // if(content == null || content == ""){
+                                 //    alert("내용을 입력하세요.");
+                                 // }else if(start_date == "" || end_date ==""){
+                                 //    alert("날짜를 입력하세요.");
+                                 // }else if(new Date(end_date)- new Date(start_date) < 0){ // date 타입으로 변경 후 확인
+                                 //    alert("종료일이 시작일보다 먼저입니다.");
+                                 // }else{ // 정상적인 입력 시
+                                 //    var obj = {
+                                 //          "title" : content,
+                                 //          "start" : start_date,
+                                 //          "end" : end_date
+                                 //    }//전송할 객체 생성
+
+                                 //    console.log(obj); //서버로 해당 객체를 전달해서 DB 연동 가능
+                                 // }
+                              });
                         }
-                    }
-                },
-                editable: true, // false로 변경 시 draggable 작동 x 
-                displayEventTime: false // 시간 표시 x
+                     }
+               },
+               editable: true, // false로 변경 시 draggable 작동 x 
+               displayEventTime: false // 시간 표시 x
             });
             calendar.render();
         });
@@ -331,17 +435,17 @@ input[type="search"] {
             </div>
             <div class="sub-menu">
                <i class="fi fi-rr-apps"></i>&nbsp;
-               <a href="#" class="">&nbsp;전체</a>
+               <a href="project.main" class="">&nbsp;전체</a>
             </div>
             <div class="sub-menu">
                <i class="fi fi-rr-apps"></i>&nbsp;
-               <a href="notice.pro" class="">&nbsp;공지사항</a>
+               <a href="noticelist.pro" class="">&nbsp;공지사항</a>
                <br>
             </div>
             <hr>
             <div class="sub-menu">
                &nbsp;
-               <a href="#" class="">&nbsp;내 일정</a>
+               <a href="calendar.pj" class="">&nbsp;내 일정</a>
             </div>
          </div>
       </div>
@@ -370,17 +474,17 @@ input[type="search"] {
             </div>
             
             <form action="" class="cal-form" id="cal-form">
-                <input type="hidden" name="type" class="cal-type">
+                <input type="hidden" name="type" class="cal-type" value="1">
                 <div class="modal-body plan">
                     <div class="form-group">
                         <label for="taskId" class="col-form-label">일정</label>
-                        <input type="text" class="form-control" id="calendar_content" name="calendar_content" style="display:inline; width: 90%; margin-bottom: 16px;"><br>
+                        <input type="text" class="form-control calendar_title" name="calendar_title" style="display:inline; width: 90%; margin-bottom: 16px;"><br>
                         <label for="taskId" class="col-form-label">시작</label>
-                        <input type="date" class="form-control" id="calendar_start_date" name="calendar_start_date" style="display:inline; width: 30%;">
+                        <input type="date" class="form-control calendar_start_date" name="calendar_start_date" style="display:inline; width: 30%;">
                         -
-                        <input type="date" class="form-control" id="calendar_end_date" name="calendar_end_date" style="display:inline; width: 30%; margin-bottom: 10px;"><br>
+                        <input type="date" class="form-control calendar_end_date" name="calendar_end_date" style="display:inline; width: 30%; margin-bottom: 10px;"><br>
                         <label for="taskId" class="col-form-label">내용</label>
-                        <textarea name="calendar_content" class="form-control" id="calendar_content" cols="30" rows="10" style="resize: none;"></textarea>
+                        <textarea name="calendar_content" class="form-control calendar_content" cols="30" rows="10" style="resize: none;"></textarea>
                     </div>
                 </div>
                 <div class="modal-body toDo" style="display: none;">
@@ -397,9 +501,11 @@ input[type="search"] {
                 </div>
             </form>
             <div class="modal-footer">
-                <button type="button" class="btn btn-warning" id="addCalendar">추가</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                    id="sprintSettingModalClose" onclick="$('#calendarModal').modal('hide');">취소</button>
+               <!-- <button type="button" class="btn btn-warning" id="updateCalendar">수정</button> -->
+               <!-- <button type="button" class="btn btn-warning" id="deleteCalendar">삭제</button> -->
+               <button type="button" class="btn btn-warning" id="addCalendar">추가</button>
+                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal" -->
+                    <!-- id="sprintSettingModalClose" onclick="$('#calendarModal').modal('hide');">취소</button> -->
             </div>
 
         </div>

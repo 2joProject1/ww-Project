@@ -10,12 +10,16 @@ import com.kh.walkwork.todo.model.vo.Todo;
 @Repository
 public class TodoDao {
 
-	public ArrayList<Todo> mainTodoList(SqlSessionTemplate sqlSession, String memberNo) {
-		return (ArrayList)sqlSession.selectList("todoMapper.mainTodoList", memberNo);
+	public ArrayList<Todo> selectTodoList(SqlSessionTemplate sqlSession, String memberNo) {
+		return (ArrayList)sqlSession.selectList("todoMapper.selectTodoList", memberNo);
 	}
-	
-	public int mainTodoDelete(SqlSessionTemplate sqlSession, Todo todo) {
-		return sqlSession.update("todoMapper.mainTodoDelete", todo);
-	}
+
+//	public ArrayList<Todo> mainTodoList(SqlSessionTemplate sqlSession, String memberNo) {
+//		return (ArrayList)sqlSession.selectList("todoMapper.mainTodoList", memberNo);
+//	}
+//	
+//	public int mainTodoDelete(SqlSessionTemplate sqlSession, Todo todo) {
+//		return sqlSession.update("todoMapper.mainTodoDelete", todo);
+//	}
 	
 }

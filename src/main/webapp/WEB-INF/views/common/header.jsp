@@ -145,6 +145,13 @@
 </head>
 <body>
 
+	<c:if test="${ not empty alertMsg }">
+		<script>
+			alert("${ alertMsg }");
+		</script>
+		<c:remove var="alertMsg" scope="session" />
+	</c:if>
+
 <div id="header">
   <div id="title"> <!--  style="margin-bottom: -15px;" 강사님이 고쳐주신 코드. flex넣으니까 쳐지는거 해결되어서 삭제했는데 문제생기면 다시 추가 -->
     <a href="main">WALK-WORK</a>
