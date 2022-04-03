@@ -41,6 +41,7 @@
 	}
  	#noticeList>tbody>tr:hover{
 		background-color:rgb(237, 241, 241);
+		cursor: pointer;
 	}
 	.centerTd{
 		height:50px;
