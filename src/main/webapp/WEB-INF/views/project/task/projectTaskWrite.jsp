@@ -303,6 +303,10 @@ ul.project-desc-list {
 	margin-top: 10px;
 }
 
+.project-end-btn {
+	display: none;
+}
+
 #project-enroll-btn {
 	background-color: rgb(102, 164, 166);
 	margin-left: 20px;

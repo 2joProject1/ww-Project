@@ -320,6 +320,24 @@ table.section-table {
 #projectMemberList>li {
 	transition: 0.015s;
 }
+.project-end-btn {
+	background-color: gray;
+	border: none;
+	border-radius: 5px;
+	color: white;
+	width: 70px;
+	height: 30px;
+}
+
+.project-title-area>.project-end-btn {
+	float: right;
+	margin-right: 20px;
+	margin-top: 10px;
+}
+
+.project-end-btn {
+	display: none;
+}
 </style>
 </head>
 <body>
