@@ -80,11 +80,11 @@
 </head>
 <body>
 
-	<c:if test="${ not empty changeResult }">
+	<c:if test="${ not empty alertMsg }">
 		<script>
-			alert("${ changeResult }");
+			alert("${ alertMsg }");
 		</script>
-		<c:remove var="changeResult" scope="session" />
+		<c:remove var="alertMsg" scope="session" />
 	</c:if>
 	
 	
