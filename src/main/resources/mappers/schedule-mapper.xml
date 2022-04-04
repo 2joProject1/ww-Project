@@ -24,7 +24,7 @@
 	</select>
 	
 	<select id="selectScheduleList" resultMap="scheduleResultSet">
-		select start_date, end_date, title, content
+		select schedule_no, start_date, end_date, title, content
 		  from schedule
 		 where member_no = #{memberNo}
 	</select>
@@ -33,6 +33,19 @@
 		insert into schedule (schedule_no, member_no, start_date, end_date, title, content)
 		values (seq_scno.nextval, #{memberNo}, #{startDate}, #{endDate}, #{title}, #{content})
 	</insert>	
+	
+	<delete id="deleteSchedule">
+		delete from schedule where schedule_no = #{no}
+	</delete>
+	
+	<update id="updateSchedule">
+		update schedule
+		set title = #{title},
+			content = #{content},
+			start_date = #{startDate},
+		 	end_date = #{endDate}
+	 	where schedule_no = #{scheduleNo}
+	</update>
 </mapper>
 
 

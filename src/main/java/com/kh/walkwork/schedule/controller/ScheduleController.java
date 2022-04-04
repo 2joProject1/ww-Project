@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +40,7 @@ public class ScheduleController {
 		
 		for(int i=0; i<scList.size(); i++) {
 			map = new HashMap<String, Object>();
+			map.put("no", scList.get(i).getScheduleNo());
 			map.put("start", scList.get(i).getStartDate());
 			map.put("end", scList.get(i).getEndDate());
 			map.put("title", scList.get(i).getTitle());
@@ -67,7 +70,7 @@ public class ScheduleController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="insertSchedule.pj")
+	@RequestMapping(value="insert.sc")
 	public String insertSchedule (Schedule schedule) {
 		
 		System.out.println(schedule);
@@ -82,4 +85,26 @@ public class ScheduleController {
 		
 		return "gd";
 	}
+	
+	@RequestMapping("delete.sc")
+	public String deleteSchedule (String no) {
+		
+		System.out.println(no);
+		
+		int result = scheduleService.deleteSchedule(no);
+		System.out.println(result);
+		
+		return "redirect:/calendar.pj";
+	}
+	
+	@RequestMapping("update.sc")
+	public String updateSchedule(Schedule sc, HttpSession session) {
+		System.out.println(sc);
+		
+		int result = scheduleService.updateSchedule(sc);
+		System.out.println(result);
+		session.setAttribute("alertMsg", "업뎃성공");
+		return "redirect:/calendar.pj";
+	}
+	
 }

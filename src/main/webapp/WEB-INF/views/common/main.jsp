@@ -157,6 +157,8 @@
 						${n.startDate}&nbsp&nbsp${n.title}
 					</li>
 				</c:forEach>
+				<li>22-04-04 ~ 22-05-05 조장님과 여행가기</li>
+				<li>22-04-04 수료식</li>
 		</div>
 		<div id="notice-area">
 			<span class="main_title_text">공지사항</span>
@@ -189,7 +191,10 @@
 			<br><br>
 			<table id="todo_tb" style="margin-left:30px">
 				<tbody>
-				
+					<input type="checkbox"> 출근하기<br>
+					<input type="checkbox"> 점심먹기<br>
+					<input type="checkbox"> 운동가기<br>
+					<input type="checkbox"> 잠자기<br>
 				</tbody>
 			</table>
 			

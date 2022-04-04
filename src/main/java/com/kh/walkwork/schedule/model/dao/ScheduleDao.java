@@ -18,6 +18,14 @@ public class ScheduleDao {
 		return sqlSession.insert("scheduleMapper.insertSchedule", schedule);
 	}
 
+	public int deleteSchedule(SqlSessionTemplate sqlSession, String no) {
+		return sqlSession.delete("scheduleMapper.deleteSchedule", no);
+	}
+
+	public int updateSchedule(SqlSessionTemplate sqlSession, Schedule sc) {
+		return sqlSession.update("scheduleMapper.updateSchedule", sc);
+	}
+
 //	public ArrayList<Schedule> mainScheduleList(SqlSessionTemplate sqlSession, String memberNo) {
 		
 //		
