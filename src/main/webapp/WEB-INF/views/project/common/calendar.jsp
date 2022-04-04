@@ -10,13 +10,59 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- jquery CDN -->
 <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-<!-- fullCclendar CDN -->
+<!-- fullclendar CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.css">
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/fullcalendar@5.7.0/main.min.js"></script>
 <!-- fullcalendar 언어 CDN -->
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js'></script>
+<!-- moment.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 <script>
+
+   function addSchedule(){
+      console.log('12');
+      console.log($('.cal-type').val());
+      if($('.cal-type').val() == '1'){ // 일정 추가 시
+
+         var title = $(".calendar_title").val();
+         var content = $(".calendar_content").val();
+         var start_date = $(".calendar_start_date").val();
+         var end_date = $(".calendar_end_date").val();
+         
+         $.ajax({
+            url: "insert.sc",
+            data: {
+               memberNo: '${loginUser.memberNo}',
+               title: $(".calendar_title").val(),
+               content : $('.calendar_content').val(),
+               startDate : $('.calendar_start_date').val(),
+               endDate: $('.calendar_end_date').val()
+            },
+            success: function(e){
+               console.log(e);
+            }
+
+            
+         })
+
+                                 }
+   }
+
+   $(document).on('click', '#deleteCalendar', function(){
+      console.log('gd');
+      console.log($('.no').val());
+
+      location.href = "delete.sc?no="+ $('.no').val();
+   });
+
+   $(document).on('click', '#updateCalendar', function(){
+      console.log($('.no').val());
+      $('.cal-form').attr('action', 'update.sc');
+      $('.cal-form').submit();
+      // location.href = "update.sc?no="+ $('.no').val();/
+   })
+
     $(function(){
         $('.btn-plan').click(function(){
             console.log('ㅎㅇ');
@@ -56,26 +102,26 @@
                dayMaxEvents: true,
 
                eventClick: function(info) { // 캘린더에서 이벤트 클릭으로 이벤트를 생성할 수 있다.
-                  // console.log(arg.startStr);
-                  // console.log(arg.range);
-                  console.log(info.event.title);
-                  console.log(info.event._def.title);
-                  console.log(info.event._instance.range.start);
-                  console.log(info.event._instance.range.end);
+                  console.log(info);
+                  $('.calendar_title').val(info.event.title);
+                  console.log(info.startStr);
+                  $('.calendar_start_date').val(moment(info.event._instance.range.start).format('YYYY-MM-DD'));
+                  $('.calendar_end_date').val(moment(info.event._instance.range.end).format('YYYY-MM-DD'));
+                  $('.calendar_content').val(info.event._def.extendedProps.content);
+                  $('.no').val(info.event._def.extendedProps.no);
                   $("#calendarModal").modal("show");
-                  // $(".calendar_start_date").val(arg.startStr);
-                  // $(".calendar_end_date").val(arg.endStr);
                   console.log($(".calendar_end_date").val());
                   // console.log(arg);
                   calendar.unselect();
-                  
+
                   var btn = '<button type="button" class="btn btn-warning" id="deleteCalendar">삭제</button><button type="button" class="btn btn-warning" id="updateCalendar">수정</button>';
                   $('.modal-footer').html(btn);
-                  
+
+                  console.log(info);
                },
 
                select: function(arg) { // 드래그로 이벤트 생성 가능
-                  var title = prompt('Event Title:');
+                  // var title = prompt('Event Title:');
                   if (title) {
                      calendar.addEvent({
                         title: title,
@@ -84,7 +130,10 @@
                         allDay: arg.allDay
                      })
                   }
-                  
+                  var btn = '<button type="button" class="btn btn-warning" id="addCalendar" onclick="addSchedule();">추가</button>';
+                  $('.modal-footer').html(btn);
+                  $("#calendarModal").modal("show");
+                  // customButtons.addEventButton.click;
                   calendar.unselect();
                },
                // 이벤트(일정)에 대한 속성 저장
@@ -102,7 +151,9 @@
                                  title: data.title,
                                  start: data.start,
                                  end: data.end,
-                                 color: 'red'
+                                 color: 'red',
+                                 content: data.content,
+                                 no: data.no
                               });
                            } 
                            else{
@@ -139,7 +190,7 @@
                                     var end_date = $(".calendar_end_date").val();
                                     
                                     $.ajax({
-                                       url: "insertSchedule.pj",
+                                       url: "insert.sc",
                                        data: {
                                           memberNo: '${loginUser.memberNo}',
                                           title: $(".calendar_title").val(),
@@ -383,6 +434,7 @@ input[type="search"] {
    border-radius: 10px;
 }
 
+
 #searchMemberResult {
    width: 409px;
    height: 100px;
@@ -475,16 +527,17 @@ input[type="search"] {
             
             <form action="" class="cal-form" id="cal-form">
                 <input type="hidden" name="type" class="cal-type" value="1">
+                <input type="hidden" name="scheduleNo" class="no">
                 <div class="modal-body plan">
                     <div class="form-group">
                         <label for="taskId" class="col-form-label">일정</label>
-                        <input type="text" class="form-control calendar_title" name="calendar_title" style="display:inline; width: 90%; margin-bottom: 16px;"><br>
+                        <input type="text" class="form-control calendar_title" name="title" style="display:inline; width: 90%; margin-bottom: 16px;"><br>
                         <label for="taskId" class="col-form-label">시작</label>
-                        <input type="date" class="form-control calendar_start_date" name="calendar_start_date" style="display:inline; width: 30%;">
+                        <input type="date" class="form-control calendar_start_date" name="startDate" style="display:inline; width: 30%;">
                         -
-                        <input type="date" class="form-control calendar_end_date" name="calendar_end_date" style="display:inline; width: 30%; margin-bottom: 10px;"><br>
+                        <input type="date" class="form-control calendar_end_date" name="endDate" style="display:inline; width: 30%; margin-bottom: 10px;"><br>
                         <label for="taskId" class="col-form-label">내용</label>
-                        <textarea name="calendar_content" class="form-control calendar_content" cols="30" rows="10" style="resize: none;"></textarea>
+                        <textarea name="content" class="form-control calendar_content" cols="30" rows="10" style="resize: none;"></textarea>
                     </div>
                 </div>
                 <div class="modal-body toDo" style="display: none;">
@@ -496,7 +549,7 @@ input[type="search"] {
                                 <input type="checkbox" name="" id=""><label for="">체크리ㅏ스트</label>
                             </div>
                         </div>
-                        <input type="text" class="form-control" id="calendar_content" name="calendar_content" placeholder="메모">
+                        <!-- <input type="text" class="form-control" id="calendar_content" name="calendar_content" placeholder="메모"> -->
                     </div>
                 </div>
             </form>
