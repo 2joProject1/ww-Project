@@ -16,6 +16,9 @@
 					<i>진행중</i>
 				</c:if>
 			</span>
+			<c:if test="${p.projectStatus == 1 && loginUser.rankNo ge 5}">
+				<button type="button" class="project-end-btn">완료</button>
+			</c:if>
 		</div>
 
 		<ul class="project-desc-list">
